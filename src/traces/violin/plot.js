@@ -68,6 +68,7 @@ module.exports = function plot(gd, plotinfo, cdViolins, violinLayer) {
             } else {
                 var groupStats = fullLayout._violinScaleGroupStats[trace.scalegroup];
                 scale = trace.scalemode === 'count' ?
+                    // todo(maximsmol): support precalculated violins (don't have `d.pts.length`)
                     (groupStats.maxKDE / bdPos) * (groupStats.maxCount / d.pts.length) :
                     groupStats.maxKDE / bdPos;
             }

@@ -51,4 +51,15 @@ module.exports = function supplyDefaults(traceIn, traceOut, defaultColor, layout
 
     coerce('quartilemethod');
     coerce('zorder');
+
+    coerce('density');
+    coerce('maxKDE');
+    coerce('count');
+
+    var hasPreCompStats = traceOut._hasPreCompStats;
+
+    if(hasPreCompStats) {
+        coerce('lowerfence');
+        coerce('upperfence');
+    }
 };

@@ -131,7 +131,7 @@ module.exports = function calc(gd, trace) {
 
                 var imin = cdi.lf;
                 var imax = cdi.uf;
-                if(trace.boxpoints && boxVals.length) {
+                if((trace.points || trace.boxpoints) && boxVals.length) {
                     imin = Math.min(imin, boxVals[0]);
                     imax = Math.max(imax, boxVals[N - 1]);
                 }

@@ -10,6 +10,38 @@ module.exports = {
     x0: boxAttrs.x0,
     y0: boxAttrs.y0,
 
+    q1: boxAttrs.q1,
+    median: boxAttrs.median,
+    q3: boxAttrs.q3,
+    lowerfence: boxAttrs.lowerfence,
+    upperfence: boxAttrs.upperfence,
+    notchspan: boxAttrs.notchspan,
+    mean: boxAttrs.mean,
+    sd: boxAttrs.sd,
+
+    density: {
+        valType: 'any',
+        arrayOk: true,
+        editType: 'calc',
+        description: [
+            'Magic.'
+        ].join(' ')
+    },
+    count: {
+        valType: 'data_array',
+        editType: 'calc+clearAxisTypes',
+        description: [
+            'Magic.',
+        ].join(' ')
+    },
+    maxKDE: {
+        valType: 'data_array',
+        editType: 'calc+clearAxisTypes',
+        description: [
+            'Magic.',
+        ].join(' ')
+    },
+
     xhoverformat: axisHoverFormat('x'),
     yhoverformat: axisHoverFormat('y'),
 

@@ -100908,6 +100908,16 @@
       "valType": "number"
      }
     },
+    "count": {
+     "description": "Magic.",
+     "editType": "calc+clearAxisTypes",
+     "valType": "data_array"
+    },
+    "countsrc": {
+     "description": "Sets the source reference on Chart Studio Cloud for `count`.",
+     "editType": "none",
+     "valType": "string"
+    },
     "customdata": {
      "description": "Assigns extra data each datum. This may be useful when listening to hover, click and selection events. Note that, *scatter* traces also appends customdata items in the markers DOM elements",
      "editType": "calc",
@@ -100915,6 +100925,17 @@
     },
     "customdatasrc": {
      "description": "Sets the source reference on Chart Studio Cloud for `customdata`.",
+     "editType": "none",
+     "valType": "string"
+    },
+    "density": {
+     "arrayOk": true,
+     "description": "Magic.",
+     "editType": "calc",
+     "valType": "any"
+    },
+    "densitysrc": {
+     "description": "Sets the source reference on Chart Studio Cloud for `density`.",
      "editType": "none",
      "valType": "string"
     },
@@ -101339,6 +101360,16 @@
       "min": 0,
       "valType": "number"
      }
+    },
+    "lowerfence": {
+     "description": "Sets the lower fence values. There should be as many items as the number of boxes desired. This attribute has effect only under the q1/median/q3 signature. If `lowerfence` is not provided but a sample (in `y` or `x`) is set, we compute the lower as the last sample point below 1.5 times the IQR.",
+     "editType": "calc",
+     "valType": "data_array"
+    },
+    "lowerfencesrc": {
+     "description": "Sets the source reference on Chart Studio Cloud for `lowerfence`.",
+     "editType": "none",
+     "valType": "string"
     },
     "marker": {
      "angle": {
@@ -101906,6 +101937,21 @@
       ]
      }
     },
+    "maxKDE": {
+     "description": "Magic.",
+     "editType": "calc+clearAxisTypes",
+     "valType": "data_array"
+    },
+    "maxKDEsrc": {
+     "description": "Sets the source reference on Chart Studio Cloud for `maxKDE`.",
+     "editType": "none",
+     "valType": "string"
+    },
+    "mean": {
+     "description": "Sets the mean values. There should be as many items as the number of boxes desired. This attribute has effect only under the q1/median/q3 signature. If `mean` is not provided but a sample (in `y` or `x`) is set, we compute the mean for each box using the sample values.",
+     "editType": "calc",
+     "valType": "data_array"
+    },
     "meanline": {
      "color": {
       "description": "Sets the mean line color.",
@@ -101927,6 +101973,21 @@
       "valType": "number"
      }
     },
+    "meansrc": {
+     "description": "Sets the source reference on Chart Studio Cloud for `mean`.",
+     "editType": "none",
+     "valType": "string"
+    },
+    "median": {
+     "description": "Sets the median values. There should be as many items as the number of boxes desired.",
+     "editType": "calc+clearAxisTypes",
+     "valType": "data_array"
+    },
+    "mediansrc": {
+     "description": "Sets the source reference on Chart Studio Cloud for `median`.",
+     "editType": "none",
+     "valType": "string"
+    },
     "meta": {
      "arrayOk": true,
      "description": "Assigns extra meta information associated with this trace that can be used in various text attributes. Attributes such as trace `name`, graph, axis and colorbar `title.text`, annotation `text` `rangeselector`, `updatemenues` and `sliders` `label` text all support `meta`. To access the trace `meta` values in an attribute in the same trace, simply use `%{meta[i]}` where `i` is the index or key of the `meta` item in question. To access trace `meta` in layout attributes, use `%{data[n[.meta[i]}` where `i` is the index or key of the `meta` and `n` is the trace index.",
@@ -101941,6 +102002,16 @@
     "name": {
      "description": "Sets the trace name. The trace name appears as the legend item and on hover. For violin traces, the name will also be used for the position coordinate, if `x` and `x0` (`y` and `y0` if horizontal) are missing and the position axis is categorical. Note that the trace name is also used as a default value for attribute `scalegroup` (please see its description for details).",
      "editType": "calc+clearAxisTypes",
+     "valType": "string"
+    },
+    "notchspan": {
+     "description": "Sets the notch span from the boxes' `median` values. There should be as many items as the number of boxes desired. This attribute has effect only under the q1/median/q3 signature. If `notchspan` is not provided but a sample (in `y` or `x`) is set, we compute it as 1.57 * IQR / sqrt(N), where N is the sample size.",
+     "editType": "calc",
+     "valType": "data_array"
+    },
+    "notchspansrc": {
+     "description": "Sets the source reference on Chart Studio Cloud for `notchspan`.",
+     "editType": "none",
      "valType": "string"
     },
     "offsetgroup": {
@@ -101984,6 +102055,26 @@
       false
      ]
     },
+    "q1": {
+     "description": "Sets the Quartile 1 values. There should be as many items as the number of boxes desired.",
+     "editType": "calc+clearAxisTypes",
+     "valType": "data_array"
+    },
+    "q1src": {
+     "description": "Sets the source reference on Chart Studio Cloud for `q1`.",
+     "editType": "none",
+     "valType": "string"
+    },
+    "q3": {
+     "description": "Sets the Quartile 3 values. There should be as many items as the number of boxes desired.",
+     "editType": "calc+clearAxisTypes",
+     "valType": "data_array"
+    },
+    "q3src": {
+     "description": "Sets the source reference on Chart Studio Cloud for `q3`.",
+     "editType": "none",
+     "valType": "string"
+    },
     "quartilemethod": {
      "description": "Sets the method used to compute the sample's Q1 and Q3 quartiles. The *linear* method uses the 25th percentile for Q1 and 75th percentile for Q3 as computed using method #10 (listed on http://jse.amstat.org/v14n3/langford.html). The *exclusive* method uses the median to divide the ordered dataset into two halves if the sample is odd, it does not include the median in either half - Q1 is then the median of the lower half and Q3 the median of the upper half. The *inclusive* method also uses the median to divide the ordered dataset into two halves but if the sample is odd, it includes the median in both halves - Q1 is then the median of the lower half and Q3 the median of the upper half.",
      "dflt": "linear",
@@ -102010,6 +102101,16 @@
       "width",
       "count"
      ]
+    },
+    "sd": {
+     "description": "Sets the standard deviation values. There should be as many items as the number of boxes desired. This attribute has effect only under the q1/median/q3 signature. If `sd` is not provided but a sample (in `y` or `x`) is set, we compute the standard deviation for each box using the sample values.",
+     "editType": "calc",
+     "valType": "data_array"
+    },
+    "sdsrc": {
+     "description": "Sets the source reference on Chart Studio Cloud for `sd`.",
+     "editType": "none",
+     "valType": "string"
     },
     "selected": {
      "editType": "style",
@@ -102162,6 +102263,16 @@
       }
      },
      "role": "object"
+    },
+    "upperfence": {
+     "description": "Sets the upper fence values. There should be as many items as the number of boxes desired. This attribute has effect only under the q1/median/q3 signature. If `upperfence` is not provided but a sample (in `y` or `x`) is set, we compute the upper as the last sample point above 1.5 times the IQR.",
+     "editType": "calc",
+     "valType": "data_array"
+    },
+    "upperfencesrc": {
+     "description": "Sets the source reference on Chart Studio Cloud for `upperfence`.",
+     "editType": "none",
+     "valType": "string"
     },
     "visible": {
      "description": "Determines whether or not this trace is visible. If *legendonly*, the trace is not drawn, but can appear as a legend item (provided that the legend itself is visible).",

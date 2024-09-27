@@ -90,7 +90,7 @@ function handleSampleDefaults(traceIn, traceOut, coerce, layout) {
     var x = coerce('x');
 
     var sLen;
-    if(traceOut.type === 'box') {
+    if(traceOut.type === 'box' || traceOut.type === "violin") {
         var q1 = coerce('q1');
         var median = coerce('median');
         var q3 = coerce('q3');
@@ -218,7 +218,7 @@ function handleSampleDefaults(traceIn, traceOut, coerce, layout) {
     var orientation = coerce('orientation', defaultOrientation);
 
     // these are just used for positioning, they never define the sample
-    if(traceOut._hasPreCompStats) {
+    if(traceOut._hasPreCompStats && traceOut.type === "box") {
         if(orientation === 'v' && xDims === 0) {
             coerce('x0', 0);
             coerce('dx', 1);

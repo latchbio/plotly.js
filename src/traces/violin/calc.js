@@ -26,8 +26,8 @@ module.exports = function calc(gd, trace) {
         var cdi = cd[i];
         var vals = cdi.pts.map(helpers.extractVal);
 
-        var bandwidth = cdi.bandwidth = calcBandwidth(trace, cdi, vals);
-        var span = cdi.span = calcSpan(trace, cdi, valAxis, bandwidth);
+        var bandwidth = cdi.bandwidth = calcBandwidth(trace, cdi, vals, i);
+        var span = cdi.span = calcSpan(trace, cdi, valAxis, bandwidth, i);
 
         if(cdi.min === cdi.max && bandwidth === 0) {
             // if span is zero and bandwidth is zero, we want a violin with zero width
@@ -35,6 +35,11 @@ module.exports = function calc(gd, trace) {
             cdi.density = [{v: 1, t: span[0]}];
             cdi.bandwidth = bandwidth;
             maxKDE = Math.max(maxKDE, 1);
+        } else if (trace.density != null) {
+            cdi.density = trace.density[i];
+
+            maxKDE = Math.max(maxKDE, trace.maxKDE[i]);
+            maxCount = Math.max(maxCount, trace.count[i]);
         } else {
             // step that well covers the bandwidth and is multiple of span distance
             var dist = span[1] - span[0];
@@ -97,12 +102,16 @@ function silvermanRule(len, ssd, iqr) {
     return 1.059 * a * Math.pow(len, -0.2);
 }
 
-function calcBandwidth(trace, cdi, vals) {
+function calcBandwidth(trace, cdi, vals, i) {
     var span = cdi.max - cdi.min;
 
     // If span is zero
     if(!span) {
-        if(trace.bandwidth) {
+        if (trace.bandwidth) {
+            if (Lib.isArrayOrTypedArray(trace.bandwidth)) {
+                return trace.bandwidth[i];
+            }
+
             return trace.bandwidth;
         } else {
             // if span is zero and no bandwidth is specified
@@ -131,12 +140,16 @@ function calcBandwidth(trace, cdi, vals) {
     }
 }
 
-function calcSpan(trace, cdi, valAxis, bandwidth) {
+function calcSpan(trace, cdi, valAxis, bandwidth, i) {
     var spanmode = trace.spanmode;
     var spanIn = trace.span || [];
     var spanTight = [cdi.min, cdi.max];
     var spanLoose = [cdi.min - 2 * bandwidth, cdi.max + 2 * bandwidth];
     var spanOut;
+
+    if (Lib.isArrayOrTypedArray(spanIn[0])) {
+        spanIn = spanIn[i];
+    }
 
     function calcSpanItem(index) {
         var s = spanIn[index];
