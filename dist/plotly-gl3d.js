@@ -1,14 +1,12 @@
 /**
-* plotly.js (gl3d) v2.35.2
+* plotly.js (gl3d) v3.0.0-rc.1
 * Copyright 2012-2024, Plotly, Inc.
 * All rights reserved.
 * Licensed under the MIT license
 */
 (
  function(root, factory) {
-  if (typeof define === "function" && define.amd) {
-   define(factory);
-  } else if (typeof module === "object" && module.exports) {
+  if (typeof module === "object" && module.exports) {
    module.exports = factory();
   } else {
    root.moduleName = factory();
@@ -40,7 +38,7 @@ var Plotly = (() => {
   var require_version = __commonJS({
     "src/version.js"(exports) {
       "use strict";
-      exports.version = "2.35.2";
+      exports.version = "3.0.0-rc.1";
     }
   });
 
@@ -10494,10 +10492,6 @@ var Plotly = (() => {
           },
           editType: "calc"
         },
-        transforms: {
-          _isLinkedToArray: "transform",
-          editType: "calc"
-        },
         uirevision: {
           valType: "any",
           editType: "none"
@@ -11485,10 +11479,6 @@ var Plotly = (() => {
           valType: "integer",
           min: 0,
           dflt: 0
-        },
-        globalTransforms: {
-          valType: "any",
-          dflt: []
         },
         locale: {
           valType: "string",
@@ -12755,6 +12745,9 @@ var Plotly = (() => {
       function addRelatedStyleRule(uid, selector, styleString) {
         var id = "plotly.js-style-" + uid;
         var style = document.getElementById(id);
+        if (style && style.matches(".no-inline-styles")) {
+          return;
+        }
         if (!style) {
           style = document.createElement("style");
           style.setAttribute("id", id);
@@ -12762,7 +12755,9 @@ var Plotly = (() => {
           document.head.appendChild(style);
         }
         var styleSheet = style.sheet;
-        if (styleSheet.insertRule) {
+        if (!styleSheet) {
+          loggers.warn("Cannot addRelatedStyleRule, probably due to strict CSP...");
+        } else if (styleSheet.insertRule) {
           styleSheet.insertRule(selector + "{" + styleString + "}", 0);
         } else if (styleSheet.addRule) {
           styleSheet.addRule(selector, styleString, 0);
@@ -12772,6 +12767,32 @@ var Plotly = (() => {
         var id = "plotly.js-style-" + uid;
         var style = document.getElementById(id);
         if (style) removeElement(style);
+      }
+      function setStyleOnHover(selector, activeSelector, childSelector, activeStyle, inactiveStyle) {
+        var activeStyleParts = activeStyle.split(":");
+        var inactiveStyleParts = inactiveStyle.split(":");
+        var eventAddedAttrName = "data-btn-style-event-added";
+        document.querySelectorAll(selector).forEach(function(el) {
+          if (!el.getAttribute(eventAddedAttrName)) {
+            el.addEventListener("mouseenter", function() {
+              var childEl = this.querySelector(childSelector);
+              if (childEl) {
+                childEl.style[activeStyleParts[0]] = activeStyleParts[1];
+              }
+            });
+            el.addEventListener("mouseleave", function() {
+              var childEl = this.querySelector(childSelector);
+              if (childEl) {
+                if (activeSelector && this.matches(activeSelector)) {
+                  childEl.style[activeStyleParts[0]] = activeStyleParts[1];
+                } else {
+                  childEl.style[inactiveStyleParts[0]] = inactiveStyleParts[1];
+                }
+              }
+            });
+            el.setAttribute(eventAddedAttrName, true);
+          }
+        });
       }
       function getFullTransformMatrix(element) {
         var allElements = getElementAndAncestors(element);
@@ -12834,6 +12855,7 @@ var Plotly = (() => {
         addStyleRule,
         addRelatedStyleRule,
         deleteRelatedStyleRule,
+        setStyleOnHover,
         getFullTransformMatrix,
         getElementTransformMatrix,
         getElementAndAncestors,
@@ -13701,16 +13723,7 @@ var Plotly = (() => {
         },
         transition: extendFlat({}, animationAttrs.transition, {
           editType: "none"
-        }),
-        _deprecated: {
-          title: {
-            valType: "string",
-            editType: "layoutstyle"
-          },
-          titlefont: fontAttrs({
-            editType: "layoutstyle"
-          })
-        }
+        })
       };
     }
   });
@@ -13721,10 +13734,10 @@ var Plotly = (() => {
     }
   });
 
-  // stylePlugin:/Users/maximsmol/projects/latchbio/console/web/lib/plotly.js/node_modules/maplibre-gl/dist/maplibre-gl.css
+  // stylePlugin:/Users/ryanteoh/Code/console/web/lib/plotly.js/node_modules/maplibre-gl/dist/maplibre-gl.css
   var maplibre_gl_exports = {};
   var init_maplibre_gl2 = __esm({
-    "stylePlugin:/Users/maximsmol/projects/latchbio/console/web/lib/plotly.js/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
+    "stylePlugin:/Users/ryanteoh/Code/console/web/lib/plotly.js/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
       init_maplibre_gl();
     }
   });
@@ -13747,7 +13760,6 @@ var Plotly = (() => {
       exports.allCategories = {};
       exports.allTypes = [];
       exports.subplotsRegistry = {};
-      exports.transformsRegistry = {};
       exports.componentsRegistry = {};
       exports.layoutArrayContainers = [];
       exports.layoutArrayRegexes = [];
@@ -13805,25 +13817,6 @@ var Plotly = (() => {
           _module = exports.modules[basePlotAttributes.type.dflt];
         }
         return !!_module.categories[category];
-      };
-      exports.getTransformIndices = function(data, type) {
-        var indices = [];
-        var transforms = data.transforms || [];
-        for (var i = 0; i < transforms.length; i++) {
-          if (transforms[i].type === type) {
-            indices.push(i);
-          }
-        }
-        return indices;
-      };
-      exports.hasTransform = function(data, type) {
-        var transforms = data.transforms || [];
-        for (var i = 0; i < transforms.length; i++) {
-          if (transforms[i].type === type) {
-            return true;
-          }
-        }
-        return false;
       };
       exports.getComponentMethod = function(name2, method) {
         var _module = exports.componentsRegistry[name2];
@@ -13910,9 +13903,6 @@ var Plotly = (() => {
         for (var subplotName in exports.subplotsRegistry) {
           mergeComponentAttrsToSubplot(name2, subplotName);
         }
-        for (var transformType in exports.transformsRegistry) {
-          mergeComponentAttrsToTransform(name2, transformType);
-        }
         if (_module.schema && _module.schema.layout) {
           extendDeepAll(baseLayoutAttributes, _module.schema.layout);
         }
@@ -13939,10 +13929,6 @@ var Plotly = (() => {
         }
         if (typeof _module.supplyDefaults !== "function") {
           Loggers.log(prefix + " registered without a *supplyDefaults* method.");
-        }
-        exports.transformsRegistry[_module.name] = _module;
-        for (var componentName in exports.componentsRegistry) {
-          mergeComponentAttrsToTransform(componentName, _module.name);
         }
       }
       function registerLocale(_module) {
@@ -13984,14 +13970,6 @@ var Plotly = (() => {
         var traceAttrs = componentSchema.traces[traceType];
         if (traceAttrs) {
           extendDeepAll(exports.modules[traceType]._module.attributes, traceAttrs);
-        }
-      }
-      function mergeComponentAttrsToTransform(componentName, transformType) {
-        var componentSchema = exports.componentsRegistry[componentName].schema;
-        if (!componentSchema || !componentSchema.transforms) return;
-        var transformAttrs = componentSchema.transforms[transformType];
-        if (transformAttrs) {
-          extendDeepAll(exports.transformsRegistry[transformType].attributes, transformAttrs);
         }
       }
       function mergeComponentAttrsToSubplot(componentName, subplotName) {
@@ -15272,6 +15250,7 @@ var Plotly = (() => {
       lib.addStyleRule = domModule.addStyleRule;
       lib.addRelatedStyleRule = domModule.addRelatedStyleRule;
       lib.deleteRelatedStyleRule = domModule.deleteRelatedStyleRule;
+      lib.setStyleOnHover = domModule.setStyleOnHover;
       lib.getFullTransformMatrix = domModule.getFullTransformMatrix;
       lib.getElementTransformMatrix = domModule.getElementTransformMatrix;
       lib.getElementAndAncestors = domModule.getElementAndAncestors;
@@ -15590,9 +15569,6 @@ var Plotly = (() => {
           if (s.indexOf(fragments[i]) !== -1) return true;
         }
         return false;
-      };
-      lib.isIE = function() {
-        return typeof window.navigator.msSaveBlob !== "undefined";
       };
       var IS_SAFARI_REGEX = /Version\/[\d\.]+.*Safari/;
       lib.isSafari = function() {
@@ -15989,7 +15965,6 @@ var Plotly = (() => {
         "X a:hover": "text-decoration:none;",
         "X .crisp": "shape-rendering:crispEdges;",
         "X .user-select-none": "-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;",
-        "X svg": "overflow:hidden;",
         "X svg a": "fill:#447adb;",
         "X svg a:hover": "fill:#3c6dc5;",
         "X .main-svg": "position:absolute;top:0;left:0;pointer-events:none;",
@@ -16455,9 +16430,6 @@ var Plotly = (() => {
           plotObj._removeInternalListener = internalEv.removeListener.bind(internalEv);
           plotObj._removeAllInternalListeners = internalEv.removeAllListeners.bind(internalEv);
           plotObj.emit = function(event, data) {
-            if (typeof jQuery !== "undefined") {
-              jQuery(plotObj).trigger(event, data);
-            }
             ev.emit(event, data);
             internalEv.emit(event, data);
           };
@@ -16466,19 +16438,14 @@ var Plotly = (() => {
         /*
          * This function behaves like jQuery's triggerHandler. It calls
          * all handlers for a particular event and returns the return value
-         * of the LAST handler. This function also triggers jQuery's
-         * triggerHandler for backwards compatibility.
+         * of the LAST handler.
          */
         triggerHandler: function(plotObj, event, data) {
-          var jQueryHandlerValue;
           var nodeEventHandlerValue;
-          if (typeof jQuery !== "undefined") {
-            jQueryHandlerValue = jQuery(plotObj).triggerHandler(event, data);
-          }
           var ev = plotObj._ev;
-          if (!ev) return jQueryHandlerValue;
+          if (!ev) return;
           var handlers = ev._events[event];
-          if (!handlers) return jQueryHandlerValue;
+          if (!handlers) return;
           function apply(handler) {
             if (handler.listener) {
               ev.removeListener(event, handler.listener);
@@ -16496,7 +16463,7 @@ var Plotly = (() => {
             apply(handlers[i]);
           }
           nodeEventHandlerValue = apply(handlers[i]);
-          return jQueryHandlerValue !== void 0 ? jQueryHandlerValue : nodeEventHandlerValue;
+          return nodeEventHandlerValue;
         },
         purge: function(plotObj) {
           delete plotObj._ev;
@@ -16670,10 +16637,6 @@ var Plotly = (() => {
         Registry.allTypes.forEach(function(type) {
           traces[type] = getTraceAttributes(type);
         });
-        var transforms = {};
-        Object.keys(Registry.transformsRegistry).forEach(function(type) {
-          transforms[type] = getTransformAttributes(type);
-        });
         return {
           defs: {
             valObjects: valObjectMeta,
@@ -16686,7 +16649,6 @@ var Plotly = (() => {
           },
           traces,
           layout: getLayoutAttributes(),
-          transforms,
           frames: getFramesAttributes(),
           animation: formatAttributes(animationAttributes),
           config: formatAttributes(configAttributes)
@@ -16721,24 +16683,24 @@ var Plotly = (() => {
           if (!splittableAttr) return;
           crawlIntoTrace(baseContainer, 0, "");
         }
-        function crawlIntoTrace(container, i2, astrPartial) {
-          var item = container[stack[i2]];
-          var newAstrPartial = astrPartial + stack[i2];
-          if (i2 === stack.length - 1) {
+        function crawlIntoTrace(container, i, astrPartial) {
+          var item = container[stack[i]];
+          var newAstrPartial = astrPartial + stack[i];
+          if (i === stack.length - 1) {
             if (isArrayOrTypedArray(item)) {
               arrayAttributes.push(baseAttrName + newAstrPartial);
             }
           } else {
-            if (isArrayStack[i2]) {
+            if (isArrayStack[i]) {
               if (Array.isArray(item)) {
                 for (var j = 0; j < item.length; j++) {
                   if (isPlainObject(item[j])) {
-                    crawlIntoTrace(item[j], i2 + 1, newAstrPartial + "[" + j + "].");
+                    crawlIntoTrace(item[j], i + 1, newAstrPartial + "[" + j + "].");
                   }
                 }
               }
             } else if (isPlainObject(item)) {
-              crawlIntoTrace(item, i2 + 1, newAstrPartial + ".");
+              crawlIntoTrace(item, i + 1, newAstrPartial + ".");
             }
           }
         }
@@ -16748,51 +16710,24 @@ var Plotly = (() => {
         if (trace._module && trace._module.attributes) {
           exports.crawl(trace._module.attributes, callback);
         }
-        var transforms = trace.transforms;
-        if (transforms) {
-          for (var i = 0; i < transforms.length; i++) {
-            var transform = transforms[i];
-            var module2 = transform._module;
-            if (module2) {
-              baseAttrName = "transforms[" + i + "].";
-              baseContainer = transform;
-              exports.crawl(module2.attributes, callback);
-            }
-          }
-        }
         return arrayAttributes;
       };
       exports.getTraceValObject = function(trace, parts) {
         var head = parts[0];
         var i = 1;
         var moduleAttrs, valObject;
-        if (head === "transforms") {
-          if (parts.length === 1) {
-            return baseAttributes.transforms;
+        var _module = trace._module;
+        if (!_module) _module = (Registry.modules[trace.type || baseAttributes.type.dflt] || {})._module;
+        if (!_module) return false;
+        moduleAttrs = _module.attributes;
+        valObject = moduleAttrs && moduleAttrs[head];
+        if (!valObject) {
+          var subplotModule = _module.basePlotModule;
+          if (subplotModule && subplotModule.attributes) {
+            valObject = subplotModule.attributes[head];
           }
-          var transforms = trace.transforms;
-          if (!Array.isArray(transforms) || !transforms.length) return false;
-          var tNum = parts[1];
-          if (!isIndex(tNum) || tNum >= transforms.length) {
-            return false;
-          }
-          moduleAttrs = (Registry.transformsRegistry[transforms[tNum].type] || {}).attributes;
-          valObject = moduleAttrs && moduleAttrs[parts[2]];
-          i = 3;
-        } else {
-          var _module = trace._module;
-          if (!_module) _module = (Registry.modules[trace.type || baseAttributes.type.dflt] || {})._module;
-          if (!_module) return false;
-          moduleAttrs = _module.attributes;
-          valObject = moduleAttrs && moduleAttrs[head];
-          if (!valObject) {
-            var subplotModule = _module.basePlotModule;
-            if (subplotModule && subplotModule.attributes) {
-              valObject = subplotModule.attributes[head];
-            }
-          }
-          if (!valObject) valObject = baseAttributes[head];
         }
+        if (!valObject) valObject = baseAttributes[head];
         return recurseIntoValObject(valObject, parts, i);
       };
       exports.getLayoutValObject = function(fullLayout, parts) {
@@ -16961,21 +16896,6 @@ var Plotly = (() => {
         }
         return {
           layoutAttributes: formatAttributes(layoutAttributes)
-        };
-      }
-      function getTransformAttributes(type) {
-        var _module = Registry.transformsRegistry[type];
-        var attributes = extendDeepAll({}, _module.attributes);
-        Object.keys(Registry.componentsRegistry).forEach(function(k) {
-          var _module2 = Registry.componentsRegistry[k];
-          if (_module2.schema && _module2.schema.transforms && _module2.schema.transforms[type]) {
-            Object.keys(_module2.schema.transforms[type]).forEach(function(v) {
-              insertAttrs(attributes, _module2.schema.transforms[type][v], v);
-            });
-          }
-        });
-        return {
-          attributes: formatAttributes(attributes)
         };
       }
       function getFramesAttributes() {
@@ -17476,20 +17396,9 @@ var Plotly = (() => {
         var attr = Registry.subplotsRegistry[type].attr;
         var subplotData = [];
         var trace, subplotX, subplotY;
-        if (type === "gl2d") {
-          var spmatch = subplotId.match(SUBPLOT_PATTERN);
-          subplotX = "x" + spmatch[1];
-          subplotY = "y" + spmatch[2];
-        }
         for (var i = 0; i < data.length; i++) {
           trace = data[i];
-          if (type === "gl2d" && Registry.traceIs(trace, "gl2d")) {
-            if (trace[attr[0]] === subplotX && trace[attr[1]] === subplotY) {
-              subplotData.push(trace);
-            }
-          } else {
-            if (trace[attr] === subplotId) subplotData.push(trace);
-          }
+          if (trace[attr] === subplotId) subplotData.push(trace);
         }
         return subplotData;
       };
@@ -17822,7 +17731,6 @@ var Plotly = (() => {
       plots.attributes.type.values = plots.allTypes;
       plots.fontAttrs = require_font_attributes();
       plots.layoutAttributes = require_layout_attributes2();
-      var transformsRegistry = plots.transformsRegistry;
       var commandModule = require_command();
       plots.executeAPICommand = commandModule.executeAPICommand;
       plots.computeAPICommandBindings = commandModule.computeAPICommandBindings;
@@ -18035,7 +17943,6 @@ var Plotly = (() => {
         newFullLayout._colorAxes = {};
         newFullLayout._requestRangeslider = {};
         newFullLayout._traceUids = getTraceUids(oldFullData, newData);
-        newFullLayout._globalTransforms = (gd._context || {}).globalTransforms;
         plots.supplyDataDefaults(newData, newFullData, newLayout, newFullLayout);
         var splomXa = Object.keys(splomAxes.x);
         var splomYa = Object.keys(splomAxes.y);
@@ -18070,12 +17977,10 @@ var Plotly = (() => {
         newFullLayout._hasOnlyLargeSploms = newFullLayout._basePlotModules.length === 1 && newFullLayout._basePlotModules[0].name === "splom" && splomXa.length > 15 && splomYa.length > 15 && newFullLayout.shapes.length === 0 && newFullLayout.images.length === 0;
         plots.linkSubplots(newFullData, newFullLayout, oldFullData, oldFullLayout);
         plots.cleanPlot(newFullData, newFullLayout, oldFullData, oldFullLayout);
-        var hadGL2D = !!(oldFullLayout._has && oldFullLayout._has("gl2d"));
-        var hasGL2D = !!(newFullLayout._has && newFullLayout._has("gl2d"));
         var hadCartesian = !!(oldFullLayout._has && oldFullLayout._has("cartesian"));
         var hasCartesian = !!(newFullLayout._has && newFullLayout._has("cartesian"));
-        var hadBgLayer = hadCartesian || hadGL2D;
-        var hasBgLayer = hasCartesian || hasGL2D;
+        var hadBgLayer = hadCartesian;
+        var hasBgLayer = hasCartesian;
         if (hadBgLayer && !hasBgLayer) {
           oldFullLayout._bgLayer.remove();
         } else if (hasBgLayer && !hadBgLayer) {
@@ -18337,7 +18242,7 @@ var Plotly = (() => {
           _fullData: newFullData,
           _fullLayout: newFullLayout
         };
-        var ids = newSubplotList.cartesian.concat(newSubplotList.gl2d || []);
+        var ids = newSubplotList.cartesian || [];
         for (i = 0; i < ids.length; i++) {
           var id = ids[i];
           var oldSubplot = oldSubplots[id];
@@ -18482,36 +18387,8 @@ var Plotly = (() => {
           plots.supplyTraceDefaults(trace, fullTrace, colorCnt, fullLayout, i);
           fullTrace.index = i;
           fullTrace._input = trace;
-          fullTrace._expandedIndex = cnt;
-          if (fullTrace.transforms && fullTrace.transforms.length) {
-            var sdInvisible = trace.visible !== false && fullTrace.visible === false;
-            var expandedTraces = applyTransforms(fullTrace, dataOut, layout, fullLayout);
-            for (var j = 0; j < expandedTraces.length; j++) {
-              var expandedTrace = expandedTraces[j];
-              var fullExpandedTrace = {
-                _template: fullTrace._template,
-                type: fullTrace.type,
-                // set uid using parent uid and expanded index
-                // to promote consistency between update calls
-                uid: fullTrace.uid + j
-              };
-              if (sdInvisible && expandedTrace.visible === false) {
-                delete expandedTrace.visible;
-              }
-              plots.supplyTraceDefaults(expandedTrace, fullExpandedTrace, cnt, fullLayout, i);
-              relinkPrivateKeys(fullExpandedTrace, expandedTrace);
-              fullExpandedTrace.index = i;
-              fullExpandedTrace._input = trace;
-              fullExpandedTrace._fullInput = fullTrace;
-              fullExpandedTrace._expandedIndex = cnt;
-              fullExpandedTrace._expandedInput = expandedTrace;
-              pushModule(fullExpandedTrace);
-            }
-          } else {
-            fullTrace._fullInput = fullTrace;
-            fullTrace._expandedInput = fullTrace;
-            pushModule(fullTrace);
-          }
+          fullTrace._fullInput = fullTrace;
+          pushModule(fullTrace);
           if (Registry.traceIs(fullTrace, "carpetAxis")) {
             carpetIndex[fullTrace.carpet] = fullTrace;
           }
@@ -18611,20 +18488,18 @@ var Plotly = (() => {
           if (subplotAttr && subplotAttrs) {
             var subplots = layout._subplots;
             var subplotId = "";
-            if (visible || basePlotModule.name !== "gl2d") {
-              if (Array.isArray(subplotAttr)) {
-                for (i = 0; i < subplotAttr.length; i++) {
-                  var attri = subplotAttr[i];
-                  var vali = Lib.coerce(traceIn, traceOut, subplotAttrs, attri);
-                  if (subplots[attri]) Lib.pushUnique(subplots[attri], vali);
-                  subplotId += vali;
-                }
-              } else {
-                subplotId = Lib.coerce(traceIn, traceOut, subplotAttrs, subplotAttr);
+            if (Array.isArray(subplotAttr)) {
+              for (i = 0; i < subplotAttr.length; i++) {
+                var attri = subplotAttr[i];
+                var vali = Lib.coerce(traceIn, traceOut, subplotAttrs, attri);
+                if (subplots[attri]) Lib.pushUnique(subplots[attri], vali);
+                subplotId += vali;
               }
-              if (subplots[basePlotModule.name]) {
-                Lib.pushUnique(subplots[basePlotModule.name], subplotId);
-              }
+            } else {
+              subplotId = Lib.coerce(traceIn, traceOut, subplotAttrs, subplotAttr);
+            }
+            if (subplots[basePlotModule.name]) {
+              Lib.pushUnique(subplots[basePlotModule.name], subplotId);
             }
           }
         }
@@ -18669,68 +18544,9 @@ var Plotly = (() => {
               traceOut.selectedpoints = Array.from(selectedpoints);
             }
           }
-          plots.supplyTransformDefaults(traceIn, traceOut, layout);
         }
         return traceOut;
       };
-      function hasMakesDataTransform(trace) {
-        var transforms = trace.transforms;
-        if (Array.isArray(transforms) && transforms.length) {
-          for (var i = 0; i < transforms.length; i++) {
-            var ti = transforms[i];
-            var _module = ti._module || transformsRegistry[ti.type];
-            if (_module && _module.makesData) return true;
-          }
-        }
-        return false;
-      }
-      plots.hasMakesDataTransform = hasMakesDataTransform;
-      plots.supplyTransformDefaults = function(traceIn, traceOut, layout) {
-        if (!(traceOut._length || hasMakesDataTransform(traceIn))) return;
-        var globalTransforms = layout._globalTransforms || [];
-        var transformModules = layout._transformModules || [];
-        if (!Array.isArray(traceIn.transforms) && globalTransforms.length === 0) return;
-        var containerIn = traceIn.transforms || [];
-        var transformList = globalTransforms.concat(containerIn);
-        var containerOut = traceOut.transforms = [];
-        for (var i = 0; i < transformList.length; i++) {
-          var transformIn = transformList[i];
-          var type = transformIn.type;
-          var _module = transformsRegistry[type];
-          var transformOut;
-          var isFirstStage = !(transformIn._module && transformIn._module === _module);
-          var doLaterStages = _module && typeof _module.transform === "function";
-          if (!_module) Lib.warn("Unrecognized transform type " + type + ".");
-          if (_module && _module.supplyDefaults && (isFirstStage || doLaterStages)) {
-            transformOut = _module.supplyDefaults(transformIn, traceOut, layout, traceIn);
-            transformOut.type = type;
-            transformOut._module = _module;
-            Lib.pushUnique(transformModules, _module);
-          } else {
-            transformOut = Lib.extendFlat({}, transformIn);
-          }
-          containerOut.push(transformOut);
-        }
-      };
-      function applyTransforms(fullTrace, fullData, layout, fullLayout) {
-        var container = fullTrace.transforms;
-        var dataOut = [fullTrace];
-        for (var i = 0; i < container.length; i++) {
-          var transform = container[i];
-          var _module = transformsRegistry[transform.type];
-          if (_module && _module.transform) {
-            dataOut = _module.transform(dataOut, {
-              transform,
-              fullTrace,
-              fullData,
-              layout,
-              fullLayout,
-              transformIndex: i
-            });
-          }
-        }
-        return dataOut;
-      }
       plots.supplyLayoutGlobalDefaults = function(layoutIn, layoutOut, formatObj) {
         function coerce(attr, dflt) {
           return Lib.coerce(layoutIn, layoutOut, plots.layoutAttributes, attr, dflt);
@@ -21787,20 +21603,7 @@ var Plotly = (() => {
           valType: "any",
           editType: "none"
         },
-        editType: "calc",
-        _deprecated: {
-          autotick: {
-            valType: "boolean",
-            editType: "ticks"
-          },
-          title: {
-            valType: "string",
-            editType: "ticks"
-          },
-          titlefont: fontAttrs({
-            editType: "ticks"
-          })
-        }
+        editType: "calc"
       };
     }
   });
@@ -21943,17 +21746,6 @@ var Plotly = (() => {
           side: {
             valType: "enumerated",
             values: ["right", "top", "bottom"]
-          }
-        },
-        _deprecated: {
-          title: {
-            valType: "string"
-          },
-          titlefont: fontAttrs({}),
-          titleside: {
-            valType: "enumerated",
-            values: ["right", "top", "bottom"],
-            dflt: "top"
           }
         }
       }, "colorbars", "from-root");
@@ -22347,7 +22139,7 @@ var Plotly = (() => {
           var contColor = containerOut.color;
           var position = containerOut.ticklabelposition || "";
           var dfltFontColor = position.indexOf("inside") !== -1 ? contrast(options.bgColor) : (
-            // as with titlefont.color, inherit axis.color only if one was
+            // as with title.font.color, inherit axis.color only if one was
             // explicitly provided
             contColor && contColor !== layoutAttributes.color.dflt ? contColor : font.color
           );
@@ -30594,29 +30386,11 @@ var Plotly = (() => {
           var isShape2 = fullInput2._isShape;
           var index = fullInput2.index;
           if (index === void 0) index = fullInput2._index;
-          if (Registry.hasTransform(fullInput2, "groupby")) {
-            var kcont2 = carrs[index];
-            if (!kcont2) {
-              var groupbyIndices = Registry.getTransformIndices(fullInput2, "groupby");
-              var lastGroupbyIndex = groupbyIndices[groupbyIndices.length - 1];
-              kcont2 = Lib.keyedContainer(fullInput2, "transforms[" + lastGroupbyIndex + "].styles", "target", "value.visible");
-              carrs[index] = kcont2;
-            }
-            var curState = kcont2.get(fullTrace2._group);
-            if (curState === void 0) {
-              curState = true;
-            }
-            if (curState !== false) {
-              kcont2.set(fullTrace2._group, visibility);
-            }
-            carrIdx[index] = insertDataUpdate(index, fullInput2.visible === false ? false : true);
+          var nextVisibility2 = fullInput2.visible === false ? false : visibility;
+          if (isShape2) {
+            insertShapesUpdate(index, nextVisibility2);
           } else {
-            var nextVisibility2 = fullInput2.visible === false ? false : visibility;
-            if (isShape2) {
-              insertShapesUpdate(index, nextVisibility2);
-            } else {
-              insertDataUpdate(index, nextVisibility2);
-            }
+            insertDataUpdate(index, nextVisibility2);
           }
         }
         var thisLegend = fullTrace.legend;
@@ -31900,7 +31674,7 @@ var Plotly = (() => {
           event: evt,
           node: legendItem.node(),
           curveNumber: trace.index,
-          expandedIndex: trace._expandedIndex,
+          expandedIndex: trace.index,
           data: gd.data,
           layout: gd.layout,
           frames: gd._transitionData._frames,
@@ -31959,15 +31733,7 @@ var Plotly = (() => {
             this.text(ensureLength(newName, maxNameLength)).call(textLayout, g, gd, legendObj);
             var fullInput = legendItem.trace._fullInput || {};
             var update = {};
-            if (Registry.hasTransform(fullInput, "groupby")) {
-              var groupbyIndices = Registry.getTransformIndices(fullInput, "groupby");
-              var _index = groupbyIndices[groupbyIndices.length - 1];
-              var kcont = Lib.keyedContainer(fullInput, "transforms[" + _index + "].styles", "target", "value.name");
-              kcont.set(legendItem.trace._group, newName);
-              update = kcont.constructUpdate();
-            } else {
-              update.name = newName;
-            }
+            update.name = newName;
             if (fullInput._isShape) {
               return Registry.call("_guiRelayout", gd, "shapes[" + trace.index + "].name", update.name);
             } else {
@@ -34499,29 +34265,19 @@ var Plotly = (() => {
           name: "newplotlylogo",
           svg: [
             "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 132 132'>",
-            "<defs>",
-            " <style>",
-            "  .cls-0{fill:#000;}",
-            "  .cls-1{fill:#FFF;}",
-            "  .cls-2{fill:#F26;}",
-            "  .cls-3{fill:#D69;}",
-            "  .cls-4{fill:#BAC;}",
-            "  .cls-5{fill:#9EF;}",
-            " </style>",
-            "</defs>",
             " <title>plotly-logomark</title>",
             " <g id='symbol'>",
-            "  <rect class='cls-0' x='0' y='0' width='132' height='132' rx='18' ry='18'/>",
-            "  <circle class='cls-5' cx='102' cy='30' r='6'/>",
-            "  <circle class='cls-4' cx='78' cy='30' r='6'/>",
-            "  <circle class='cls-4' cx='78' cy='54' r='6'/>",
-            "  <circle class='cls-3' cx='54' cy='30' r='6'/>",
-            "  <circle class='cls-2' cx='30' cy='30' r='6'/>",
-            "  <circle class='cls-2' cx='30' cy='54' r='6'/>",
-            "  <path class='cls-1' d='M30,72a6,6,0,0,0-6,6v24a6,6,0,0,0,12,0V78A6,6,0,0,0,30,72Z'/>",
-            "  <path class='cls-1' d='M78,72a6,6,0,0,0-6,6v24a6,6,0,0,0,12,0V78A6,6,0,0,0,78,72Z'/>",
-            "  <path class='cls-1' d='M54,48a6,6,0,0,0-6,6v48a6,6,0,0,0,12,0V54A6,6,0,0,0,54,48Z'/>",
-            "  <path class='cls-1' d='M102,48a6,6,0,0,0-6,6v48a6,6,0,0,0,12,0V54A6,6,0,0,0,102,48Z'/>",
+            "  <rect fill='#000' x='0' y='0' width='132' height='132' rx='18' ry='18'/>",
+            "  <circle fill='#9EF' cx='102' cy='30' r='6'/>",
+            "  <circle fill='#BAC' cx='78' cy='30' r='6'/>",
+            "  <circle fill='#BAC' cx='78' cy='54' r='6'/>",
+            "  <circle fill='#D69' cx='54' cy='30' r='6'/>",
+            "  <circle fill='#F26' cx='30' cy='30' r='6'/>",
+            "  <circle fill='#F26' cx='30' cy='54' r='6'/>",
+            "  <path fill='#FFF' d='M30,72a6,6,0,0,0-6,6v24a6,6,0,0,0,12,0V78A6,6,0,0,0,30,72Z'/>",
+            "  <path fill='#FFF' d='M78,72a6,6,0,0,0-6,6v24a6,6,0,0,0,12,0V78A6,6,0,0,0,78,72Z'/>",
+            "  <path fill='#FFF' d='M54,48a6,6,0,0,0-6,6v48a6,6,0,0,0,12,0V54A6,6,0,0,0,54,48Z'/>",
+            "  <path fill='#FFF' d='M102,48a6,6,0,0,0-6,6v48a6,6,0,0,0,12,0V54A6,6,0,0,0,102,48Z'/>",
             " </g>",
             "</svg>"
           ].join("")
@@ -36548,10 +36304,6 @@ var Plotly = (() => {
           var toImageButtonOptions = gd._context.toImageButtonOptions;
           var opts = { format: toImageButtonOptions.format || "png" };
           Lib.notifier(_(gd, "Taking snapshot - this may take a few seconds"), "long");
-          if (opts.format !== "svg" && Lib.isIE()) {
-            Lib.notifier(_(gd, "IE only supports svg.  Changing format to svg."), "long");
-            opts.format = "svg";
-          }
           ["filename", "width", "height", "scale"].forEach(function(key) {
             if (key in toImageButtonOptions) {
               opts[key] = toImageButtonOptions[key];
@@ -37040,19 +36792,6 @@ var Plotly = (() => {
           resetView(gd, "geo");
         }
       }
-      modeBarButtons.hoverClosestGl2d = {
-        name: "hoverClosestGl2d",
-        _cat: "hoverclosest",
-        title: function(gd) {
-          return _(gd, "Toggle show closest data on hover");
-        },
-        attr: "hovermode",
-        val: null,
-        toggle: true,
-        icon: Icons.tooltip_basic,
-        gravity: "ne",
-        click: toggleHover
-      };
       modeBarButtons.hoverClosestPie = {
         name: "hoverClosestPie",
         _cat: "hoverclosest",
@@ -37409,12 +37148,11 @@ var Plotly = (() => {
           buttons = buttons.reverse();
         }
         var style = fullLayout.modebar;
-        var bgSelector = context.displayModeBar === "hover" ? ".js-plotly-plot .plotly:hover " : "";
-        Lib.deleteRelatedStyleRule(modeBarId);
-        Lib.addRelatedStyleRule(modeBarId, bgSelector + "#" + modeBarId + " .modebar-group", "background-color: " + style.bgcolor);
-        Lib.addRelatedStyleRule(modeBarId, "#" + modeBarId + " .modebar-btn .icon path", "fill: " + style.color);
-        Lib.addRelatedStyleRule(modeBarId, "#" + modeBarId + " .modebar-btn:hover .icon path", "fill: " + style.activecolor);
-        Lib.addRelatedStyleRule(modeBarId, "#" + modeBarId + " .modebar-btn.active .icon path", "fill: " + style.activecolor);
+        var groupSelector = "#" + modeBarId + " .modebar-group";
+        document.querySelectorAll(groupSelector).forEach(function(group) {
+          group.style.backgroundColor = style.bgcolor;
+        });
+        Lib.setStyleOnHover("#" + modeBarId + " .modebar-btn", ".active", ".icon path", "fill: " + style.activecolor, "fill: " + style.color);
         var needsNewButtons = !this.hasButtons(buttons);
         var needsNewLogo = this.hasLogo !== context.displaylogo;
         var needsNewLocale = this.locale !== context.locale;
@@ -37463,6 +37201,8 @@ var Plotly = (() => {
       proto.createGroup = function() {
         var group = document.createElement("div");
         group.className = "modebar-group";
+        var style = this.graphInfo._fullLayout.modebar;
+        group.style.backgroundColor = style.bgcolor;
         return group;
       };
       proto.createButton = function(config) {
@@ -37533,13 +37273,27 @@ var Plotly = (() => {
           var dataAttr = button.getAttribute("data-attr");
           var isToggleButton = button.getAttribute("data-toggle") === "true";
           var button3 = d3.select(button);
+          var updateButtonStyle = function(button2, isActive2) {
+            var style = fullLayout.modebar;
+            var childEl = button2.querySelector(".icon path");
+            if (childEl) {
+              if (isActive2 || button2.matches(":hover")) {
+                childEl.style.fill = style.activecolor;
+              } else {
+                childEl.style.fill = style.color;
+              }
+            }
+          };
           if (isToggleButton) {
             if (dataAttr === dataAttrClicked) {
-              button3.classed("active", !button3.classed("active"));
+              var isActive = !button3.classed("active");
+              button3.classed("active", isActive);
+              updateButtonStyle(button, isActive);
             }
           } else {
             var val = dataAttr === null ? dataAttr : Lib.nestedProperty(fullLayout, dataAttr).get();
             button3.classed("active", val === thisval);
+            updateButtonStyle(button, val === thisval);
           }
         });
       };
@@ -37577,7 +37331,6 @@ var Plotly = (() => {
       };
       proto.destroy = function() {
         Lib.removeElement(this.container.querySelector(".modebar"));
-        Lib.deleteRelatedStyleRule(this._uid);
       };
       function createModeBar(gd, buttons) {
         var fullLayout = gd._fullLayout;
@@ -37681,7 +37434,6 @@ var Plotly = (() => {
         var hasGeo = fullLayout._has("geo");
         var hasPie = fullLayout._has("pie");
         var hasFunnelarea = fullLayout._has("funnelarea");
-        var hasGL2D = fullLayout._has("gl2d");
         var hasTernary = fullLayout._has("ternary");
         var hasMapbox = fullLayout._has("mapbox");
         var hasMap = fullLayout._has("map");
@@ -37720,7 +37472,7 @@ var Plotly = (() => {
         var hoverGroup = [];
         var resetGroup = [];
         var dragModeGroup = [];
-        if ((hasCartesian || hasGL2D || hasPie || hasFunnelarea || hasTernary) + hasGeo + hasGL3D + hasMapbox + hasMap + hasPolar + hasSmith > 1) {
+        if ((hasCartesian || hasPie || hasFunnelarea || hasTernary) + hasGeo + hasGL3D + hasMapbox + hasMap + hasPolar + hasSmith > 1) {
           hoverGroup = ["toggleHover"];
           resetGroup = ["resetViews"];
         } else if (hasGeo) {
@@ -37738,8 +37490,6 @@ var Plotly = (() => {
           zoomGroup = ["zoomInMap", "zoomOutMap"];
           hoverGroup = ["toggleHover"];
           resetGroup = ["resetViewMap"];
-        } else if (hasGL2D) {
-          hoverGroup = ["hoverClosestGl2d"];
         } else if (hasPie) {
           hoverGroup = ["hoverClosestPie"];
         } else if (hasSankey) {
@@ -37754,13 +37504,13 @@ var Plotly = (() => {
         if (hasNoHover(fullData) || hasUnifiedHoverLabel) {
           hoverGroup = [];
         }
-        if ((hasCartesian || hasGL2D) && !allAxesFixed) {
+        if (hasCartesian && !allAxesFixed) {
           zoomGroup = ["zoomIn2d", "zoomOut2d", "autoScale2d"];
           if (resetGroup[0] !== "resetViews") resetGroup = ["resetScale2d"];
         }
         if (hasGL3D) {
           dragModeGroup = ["zoom3d", "pan3d", "orbitRotation", "tableRotation"];
-        } else if ((hasCartesian || hasGL2D) && !allAxesFixed || hasTernary) {
+        } else if (hasCartesian && !allAxesFixed || hasTernary) {
           dragModeGroup = ["zoom2d", "pan2d"];
         } else if (hasMapbox || hasMap || hasGeo) {
           dragModeGroup = ["pan2d"];
@@ -37798,14 +37548,12 @@ var Plotly = (() => {
                 enableHover("hoverClosestCartesian");
                 enableHover("hoverClosestGeo");
                 enableHover("hoverClosest3d");
-                enableHover("hoverClosestGl2d");
                 enableHover("hoverClosestPie");
               } else if (b === "v1hovermode") {
                 enableHover("hoverClosestCartesian");
                 enableHover("hoverCompareCartesian");
                 enableHover("hoverClosestGeo");
                 enableHover("hoverClosest3d");
-                enableHover("hoverClosestGl2d");
                 enableHover("hoverClosestPie");
               }
             } else newList.push(b);
@@ -40600,7 +40348,7 @@ var Plotly = (() => {
             var selectionErased = false;
             for (var q = 0; q < selections.length; q++) {
               var s = fullLayout.selections[q];
-              if (s.xref !== xRef || s.yref !== yRef) {
+              if (!s || s.xref !== xRef || s.yref !== yRef) {
                 list.push(selections[q]);
               } else {
                 selectionErased = true;
@@ -40911,8 +40659,8 @@ var Plotly = (() => {
           ymax: 0,
           pts: [],
           contains: function(pt, omitFirstEdge, pointNumber, searchInfo) {
-            var idxWantedTrace = pointSelectionDef.searchInfo.cd[0].trace._expandedIndex;
-            var idxActualTrace = searchInfo.cd[0].trace._expandedIndex;
+            var idxWantedTrace = pointSelectionDef.searchInfo.cd[0].trace.index;
+            var idxActualTrace = searchInfo.cd[0].trace.index;
             return idxActualTrace === idxWantedTrace && pointNumber === pointSelectionDef.pointNumber;
           },
           isRect: false,
@@ -41085,7 +40833,7 @@ var Plotly = (() => {
         var searchInfo, i;
         for (i = 0; i < searchTraces.length; i++) {
           searchInfo = searchTraces[i];
-          if (hoverDatum.fullData._expandedIndex === searchInfo.cd[0].trace._expandedIndex) {
+          if (hoverDatum.fullData.index === searchInfo.cd[0].trace.index) {
             if (hoverDatum.hoverOnBox === true) {
               break;
             }
@@ -41991,13 +41739,7 @@ var Plotly = (() => {
           valType: "boolean",
           editType: "arraydraw"
         },
-        editType: "calc",
-        _deprecated: {
-          ref: {
-            valType: "string",
-            editType: "calc"
-          }
-        }
+        editType: "calc"
       });
     }
   });
@@ -42612,7 +42354,7 @@ var Plotly = (() => {
           var xaList = subplots.xaxis;
           var yaList = subplots.yaxis;
           var cartesianList = subplots.cartesian;
-          var hasCartesianOrGL2D = layoutOut._has("cartesian") || layoutOut._has("gl2d");
+          var hasCartesian = layoutOut._has("cartesian");
           for (var i = 0; i < array.length; i++) {
             var itemi = array[i];
             if (!Lib.isPlainObject(itemi)) continue;
@@ -42621,7 +42363,7 @@ var Plotly = (() => {
             var hasXref = idRegex.x.test(xref);
             var hasYref = idRegex.y.test(yref);
             if (hasXref || hasYref) {
-              if (!hasCartesianOrGL2D) Lib.pushUnique(layoutOut._basePlotModules, Cartesian);
+              if (!hasCartesian) Lib.pushUnique(layoutOut._basePlotModules, Cartesian);
               var newAxis = false;
               if (hasXref && xaList.indexOf(xref) === -1) {
                 xaList.push(xref);
@@ -44046,60 +43788,12 @@ var Plotly = (() => {
             delete ax.isdate;
             delete ax.categories;
             if (emptyContainer(ax, "domain")) delete ax.domain;
-            if (ax.autotick !== void 0) {
-              if (ax.tickmode === void 0) {
-                ax.tickmode = ax.autotick ? "auto" : "linear";
-              }
-              delete ax.autotick;
-            }
-            cleanTitle(ax);
-          } else if (polarAttrRegex && polarAttrRegex.test(key)) {
-            var polar = layout[key];
-            cleanTitle(polar.radialaxis);
-          } else if (ternaryAttrRegex && ternaryAttrRegex.test(key)) {
-            var ternary = layout[key];
-            cleanTitle(ternary.aaxis);
-            cleanTitle(ternary.baxis);
-            cleanTitle(ternary.caxis);
-          } else if (sceneAttrRegex && sceneAttrRegex.test(key)) {
-            var scene = layout[key];
-            var cameraposition = scene.cameraposition;
-            if (Array.isArray(cameraposition) && cameraposition[0].length === 4) {
-              var rotation = cameraposition[0];
-              var center = cameraposition[1];
-              var radius = cameraposition[2];
-              var mat = m4FromQuat([], rotation);
-              var eye = [];
-              for (j = 0; j < 3; ++j) {
-                eye[j] = center[j] + radius * mat[2 + 4 * j];
-              }
-              scene.camera = {
-                eye: { x: eye[0], y: eye[1], z: eye[2] },
-                center: { x: center[0], y: center[1], z: center[2] },
-                up: { x: 0, y: 0, z: 1 }
-                // we just ignore calculating camera z up in this case
-              };
-              delete scene.cameraposition;
-            }
-            cleanTitle(scene.xaxis);
-            cleanTitle(scene.yaxis);
-            cleanTitle(scene.zaxis);
           }
         }
         var annotationsLen = Array.isArray(layout.annotations) ? layout.annotations.length : 0;
         for (i = 0; i < annotationsLen; i++) {
           var ann = layout.annotations[i];
           if (!Lib.isPlainObject(ann)) continue;
-          if (ann.ref) {
-            if (ann.ref === "paper") {
-              ann.xref = "paper";
-              ann.yref = "paper";
-            } else if (ann.ref === "data") {
-              ann.xref = "x";
-              ann.yref = "y";
-            }
-            delete ann.ref;
-          }
           cleanAxRef(ann, "xref");
           cleanAxRef(ann, "yref");
         }
@@ -44134,7 +43828,6 @@ var Plotly = (() => {
             legend.yanchor = "top";
           }
         }
-        cleanTitle(layout);
         if (layout.dragmode === "rotate") layout.dragmode = "orbit";
         Color.clean(layout);
         if (layout.template && layout.template.layout) {
@@ -44149,30 +43842,6 @@ var Plotly = (() => {
           container[attr] = cleanId(valIn, axLetter, true);
         }
       }
-      function cleanTitle(titleContainer) {
-        if (titleContainer) {
-          if (typeof titleContainer.title === "string" || typeof titleContainer.title === "number") {
-            titleContainer.title = {
-              text: titleContainer.title
-            };
-          }
-          rewireAttr("titlefont", "font");
-          rewireAttr("titleposition", "position");
-          rewireAttr("titleside", "side");
-          rewireAttr("titleoffset", "offset");
-        }
-        function rewireAttr(oldAttrName, newAttrName) {
-          var oldAttrSet = titleContainer[oldAttrName];
-          var newAttrSet = titleContainer.title && titleContainer.title[newAttrName];
-          if (oldAttrSet && !newAttrSet) {
-            if (!titleContainer.title) {
-              titleContainer.title = {};
-            }
-            titleContainer.title[newAttrName] = titleContainer[oldAttrName];
-            delete titleContainer[oldAttrName];
-          }
-        }
-      }
       exports.cleanData = function(data) {
         for (var tracei = 0; tracei < data.length; tracei++) {
           var trace = data[tracei];
@@ -44180,22 +43849,6 @@ var Plotly = (() => {
           if (trace.type === "histogramy" && "xbins" in trace && !("ybins" in trace)) {
             trace.ybins = trace.xbins;
             delete trace.xbins;
-          }
-          if (trace.error_y && "opacity" in trace.error_y) {
-            var dc = Color.defaults;
-            var yeColor = trace.error_y.color || (traceIs(trace, "bar") ? Color.defaultLine : dc[tracei % dc.length]);
-            trace.error_y.color = Color.addOpacity(
-              Color.rgb(yeColor),
-              Color.opacity(yeColor) * trace.error_y.opacity
-            );
-            delete trace.error_y.opacity;
-          }
-          if ("bardir" in trace) {
-            if (trace.bardir === "h" && (traceIs(trace, "bar") || trace.type.substr(0, 9) === "histogram")) {
-              trace.orientation = "h";
-              exports.swapXYData(trace);
-            }
-            delete trace.bardir;
           }
           if (trace.type === "histogramy") exports.swapXYData(trace);
           if (trace.type === "histogramx" || trace.type === "histogramy") {
@@ -44264,41 +43917,6 @@ var Plotly = (() => {
               trace.name = increasingName || decreasingName;
             }
           }
-          if (Array.isArray(trace.transforms)) {
-            var transforms = trace.transforms;
-            for (i = 0; i < transforms.length; i++) {
-              var transform = transforms[i];
-              if (!Lib.isPlainObject(transform)) continue;
-              switch (transform.type) {
-                case "filter":
-                  if (transform.filtersrc) {
-                    transform.target = transform.filtersrc;
-                    delete transform.filtersrc;
-                  }
-                  if (transform.calendar) {
-                    if (!transform.valuecalendar) {
-                      transform.valuecalendar = transform.calendar;
-                    }
-                    delete transform.calendar;
-                  }
-                  break;
-                case "groupby":
-                  transform.styles = transform.styles || transform.style;
-                  if (transform.styles && !Array.isArray(transform.styles)) {
-                    var prevStyles = transform.styles;
-                    var styleKeys = Object.keys(prevStyles);
-                    transform.styles = [];
-                    for (var j = 0; j < styleKeys.length; j++) {
-                      transform.styles.push({
-                        target: styleKeys[j],
-                        value: prevStyles[styleKeys[j]]
-                      });
-                    }
-                  }
-                  break;
-              }
-            }
-          }
           if (emptyContainer(trace, "line")) delete trace.line;
           if ("marker" in trace) {
             if (emptyContainer(trace.marker, "line")) delete trace.marker.line;
@@ -44313,12 +43931,6 @@ var Plotly = (() => {
             delete trace.autobiny;
             delete trace.ybins;
           }
-          cleanTitle(trace);
-          if (trace.colorbar) cleanTitle(trace.colorbar);
-          if (trace.marker && trace.marker.colorbar) cleanTitle(trace.marker.colorbar);
-          if (trace.line && trace.line.colorbar) cleanTitle(trace.line.colorbar);
-          if (trace.aaxis) cleanTitle(trace.aaxis);
-          if (trace.baxis) cleanTitle(trace.baxis);
         }
       };
       function cleanFinanceDir(dirContainer) {
@@ -44741,9 +44353,6 @@ var Plotly = (() => {
                 context[key] = config[key];
               }
             }
-          }
-          if (config.plot3dPixelRatio && !context.plotGlPixelRatio) {
-            context.plotGlPixelRatio = context.plot3dPixelRatio;
           }
           var editable = config.editable;
           if (editable !== void 0) {
@@ -45273,7 +44882,6 @@ var Plotly = (() => {
         var layoutNP = makeNP(fullLayout._preGUI, guiEditFlag);
         var eventData = Lib.extendDeepAll({}, aobj);
         var i;
-        cleanDeprecatedAttributeKeys(aobj);
         var flags = editTypes.traceFlags();
         var redoit = {};
         var undoit = {};
@@ -45478,31 +45086,6 @@ var Plotly = (() => {
           eventData: Lib.extendDeepNoArrays([], [eventData, traces])
         };
       }
-      function cleanDeprecatedAttributeKeys(aobj) {
-        var oldAxisTitleRegex = Lib.counterRegex("axis", ".title", false, false);
-        var colorbarRegex = /colorbar\.title$/;
-        var keys = Object.keys(aobj);
-        var i, key, value;
-        for (i = 0; i < keys.length; i++) {
-          key = keys[i];
-          value = aobj[key];
-          if ((key === "title" || oldAxisTitleRegex.test(key) || colorbarRegex.test(key)) && (typeof value === "string" || typeof value === "number")) {
-            replace(key, key.replace("title", "title.text"));
-          } else if (key.indexOf("titlefont") > -1 && key.indexOf("grouptitlefont") === -1) {
-            replace(key, key.replace("titlefont", "title.font"));
-          } else if (key.indexOf("titleposition") > -1) {
-            replace(key, key.replace("titleposition", "title.position"));
-          } else if (key.indexOf("titleside") > -1) {
-            replace(key, key.replace("titleside", "title.side"));
-          } else if (key.indexOf("titleoffset") > -1) {
-            replace(key, key.replace("titleoffset", "title.offset"));
-          }
-        }
-        function replace(oldAttrStr, newAttrStr) {
-          aobj[newAttrStr] = aobj[oldAttrStr];
-          delete aobj[oldAttrStr];
-        }
-      }
       function relayout(gd, astr, val) {
         gd = Lib.getGraphDiv(gd);
         helpers.clearPromiseQueue(gd);
@@ -45626,7 +45209,6 @@ var Plotly = (() => {
         var eventData = Lib.extendDeepAll({}, aobj);
         var arrayEdits = {};
         var arrayStr, i, j;
-        cleanDeprecatedAttributeKeys(aobj);
         keys = Object.keys(aobj);
         for (i = 0; i < keys.length; i++) {
           if (keys[i].indexOf("allaxes") === 0) {
@@ -45786,8 +45368,6 @@ var Plotly = (() => {
             if (ai === "dragmode" && (vi === false && vOld !== false || vi !== false && vOld === false)) {
               flags.plot = true;
             } else if (fullLayout._has("scatter-like") && fullLayout._has("regl") && (ai === "dragmode" && (vi === "lasso" || vi === "select") && !(vOld === "lasso" || vOld === "select"))) {
-              flags.plot = true;
-            } else if (fullLayout._has("gl2d")) {
               flags.plot = true;
             } else if (valObject) editTypes.update(flags, valObject);
             else flags.calc = true;
@@ -46233,7 +45813,6 @@ var Plotly = (() => {
         for (i = 0; i < oldFullData.length; i++) {
           if (newFullData[i]) {
             trace = newFullData[i]._fullInput;
-            if (Plots.hasMakesDataTransform(trace)) trace = newFullData[i];
             if (seenUIDs[trace.uid]) continue;
             seenUIDs[trace.uid] = 1;
             getDiffFlags(oldFullData[i]._fullInput, trace, [], diffOpts);
@@ -46255,6 +45834,24 @@ var Plotly = (() => {
         flags.nChangesAnim = 0;
         function getLayoutValObject(parts) {
           return PlotSchema.getLayoutValObject(newFullLayout, parts);
+        }
+        for (var key in newFullLayout) {
+          if (!key.startsWith("xaxis") && !key.startsWith("yaxis")) {
+            continue;
+          }
+          if (!oldFullLayout[key]) {
+            continue;
+          }
+          var newDomain = newFullLayout[key].domain;
+          var oldDomain = oldFullLayout[key].domain;
+          var oldInputDomain = oldFullLayout[key]._inputDomain;
+          if (oldFullLayout[key]._inputDomain) {
+            if (newDomain[0] === oldInputDomain[0] && newDomain[1] === oldInputDomain[1]) {
+              newFullLayout[key].domain = oldFullLayout[key].domain;
+            } else if (newDomain[0] !== oldDomain[0] || newDomain[1] !== oldDomain[1]) {
+              newFullLayout[key]._inputDomain = null;
+            }
+          }
         }
         var diffOpts = {
           getValObject: getLayoutValObject,
@@ -46294,9 +45891,6 @@ var Plotly = (() => {
           }
           if (AX_RANGE_RE.test(astr) || AX_AUTORANGE_RE.test(astr)) {
             flags.rangesAltered[outerparts[0]] = 1;
-          }
-          if (AX_DOMAIN_RE.test(astr)) {
-            nestedProperty(newContainer, "_inputDomain").set(null);
           }
           if (key === "datarevision") {
             flags.newDataRevision = 1;
@@ -46879,7 +46473,7 @@ var Plotly = (() => {
       var Registry = require_registry();
       exports.getDelay = function(fullLayout) {
         if (!fullLayout._has) return 0;
-        return fullLayout._has("gl3d") || fullLayout._has("gl2d") || fullLayout._has("mapbox") || fullLayout._has("map") ? 500 : 0;
+        return fullLayout._has("gl3d") || fullLayout._has("mapbox") || fullLayout._has("map") ? 500 : 0;
       };
       exports.getRedrawFunc = function(gd) {
         return function() {
@@ -46922,7 +46516,6 @@ var Plotly = (() => {
         return buf;
       }
       exports.IMAGE_URL_PREFIX = /^data:image\/\w+;base64,/;
-      exports.MSG_IE_BAD_FORMAT = "Sorry IE does not support downloading from canvas. Try {format:'svg'} instead.";
     }
   });
 
@@ -47022,8 +46615,6 @@ var Plotly = (() => {
         if (format === "pdf" || format === "eps") {
           svg.selectAll("#MathJax_SVG_glyphs path").attr("stroke-width", 0);
         }
-        svg.node().setAttributeNS(xmlnsNamespaces.xmlns, "xmlns", xmlnsNamespaces.svg);
-        svg.node().setAttributeNS(xmlnsNamespaces.xmlns, "xmlns:xlink", xmlnsNamespaces.xlink);
         if (format === "svg" && scale) {
           svg.attr("width", scale * width);
           svg.attr("height", scale * height);
@@ -47033,11 +46624,6 @@ var Plotly = (() => {
         s = htmlEntityDecode(s);
         s = xmlEntityEncode(s);
         s = s.replace(DUMMY_REGEX, "'");
-        if (Lib.isIE()) {
-          s = s.replace(/"/gi, "'");
-          s = s.replace(/(\('#)([^']*)('\))/gi, '("#$2")');
-          s = s.replace(/(\\')/gi, '"');
-        }
         return s;
       };
     }
@@ -47056,15 +46642,6 @@ var Plotly = (() => {
           var Image2 = window.Image;
           var svg = opts.svg;
           var format = opts.format || "png";
-          if (Lib.isIE() && format !== "svg") {
-            var ieSvgError = new Error(helpers.MSG_IE_BAD_FORMAT);
-            reject(ieSvgError);
-            if (!opts.promise) {
-              return ev.emit("error", ieSvgError);
-            } else {
-              return promise;
-            }
-          }
           var canvas = opts.canvas;
           var scale = opts.scale || 1;
           var w0 = opts.width || 300;
@@ -47357,28 +46934,6 @@ var Plotly = (() => {
             errorList.push(format("invisible", base));
           }
           crawl(traceIn, traceOut, traceSchema, errorList, base);
-          var transformsIn = traceIn.transforms;
-          var transformsOut = traceOut.transforms;
-          if (transformsIn) {
-            if (!isArray(transformsIn)) {
-              errorList.push(format("array", base, ["transforms"]));
-            }
-            base.push("transforms");
-            for (var j = 0; j < transformsIn.length; j++) {
-              var path = ["transforms", j];
-              var transformType = transformsIn[j].type;
-              if (!isPlainObject(transformsIn[j])) {
-                errorList.push(format("object", base, path));
-                continue;
-              }
-              var transformSchema = schema.transforms[transformType] ? schema.transforms[transformType].attributes : {};
-              transformSchema.type = {
-                valType: "enumerated",
-                values: Object.keys(schema.transforms)
-              };
-              crawl(transformsIn[j], transformsOut[j], transformSchema, errorList, base, path);
-            }
-          }
         }
         var layoutOut = gd._fullLayout;
         var layoutSchema = fillLayoutSchema(schema, dataOut);
@@ -47390,7 +46945,6 @@ var Plotly = (() => {
         var keys = Object.keys(objIn);
         for (var i = 0; i < keys.length; i++) {
           var k = keys[i];
-          if (k === "transforms") continue;
           var p = path.slice();
           p.push(k);
           var valIn = objIn[k];
@@ -47620,12 +47174,6 @@ var Plotly = (() => {
         var promise = new Promise(function(resolve, reject) {
           var blob;
           var objectUrl;
-          if (Lib.isIE()) {
-            blob = helpers.createBlob(url, "svg");
-            window.navigator.msSaveBlob(blob, name2);
-            blob = null;
-            return resolve(name2);
-          }
           if (canUseSaveLink) {
             blob = helpers.createBlob(url, format);
             objectUrl = helpers.createObjectURL(blob);
@@ -47670,9 +47218,6 @@ var Plotly = (() => {
         return new Promise(function(resolve, reject) {
           if (_gd && _gd._snapshotInProgress) {
             reject(new Error("Snapshotting already in progress."));
-          }
-          if (Lib.isIE() && opts.format !== "svg") {
-            reject(new Error(helpers.MSG_IE_BAD_FORMAT));
           }
           if (_gd) _gd._snapshotInProgress = true;
           var promise = toImage(gd, opts);
@@ -47944,7 +47489,7 @@ var Plotly = (() => {
             if (!fullTrace._fullInput._template) {
               errorList.push({
                 code: "missing",
-                index: fullTrace._fullInput.index,
+                index: fullTrace.index,
                 traceType
               });
             }
@@ -48457,7 +48002,7 @@ var Plotly = (() => {
     "src/traces/scatter/grouping_defaults.js"(exports, module) {
       "use strict";
       var getAxisGroup = require_constraints().getAxisGroup;
-      module.exports = function handleGroupingDefaults(traceIn, traceOut, fullLayout, coerce) {
+      module.exports = function handleGroupingDefaults(traceIn, traceOut, fullLayout, coerce, barmode) {
         var orientation = traceOut.orientation;
         var posAxId = traceOut[{ v: "x", h: "y" }[orientation] + "axis"];
         var groupId = getAxisGroup(fullLayout, posAxId) + orientation;
@@ -48475,10 +48020,11 @@ var Plotly = (() => {
             offsetGroups: {}
           };
         }
-        var offsetgroup = coerce("offsetgroup");
+        var offsetgroup = coerce("offsetgroup") || "";
         var offsetGroups = alignmentGroupOpts.offsetGroups;
         var offsetGroupOpts = offsetGroups[offsetgroup];
-        if (offsetgroup) {
+        traceOut._offsetIndex = 0;
+        if (barmode !== "group" || offsetgroup) {
           if (!offsetGroupOpts) {
             offsetGroupOpts = offsetGroups[offsetgroup] = {
               offsetIndex: Object.keys(offsetGroups).length
@@ -48499,6 +48045,7 @@ var Plotly = (() => {
       var attributes = require_attributes12();
       module.exports = function crossTraceDefaults(fullData, fullLayout) {
         var traceIn, traceOut, i;
+        var scattermode = fullLayout.scattermode;
         function coerce(attr) {
           return Lib.coerce(traceOut._input, traceOut, attributes, attr);
         }
@@ -48507,7 +48054,7 @@ var Plotly = (() => {
             traceOut = fullData[i];
             if (traceOut.type === "scatter") {
               traceIn = traceOut._input;
-              handleGroupingDefaults(traceIn, traceOut, fullLayout, coerce);
+              handleGroupingDefaults(traceIn, traceOut, fullLayout, coerce, scattermode);
             }
           }
         }
@@ -48748,7 +48295,7 @@ var Plotly = (() => {
         var yAttr = "y";
         var posAttr;
         if (stackGroupOpts) {
-          Lib.pushUnique(stackGroupOpts.traceIndices, trace._expandedIndex);
+          Lib.pushUnique(stackGroupOpts.traceIndices, trace.index);
           isV = stackGroupOpts.orientation === "v";
           if (isV) {
             yAttr = "s";
@@ -48971,20 +48518,20 @@ var Plotly = (() => {
         this.binWidth = this.minDiff;
         this.bins = {};
       }
-      Sieve.prototype.put = function put(position, value) {
-        var label = this.getLabel(position, value);
+      Sieve.prototype.put = function put(position, group, value) {
+        var label = this.getLabel(position, group, value);
         var oldValue = this.bins[label] || 0;
         this.bins[label] = oldValue + value;
         return oldValue;
       };
-      Sieve.prototype.get = function get(position, value) {
-        var label = this.getLabel(position, value);
+      Sieve.prototype.get = function get(position, group, value) {
+        var label = this.getLabel(position, group, value);
         return this.bins[label] || 0;
       };
-      Sieve.prototype.getLabel = function getLabel(position, value) {
+      Sieve.prototype.getLabel = function getLabel(position, group, value) {
         var prefix = value < 0 && this.sepNegVal ? "v" : "^";
         var label = this.overlapNoMerge ? position : Math.round(position / this.binWidth);
-        return prefix + label;
+        return prefix + label + "g" + group;
       };
     }
   });
@@ -49044,7 +48591,7 @@ var Plotly = (() => {
         initBase(sa, calcTraces);
         switch (opts.mode) {
           case "overlay":
-            setGroupPositionsInOverlayMode(pa, sa, calcTraces, opts);
+            setGroupPositionsInOverlayMode(gd, pa, sa, calcTraces, opts);
             break;
           case "group":
             excluded = [];
@@ -49059,7 +48606,7 @@ var Plotly = (() => {
               setGroupPositionsInGroupMode(gd, pa, sa, included, opts);
             }
             if (excluded.length) {
-              setGroupPositionsInOverlayMode(pa, sa, excluded, opts);
+              setGroupPositionsInOverlayMode(gd, pa, sa, excluded, opts);
             }
             break;
           case "stack":
@@ -49077,7 +48624,7 @@ var Plotly = (() => {
               setGroupPositionsInStackOrRelativeMode(gd, pa, sa, included, opts);
             }
             if (excluded.length) {
-              setGroupPositionsInOverlayMode(pa, sa, excluded, opts);
+              setGroupPositionsInOverlayMode(gd, pa, sa, excluded, opts);
             }
             break;
         }
@@ -49155,7 +48702,7 @@ var Plotly = (() => {
           }
         }
       }
-      function setGroupPositionsInOverlayMode(pa, sa, calcTraces, opts) {
+      function setGroupPositionsInOverlayMode(gd, pa, sa, calcTraces, opts) {
         for (var i = 0; i < calcTraces.length; i++) {
           var calcTrace = calcTraces[i];
           var sieve = new Sieve([calcTrace], {
@@ -49163,7 +48710,7 @@ var Plotly = (() => {
             sepNegVal: false,
             overlapNoMerge: !opts.norm
           });
-          setOffsetAndWidth(pa, sieve, opts);
+          setOffsetAndWidth(gd, pa, sieve, opts);
           if (opts.norm) {
             sieveBars(sieve);
             normalizeBars(sa, sieve, opts);
@@ -49178,7 +48725,7 @@ var Plotly = (() => {
           sepNegVal: false,
           overlapNoMerge: !opts.norm
         });
-        setOffsetAndWidthInGroupMode(gd, pa, sieve, opts);
+        setOffsetAndWidth(gd, pa, sieve, opts);
         unhideBarsWithinTrace(sieve, pa);
         if (opts.norm) {
           sieveBars(sieve);
@@ -49193,41 +48740,22 @@ var Plotly = (() => {
           sepNegVal: opts.mode === "relative",
           overlapNoMerge: !(opts.norm || opts.mode === "stack" || opts.mode === "relative")
         });
-        setOffsetAndWidth(pa, sieve, opts);
+        setOffsetAndWidth(gd, pa, sieve, opts);
         stackBars(sa, sieve, opts);
         for (var i = 0; i < calcTraces.length; i++) {
           var calcTrace = calcTraces[i];
+          var offsetIndex = calcTrace[0].t.offsetindex;
           for (var j = 0; j < calcTrace.length; j++) {
             var bar = calcTrace[j];
             if (bar.s !== BADNUM) {
-              var isOutmostBar = bar.b + bar.s === sieve.get(bar.p, bar.s);
+              var isOutmostBar = bar.b + bar.s === sieve.get(bar.p, offsetIndex, bar.s);
               if (isOutmostBar) bar._outmost = true;
             }
           }
         }
         if (opts.norm) normalizeBars(sa, sieve, opts);
       }
-      function setOffsetAndWidth(pa, sieve, opts) {
-        var minDiff = sieve.minDiff;
-        var calcTraces = sieve.traces;
-        var barGroupWidth = minDiff * (1 - opts.gap);
-        var barWidthPlusGap = barGroupWidth;
-        var barWidth = barWidthPlusGap * (1 - (opts.groupgap || 0));
-        var offsetFromCenter = -barWidth / 2;
-        for (var i = 0; i < calcTraces.length; i++) {
-          var calcTrace = calcTraces[i];
-          var t = calcTrace[0].t;
-          t.barwidth = barWidth;
-          t.poffset = offsetFromCenter;
-          t.bargroupwidth = barGroupWidth;
-          t.bardelta = minDiff;
-        }
-        sieve.binWidth = calcTraces[0][0].t.barwidth / 100;
-        applyAttributes(sieve);
-        setBarCenterAndWidth(pa, sieve);
-        updatePositionAxis(pa, sieve);
-      }
-      function setOffsetAndWidthInGroupMode(gd, pa, sieve, opts) {
+      function setOffsetAndWidth(gd, pa, sieve, opts) {
         var fullLayout = gd._fullLayout;
         var positions = sieve.positions;
         var distinctPositions = sieve.distinctPositions;
@@ -49236,28 +48764,39 @@ var Plotly = (() => {
         var nTraces = calcTraces.length;
         var overlap = positions.length !== distinctPositions.length;
         var barGroupWidth = minDiff * (1 - opts.gap);
-        var groupId = getAxisGroup(fullLayout, pa._id) + calcTraces[0][0].trace.orientation;
-        var alignmentGroups = fullLayout._alignmentOpts[groupId] || {};
+        var barWidthPlusGap;
+        var barWidth;
+        var offsetFromCenter;
+        var alignmentGroups;
+        if (pa._id === "angularaxis") {
+          barWidthPlusGap = barGroupWidth;
+          barWidth = barWidthPlusGap * (1 - (opts.groupgap || 0));
+          offsetFromCenter = -barWidth / 2;
+        } else {
+          var groupId = getAxisGroup(fullLayout, pa._id) + calcTraces[0][0].trace.orientation;
+          alignmentGroups = fullLayout._alignmentOpts[groupId] || {};
+        }
         for (var i = 0; i < nTraces; i++) {
           var calcTrace = calcTraces[i];
           var trace = calcTrace[0].trace;
-          var alignmentGroupOpts = alignmentGroups[trace.alignmentgroup] || {};
-          var nOffsetGroups = Object.keys(alignmentGroupOpts.offsetGroups || {}).length;
-          var barWidthPlusGap;
-          if (nOffsetGroups) {
-            barWidthPlusGap = barGroupWidth / nOffsetGroups;
-          } else {
-            barWidthPlusGap = overlap ? barGroupWidth / nTraces : barGroupWidth;
-          }
-          var barWidth = barWidthPlusGap * (1 - (opts.groupgap || 0));
-          var offsetFromCenter;
-          if (nOffsetGroups) {
-            offsetFromCenter = ((2 * trace._offsetIndex + 1 - nOffsetGroups) * barWidthPlusGap - barWidth) / 2;
-          } else {
-            offsetFromCenter = overlap ? ((2 * i + 1 - nTraces) * barWidthPlusGap - barWidth) / 2 : -barWidth / 2;
+          if (pa._id !== "angularaxis") {
+            var alignmentGroupOpts = alignmentGroups[trace.alignmentgroup] || {};
+            var nOffsetGroups = Object.keys(alignmentGroupOpts.offsetGroups || {}).length;
+            if (nOffsetGroups) {
+              barWidthPlusGap = barGroupWidth / nOffsetGroups;
+            } else {
+              barWidthPlusGap = overlap ? barGroupWidth / nTraces : barGroupWidth;
+            }
+            barWidth = barWidthPlusGap * (1 - (opts.groupgap || 0));
+            if (nOffsetGroups) {
+              offsetFromCenter = ((2 * trace._offsetIndex + 1 - nOffsetGroups) * barWidthPlusGap - barWidth) / 2;
+            } else {
+              offsetFromCenter = overlap ? ((2 * i + 1 - nTraces) * barWidthPlusGap - barWidth) / 2 : -barWidth / 2;
+            }
           }
           var t = calcTrace[0].t;
           t.barwidth = barWidth;
+          t.offsetindex = trace._offsetIndex || 0;
           t.poffset = offsetFromCenter;
           t.bargroupwidth = barGroupWidth;
           t.bardelta = minDiff;
@@ -49265,7 +48804,11 @@ var Plotly = (() => {
         sieve.binWidth = calcTraces[0][0].t.barwidth / 100;
         applyAttributes(sieve);
         setBarCenterAndWidth(pa, sieve);
-        updatePositionAxis(pa, sieve, overlap);
+        if (pa._id === "angularaxis") {
+          updatePositionAxis(pa, sieve);
+        } else {
+          updatePositionAxis(pa, sieve, overlap);
+        }
       }
       function applyAttributes(sieve) {
         var calcTraces = sieve.traces;
@@ -49412,14 +48955,16 @@ var Plotly = (() => {
         var isFunnel;
         var i, j;
         var bar;
+        var offsetIndex;
         for (i = 0; i < calcTraces.length; i++) {
           calcTrace = calcTraces[i];
           fullTrace = calcTrace[0].trace;
           if (fullTrace.type === "funnel") {
+            offsetIndex = calcTrace[0].t.offsetindex;
             for (j = 0; j < calcTrace.length; j++) {
               bar = calcTrace[j];
               if (bar.s !== BADNUM) {
-                sieve.put(bar.p, -0.5 * bar.s);
+                sieve.put(bar.p, offsetIndex, -0.5 * bar.s);
               }
             }
           }
@@ -49428,6 +48973,7 @@ var Plotly = (() => {
           calcTrace = calcTraces[i];
           fullTrace = calcTrace[0].trace;
           isFunnel = fullTrace.type === "funnel";
+          offsetIndex = fullTrace.type === "barpolar" ? 0 : calcTrace[0].t.offsetindex;
           var pts = [];
           for (j = 0; j < calcTrace.length; j++) {
             bar = calcTrace[j];
@@ -49438,7 +48984,7 @@ var Plotly = (() => {
               } else {
                 value = bar.s + bar.b;
               }
-              var base = sieve.put(bar.p, value);
+              var base = sieve.put(bar.p, offsetIndex, value);
               var top = base + value;
               bar.b = base;
               bar[sLetter] = top;
@@ -49464,10 +49010,11 @@ var Plotly = (() => {
         var calcTraces = sieve.traces;
         for (var i = 0; i < calcTraces.length; i++) {
           var calcTrace = calcTraces[i];
+          var offsetIndex = calcTrace[0].t.offsetindex;
           for (var j = 0; j < calcTrace.length; j++) {
             var bar = calcTrace[j];
             if (bar.s !== BADNUM) {
-              sieve.put(bar.p, bar.b + bar.s);
+              sieve.put(bar.p, offsetIndex, bar.b + bar.s);
             }
           }
         }
@@ -49477,6 +49024,7 @@ var Plotly = (() => {
         for (var i = 0; i < calcTraces.length; i++) {
           var calcTrace = calcTraces[i];
           var fullTrace = calcTrace[0].trace;
+          var offsetIndex = calcTrace[0].t.offsetindex;
           if (fullTrace.base === void 0) {
             var inTraceSieve = new Sieve([calcTrace], {
               posAxis: pa,
@@ -49486,7 +49034,7 @@ var Plotly = (() => {
             for (var j = 0; j < calcTrace.length; j++) {
               var bar = calcTrace[j];
               if (bar.p !== BADNUM) {
-                var base = inTraceSieve.put(bar.p, bar.b + bar.s);
+                var base = inTraceSieve.put(bar.p, offsetIndex, bar.b + bar.s);
                 if (base) bar.b = base;
               }
             }
@@ -49505,6 +49053,7 @@ var Plotly = (() => {
         }
         for (var i = 0; i < calcTraces.length; i++) {
           var calcTrace = calcTraces[i];
+          var offsetIndex = calcTrace[0].t.offsetindex;
           var fullTrace = calcTrace[0].trace;
           var pts = [];
           var tozero = false;
@@ -49512,7 +49061,7 @@ var Plotly = (() => {
           for (var j = 0; j < calcTrace.length; j++) {
             var bar = calcTrace[j];
             if (bar.s !== BADNUM) {
-              var scale = Math.abs(sTop / sieve.get(bar.p, bar.s));
+              var scale = Math.abs(sTop / sieve.get(bar.p, offsetIndex, bar.s));
               bar.b *= scale;
               bar.s *= scale;
               var base = bar.b;
@@ -51566,7 +51115,7 @@ var Plotly = (() => {
         var i, j;
         for (i = 0; i < fullData.length; i++) {
           var trace = fullData[i];
-          if (!traceIs(trace, "cartesian") && !traceIs(trace, "gl2d")) continue;
+          if (!traceIs(trace, "cartesian")) continue;
           var xaName;
           if (trace.xaxis) {
             xaName = id2name(trace.xaxis);
@@ -51635,7 +51184,7 @@ var Plotly = (() => {
         function newAxLayoutOut() {
           var traces = ax2traces[axName] || [];
           axLayoutOut._traceIndices = traces.map(function(t) {
-            return t._expandedIndex;
+            return t.index;
           });
           axLayoutOut._annIndices = [];
           axLayoutOut._shapeIndices = [];
@@ -51988,7 +51537,7 @@ var Plotly = (() => {
         var xList = subplots.xaxis;
         var yList = subplots.yaxis;
         var spSVG = subplots.cartesian;
-        var spAll = spSVG.concat(subplots.gl2d || []);
+        var spAll = spSVG;
         var allX = {};
         var allY = {};
         var i, xi, yi;
@@ -52346,7 +51895,9 @@ var Plotly = (() => {
         var xLayer = constants.layerValue2layerClass[plotinfo.xaxis.layer];
         var yLayer = constants.layerValue2layerClass[plotinfo.yaxis.layer];
         var hasOnlyLargeSploms = fullLayout._hasOnlyLargeSploms;
-        if (!plotinfo.mainplot || fullLayout._zindices.length > 1) {
+        var hasMultipleZ = fullLayout._zindices.length > 1;
+        var mainplotinfo = plotinfo.mainplotinfo;
+        if (!plotinfo.mainplot || hasMultipleZ) {
           if (hasOnlyLargeSploms) {
             plotinfo.xlines = ensureSingle(plotgroup, "path", "xlines-above");
             plotinfo.ylines = ensureSingle(plotgroup, "path", "ylines-above");
@@ -52357,9 +51908,15 @@ var Plotly = (() => {
               var backLayer = ensureSingle(plotgroup, "g", "layer-subplot");
               plotinfo.shapelayer = ensureSingle(backLayer, "g", "shapelayer");
               plotinfo.imagelayer = ensureSingle(backLayer, "g", "imagelayer");
-              plotinfo.minorGridlayer = ensureSingle(plotgroup, "g", "minor-gridlayer");
-              plotinfo.gridlayer = ensureSingle(plotgroup, "g", "gridlayer");
-              plotinfo.zerolinelayer = ensureSingle(plotgroup, "g", "zerolinelayer");
+              if (mainplotinfo && hasMultipleZ) {
+                plotinfo.minorGridlayer = mainplotinfo.minorGridlayer;
+                plotinfo.gridlayer = mainplotinfo.gridlayer;
+                plotinfo.zerolinelayer = mainplotinfo.zerolinelayer;
+              } else {
+                plotinfo.minorGridlayer = ensureSingle(plotgroup, "g", "minor-gridlayer");
+                plotinfo.gridlayer = ensureSingle(plotgroup, "g", "gridlayer");
+                plotinfo.zerolinelayer = ensureSingle(plotgroup, "g", "zerolinelayer");
+              }
               var betweenLayer = ensureSingle(plotgroup, "g", "layer-between");
               plotinfo.shapelayerBetween = ensureSingle(betweenLayer, "g", "shapelayer");
               plotinfo.imagelayerBetween = ensureSingle(betweenLayer, "g", "imagelayer");
@@ -52386,7 +51943,6 @@ var Plotly = (() => {
             }
           }
         } else {
-          var mainplotinfo = plotinfo.mainplotinfo;
           var mainplotgroup = mainplotinfo.plotgroup;
           var xId = id + "-x";
           var yId = id + "-y";
@@ -54473,7 +54029,7 @@ var Plotly = (() => {
             return;
           }
           thisImage.attr("xmlns", xmlnsNamespaces.svg);
-          if (d.source && d.source.slice(0, 5) === "data:") {
+          if (!gd._context.staticPlot || d.source && d.source.slice(0, 5) === "data:") {
             thisImage.attr("xlink:href", d.source);
             this._imgSrc = d.source;
           } else {
@@ -54566,8 +54122,14 @@ var Plotly = (() => {
             gd
           );
         }
-        var imagesBelow = fullLayout._imageLowerLayer.selectAll("image").data(imageDataBelow);
-        var imagesAbove = fullLayout._imageUpperLayer.selectAll("image").data(imageDataAbove);
+        function imgDataFunc(d) {
+          return [d.xref, d.x, d.sizex, d.yref, d.y, d.sizey].join("_");
+        }
+        function imgSort(a, b) {
+          return a._index - b._index;
+        }
+        var imagesBelow = fullLayout._imageLowerLayer.selectAll("image").data(imageDataBelow, imgDataFunc);
+        var imagesAbove = fullLayout._imageUpperLayer.selectAll("image").data(imageDataAbove, imgDataFunc);
         imagesBelow.enter().append("image");
         imagesAbove.enter().append("image");
         imagesBelow.exit().remove();
@@ -54580,18 +54142,21 @@ var Plotly = (() => {
           setImage.bind(this)(d);
           applyAttributes.bind(this)(d);
         });
+        imagesBelow.sort(imgSort);
+        imagesAbove.sort(imgSort);
         var allSubplots = Object.keys(fullLayout._plots);
         for (i = 0; i < allSubplots.length; i++) {
           subplot = allSubplots[i];
           var subplotObj = fullLayout._plots[subplot];
           if (!subplotObj.imagelayer) continue;
-          var imagesOnSubplot = subplotObj.imagelayer.selectAll("image").data(imageDataSubplot[subplot] || []);
+          var imagesOnSubplot = subplotObj.imagelayer.selectAll("image").data(imageDataSubplot[subplot] || [], imgDataFunc);
           imagesOnSubplot.enter().append("image");
           imagesOnSubplot.exit().remove();
           imagesOnSubplot.each(function(d) {
             setImage.bind(this)(d);
             applyAttributes.bind(this)(d);
           });
+          imagesOnSubplot.sort(imgSort);
         }
       };
     }
@@ -56515,16 +56080,14 @@ var Plotly = (() => {
         var axes = axisIDs.list({ _fullLayout: fullLayout }, "x", true);
         var margin = fullLayout.margin;
         var rangeSliderData = [];
-        if (!fullLayout._has("gl2d")) {
-          for (var i = 0; i < axes.length; i++) {
-            var ax = axes[i];
-            if (isVisible(ax)) {
-              rangeSliderData.push(ax);
-              var opts = ax[name2];
-              opts._id = name2 + ax._id;
-              opts._height = (fullLayout.height - margin.b - margin.t) * opts.thickness;
-              opts._offsetShift = Math.floor(opts.borderwidth / 2);
-            }
+        for (var i = 0; i < axes.length; i++) {
+          var ax = axes[i];
+          if (isVisible(ax)) {
+            rangeSliderData.push(ax);
+            var opts = ax[name2];
+            opts._id = name2 + ax._id;
+            opts._height = (fullLayout.height - margin.b - margin.t) * opts.thickness;
+            opts._offsetShift = Math.floor(opts.borderwidth / 2);
           }
         }
         fullLayout._rangeSliderData = rangeSliderData;
@@ -57974,13 +57537,7 @@ var Plotly = (() => {
           min: 0,
           editType: "plot"
         },
-        editType: "calc",
-        _deprecated: {
-          opacity: {
-            valType: "number",
-            editType: "style"
-          }
-        }
+        editType: "calc"
       };
     }
   });
@@ -59493,15 +59050,10 @@ var Plotly = (() => {
                 delaunay_triangulate: __webpack_require__2(7642),
                 gl_cone3d: __webpack_require__2(6405),
                 gl_error3d: __webpack_require__2(9165),
-                gl_heatmap2d: __webpack_require__2(2510),
                 gl_line3d: __webpack_require__2(5714),
                 gl_mesh3d: __webpack_require__2(7201),
-                gl_plot2d: __webpack_require__2(1850),
                 gl_plot3d: __webpack_require__2(4100),
-                gl_pointcloud2d: __webpack_require__2(4696),
                 gl_scatter3d: __webpack_require__2(8418),
-                gl_select_box: __webpack_require__2(3161),
-                gl_spikes2d: __webpack_require__2(4098),
                 gl_streamtube3d: __webpack_require__2(7815),
                 gl_surface3d: __webpack_require__2(9499),
                 ndarray: __webpack_require__2(9618),
@@ -61165,7 +60717,7 @@ var Plotly = (() => {
               module2.exports = createViewController;
               var createTurntable = __webpack_require__2(7261);
               var createOrbit = __webpack_require__2(9977);
-              var createMatrix = __webpack_require__2(4192);
+              var createMatrix = __webpack_require__2(1811);
               function ViewController(controllers, mode) {
                 this._controllerNames = Object.keys(controllers);
                 this._controllerList = this._controllerNames.map(function(n) {
@@ -61634,7 +61186,7 @@ var Plotly = (() => {
               var isRat = __webpack_require__2(6330);
               var isBN = __webpack_require__2(1533);
               var num2bn = __webpack_require__2(2651);
-              var str2bn = __webpack_require__2(4387);
+              var str2bn = __webpack_require__2(6768);
               var rationalize = __webpack_require__2(869);
               var div = __webpack_require__2(8697);
               module2.exports = makeRational;
@@ -61819,7 +61371,7 @@ var Plotly = (() => {
             }
           ),
           /***/
-          4387: (
+          6768: (
             /***/
             function(module2, __unused_webpack_exports, __webpack_require__2) {
               "use strict";
@@ -66151,7 +65703,7 @@ var Plotly = (() => {
             }
           ),
           /***/
-          1811: (
+          4192: (
             /***/
             function(module2) {
               "use strict";
@@ -66375,7 +65927,7 @@ var Plotly = (() => {
               };
               var pool = __webpack_require__2(1888);
               var bits = __webpack_require__2(8828);
-              var isort = __webpack_require__2(1811);
+              var isort = __webpack_require__2(4192);
               var BLUE_FLAG = 1 << 28;
               var INIT_CAPACITY = 1024;
               var RED_SWEEP_QUEUE = pool.mallocInt32(INIT_CAPACITY);
@@ -73092,312 +72644,6 @@ var Plotly = (() => {
             }
           ),
           /***/
-          2510: (
-            /***/
-            function(module2, __unused_webpack_exports, __webpack_require__2) {
-              "use strict";
-              module2.exports = createHeatmap2D;
-              var bsearch = __webpack_require__2(2478);
-              var iota = __webpack_require__2(7762);
-              var pool = __webpack_require__2(1888);
-              var createShader = __webpack_require__2(9405);
-              var createBuffer = __webpack_require__2(2762);
-              var shaders = __webpack_require__2(6768);
-              function GLHeatmap2D(plot, shader, pickShader, positionBuffer, weightBuffer, colorBuffer, idBuffer) {
-                this.plot = plot;
-                this.shader = shader;
-                this.pickShader = pickShader;
-                this.positionBuffer = positionBuffer;
-                this.weightBuffer = weightBuffer;
-                this.colorBuffer = colorBuffer;
-                this.idBuffer = idBuffer;
-                this.xData = [];
-                this.yData = [];
-                this.shape = [0, 0];
-                this.bounds = [Infinity, Infinity, -Infinity, -Infinity];
-                this.pickOffset = 0;
-              }
-              var proto = GLHeatmap2D.prototype;
-              var WEIGHTS = [
-                0,
-                0,
-                1,
-                0,
-                0,
-                1,
-                1,
-                0,
-                1,
-                1,
-                0,
-                1
-              ];
-              proto.draw = /* @__PURE__ */ function() {
-                var MATRIX = [
-                  1,
-                  0,
-                  0,
-                  0,
-                  1,
-                  0,
-                  0,
-                  0,
-                  1
-                ];
-                return function() {
-                  var plot = this.plot;
-                  var shader = this.shader;
-                  var bounds = this.bounds;
-                  var numVertices = this.numVertices;
-                  if (numVertices <= 0) {
-                    return;
-                  }
-                  var gl2 = plot.gl;
-                  var dataBox = plot.dataBox;
-                  var boundX = bounds[2] - bounds[0];
-                  var boundY = bounds[3] - bounds[1];
-                  var dataX = dataBox[2] - dataBox[0];
-                  var dataY = dataBox[3] - dataBox[1];
-                  MATRIX[0] = 2 * boundX / dataX;
-                  MATRIX[4] = 2 * boundY / dataY;
-                  MATRIX[6] = 2 * (bounds[0] - dataBox[0]) / dataX - 1;
-                  MATRIX[7] = 2 * (bounds[1] - dataBox[1]) / dataY - 1;
-                  shader.bind();
-                  var uniforms = shader.uniforms;
-                  uniforms.viewTransform = MATRIX;
-                  uniforms.shape = this.shape;
-                  var attributes = shader.attributes;
-                  this.positionBuffer.bind();
-                  attributes.position.pointer();
-                  this.weightBuffer.bind();
-                  attributes.weight.pointer(gl2.UNSIGNED_BYTE, false);
-                  this.colorBuffer.bind();
-                  attributes.color.pointer(gl2.UNSIGNED_BYTE, true);
-                  gl2.drawArrays(gl2.TRIANGLES, 0, numVertices);
-                };
-              }();
-              proto.drawPick = /* @__PURE__ */ function() {
-                var MATRIX = [
-                  1,
-                  0,
-                  0,
-                  0,
-                  1,
-                  0,
-                  0,
-                  0,
-                  1
-                ];
-                var PICK_VECTOR = [0, 0, 0, 0];
-                return function(pickOffset) {
-                  var plot = this.plot;
-                  var shader = this.pickShader;
-                  var bounds = this.bounds;
-                  var numVertices = this.numVertices;
-                  if (numVertices <= 0) {
-                    return;
-                  }
-                  var gl2 = plot.gl;
-                  var dataBox = plot.dataBox;
-                  var boundX = bounds[2] - bounds[0];
-                  var boundY = bounds[3] - bounds[1];
-                  var dataX = dataBox[2] - dataBox[0];
-                  var dataY = dataBox[3] - dataBox[1];
-                  MATRIX[0] = 2 * boundX / dataX;
-                  MATRIX[4] = 2 * boundY / dataY;
-                  MATRIX[6] = 2 * (bounds[0] - dataBox[0]) / dataX - 1;
-                  MATRIX[7] = 2 * (bounds[1] - dataBox[1]) / dataY - 1;
-                  for (var i = 0; i < 4; ++i) {
-                    PICK_VECTOR[i] = pickOffset >> i * 8 & 255;
-                  }
-                  this.pickOffset = pickOffset;
-                  shader.bind();
-                  var uniforms = shader.uniforms;
-                  uniforms.viewTransform = MATRIX;
-                  uniforms.pickOffset = PICK_VECTOR;
-                  uniforms.shape = this.shape;
-                  var attributes = shader.attributes;
-                  this.positionBuffer.bind();
-                  attributes.position.pointer();
-                  this.weightBuffer.bind();
-                  attributes.weight.pointer(gl2.UNSIGNED_BYTE, false);
-                  this.idBuffer.bind();
-                  attributes.pickId.pointer(gl2.UNSIGNED_BYTE, false);
-                  gl2.drawArrays(gl2.TRIANGLES, 0, numVertices);
-                  return pickOffset + this.shape[0] * this.shape[1];
-                };
-              }();
-              proto.pick = function(x, y, value) {
-                var pickOffset = this.pickOffset;
-                var pointCount = this.shape[0] * this.shape[1];
-                if (value < pickOffset || value >= pickOffset + pointCount) {
-                  return null;
-                }
-                var pointId = value - pickOffset;
-                var xData = this.xData;
-                var yData = this.yData;
-                return {
-                  object: this,
-                  pointId,
-                  dataCoord: [
-                    xData[pointId % this.shape[0]],
-                    yData[pointId / this.shape[0] | 0]
-                  ]
-                };
-              };
-              proto.update = function(options) {
-                options = options || {};
-                var shape = options.shape || [0, 0];
-                var x = options.x || iota(shape[0]);
-                var y = options.y || iota(shape[1]);
-                var z = options.z || new Float32Array(shape[0] * shape[1]);
-                var isSmooth = options.zsmooth !== false;
-                this.xData = x;
-                this.yData = y;
-                var colorLevels = options.colorLevels || [0];
-                var colorValues = options.colorValues || [0, 0, 0, 1];
-                var colorCount = colorLevels.length;
-                var bounds = this.bounds;
-                var lox, loy, hix, hiy;
-                if (isSmooth) {
-                  lox = bounds[0] = x[0];
-                  loy = bounds[1] = y[0];
-                  hix = bounds[2] = x[x.length - 1];
-                  hiy = bounds[3] = y[y.length - 1];
-                } else {
-                  lox = bounds[0] = x[0] + (x[1] - x[0]) / 2;
-                  loy = bounds[1] = y[0] + (y[1] - y[0]) / 2;
-                  hix = bounds[2] = x[x.length - 1] + (x[x.length - 1] - x[x.length - 2]) / 2;
-                  hiy = bounds[3] = y[y.length - 1] + (y[y.length - 1] - y[y.length - 2]) / 2;
-                }
-                var xs = 1 / (hix - lox);
-                var ys = 1 / (hiy - loy);
-                var numX = shape[0];
-                var numY = shape[1];
-                this.shape = [numX, numY];
-                var numVerts = (isSmooth ? (numX - 1) * (numY - 1) : numX * numY) * (WEIGHTS.length >>> 1);
-                this.numVertices = numVerts;
-                var colors = pool.mallocUint8(numVerts * 4);
-                var positions = pool.mallocFloat32(numVerts * 2);
-                var weights = pool.mallocUint8(numVerts * 2);
-                var ids = pool.mallocUint32(numVerts);
-                var ptr = 0;
-                var ni = isSmooth ? numX - 1 : numX;
-                var nj = isSmooth ? numY - 1 : numY;
-                for (var j = 0; j < nj; ++j) {
-                  var yc0, yc1;
-                  if (isSmooth) {
-                    yc0 = ys * (y[j] - loy);
-                    yc1 = ys * (y[j + 1] - loy);
-                  } else {
-                    yc0 = j < numY - 1 ? ys * (y[j] - (y[j + 1] - y[j]) / 2 - loy) : ys * (y[j] - (y[j] - y[j - 1]) / 2 - loy);
-                    yc1 = j < numY - 1 ? ys * (y[j] + (y[j + 1] - y[j]) / 2 - loy) : ys * (y[j] + (y[j] - y[j - 1]) / 2 - loy);
-                  }
-                  for (var i = 0; i < ni; ++i) {
-                    var xc0, xc1;
-                    if (isSmooth) {
-                      xc0 = xs * (x[i] - lox);
-                      xc1 = xs * (x[i + 1] - lox);
-                    } else {
-                      xc0 = i < numX - 1 ? xs * (x[i] - (x[i + 1] - x[i]) / 2 - lox) : xs * (x[i] - (x[i] - x[i - 1]) / 2 - lox);
-                      xc1 = i < numX - 1 ? xs * (x[i] + (x[i + 1] - x[i]) / 2 - lox) : xs * (x[i] + (x[i] - x[i - 1]) / 2 - lox);
-                    }
-                    for (var dd = 0; dd < WEIGHTS.length; dd += 2) {
-                      var dx = WEIGHTS[dd];
-                      var dy = WEIGHTS[dd + 1];
-                      var offset = isSmooth ? (j + dy) * numX + (i + dx) : j * numX + i;
-                      var zc = z[offset];
-                      var colorIdx = bsearch.le(colorLevels, zc);
-                      var r, g, b, a;
-                      if (colorIdx < 0) {
-                        r = colorValues[0];
-                        g = colorValues[1];
-                        b = colorValues[2];
-                        a = colorValues[3];
-                      } else if (colorIdx === colorCount - 1) {
-                        r = colorValues[4 * colorCount - 4];
-                        g = colorValues[4 * colorCount - 3];
-                        b = colorValues[4 * colorCount - 2];
-                        a = colorValues[4 * colorCount - 1];
-                      } else {
-                        var t = (zc - colorLevels[colorIdx]) / (colorLevels[colorIdx + 1] - colorLevels[colorIdx]);
-                        var ti = 1 - t;
-                        var i0 = 4 * colorIdx;
-                        var i1 = 4 * (colorIdx + 1);
-                        r = ti * colorValues[i0] + t * colorValues[i1];
-                        g = ti * colorValues[i0 + 1] + t * colorValues[i1 + 1];
-                        b = ti * colorValues[i0 + 2] + t * colorValues[i1 + 2];
-                        a = ti * colorValues[i0 + 3] + t * colorValues[i1 + 3];
-                      }
-                      colors[4 * ptr] = 255 * r;
-                      colors[4 * ptr + 1] = 255 * g;
-                      colors[4 * ptr + 2] = 255 * b;
-                      colors[4 * ptr + 3] = 255 * a;
-                      positions[2 * ptr] = xc0 * 0.5 + xc1 * 0.5;
-                      positions[2 * ptr + 1] = yc0 * 0.5 + yc1 * 0.5;
-                      weights[2 * ptr] = dx;
-                      weights[2 * ptr + 1] = dy;
-                      ids[ptr] = j * numX + i;
-                      ptr += 1;
-                    }
-                  }
-                }
-                this.positionBuffer.update(positions);
-                this.weightBuffer.update(weights);
-                this.colorBuffer.update(colors);
-                this.idBuffer.update(ids);
-                pool.free(positions);
-                pool.free(colors);
-                pool.free(weights);
-                pool.free(ids);
-              };
-              proto.dispose = function() {
-                this.shader.dispose();
-                this.pickShader.dispose();
-                this.positionBuffer.dispose();
-                this.weightBuffer.dispose();
-                this.colorBuffer.dispose();
-                this.idBuffer.dispose();
-                this.plot.removeObject(this);
-              };
-              function createHeatmap2D(plot, options) {
-                var gl2 = plot.gl;
-                var shader = createShader(gl2, shaders.vertex, shaders.fragment);
-                var pickShader = createShader(gl2, shaders.pickVertex, shaders.pickFragment);
-                var positionBuffer = createBuffer(gl2);
-                var weightBuffer = createBuffer(gl2);
-                var colorBuffer = createBuffer(gl2);
-                var idBuffer = createBuffer(gl2);
-                var heatmap = new GLHeatmap2D(
-                  plot,
-                  shader,
-                  pickShader,
-                  positionBuffer,
-                  weightBuffer,
-                  colorBuffer,
-                  idBuffer
-                );
-                heatmap.update(options);
-                plot.addObject(heatmap);
-                return heatmap;
-              }
-            }
-          ),
-          /***/
-          6768: (
-            /***/
-            function(module2, __unused_webpack_exports, __webpack_require__2) {
-              "use strict";
-              var glslify = __webpack_require__2(3236);
-              module2.exports = {
-                fragment: glslify(["precision lowp float;\n#define GLSLIFY 1\nvarying vec4 fragColor;\nvoid main() {\n  gl_FragColor = vec4(fragColor.rgb * fragColor.a, fragColor.a);\n}\n"]),
-                vertex: glslify(["precision mediump float;\n#define GLSLIFY 1\n\nattribute vec2 position;\nattribute vec4 color;\nattribute vec2 weight;\n\nuniform vec2 shape;\nuniform mat3 viewTransform;\n\nvarying vec4 fragColor;\n\nvoid main() {\n  vec3 vPosition = viewTransform * vec3( position + (weight-.5)/(shape-1.) , 1.0);\n  fragColor = color;\n  gl_Position = vec4(vPosition.xy, 0, vPosition.z);\n}\n"]),
-                pickFragment: glslify(["precision mediump float;\n#define GLSLIFY 1\n\nvarying vec4 fragId;\nvarying vec2 vWeight;\n\nuniform vec2 shape;\nuniform vec4 pickOffset;\n\nvoid main() {\n  vec2 d = step(.5, vWeight);\n  vec4 id = fragId + pickOffset;\n  id.x += d.x + d.y*shape.x;\n\n  id.y += floor(id.x / 256.0);\n  id.x -= floor(id.x / 256.0) * 256.0;\n\n  id.z += floor(id.y / 256.0);\n  id.y -= floor(id.y / 256.0) * 256.0;\n\n  id.w += floor(id.z / 256.0);\n  id.z -= floor(id.z / 256.0) * 256.0;\n\n  gl_FragColor = id/255.;\n}\n"]),
-                pickVertex: glslify(["precision mediump float;\n#define GLSLIFY 1\n\nattribute vec2 position;\nattribute vec4 pickId;\nattribute vec2 weight;\n\nuniform vec2 shape;\nuniform mat3 viewTransform;\n\nvarying vec4 fragId;\nvarying vec2 vWeight;\n\nvoid main() {\n  vWeight = weight;\n\n  fragId = pickId;\n\n  vec3 vPosition = viewTransform * vec3( position + (weight-.5)/(shape-1.) , 1.0);\n  gl_Position = vec4(vPosition.xy, 0, vPosition.z);\n}\n"])
-              };
-            }
-          ),
-          /***/
           7319: (
             /***/
             function(__unused_webpack_module, exports2, __webpack_require__2) {
@@ -75617,1112 +74863,6 @@ var Plotly = (() => {
             }
           ),
           /***/
-          8120: (
-            /***/
-            function(module2, __unused_webpack_exports, __webpack_require__2) {
-              "use strict";
-              module2.exports = createBoxes;
-              var createBuffer = __webpack_require__2(2762);
-              var createShader = __webpack_require__2(9405);
-              var shaders = __webpack_require__2(3603);
-              function Boxes(plot, vbo, shader) {
-                this.plot = plot;
-                this.vbo = vbo;
-                this.shader = shader;
-              }
-              var proto = Boxes.prototype;
-              proto.bind = function() {
-                var shader = this.shader;
-                this.vbo.bind();
-                this.shader.bind();
-                shader.attributes.coord.pointer();
-                shader.uniforms.screenBox = this.plot.screenBox;
-              };
-              proto.drawBox = /* @__PURE__ */ function() {
-                var lo = [0, 0];
-                var hi = [0, 0];
-                return function(loX, loY, hiX, hiY, color) {
-                  var plot = this.plot;
-                  var shader = this.shader;
-                  var gl2 = plot.gl;
-                  lo[0] = loX;
-                  lo[1] = loY;
-                  hi[0] = hiX;
-                  hi[1] = hiY;
-                  shader.uniforms.lo = lo;
-                  shader.uniforms.hi = hi;
-                  shader.uniforms.color = color;
-                  gl2.drawArrays(gl2.TRIANGLE_STRIP, 0, 4);
-                };
-              }();
-              proto.dispose = function() {
-                this.vbo.dispose();
-                this.shader.dispose();
-              };
-              function createBoxes(plot) {
-                var gl2 = plot.gl;
-                var vbo = createBuffer(gl2, [
-                  0,
-                  0,
-                  0,
-                  1,
-                  1,
-                  0,
-                  1,
-                  1
-                ]);
-                var shader = createShader(gl2, shaders.boxVert, shaders.lineFrag);
-                return new Boxes(plot, vbo, shader);
-              }
-            }
-          ),
-          /***/
-          1913: (
-            /***/
-            function(module2, __unused_webpack_exports, __webpack_require__2) {
-              "use strict";
-              module2.exports = createGrid;
-              var createBuffer = __webpack_require__2(2762);
-              var createShader = __webpack_require__2(9405);
-              var bsearch = __webpack_require__2(2478);
-              var shaders = __webpack_require__2(3603);
-              function Grid(plot, vbo, shader, tickShader) {
-                this.plot = plot;
-                this.vbo = vbo;
-                this.shader = shader;
-                this.tickShader = tickShader;
-                this.ticks = [[], []];
-              }
-              function compareTickNum(a, b) {
-                return a - b;
-              }
-              var proto = Grid.prototype;
-              proto.draw = /* @__PURE__ */ function() {
-                var DATA_SHIFT = [0, 0];
-                var DATA_SCALE = [0, 0];
-                var DATA_AXIS = [0, 0];
-                return function() {
-                  var plot = this.plot;
-                  var vbo = this.vbo;
-                  var shader = this.shader;
-                  var ticks = this.ticks;
-                  var gl2 = plot.gl;
-                  var bounds = plot._tickBounds;
-                  var dataBox = plot.dataBox;
-                  var viewPixels = plot.viewBox;
-                  var lineWidth = plot.gridLineWidth;
-                  var gridColor = plot.gridLineColor;
-                  var gridEnable = plot.gridLineEnable;
-                  var pixelRatio = plot.pixelRatio;
-                  for (var i = 0; i < 2; ++i) {
-                    var lo = bounds[i];
-                    var hi = bounds[i + 2];
-                    var boundScale = hi - lo;
-                    var dataCenter = 0.5 * (dataBox[i + 2] + dataBox[i]);
-                    var dataWidth = dataBox[i + 2] - dataBox[i];
-                    DATA_SCALE[i] = 2 * boundScale / dataWidth;
-                    DATA_SHIFT[i] = 2 * (lo - dataCenter) / dataWidth;
-                  }
-                  shader.bind();
-                  vbo.bind();
-                  shader.attributes.dataCoord.pointer();
-                  shader.uniforms.dataShift = DATA_SHIFT;
-                  shader.uniforms.dataScale = DATA_SCALE;
-                  var offset = 0;
-                  for (var i = 0; i < 2; ++i) {
-                    DATA_AXIS[0] = DATA_AXIS[1] = 0;
-                    DATA_AXIS[i] = 1;
-                    shader.uniforms.dataAxis = DATA_AXIS;
-                    shader.uniforms.lineWidth = lineWidth[i] / (viewPixels[i + 2] - viewPixels[i]) * pixelRatio;
-                    shader.uniforms.color = gridColor[i];
-                    var size = ticks[i].length * 6;
-                    if (gridEnable[i] && size) {
-                      gl2.drawArrays(gl2.TRIANGLES, offset, size);
-                    }
-                    offset += size;
-                  }
-                };
-              }();
-              proto.drawTickMarks = /* @__PURE__ */ function() {
-                var DATA_SHIFT = [0, 0];
-                var DATA_SCALE = [0, 0];
-                var X_AXIS = [1, 0];
-                var Y_AXIS = [0, 1];
-                var SCR_OFFSET = [0, 0];
-                var TICK_SCALE = [0, 0];
-                return function() {
-                  var plot = this.plot;
-                  var vbo = this.vbo;
-                  var shader = this.tickShader;
-                  var ticks = this.ticks;
-                  var gl2 = plot.gl;
-                  var bounds = plot._tickBounds;
-                  var dataBox = plot.dataBox;
-                  var viewBox = plot.viewBox;
-                  var pixelRatio = plot.pixelRatio;
-                  var screenBox = plot.screenBox;
-                  var screenWidth = screenBox[2] - screenBox[0];
-                  var screenHeight = screenBox[3] - screenBox[1];
-                  var viewWidth = viewBox[2] - viewBox[0];
-                  var viewHeight = viewBox[3] - viewBox[1];
-                  for (var i = 0; i < 2; ++i) {
-                    var lo = bounds[i];
-                    var hi = bounds[i + 2];
-                    var boundScale = hi - lo;
-                    var dataCenter = 0.5 * (dataBox[i + 2] + dataBox[i]);
-                    var dataWidth = dataBox[i + 2] - dataBox[i];
-                    DATA_SCALE[i] = 2 * boundScale / dataWidth;
-                    DATA_SHIFT[i] = 2 * (lo - dataCenter) / dataWidth;
-                  }
-                  DATA_SCALE[0] *= viewWidth / screenWidth;
-                  DATA_SHIFT[0] *= viewWidth / screenWidth;
-                  DATA_SCALE[1] *= viewHeight / screenHeight;
-                  DATA_SHIFT[1] *= viewHeight / screenHeight;
-                  shader.bind();
-                  vbo.bind();
-                  shader.attributes.dataCoord.pointer();
-                  var uniforms = shader.uniforms;
-                  uniforms.dataShift = DATA_SHIFT;
-                  uniforms.dataScale = DATA_SCALE;
-                  var tickMarkLength = plot.tickMarkLength;
-                  var tickMarkWidth = plot.tickMarkWidth;
-                  var tickMarkColor = plot.tickMarkColor;
-                  var xTicksOffset = 0;
-                  var yTicksOffset = ticks[0].length * 6;
-                  var xStart = Math.min(bsearch.ge(ticks[0], (dataBox[0] - bounds[0]) / (bounds[2] - bounds[0]), compareTickNum), ticks[0].length);
-                  var xEnd = Math.min(bsearch.gt(ticks[0], (dataBox[2] - bounds[0]) / (bounds[2] - bounds[0]), compareTickNum), ticks[0].length);
-                  var xOffset = xTicksOffset + 6 * xStart;
-                  var xCount = 6 * Math.max(0, xEnd - xStart);
-                  var yStart = Math.min(bsearch.ge(ticks[1], (dataBox[1] - bounds[1]) / (bounds[3] - bounds[1]), compareTickNum), ticks[1].length);
-                  var yEnd = Math.min(bsearch.gt(ticks[1], (dataBox[3] - bounds[1]) / (bounds[3] - bounds[1]), compareTickNum), ticks[1].length);
-                  var yOffset = yTicksOffset + 6 * yStart;
-                  var yCount = 6 * Math.max(0, yEnd - yStart);
-                  SCR_OFFSET[0] = 2 * (viewBox[0] - tickMarkLength[1]) / screenWidth - 1;
-                  SCR_OFFSET[1] = (viewBox[3] + viewBox[1]) / screenHeight - 1;
-                  TICK_SCALE[0] = tickMarkLength[1] * pixelRatio / screenWidth;
-                  TICK_SCALE[1] = tickMarkWidth[1] * pixelRatio / screenHeight;
-                  if (yCount) {
-                    uniforms.color = tickMarkColor[1];
-                    uniforms.tickScale = TICK_SCALE;
-                    uniforms.dataAxis = Y_AXIS;
-                    uniforms.screenOffset = SCR_OFFSET;
-                    gl2.drawArrays(gl2.TRIANGLES, yOffset, yCount);
-                  }
-                  SCR_OFFSET[0] = (viewBox[2] + viewBox[0]) / screenWidth - 1;
-                  SCR_OFFSET[1] = 2 * (viewBox[1] - tickMarkLength[0]) / screenHeight - 1;
-                  TICK_SCALE[0] = tickMarkWidth[0] * pixelRatio / screenWidth;
-                  TICK_SCALE[1] = tickMarkLength[0] * pixelRatio / screenHeight;
-                  if (xCount) {
-                    uniforms.color = tickMarkColor[0];
-                    uniforms.tickScale = TICK_SCALE;
-                    uniforms.dataAxis = X_AXIS;
-                    uniforms.screenOffset = SCR_OFFSET;
-                    gl2.drawArrays(gl2.TRIANGLES, xOffset, xCount);
-                  }
-                  SCR_OFFSET[0] = 2 * (viewBox[2] + tickMarkLength[3]) / screenWidth - 1;
-                  SCR_OFFSET[1] = (viewBox[3] + viewBox[1]) / screenHeight - 1;
-                  TICK_SCALE[0] = tickMarkLength[3] * pixelRatio / screenWidth;
-                  TICK_SCALE[1] = tickMarkWidth[3] * pixelRatio / screenHeight;
-                  if (yCount) {
-                    uniforms.color = tickMarkColor[3];
-                    uniforms.tickScale = TICK_SCALE;
-                    uniforms.dataAxis = Y_AXIS;
-                    uniforms.screenOffset = SCR_OFFSET;
-                    gl2.drawArrays(gl2.TRIANGLES, yOffset, yCount);
-                  }
-                  SCR_OFFSET[0] = (viewBox[2] + viewBox[0]) / screenWidth - 1;
-                  SCR_OFFSET[1] = 2 * (viewBox[3] + tickMarkLength[2]) / screenHeight - 1;
-                  TICK_SCALE[0] = tickMarkWidth[2] * pixelRatio / screenWidth;
-                  TICK_SCALE[1] = tickMarkLength[2] * pixelRatio / screenHeight;
-                  if (xCount) {
-                    uniforms.color = tickMarkColor[2];
-                    uniforms.tickScale = TICK_SCALE;
-                    uniforms.dataAxis = X_AXIS;
-                    uniforms.screenOffset = SCR_OFFSET;
-                    gl2.drawArrays(gl2.TRIANGLES, xOffset, xCount);
-                  }
-                };
-              }();
-              proto.update = /* @__PURE__ */ function() {
-                var OFFSET_X = [1, 1, -1, -1, 1, -1];
-                var OFFSET_Y = [1, -1, 1, 1, -1, -1];
-                return function(options) {
-                  var ticks = options.ticks;
-                  var bounds = options.bounds;
-                  var data = new Float32Array(6 * 3 * (ticks[0].length + ticks[1].length));
-                  var zeroLineEnable = this.plot.zeroLineEnable;
-                  var ptr = 0;
-                  var gridTicks = [[], []];
-                  for (var dim = 0; dim < 2; ++dim) {
-                    var localTicks = gridTicks[dim];
-                    var axisTicks = ticks[dim];
-                    var lo = bounds[dim];
-                    var hi = bounds[dim + 2];
-                    for (var i = 0; i < axisTicks.length; ++i) {
-                      var x = (axisTicks[i].x - lo) / (hi - lo);
-                      localTicks.push(x);
-                      for (var j = 0; j < 6; ++j) {
-                        data[ptr++] = x;
-                        data[ptr++] = OFFSET_X[j];
-                        data[ptr++] = OFFSET_Y[j];
-                      }
-                    }
-                  }
-                  this.ticks = gridTicks;
-                  this.vbo.update(data);
-                };
-              }();
-              proto.dispose = function() {
-                this.vbo.dispose();
-                this.shader.dispose();
-                this.tickShader.dispose();
-              };
-              function createGrid(plot) {
-                var gl2 = plot.gl;
-                var vbo = createBuffer(gl2);
-                var shader = createShader(gl2, shaders.gridVert, shaders.gridFrag);
-                var tickShader = createShader(gl2, shaders.tickVert, shaders.gridFrag);
-                var grid = new Grid(plot, vbo, shader, tickShader);
-                return grid;
-              }
-            }
-          ),
-          /***/
-          4747: (
-            /***/
-            function(module2, __unused_webpack_exports, __webpack_require__2) {
-              "use strict";
-              module2.exports = createLines;
-              var createBuffer = __webpack_require__2(2762);
-              var createShader = __webpack_require__2(9405);
-              var shaders = __webpack_require__2(3603);
-              function Lines(plot, vbo, shader) {
-                this.plot = plot;
-                this.vbo = vbo;
-                this.shader = shader;
-              }
-              var proto = Lines.prototype;
-              proto.bind = function() {
-                var shader = this.shader;
-                this.vbo.bind();
-                this.shader.bind();
-                shader.attributes.coord.pointer();
-                shader.uniforms.screenBox = this.plot.screenBox;
-              };
-              proto.drawLine = /* @__PURE__ */ function() {
-                var start = [0, 0];
-                var end = [0, 0];
-                return function(startX, startY, endX, endY, width, color) {
-                  var plot = this.plot;
-                  var shader = this.shader;
-                  var gl2 = plot.gl;
-                  start[0] = startX;
-                  start[1] = startY;
-                  end[0] = endX;
-                  end[1] = endY;
-                  shader.uniforms.start = start;
-                  shader.uniforms.end = end;
-                  shader.uniforms.width = width * plot.pixelRatio;
-                  shader.uniforms.color = color;
-                  gl2.drawArrays(gl2.TRIANGLE_STRIP, 0, 4);
-                };
-              }();
-              proto.dispose = function() {
-                this.vbo.dispose();
-                this.shader.dispose();
-              };
-              function createLines(plot) {
-                var gl2 = plot.gl;
-                var vbo = createBuffer(gl2, [
-                  -1,
-                  -1,
-                  -1,
-                  1,
-                  1,
-                  -1,
-                  1,
-                  1
-                ]);
-                var shader = createShader(gl2, shaders.lineVert, shaders.lineFrag);
-                var lines = new Lines(plot, vbo, shader);
-                return lines;
-              }
-            }
-          ),
-          /***/
-          3603: (
-            /***/
-            function(module2, __unused_webpack_exports, __webpack_require__2) {
-              "use strict";
-              var glslify = __webpack_require__2(3236);
-              var FRAGMENT = glslify(["precision lowp float;\n#define GLSLIFY 1\nuniform vec4 color;\nvoid main() {\n  gl_FragColor = vec4(color.xyz * color.w, color.w);\n}\n"]);
-              module2.exports = {
-                lineVert: glslify(["precision mediump float;\n#define GLSLIFY 1\n\nattribute vec2 coord;\n\nuniform vec4 screenBox;\nuniform vec2 start, end;\nuniform float width;\n\nvec2 perp(vec2 v) {\n  return vec2(v.y, -v.x);\n}\n\nvec2 screen(vec2 v) {\n  return 2.0 * (v - screenBox.xy) / (screenBox.zw - screenBox.xy) - 1.0;\n}\n\nvoid main() {\n  vec2 delta = normalize(perp(start - end));\n  vec2 offset = mix(start, end, 0.5 * (coord.y+1.0));\n  gl_Position = vec4(screen(offset + 0.5 * width * delta * coord.x), 0, 1);\n}\n"]),
-                lineFrag: FRAGMENT,
-                textVert: glslify(["#define GLSLIFY 1\nattribute vec3 textCoordinate;\n\nuniform vec2 dataScale, dataShift, dataAxis, screenOffset, textScale;\nuniform float angle;\n\nvoid main() {\n  float dataOffset  = textCoordinate.z;\n  vec2 glyphOffset  = textCoordinate.xy;\n  mat2 glyphMatrix = mat2(cos(angle), sin(angle), -sin(angle), cos(angle));\n  vec2 screenCoordinate = dataAxis * (dataScale * dataOffset + dataShift) +\n    glyphMatrix * glyphOffset * textScale + screenOffset;\n  gl_Position = vec4(screenCoordinate, 0, 1);\n}\n"]),
-                textFrag: FRAGMENT,
-                gridVert: glslify(["precision mediump float;\n#define GLSLIFY 1\n\nattribute vec3 dataCoord;\n\nuniform vec2 dataAxis, dataShift, dataScale;\nuniform float lineWidth;\n\nvoid main() {\n  vec2 pos = dataAxis * (dataScale * dataCoord.x + dataShift);\n  pos += 10.0 * dataCoord.y * vec2(dataAxis.y, -dataAxis.x) + dataCoord.z * lineWidth;\n  gl_Position = vec4(pos, 0, 1);\n}\n"]),
-                gridFrag: FRAGMENT,
-                boxVert: glslify(["precision mediump float;\n#define GLSLIFY 1\n\nattribute vec2 coord;\n\nuniform vec4 screenBox;\nuniform vec2 lo, hi;\n\nvec2 screen(vec2 v) {\n  return 2.0 * (v - screenBox.xy) / (screenBox.zw - screenBox.xy) - 1.0;\n}\n\nvoid main() {\n  gl_Position = vec4(screen(mix(lo, hi, coord)), 0, 1);\n}\n"]),
-                tickVert: glslify(["precision mediump float;\n#define GLSLIFY 1\n\nattribute vec3 dataCoord;\n\nuniform vec2 dataAxis, dataShift, dataScale, screenOffset, tickScale;\n\nvoid main() {\n  vec2 pos = dataAxis * (dataScale * dataCoord.x + dataShift);\n  gl_Position = vec4(pos + tickScale*dataCoord.yz + screenOffset, 0, 1);\n}\n"])
-              };
-            }
-          ),
-          /***/
-          2142: (
-            /***/
-            function(module2, __unused_webpack_exports, __webpack_require__2) {
-              "use strict";
-              module2.exports = createTextElements;
-              var createBuffer = __webpack_require__2(2762);
-              var createShader = __webpack_require__2(9405);
-              var getText = __webpack_require__2(529);
-              var bsearch = __webpack_require__2(2478);
-              var shaders = __webpack_require__2(3603);
-              function TextElements(plot, vbo, shader) {
-                this.plot = plot;
-                this.vbo = vbo;
-                this.shader = shader;
-                this.tickOffset = [[], []];
-                this.tickX = [[], []];
-                this.labelOffset = [0, 0];
-                this.labelCount = [0, 0];
-              }
-              var proto = TextElements.prototype;
-              proto.drawTicks = /* @__PURE__ */ function() {
-                var DATA_AXIS = [0, 0];
-                var SCREEN_OFFSET = [0, 0];
-                var ZERO_2 = [0, 0];
-                return function(axis) {
-                  var plot = this.plot;
-                  var shader = this.shader;
-                  var tickX = this.tickX[axis];
-                  var tickOffset = this.tickOffset[axis];
-                  var gl2 = plot.gl;
-                  var viewBox = plot.viewBox;
-                  var dataBox = plot.dataBox;
-                  var screenBox = plot.screenBox;
-                  var pixelRatio = plot.pixelRatio;
-                  var tickEnable = plot.tickEnable;
-                  var tickPad = plot.tickPad;
-                  var textColor = plot.tickColor;
-                  var textAngle = plot.tickAngle;
-                  var labelEnable = plot.labelEnable;
-                  var labelPad = plot.labelPad;
-                  var labelColor = plot.labelColor;
-                  var labelAngle = plot.labelAngle;
-                  var labelOffset = this.labelOffset[axis];
-                  var labelCount = this.labelCount[axis];
-                  var start = bsearch.lt(tickX, dataBox[axis]);
-                  var end = bsearch.le(tickX, dataBox[axis + 2]);
-                  DATA_AXIS[0] = DATA_AXIS[1] = 0;
-                  DATA_AXIS[axis] = 1;
-                  SCREEN_OFFSET[axis] = (viewBox[2 + axis] + viewBox[axis]) / (screenBox[2 + axis] - screenBox[axis]) - 1;
-                  var screenScale = 2 / screenBox[2 + (axis ^ 1)] - screenBox[axis ^ 1];
-                  SCREEN_OFFSET[axis ^ 1] = screenScale * viewBox[axis ^ 1] - 1;
-                  if (tickEnable[axis]) {
-                    SCREEN_OFFSET[axis ^ 1] -= screenScale * pixelRatio * tickPad[axis];
-                    if (start < end && tickOffset[end] > tickOffset[start]) {
-                      shader.uniforms.dataAxis = DATA_AXIS;
-                      shader.uniforms.screenOffset = SCREEN_OFFSET;
-                      shader.uniforms.color = textColor[axis];
-                      shader.uniforms.angle = textAngle[axis];
-                      gl2.drawArrays(
-                        gl2.TRIANGLES,
-                        tickOffset[start],
-                        tickOffset[end] - tickOffset[start]
-                      );
-                    }
-                  }
-                  if (labelEnable[axis] && labelCount) {
-                    SCREEN_OFFSET[axis ^ 1] -= screenScale * pixelRatio * labelPad[axis];
-                    shader.uniforms.dataAxis = ZERO_2;
-                    shader.uniforms.screenOffset = SCREEN_OFFSET;
-                    shader.uniforms.color = labelColor[axis];
-                    shader.uniforms.angle = labelAngle[axis];
-                    gl2.drawArrays(
-                      gl2.TRIANGLES,
-                      labelOffset,
-                      labelCount
-                    );
-                  }
-                  SCREEN_OFFSET[axis ^ 1] = screenScale * viewBox[2 + (axis ^ 1)] - 1;
-                  if (tickEnable[axis + 2]) {
-                    SCREEN_OFFSET[axis ^ 1] += screenScale * pixelRatio * tickPad[axis + 2];
-                    if (start < end && tickOffset[end] > tickOffset[start]) {
-                      shader.uniforms.dataAxis = DATA_AXIS;
-                      shader.uniforms.screenOffset = SCREEN_OFFSET;
-                      shader.uniforms.color = textColor[axis + 2];
-                      shader.uniforms.angle = textAngle[axis + 2];
-                      gl2.drawArrays(
-                        gl2.TRIANGLES,
-                        tickOffset[start],
-                        tickOffset[end] - tickOffset[start]
-                      );
-                    }
-                  }
-                  if (labelEnable[axis + 2] && labelCount) {
-                    SCREEN_OFFSET[axis ^ 1] += screenScale * pixelRatio * labelPad[axis + 2];
-                    shader.uniforms.dataAxis = ZERO_2;
-                    shader.uniforms.screenOffset = SCREEN_OFFSET;
-                    shader.uniforms.color = labelColor[axis + 2];
-                    shader.uniforms.angle = labelAngle[axis + 2];
-                    gl2.drawArrays(
-                      gl2.TRIANGLES,
-                      labelOffset,
-                      labelCount
-                    );
-                  }
-                };
-              }();
-              proto.drawTitle = /* @__PURE__ */ function() {
-                var DATA_AXIS = [0, 0];
-                var SCREEN_OFFSET = [0, 0];
-                return function() {
-                  var plot = this.plot;
-                  var shader = this.shader;
-                  var gl2 = plot.gl;
-                  var screenBox = plot.screenBox;
-                  var titleCenter = plot.titleCenter;
-                  var titleAngle = plot.titleAngle;
-                  var titleColor = plot.titleColor;
-                  var pixelRatio = plot.pixelRatio;
-                  if (!this.titleCount) {
-                    return;
-                  }
-                  for (var i = 0; i < 2; ++i) {
-                    SCREEN_OFFSET[i] = 2 * (titleCenter[i] * pixelRatio - screenBox[i]) / (screenBox[2 + i] - screenBox[i]) - 1;
-                  }
-                  shader.bind();
-                  shader.uniforms.dataAxis = DATA_AXIS;
-                  shader.uniforms.screenOffset = SCREEN_OFFSET;
-                  shader.uniforms.angle = titleAngle;
-                  shader.uniforms.color = titleColor;
-                  gl2.drawArrays(gl2.TRIANGLES, this.titleOffset, this.titleCount);
-                };
-              }();
-              proto.bind = /* @__PURE__ */ function() {
-                var DATA_SHIFT = [0, 0];
-                var DATA_SCALE = [0, 0];
-                var TEXT_SCALE = [0, 0];
-                return function() {
-                  var plot = this.plot;
-                  var shader = this.shader;
-                  var bounds = plot._tickBounds;
-                  var dataBox = plot.dataBox;
-                  var screenBox = plot.screenBox;
-                  var viewBox = plot.viewBox;
-                  shader.bind();
-                  for (var i = 0; i < 2; ++i) {
-                    var lo = bounds[i];
-                    var hi = bounds[i + 2];
-                    var boundScale = hi - lo;
-                    var dataCenter = 0.5 * (dataBox[i + 2] + dataBox[i]);
-                    var dataWidth = dataBox[i + 2] - dataBox[i];
-                    var viewLo = viewBox[i];
-                    var viewHi = viewBox[i + 2];
-                    var viewScale = viewHi - viewLo;
-                    var screenLo = screenBox[i];
-                    var screenHi = screenBox[i + 2];
-                    var screenScale = screenHi - screenLo;
-                    DATA_SCALE[i] = 2 * boundScale / dataWidth * viewScale / screenScale;
-                    DATA_SHIFT[i] = 2 * (lo - dataCenter) / dataWidth * viewScale / screenScale;
-                  }
-                  TEXT_SCALE[1] = 2 * plot.pixelRatio / (screenBox[3] - screenBox[1]);
-                  TEXT_SCALE[0] = TEXT_SCALE[1] * (screenBox[3] - screenBox[1]) / (screenBox[2] - screenBox[0]);
-                  shader.uniforms.dataScale = DATA_SCALE;
-                  shader.uniforms.dataShift = DATA_SHIFT;
-                  shader.uniforms.textScale = TEXT_SCALE;
-                  this.vbo.bind();
-                  shader.attributes.textCoordinate.pointer();
-                };
-              }();
-              proto.update = function(options) {
-                var vertices = [];
-                var axesTicks = options.ticks;
-                var bounds = options.bounds;
-                var i, j, k, data, scale, dimension;
-                for (dimension = 0; dimension < 2; ++dimension) {
-                  var offsets = [Math.floor(vertices.length / 3)], tickX = [-Infinity];
-                  var ticks = axesTicks[dimension];
-                  for (i = 0; i < ticks.length; ++i) {
-                    var tick = ticks[i];
-                    var x = tick.x;
-                    var text = tick.text;
-                    var font = tick.font || "sans-serif";
-                    var fontStyle = tick.fontStyle || "normal";
-                    var fontWeight = tick.fontWeight || "normal";
-                    var fontVariant = tick.fontVariant || "normal";
-                    scale = tick.fontSize || 12;
-                    var coordScale = 1 / (bounds[dimension + 2] - bounds[dimension]);
-                    var coordShift = bounds[dimension];
-                    var rows = text.split("\n");
-                    for (var r = 0; r < rows.length; r++) {
-                      data = getText(font, rows[r], {
-                        fontStyle,
-                        fontWeight,
-                        fontVariant
-                      }).data;
-                      for (j = 0; j < data.length; j += 2) {
-                        vertices.push(
-                          data[j] * scale,
-                          -data[j + 1] * scale - r * scale * 1.2,
-                          (x - coordShift) * coordScale
-                        );
-                      }
-                    }
-                    offsets.push(Math.floor(vertices.length / 3));
-                    tickX.push(x);
-                  }
-                  this.tickOffset[dimension] = offsets;
-                  this.tickX[dimension] = tickX;
-                }
-                for (dimension = 0; dimension < 2; ++dimension) {
-                  this.labelOffset[dimension] = Math.floor(vertices.length / 3);
-                  data = getText(options.labelFont[dimension], options.labels[dimension], {
-                    fontStyle: options.labelFontStyle[dimension],
-                    fontWeight: options.labelFontWeight[dimension],
-                    fontVariant: options.labelFontVariant[dimension],
-                    textAlign: "center"
-                  }).data;
-                  scale = options.labelSize[dimension];
-                  for (i = 0; i < data.length; i += 2) {
-                    vertices.push(data[i] * scale, -data[i + 1] * scale, 0);
-                  }
-                  this.labelCount[dimension] = Math.floor(vertices.length / 3) - this.labelOffset[dimension];
-                }
-                this.titleOffset = Math.floor(vertices.length / 3);
-                data = getText(options.titleFont, options.title, {
-                  fontStyle: options.titleFontStyle,
-                  fontWeight: options.titleFontWeight,
-                  fontVariant: options.titleFontVariant
-                }).data;
-                scale = options.titleSize;
-                for (i = 0; i < data.length; i += 2) {
-                  vertices.push(data[i] * scale, -data[i + 1] * scale, 0);
-                }
-                this.titleCount = Math.floor(vertices.length / 3) - this.titleOffset;
-                this.vbo.update(vertices);
-              };
-              proto.dispose = function() {
-                this.vbo.dispose();
-                this.shader.dispose();
-              };
-              function createTextElements(plot) {
-                var gl2 = plot.gl;
-                var vbo = createBuffer(gl2);
-                var shader = createShader(gl2, shaders.textVert, shaders.textFrag);
-                var text = new TextElements(plot, vbo, shader);
-                return text;
-              }
-            }
-          ),
-          /***/
-          1850: (
-            /***/
-            function(module2, __unused_webpack_exports, __webpack_require__2) {
-              "use strict";
-              module2.exports = createGLPlot2D;
-              var createPick = __webpack_require__2(3589);
-              var createGrid = __webpack_require__2(1913);
-              var createText = __webpack_require__2(2142);
-              var createLine = __webpack_require__2(4747);
-              var createBox = __webpack_require__2(8120);
-              function GLPlot2D(gl2, pickBuffer) {
-                this.gl = gl2;
-                this.pickBuffer = pickBuffer;
-                this.screenBox = [0, 0, gl2.drawingBufferWidth, gl2.drawingBufferHeight];
-                this.viewBox = [0, 0, 0, 0];
-                this.dataBox = [-10, -10, 10, 10];
-                this.gridLineEnable = [true, true];
-                this.gridLineWidth = [1, 1];
-                this.gridLineColor = [
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1]
-                ];
-                this.pixelRatio = 1;
-                this.tickMarkLength = [0, 0, 0, 0];
-                this.tickMarkWidth = [0, 0, 0, 0];
-                this.tickMarkColor = [
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1]
-                ];
-                this.tickPad = [15, 15, 15, 15];
-                this.tickAngle = [0, 0, 0, 0];
-                this.tickEnable = [true, true, true, true];
-                this.tickColor = [
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1]
-                ];
-                this.labelPad = [15, 15, 15, 15];
-                this.labelAngle = [0, Math.PI / 2, 0, 3 * Math.PI / 2];
-                this.labelEnable = [true, true, true, true];
-                this.labelColor = [
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1]
-                ];
-                this.titleCenter = [0, 0];
-                this.titleEnable = true;
-                this.titleAngle = 0;
-                this.titleColor = [0, 0, 0, 1];
-                this.borderColor = [0, 0, 0, 0];
-                this.backgroundColor = [0, 0, 0, 0];
-                this.zeroLineEnable = [true, true];
-                this.zeroLineWidth = [4, 4];
-                this.zeroLineColor = [[0, 0, 0, 1], [0, 0, 0, 1]];
-                this.borderLineEnable = [true, true, true, true];
-                this.borderLineWidth = [2, 2, 2, 2];
-                this.borderLineColor = [
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1]
-                ];
-                this.grid = null;
-                this.text = null;
-                this.line = null;
-                this.box = null;
-                this.objects = [];
-                this.overlays = [];
-                this._tickBounds = [Infinity, Infinity, -Infinity, -Infinity];
-                this.static = false;
-                this.dirty = false;
-                this.pickDirty = false;
-                this.pickDelay = 120;
-                this.pickRadius = 10;
-                this._pickTimeout = null;
-                this._drawPick = this.drawPick.bind(this);
-                this._depthCounter = 0;
-              }
-              var proto = GLPlot2D.prototype;
-              proto.setDirty = function() {
-                this.dirty = this.pickDirty = true;
-              };
-              proto.setOverlayDirty = function() {
-                this.dirty = true;
-              };
-              proto.nextDepthValue = function() {
-                return this._depthCounter++ / 65536;
-              };
-              function lerp(a, b, t) {
-                var s = 0.5 * (t + 1);
-                return Math.floor((1 - s) * a + s * b) | 0;
-              }
-              proto.draw = /* @__PURE__ */ function() {
-                var TICK_MARK_BOX = [0, 0, 0, 0];
-                return function() {
-                  var gl2 = this.gl;
-                  var screenBox = this.screenBox;
-                  var viewPixels = this.viewBox;
-                  var dataBox = this.dataBox;
-                  var pixelRatio = this.pixelRatio;
-                  var grid = this.grid;
-                  var line = this.line;
-                  var text = this.text;
-                  var objects = this.objects;
-                  this._depthCounter = 0;
-                  if (this.pickDirty) {
-                    if (this._pickTimeout) {
-                      clearTimeout(this._pickTimeout);
-                    }
-                    this.pickDirty = false;
-                    this._pickTimeout = setTimeout(this._drawPick, this.pickDelay);
-                  }
-                  if (!this.dirty) {
-                    return;
-                  }
-                  this.dirty = false;
-                  gl2.bindFramebuffer(gl2.FRAMEBUFFER, null);
-                  gl2.enable(gl2.SCISSOR_TEST);
-                  gl2.disable(gl2.DEPTH_TEST);
-                  gl2.depthFunc(gl2.LESS);
-                  gl2.depthMask(false);
-                  gl2.enable(gl2.BLEND);
-                  gl2.blendEquation(gl2.FUNC_ADD, gl2.FUNC_ADD);
-                  gl2.blendFunc(gl2.ONE, gl2.ONE_MINUS_SRC_ALPHA);
-                  if (this.borderColor) {
-                    gl2.scissor(
-                      screenBox[0],
-                      screenBox[1],
-                      screenBox[2] - screenBox[0],
-                      screenBox[3] - screenBox[1]
-                    );
-                    var borderColor = this.borderColor;
-                    gl2.clearColor(
-                      borderColor[0] * borderColor[3],
-                      borderColor[1] * borderColor[3],
-                      borderColor[2] * borderColor[3],
-                      borderColor[3]
-                    );
-                    gl2.clear(gl2.COLOR_BUFFER_BIT | gl2.DEPTH_BUFFER_BIT);
-                  }
-                  gl2.scissor(
-                    viewPixels[0],
-                    viewPixels[1],
-                    viewPixels[2] - viewPixels[0],
-                    viewPixels[3] - viewPixels[1]
-                  );
-                  gl2.viewport(
-                    viewPixels[0],
-                    viewPixels[1],
-                    viewPixels[2] - viewPixels[0],
-                    viewPixels[3] - viewPixels[1]
-                  );
-                  var backgroundColor = this.backgroundColor;
-                  gl2.clearColor(
-                    backgroundColor[0] * backgroundColor[3],
-                    backgroundColor[1] * backgroundColor[3],
-                    backgroundColor[2] * backgroundColor[3],
-                    backgroundColor[3]
-                  );
-                  gl2.clear(gl2.COLOR_BUFFER_BIT);
-                  grid.draw();
-                  var zeroLineEnable = this.zeroLineEnable;
-                  var zeroLineColor = this.zeroLineColor;
-                  var zeroLineWidth = this.zeroLineWidth;
-                  if (zeroLineEnable[0] || zeroLineEnable[1]) {
-                    line.bind();
-                    for (var i = 0; i < 2; ++i) {
-                      if (!zeroLineEnable[i] || !(dataBox[i] <= 0 && dataBox[i + 2] >= 0)) {
-                        continue;
-                      }
-                      var zeroIntercept = screenBox[i] - dataBox[i] * (screenBox[i + 2] - screenBox[i]) / (dataBox[i + 2] - dataBox[i]);
-                      if (i === 0) {
-                        line.drawLine(
-                          zeroIntercept,
-                          screenBox[1],
-                          zeroIntercept,
-                          screenBox[3],
-                          zeroLineWidth[i],
-                          zeroLineColor[i]
-                        );
-                      } else {
-                        line.drawLine(
-                          screenBox[0],
-                          zeroIntercept,
-                          screenBox[2],
-                          zeroIntercept,
-                          zeroLineWidth[i],
-                          zeroLineColor[i]
-                        );
-                      }
-                    }
-                  }
-                  for (var i = 0; i < objects.length; ++i) {
-                    objects[i].draw();
-                  }
-                  gl2.viewport(
-                    screenBox[0],
-                    screenBox[1],
-                    screenBox[2] - screenBox[0],
-                    screenBox[3] - screenBox[1]
-                  );
-                  gl2.scissor(
-                    screenBox[0],
-                    screenBox[1],
-                    screenBox[2] - screenBox[0],
-                    screenBox[3] - screenBox[1]
-                  );
-                  this.grid.drawTickMarks();
-                  line.bind();
-                  var borderLineEnable = this.borderLineEnable;
-                  var borderLineWidth = this.borderLineWidth;
-                  var borderLineColor = this.borderLineColor;
-                  if (borderLineEnable[1]) {
-                    line.drawLine(
-                      viewPixels[0],
-                      viewPixels[1] - 0.5 * borderLineWidth[1] * pixelRatio,
-                      viewPixels[0],
-                      viewPixels[3] + 0.5 * borderLineWidth[3] * pixelRatio,
-                      borderLineWidth[1],
-                      borderLineColor[1]
-                    );
-                  }
-                  if (borderLineEnable[0]) {
-                    line.drawLine(
-                      viewPixels[0] - 0.5 * borderLineWidth[0] * pixelRatio,
-                      viewPixels[1],
-                      viewPixels[2] + 0.5 * borderLineWidth[2] * pixelRatio,
-                      viewPixels[1],
-                      borderLineWidth[0],
-                      borderLineColor[0]
-                    );
-                  }
-                  if (borderLineEnable[3]) {
-                    line.drawLine(
-                      viewPixels[2],
-                      viewPixels[1] - 0.5 * borderLineWidth[1] * pixelRatio,
-                      viewPixels[2],
-                      viewPixels[3] + 0.5 * borderLineWidth[3] * pixelRatio,
-                      borderLineWidth[3],
-                      borderLineColor[3]
-                    );
-                  }
-                  if (borderLineEnable[2]) {
-                    line.drawLine(
-                      viewPixels[0] - 0.5 * borderLineWidth[0] * pixelRatio,
-                      viewPixels[3],
-                      viewPixels[2] + 0.5 * borderLineWidth[2] * pixelRatio,
-                      viewPixels[3],
-                      borderLineWidth[2],
-                      borderLineColor[2]
-                    );
-                  }
-                  text.bind();
-                  for (var i = 0; i < 2; ++i) {
-                    text.drawTicks(i);
-                  }
-                  if (this.titleEnable) {
-                    text.drawTitle();
-                  }
-                  var overlays = this.overlays;
-                  for (var i = 0; i < overlays.length; ++i) {
-                    overlays[i].draw();
-                  }
-                  gl2.disable(gl2.SCISSOR_TEST);
-                  gl2.disable(gl2.BLEND);
-                  gl2.depthMask(true);
-                };
-              }();
-              proto.drawPick = /* @__PURE__ */ function() {
-                return function() {
-                  if (this.static) return;
-                  var pickBuffer = this.pickBuffer;
-                  var gl2 = this.gl;
-                  this._pickTimeout = null;
-                  pickBuffer.begin();
-                  var pickOffset = 1;
-                  var objects = this.objects;
-                  for (var i = 0; i < objects.length; ++i) {
-                    pickOffset = objects[i].drawPick(pickOffset);
-                  }
-                  pickBuffer.end();
-                };
-              }();
-              proto.pick = /* @__PURE__ */ function() {
-                return function(x, y) {
-                  if (this.static) return;
-                  var pixelRatio = this.pixelRatio;
-                  var pickPixelRatio = this.pickPixelRatio;
-                  var viewBox = this.viewBox;
-                  var scrX = Math.round((x - viewBox[0] / pixelRatio) * pickPixelRatio) | 0;
-                  var scrY = Math.round((y - viewBox[1] / pixelRatio) * pickPixelRatio) | 0;
-                  var pickResult = this.pickBuffer.query(scrX, scrY, this.pickRadius);
-                  if (!pickResult) {
-                    return null;
-                  }
-                  var pickValue = pickResult.id + (pickResult.value[0] << 8) + (pickResult.value[1] << 16) + (pickResult.value[2] << 24);
-                  var objects = this.objects;
-                  for (var i = 0; i < objects.length; ++i) {
-                    var result = objects[i].pick(scrX, scrY, pickValue);
-                    if (result) {
-                      return result;
-                    }
-                  }
-                  return null;
-                };
-              }();
-              function deepClone(array) {
-                var result = array.slice();
-                for (var i = 0; i < result.length; ++i) {
-                  result[i] = result[i].slice();
-                }
-                return result;
-              }
-              function compareTicks(a, b) {
-                return a.x - b.x;
-              }
-              proto.setScreenBox = function(nbox) {
-                var screenBox = this.screenBox;
-                var pixelRatio = this.pixelRatio;
-                screenBox[0] = Math.round(nbox[0] * pixelRatio) | 0;
-                screenBox[1] = Math.round(nbox[1] * pixelRatio) | 0;
-                screenBox[2] = Math.round(nbox[2] * pixelRatio) | 0;
-                screenBox[3] = Math.round(nbox[3] * pixelRatio) | 0;
-                this.setDirty();
-              };
-              proto.setDataBox = function(nbox) {
-                var dataBox = this.dataBox;
-                var different = dataBox[0] !== nbox[0] || dataBox[1] !== nbox[1] || dataBox[2] !== nbox[2] || dataBox[3] !== nbox[3];
-                if (different) {
-                  dataBox[0] = nbox[0];
-                  dataBox[1] = nbox[1];
-                  dataBox[2] = nbox[2];
-                  dataBox[3] = nbox[3];
-                  this.setDirty();
-                }
-              };
-              proto.setViewBox = function(nbox) {
-                var pixelRatio = this.pixelRatio;
-                var viewBox = this.viewBox;
-                viewBox[0] = Math.round(nbox[0] * pixelRatio) | 0;
-                viewBox[1] = Math.round(nbox[1] * pixelRatio) | 0;
-                viewBox[2] = Math.round(nbox[2] * pixelRatio) | 0;
-                viewBox[3] = Math.round(nbox[3] * pixelRatio) | 0;
-                var pickPixelRatio = this.pickPixelRatio;
-                this.pickBuffer.shape = [
-                  Math.round((nbox[2] - nbox[0]) * pickPixelRatio) | 0,
-                  Math.round((nbox[3] - nbox[1]) * pickPixelRatio) | 0
-                ];
-                this.setDirty();
-              };
-              proto.update = function(options) {
-                options = options || {};
-                var gl2 = this.gl;
-                this.pixelRatio = options.pixelRatio || 1;
-                var pixelRatio = this.pixelRatio;
-                this.pickPixelRatio = Math.max(pixelRatio, 1);
-                this.setScreenBox(options.screenBox || [0, 0, gl2.drawingBufferWidth / pixelRatio, gl2.drawingBufferHeight / pixelRatio]);
-                var screenBox = this.screenBox;
-                this.setViewBox(options.viewBox || [
-                  0.125 * (this.screenBox[2] - this.screenBox[0]) / pixelRatio,
-                  0.125 * (this.screenBox[3] - this.screenBox[1]) / pixelRatio,
-                  0.875 * (this.screenBox[2] - this.screenBox[0]) / pixelRatio,
-                  0.875 * (this.screenBox[3] - this.screenBox[1]) / pixelRatio
-                ]);
-                var viewBox = this.viewBox;
-                var aspectRatio = (viewBox[2] - viewBox[0]) / (viewBox[3] - viewBox[1]);
-                this.setDataBox(options.dataBox || [-10, -10 / aspectRatio, 10, 10 / aspectRatio]);
-                this.borderColor = options.borderColor !== false ? (options.borderColor || [0, 0, 0, 0]).slice() : false;
-                this.backgroundColor = (options.backgroundColor || [0, 0, 0, 0]).slice();
-                this.gridLineEnable = (options.gridLineEnable || [true, true]).slice();
-                this.gridLineWidth = (options.gridLineWidth || [1, 1]).slice();
-                this.gridLineColor = deepClone(options.gridLineColor || [[0.5, 0.5, 0.5, 1], [0.5, 0.5, 0.5, 1]]);
-                this.zeroLineEnable = (options.zeroLineEnable || [true, true]).slice();
-                this.zeroLineWidth = (options.zeroLineWidth || [4, 4]).slice();
-                this.zeroLineColor = deepClone(options.zeroLineColor || [[0, 0, 0, 1], [0, 0, 0, 1]]);
-                this.tickMarkLength = (options.tickMarkLength || [0, 0, 0, 0]).slice();
-                this.tickMarkWidth = (options.tickMarkWidth || [0, 0, 0, 0]).slice();
-                this.tickMarkColor = deepClone(options.tickMarkColor || [[0, 0, 0, 1], [0, 0, 0, 1], [0, 0, 0, 1], [0, 0, 0, 1]]);
-                this.titleCenter = (options.titleCenter || [
-                  0.5 * (viewBox[0] + viewBox[2]) / pixelRatio,
-                  (viewBox[3] + 120) / pixelRatio
-                ]).slice();
-                this.titleEnable = !("titleEnable" in options) || !!options.titleEnable;
-                this.titleAngle = options.titleAngle || 0;
-                this.titleColor = (options.titleColor || [0, 0, 0, 1]).slice();
-                this.labelPad = (options.labelPad || [15, 15, 15, 15]).slice();
-                this.labelAngle = (options.labelAngle || [0, Math.PI / 2, 0, 3 * Math.PI / 2]).slice();
-                this.labelEnable = (options.labelEnable || [true, true, true, true]).slice();
-                this.labelColor = deepClone(options.labelColor || [[0, 0, 0, 1], [0, 0, 0, 1], [0, 0, 0, 1], [0, 0, 0, 1]]);
-                this.tickPad = (options.tickPad || [15, 15, 15, 15]).slice();
-                this.tickAngle = (options.tickAngle || [0, 0, 0, 0]).slice();
-                this.tickEnable = (options.tickEnable || [true, true, true, true]).slice();
-                this.tickColor = deepClone(options.tickColor || [[0, 0, 0, 1], [0, 0, 0, 1], [0, 0, 0, 1], [0, 0, 0, 1]]);
-                this.borderLineEnable = (options.borderLineEnable || [true, true, true, true]).slice();
-                this.borderLineWidth = (options.borderLineWidth || [2, 2, 2, 2]).slice();
-                this.borderLineColor = deepClone(options.borderLineColor || [
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1]
-                ]);
-                var ticks = options.ticks || [[], []];
-                var bounds = this._tickBounds;
-                bounds[0] = bounds[1] = Infinity;
-                bounds[2] = bounds[3] = -Infinity;
-                for (var i = 0; i < 2; ++i) {
-                  var axisTicks = ticks[i].slice(0);
-                  if (axisTicks.length === 0) {
-                    continue;
-                  }
-                  axisTicks.sort(compareTicks);
-                  bounds[i] = Math.min(bounds[i], axisTicks[0].x);
-                  bounds[i + 2] = Math.max(bounds[i + 2], axisTicks[axisTicks.length - 1].x);
-                }
-                this.grid.update({
-                  bounds,
-                  ticks
-                });
-                this.text.update({
-                  bounds,
-                  ticks,
-                  labels: options.labels || ["x", "y"],
-                  labelSize: options.labelSize || [12, 12],
-                  labelFont: options.labelFont || ["sans-serif", "sans-serif"],
-                  labelFontStyle: options.labelFontStyle || ["normal", "normal"],
-                  labelFontWeight: options.labelFontWeight || ["normal", "normal"],
-                  labelFontVariant: options.labelFontVariant || ["normal", "normal"],
-                  title: options.title || "",
-                  titleSize: options.titleSize || 18,
-                  titleFont: options.titleFont || "sans-serif",
-                  titleFontStyle: options.titleFontStyle || "normal",
-                  titleFontWeight: options.titleFontWeight || "normal",
-                  titleFontVariant: options.titleFontVariant || "normal"
-                });
-                this.static = !!options.static;
-                this.setDirty();
-              };
-              proto.dispose = function() {
-                this.box.dispose();
-                this.grid.dispose();
-                this.text.dispose();
-                this.line.dispose();
-                for (var i = this.objects.length - 1; i >= 0; --i) {
-                  this.objects[i].dispose();
-                }
-                this.objects.length = 0;
-                for (var i = this.overlays.length - 1; i >= 0; --i) {
-                  this.overlays[i].dispose();
-                }
-                this.overlays.length = 0;
-                this.gl = null;
-              };
-              proto.addObject = function(object) {
-                if (this.objects.indexOf(object) < 0) {
-                  this.objects.push(object);
-                  this.setDirty();
-                }
-              };
-              proto.removeObject = function(object) {
-                var objects = this.objects;
-                for (var i = 0; i < objects.length; ++i) {
-                  if (objects[i] === object) {
-                    objects.splice(i, 1);
-                    this.setDirty();
-                    break;
-                  }
-                }
-              };
-              proto.addOverlay = function(object) {
-                if (this.overlays.indexOf(object) < 0) {
-                  this.overlays.push(object);
-                  this.setOverlayDirty();
-                }
-              };
-              proto.removeOverlay = function(object) {
-                var objects = this.overlays;
-                for (var i = 0; i < objects.length; ++i) {
-                  if (objects[i] === object) {
-                    objects.splice(i, 1);
-                    this.setOverlayDirty();
-                    break;
-                  }
-                }
-              };
-              function createGLPlot2D(options) {
-                var gl2 = options.gl;
-                var pickBuffer = createPick(gl2, [
-                  gl2.drawingBufferWidth,
-                  gl2.drawingBufferHeight
-                ]);
-                var plot = new GLPlot2D(gl2, pickBuffer);
-                plot.grid = createGrid(plot);
-                plot.text = createText(plot);
-                plot.line = createLine(plot);
-                plot.box = createBox(plot);
-                plot.update(options);
-                return plot;
-              }
-            }
-          ),
-          /***/
           4437: (
             /***/
             function(module2, __unused_webpack_exports, __webpack_require__2) {
@@ -77682,197 +75822,6 @@ var Plotly = (() => {
             }
           ),
           /***/
-          6640: (
-            /***/
-            function(__unused_webpack_module, exports2, __webpack_require__2) {
-              var glslify = __webpack_require__2(3236);
-              exports2.pointVertex = glslify(["precision mediump float;\n#define GLSLIFY 1\n\nattribute vec2 position;\n\nuniform mat3 matrix;\nuniform float pointSize;\nuniform float pointCloud;\n\nhighp float rand(vec2 co) {\n  highp float a = 12.9898;\n  highp float b = 78.233;\n  highp float c = 43758.5453;\n  highp float d = dot(co.xy, vec2(a, b));\n  highp float e = mod(d, 3.14);\n  return fract(sin(e) * c);\n}\n\nvoid main() {\n  vec3 hgPosition = matrix * vec3(position, 1);\n  gl_Position  = vec4(hgPosition.xy, 0, hgPosition.z);\n    // if we don't jitter the point size a bit, overall point cloud\n    // saturation 'jumps' on zooming, which is disturbing and confusing\n  gl_PointSize = pointSize * ((19.5 + rand(position)) / 20.0);\n  if(pointCloud != 0.0) { // pointCloud is truthy\n    // get the same square surface as circle would be\n    gl_PointSize *= 0.886;\n  }\n}"]);
-              exports2.pointFragment = glslify(["precision mediump float;\n#define GLSLIFY 1\n\nuniform vec4 color, borderColor;\nuniform float centerFraction;\nuniform float pointCloud;\n\nvoid main() {\n  float radius;\n  vec4 baseColor;\n  if(pointCloud != 0.0) { // pointCloud is truthy\n    if(centerFraction == 1.0) {\n      gl_FragColor = color;\n    } else {\n      gl_FragColor = mix(borderColor, color, centerFraction);\n    }\n  } else {\n    radius = length(2.0 * gl_PointCoord.xy - 1.0);\n    if(radius > 1.0) {\n      discard;\n    }\n    baseColor = mix(borderColor, color, step(radius, centerFraction));\n    gl_FragColor = vec4(baseColor.rgb * baseColor.a, baseColor.a);\n  }\n}\n"]);
-              exports2.pickVertex = glslify(["precision mediump float;\n#define GLSLIFY 1\n\nattribute vec2 position;\nattribute vec4 pickId;\n\nuniform mat3 matrix;\nuniform float pointSize;\nuniform vec4 pickOffset;\n\nvarying vec4 fragId;\n\nvoid main() {\n  vec3 hgPosition = matrix * vec3(position, 1);\n  gl_Position  = vec4(hgPosition.xy, 0, hgPosition.z);\n  gl_PointSize = pointSize;\n\n  vec4 id = pickId + pickOffset;\n  id.y += floor(id.x / 256.0);\n  id.x -= floor(id.x / 256.0) * 256.0;\n\n  id.z += floor(id.y / 256.0);\n  id.y -= floor(id.y / 256.0) * 256.0;\n\n  id.w += floor(id.z / 256.0);\n  id.z -= floor(id.z / 256.0) * 256.0;\n\n  fragId = id;\n}\n"]);
-              exports2.pickFragment = glslify(["precision mediump float;\n#define GLSLIFY 1\n\nvarying vec4 fragId;\n\nvoid main() {\n  float radius = length(2.0 * gl_PointCoord.xy - 1.0);\n  if(radius > 1.0) {\n    discard;\n  }\n  gl_FragColor = fragId / 255.0;\n}\n"]);
-            }
-          ),
-          /***/
-          4696: (
-            /***/
-            function(module2, __unused_webpack_exports, __webpack_require__2) {
-              "use strict";
-              var createShader = __webpack_require__2(9405);
-              var createBuffer = __webpack_require__2(2762);
-              var pool = __webpack_require__2(1888);
-              var SHADERS = __webpack_require__2(6640);
-              module2.exports = createPointcloud2D;
-              function Pointcloud2D(plot, offsetBuffer, pickBuffer, shader, pickShader) {
-                this.plot = plot;
-                this.offsetBuffer = offsetBuffer;
-                this.pickBuffer = pickBuffer;
-                this.shader = shader;
-                this.pickShader = pickShader;
-                this.sizeMin = 0.5;
-                this.sizeMinCap = 2;
-                this.sizeMax = 20;
-                this.areaRatio = 1;
-                this.pointCount = 0;
-                this.color = [1, 0, 0, 1];
-                this.borderColor = [0, 0, 0, 1];
-                this.blend = false;
-                this.pickOffset = 0;
-                this.points = null;
-              }
-              var proto = Pointcloud2D.prototype;
-              proto.dispose = function() {
-                this.shader.dispose();
-                this.pickShader.dispose();
-                this.offsetBuffer.dispose();
-                this.pickBuffer.dispose();
-                this.plot.removeObject(this);
-              };
-              proto.update = function(options) {
-                var i;
-                options = options || {};
-                function dflt(opt, value) {
-                  if (opt in options) {
-                    return options[opt];
-                  }
-                  return value;
-                }
-                this.sizeMin = dflt("sizeMin", 0.5);
-                this.sizeMax = dflt("sizeMax", 20);
-                this.color = dflt("color", [1, 0, 0, 1]).slice();
-                this.areaRatio = dflt("areaRatio", 1);
-                this.borderColor = dflt("borderColor", [0, 0, 0, 1]).slice();
-                this.blend = dflt("blend", false);
-                var pointCount = options.positions.length >>> 1;
-                var dataStraightThrough = options.positions instanceof Float32Array;
-                var idStraightThrough = options.idToIndex instanceof Int32Array && options.idToIndex.length >= pointCount;
-                var data = options.positions;
-                var packed = dataStraightThrough ? data : pool.mallocFloat32(data.length);
-                var packedId = idStraightThrough ? options.idToIndex : pool.mallocInt32(pointCount);
-                if (!dataStraightThrough) {
-                  packed.set(data);
-                }
-                if (!idStraightThrough) {
-                  packed.set(data);
-                  for (i = 0; i < pointCount; i++) {
-                    packedId[i] = i;
-                  }
-                }
-                this.points = data;
-                this.offsetBuffer.update(packed);
-                this.pickBuffer.update(packedId);
-                if (!dataStraightThrough) {
-                  pool.free(packed);
-                }
-                if (!idStraightThrough) {
-                  pool.free(packedId);
-                }
-                this.pointCount = pointCount;
-                this.pickOffset = 0;
-              };
-              function count(points, dataBox) {
-                var visiblePointCountEstimate = 0;
-                var length = points.length >>> 1;
-                var i;
-                for (i = 0; i < length; i++) {
-                  var x = points[i * 2];
-                  var y = points[i * 2 + 1];
-                  if (x >= dataBox[0] && x <= dataBox[2] && y >= dataBox[1] && y <= dataBox[3])
-                    visiblePointCountEstimate++;
-                }
-                return visiblePointCountEstimate;
-              }
-              proto.unifiedDraw = /* @__PURE__ */ function() {
-                var MATRIX = [
-                  1,
-                  0,
-                  0,
-                  0,
-                  1,
-                  0,
-                  0,
-                  0,
-                  1
-                ];
-                var PICK_VEC4 = [0, 0, 0, 0];
-                return function(pickOffset) {
-                  var pick = pickOffset !== void 0;
-                  var shader = pick ? this.pickShader : this.shader;
-                  var gl2 = this.plot.gl;
-                  var dataBox = this.plot.dataBox;
-                  if (this.pointCount === 0) {
-                    return pickOffset;
-                  }
-                  var dataX = dataBox[2] - dataBox[0];
-                  var dataY = dataBox[3] - dataBox[1];
-                  var visiblePointCountEstimate = count(this.points, dataBox);
-                  var basicPointSize = this.plot.pickPixelRatio * Math.max(Math.min(this.sizeMinCap, this.sizeMin), Math.min(this.sizeMax, this.sizeMax / Math.pow(visiblePointCountEstimate, 0.33333)));
-                  MATRIX[0] = 2 / dataX;
-                  MATRIX[4] = 2 / dataY;
-                  MATRIX[6] = -2 * dataBox[0] / dataX - 1;
-                  MATRIX[7] = -2 * dataBox[1] / dataY - 1;
-                  this.offsetBuffer.bind();
-                  shader.bind();
-                  shader.attributes.position.pointer();
-                  shader.uniforms.matrix = MATRIX;
-                  shader.uniforms.color = this.color;
-                  shader.uniforms.borderColor = this.borderColor;
-                  shader.uniforms.pointCloud = basicPointSize < 5;
-                  shader.uniforms.pointSize = basicPointSize;
-                  shader.uniforms.centerFraction = Math.min(1, Math.max(0, Math.sqrt(1 - this.areaRatio)));
-                  if (pick) {
-                    PICK_VEC4[0] = pickOffset & 255;
-                    PICK_VEC4[1] = pickOffset >> 8 & 255;
-                    PICK_VEC4[2] = pickOffset >> 16 & 255;
-                    PICK_VEC4[3] = pickOffset >> 24 & 255;
-                    this.pickBuffer.bind();
-                    shader.attributes.pickId.pointer(gl2.UNSIGNED_BYTE);
-                    shader.uniforms.pickOffset = PICK_VEC4;
-                    this.pickOffset = pickOffset;
-                  }
-                  var blend = gl2.getParameter(gl2.BLEND);
-                  var dither = gl2.getParameter(gl2.DITHER);
-                  if (blend && !this.blend)
-                    gl2.disable(gl2.BLEND);
-                  if (dither)
-                    gl2.disable(gl2.DITHER);
-                  gl2.drawArrays(gl2.POINTS, 0, this.pointCount);
-                  if (blend && !this.blend)
-                    gl2.enable(gl2.BLEND);
-                  if (dither)
-                    gl2.enable(gl2.DITHER);
-                  return pickOffset + this.pointCount;
-                };
-              }();
-              proto.draw = proto.unifiedDraw;
-              proto.drawPick = proto.unifiedDraw;
-              proto.pick = function(x, y, value) {
-                var pickOffset = this.pickOffset;
-                var pointCount = this.pointCount;
-                if (value < pickOffset || value >= pickOffset + pointCount) {
-                  return null;
-                }
-                var pointId = value - pickOffset;
-                var points = this.points;
-                return {
-                  object: this,
-                  pointId,
-                  dataCoord: [points[2 * pointId], points[2 * pointId + 1]]
-                };
-              };
-              function createPointcloud2D(plot, options) {
-                var gl2 = plot.gl;
-                var buffer = createBuffer(gl2);
-                var pickBuffer = createBuffer(gl2);
-                var shader = createShader(gl2, SHADERS.pointVertex, SHADERS.pointFragment);
-                var pickShader = createShader(gl2, SHADERS.pickVertex, SHADERS.pickFragment);
-                var result = new Pointcloud2D(plot, buffer, pickBuffer, shader, pickShader);
-                result.update(options);
-                plot.addObject(result);
-                return result;
-              }
-            }
-          ),
-          /***/
           783: (
             /***/
             function(module2) {
@@ -78788,122 +76737,6 @@ var Plotly = (() => {
                 );
                 pointCloud.update(options);
                 return pointCloud;
-              }
-            }
-          ),
-          /***/
-          4298: (
-            /***/
-            function(__unused_webpack_module, exports2, __webpack_require__2) {
-              "use strict";
-              var glslify = __webpack_require__2(3236);
-              exports2.boxVertex = glslify(["precision mediump float;\n#define GLSLIFY 1\n\nattribute vec2 vertex;\n\nuniform vec2 cornerA, cornerB;\n\nvoid main() {\n  gl_Position = vec4(mix(cornerA, cornerB, vertex), 0, 1);\n}\n"]);
-              exports2.boxFragment = glslify(["precision mediump float;\n#define GLSLIFY 1\n\nuniform vec4 color;\n\nvoid main() {\n  gl_FragColor = color;\n}\n"]);
-            }
-          ),
-          /***/
-          3161: (
-            /***/
-            function(module2, __unused_webpack_exports, __webpack_require__2) {
-              "use strict";
-              var createShader = __webpack_require__2(9405);
-              var createBuffer = __webpack_require__2(2762);
-              var SHADERS = __webpack_require__2(4298);
-              module2.exports = createSelectBox;
-              function SelectBox(plot, boxBuffer, boxShader) {
-                this.plot = plot;
-                this.boxBuffer = boxBuffer;
-                this.boxShader = boxShader;
-                this.enabled = true;
-                this.selectBox = [Infinity, Infinity, -Infinity, -Infinity];
-                this.borderColor = [0, 0, 0, 1];
-                this.innerFill = false;
-                this.innerColor = [0, 0, 0, 0.25];
-                this.outerFill = true;
-                this.outerColor = [0, 0, 0, 0.5];
-                this.borderWidth = 10;
-              }
-              var proto = SelectBox.prototype;
-              proto.draw = function() {
-                if (!this.enabled) {
-                  return;
-                }
-                var plot = this.plot;
-                var selectBox = this.selectBox;
-                var lineWidth = this.borderWidth;
-                var innerFill = this.innerFill;
-                var innerColor = this.innerColor;
-                var outerFill = this.outerFill;
-                var outerColor = this.outerColor;
-                var borderColor = this.borderColor;
-                var boxes = plot.box;
-                var screenBox = plot.screenBox;
-                var dataBox = plot.dataBox;
-                var viewBox = plot.viewBox;
-                var pixelRatio = plot.pixelRatio;
-                var loX = (selectBox[0] - dataBox[0]) * (viewBox[2] - viewBox[0]) / (dataBox[2] - dataBox[0]) + viewBox[0];
-                var loY = (selectBox[1] - dataBox[1]) * (viewBox[3] - viewBox[1]) / (dataBox[3] - dataBox[1]) + viewBox[1];
-                var hiX = (selectBox[2] - dataBox[0]) * (viewBox[2] - viewBox[0]) / (dataBox[2] - dataBox[0]) + viewBox[0];
-                var hiY = (selectBox[3] - dataBox[1]) * (viewBox[3] - viewBox[1]) / (dataBox[3] - dataBox[1]) + viewBox[1];
-                loX = Math.max(loX, viewBox[0]);
-                loY = Math.max(loY, viewBox[1]);
-                hiX = Math.min(hiX, viewBox[2]);
-                hiY = Math.min(hiY, viewBox[3]);
-                if (hiX < loX || hiY < loY) {
-                  return;
-                }
-                boxes.bind();
-                var screenWidth = screenBox[2] - screenBox[0];
-                var screenHeight = screenBox[3] - screenBox[1];
-                if (this.outerFill) {
-                  boxes.drawBox(0, 0, screenWidth, loY, outerColor);
-                  boxes.drawBox(0, loY, loX, hiY, outerColor);
-                  boxes.drawBox(0, hiY, screenWidth, screenHeight, outerColor);
-                  boxes.drawBox(hiX, loY, screenWidth, hiY, outerColor);
-                }
-                if (this.innerFill) {
-                  boxes.drawBox(loX, loY, hiX, hiY, innerColor);
-                }
-                if (lineWidth > 0) {
-                  var w = lineWidth * pixelRatio;
-                  boxes.drawBox(loX - w, loY - w, hiX + w, loY + w, borderColor);
-                  boxes.drawBox(loX - w, hiY - w, hiX + w, hiY + w, borderColor);
-                  boxes.drawBox(loX - w, loY - w, loX + w, hiY + w, borderColor);
-                  boxes.drawBox(hiX - w, loY - w, hiX + w, hiY + w, borderColor);
-                }
-              };
-              proto.update = function(options) {
-                options = options || {};
-                this.innerFill = !!options.innerFill;
-                this.outerFill = !!options.outerFill;
-                this.innerColor = (options.innerColor || [0, 0, 0, 0.5]).slice();
-                this.outerColor = (options.outerColor || [0, 0, 0, 0.5]).slice();
-                this.borderColor = (options.borderColor || [0, 0, 0, 1]).slice();
-                this.borderWidth = options.borderWidth || 0;
-                this.selectBox = (options.selectBox || this.selectBox).slice();
-              };
-              proto.dispose = function() {
-                this.boxBuffer.dispose();
-                this.boxShader.dispose();
-                this.plot.removeOverlay(this);
-              };
-              function createSelectBox(plot, options) {
-                var gl2 = plot.gl;
-                var buffer = createBuffer(gl2, [
-                  0,
-                  0,
-                  0,
-                  1,
-                  1,
-                  0,
-                  1,
-                  1
-                ]);
-                var shader = createShader(gl2, SHADERS.boxVertex, SHADERS.boxFragment);
-                var selectBox = new SelectBox(plot, buffer, shader);
-                selectBox.update(options);
-                plot.addOverlay(selectBox);
-                return selectBox;
               }
             }
           ),
@@ -79965,106 +77798,6 @@ var Plotly = (() => {
               }
               function createProgram(gl2, vref, fref, attribs, locations) {
                 return getCache(gl2).getProgram(vref, fref, attribs, locations);
-              }
-            }
-          ),
-          /***/
-          4098: (
-            /***/
-            function(module2) {
-              "use strict";
-              module2.exports = createSpikes2D;
-              function GLSpikes2D(plot) {
-                this.plot = plot;
-                this.enable = [true, true, false, false];
-                this.width = [1, 1, 1, 1];
-                this.color = [
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1]
-                ];
-                this.center = [Infinity, Infinity];
-              }
-              var proto = GLSpikes2D.prototype;
-              proto.update = function(options) {
-                options = options || {};
-                this.enable = (options.enable || [true, true, false, false]).slice();
-                this.width = (options.width || [1, 1, 1, 1]).slice();
-                this.color = (options.color || [
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1],
-                  [0, 0, 0, 1]
-                ]).map(function(x) {
-                  return x.slice();
-                });
-                this.center = (options.center || [Infinity, Infinity]).slice();
-                this.plot.setOverlayDirty();
-              };
-              proto.draw = function() {
-                var spikeEnable = this.enable;
-                var spikeWidth = this.width;
-                var spikeColor = this.color;
-                var spikeCenter = this.center;
-                var plot = this.plot;
-                var line = plot.line;
-                var dataBox = plot.dataBox;
-                var viewPixels = plot.viewBox;
-                line.bind();
-                if (dataBox[0] <= spikeCenter[0] && spikeCenter[0] <= dataBox[2] && dataBox[1] <= spikeCenter[1] && spikeCenter[1] <= dataBox[3]) {
-                  var centerX = viewPixels[0] + (spikeCenter[0] - dataBox[0]) / (dataBox[2] - dataBox[0]) * (viewPixels[2] - viewPixels[0]);
-                  var centerY = viewPixels[1] + (spikeCenter[1] - dataBox[1]) / (dataBox[3] - dataBox[1]) * (viewPixels[3] - viewPixels[1]);
-                  if (spikeEnable[0]) {
-                    line.drawLine(
-                      centerX,
-                      centerY,
-                      viewPixels[0],
-                      centerY,
-                      spikeWidth[0],
-                      spikeColor[0]
-                    );
-                  }
-                  if (spikeEnable[1]) {
-                    line.drawLine(
-                      centerX,
-                      centerY,
-                      centerX,
-                      viewPixels[1],
-                      spikeWidth[1],
-                      spikeColor[1]
-                    );
-                  }
-                  if (spikeEnable[2]) {
-                    line.drawLine(
-                      centerX,
-                      centerY,
-                      viewPixels[2],
-                      centerY,
-                      spikeWidth[2],
-                      spikeColor[2]
-                    );
-                  }
-                  if (spikeEnable[3]) {
-                    line.drawLine(
-                      centerX,
-                      centerY,
-                      centerX,
-                      viewPixels[3],
-                      spikeWidth[3],
-                      spikeColor[3]
-                    );
-                  }
-                }
-              };
-              proto.dispose = function() {
-                this.plot.removeOverlay(this);
-              };
-              function createSpikes2D(plot, options) {
-                var spikes = new GLSpikes2D(plot);
-                spikes.update(options);
-                plot.addOverlay(spikes);
-                return spikes;
               }
             }
           ),
@@ -85331,21 +83064,6 @@ var Plotly = (() => {
             }
           ),
           /***/
-          7762: (
-            /***/
-            function(module2) {
-              "use strict";
-              function iota(n) {
-                var result = new Array(n);
-                for (var i = 0; i < n; ++i) {
-                  result[i] = i;
-                }
-                return result;
-              }
-              module2.exports = iota;
-            }
-          ),
-          /***/
           9507: (
             /***/
             function(module2) {
@@ -85612,7 +83330,7 @@ var Plotly = (() => {
             }
           ),
           /***/
-          4192: (
+          1811: (
             /***/
             function(module2, __unused_webpack_exports, __webpack_require__2) {
               "use strict";
@@ -93361,109 +91079,6 @@ var Plotly = (() => {
             }
           ),
           /***/
-          529: (
-            /***/
-            function(module2, __unused_webpack_exports, __webpack_require__2) {
-              "use strict";
-              module2.exports = textGet;
-              var vectorizeText = __webpack_require__2(4359);
-              var globals = window || process.global || {};
-              var __TEXT_CACHE = globals.__TEXT_CACHE || {};
-              globals.__TEXT_CACHE = {};
-              function unwrap(mesh) {
-                var cells = mesh.cells;
-                var positions = mesh.positions;
-                var data = new Float32Array(cells.length * 6);
-                var ptr = 0;
-                var shapeX = 0;
-                for (var i = 0; i < cells.length; ++i) {
-                  var tri = cells[i];
-                  for (var j = 0; j < 3; ++j) {
-                    var point = positions[tri[j]];
-                    data[ptr++] = point[0];
-                    data[ptr++] = point[1] + 1.4;
-                    shapeX = Math.max(point[0], shapeX);
-                  }
-                }
-                return {
-                  data,
-                  shape: shapeX
-                };
-              }
-              function textGet(font, text, opts) {
-                var opts = opts || {};
-                var fontStyle = opts.fontStyle || "normal";
-                var fontWeight = opts.fontWeight || "normal";
-                var fontVariant = opts.fontVariant || "normal";
-                var fontKey = [
-                  fontStyle,
-                  fontWeight,
-                  fontVariant,
-                  font
-                ].join("_");
-                var fontcache = __TEXT_CACHE[fontKey];
-                if (!fontcache) {
-                  fontcache = __TEXT_CACHE[fontKey] = {
-                    " ": {
-                      data: new Float32Array(0),
-                      shape: 0.2
-                    }
-                  };
-                }
-                var mesh = fontcache[text];
-                if (!mesh) {
-                  if (text.length <= 1 || !/\d/.test(text)) {
-                    mesh = fontcache[text] = unwrap(vectorizeText(text, {
-                      triangles: true,
-                      font,
-                      fontStyle,
-                      fontWeight,
-                      fontVariant,
-                      textAlign: opts.textAlign || "left",
-                      textBaseline: "alphabetic",
-                      styletags: {
-                        breaklines: true,
-                        bolds: true,
-                        italics: true,
-                        subscripts: true,
-                        superscripts: true
-                      }
-                    }));
-                  } else {
-                    var parts = text.split(/(\d|\s)/);
-                    var buffer = new Array(parts.length);
-                    var bufferSize = 0;
-                    var shapeX = 0;
-                    for (var i = 0; i < parts.length; ++i) {
-                      buffer[i] = textGet(font, parts[i]);
-                      bufferSize += buffer[i].data.length;
-                      shapeX += buffer[i].shape;
-                      if (i > 0) {
-                        shapeX += 0.02;
-                      }
-                    }
-                    var data = new Float32Array(bufferSize);
-                    var ptr = 0;
-                    var xOffset = -0.5 * shapeX;
-                    for (var i = 0; i < buffer.length; ++i) {
-                      var bdata = buffer[i].data;
-                      for (var j = 0; j < bdata.length; j += 2) {
-                        data[ptr++] = bdata[j] + xOffset;
-                        data[ptr++] = bdata[j + 1];
-                      }
-                      xOffset += buffer[i].shape + 0.02;
-                    }
-                    mesh = fontcache[text] = {
-                      data,
-                      shape: shapeX
-                    };
-                  }
-                }
-                return mesh;
-              }
-            }
-          ),
-          /***/
           665: (
             /***/
             function(module2, __unused_webpack_exports, __webpack_require__2) {
@@ -97978,11 +95593,7 @@ var Plotly = (() => {
         gridwidth: axesAttrs.gridwidth,
         zeroline: axesAttrs.zeroline,
         zerolinecolor: axesAttrs.zerolinecolor,
-        zerolinewidth: axesAttrs.zerolinewidth,
-        _deprecated: {
-          title: axesAttrs._deprecated.title,
-          titlefont: axesAttrs._deprecated.titlefont
-        }
+        zerolinewidth: axesAttrs.zerolinewidth
       }, "plot", "from-root");
     }
   });
@@ -98090,13 +95701,7 @@ var Plotly = (() => {
           valType: "any",
           editType: "none"
         },
-        editType: "plot",
-        _deprecated: {
-          cameraposition: {
-            valType: "info_array",
-            editType: "camera"
-          }
-        }
+        editType: "plot"
       };
     }
   });
@@ -98637,17 +96242,11 @@ var Plotly = (() => {
             valType: "any",
             editType: "calc"
           },
-          _deprecated: {
-            zauto: extendFlat({}, colorScaleAttrs.zauto, {}),
-            zmin: extendFlat({}, colorScaleAttrs.zmin, {}),
-            zmax: extendFlat({}, colorScaleAttrs.zmax, {})
-          },
           hoverinfo: extendFlat({}, baseAttrs.hoverinfo),
           showlegend: extendFlat({}, baseAttrs.showlegend, { dflt: false })
         }
       ), "calc", "nested");
       attrs.x.editType = attrs.y.editType = attrs.z.editType = "calc+clearAxisTypes";
-      attrs.transforms = void 0;
     }
   });
 
@@ -98748,11 +96347,6 @@ var Plotly = (() => {
           coerce(contourDim + ".end");
           coerce(contourDim + ".size");
         }
-        if (!surfaceColor) {
-          mapLegacy(traceIn, "zmin", "cmin");
-          mapLegacy(traceIn, "zmax", "cmax");
-          mapLegacy(traceIn, "zauto", "cauto");
-        }
         colorscaleDefaults(
           traceIn,
           traceOut,
@@ -98773,11 +96367,6 @@ var Plotly = (() => {
           traceOut.opacityscale = createWave(1, MIN);
         } else if (!isValidScaleArray(opacityscale)) {
           traceOut.opacityscale = void 0;
-        }
-      }
-      function mapLegacy(traceIn, oldAttr, newAttr) {
-        if (oldAttr in traceIn && !(newAttr in traceIn)) {
-          traceIn[newAttr] = traceIn[oldAttr];
         }
       }
       module.exports = {
@@ -100020,8 +97609,7 @@ var Plotly = (() => {
           facecolor: {
             valType: "data_array",
             editType: "calc"
-          },
-          transforms: void 0
+          }
         },
         colorScaleAttrs("", {
           colorAttr: "`intensity`",
@@ -100216,7 +97804,6 @@ var Plotly = (() => {
       attrs.flatshading.dflt = true;
       attrs.lighting.facenormalsepsilon.dflt = 0;
       attrs.x.editType = attrs.y.editType = attrs.z.editType = attrs.value.editType = "calc+clearAxisTypes";
-      attrs.transforms = void 0;
     }
   });
 
@@ -101567,7 +99154,6 @@ var Plotly = (() => {
         }
       ), "calc", "nested");
       attrs.x.editType = attrs.y.editType = attrs.z.editType = attrs.value.editType = "calc+clearAxisTypes";
-      attrs.transforms = void 0;
     }
   });
 
@@ -102141,7 +99727,6 @@ var Plotly = (() => {
         flags: ["x", "y", "z", "u", "v", "w", "norm", "text", "name"],
         dflt: "x+y+z+norm+text+name"
       });
-      attrs.transforms = void 0;
       module.exports = attrs;
     }
   });
@@ -102506,7 +100091,6 @@ var Plotly = (() => {
         flags: ["x", "y", "z", "u", "v", "w", "norm", "divergence", "text", "name"],
         dflt: "x+y+z+norm+text+name"
       });
-      attrs.transforms = void 0;
       module.exports = attrs;
     }
   });
@@ -102766,894 +100350,6 @@ var Plotly = (() => {
     "lib/streamtube.js"(exports, module) {
       "use strict";
       module.exports = require_streamtube();
-    }
-  });
-
-  // src/transforms/helpers.js
-  var require_helpers12 = __commonJS({
-    "src/transforms/helpers.js"(exports) {
-      "use strict";
-      exports.pointsAccessorFunction = function(transforms, opts) {
-        var tr;
-        var prevIndexToPoints;
-        for (var i = 0; i < transforms.length; i++) {
-          tr = transforms[i];
-          if (tr === opts) break;
-          if (!tr._indexToPoints || tr.enabled === false) continue;
-          prevIndexToPoints = tr._indexToPoints;
-        }
-        var originalPointsAccessor = prevIndexToPoints ? function(i2) {
-          return prevIndexToPoints[i2];
-        } : function(i2) {
-          return [i2];
-        };
-        return originalPointsAccessor;
-      };
-    }
-  });
-
-  // src/transforms/aggregate.js
-  var require_aggregate = __commonJS({
-    "src/transforms/aggregate.js"(exports) {
-      "use strict";
-      var Axes = require_axes();
-      var Lib = require_lib();
-      var PlotSchema = require_plot_schema();
-      var pointsAccessorFunction = require_helpers12().pointsAccessorFunction;
-      var BADNUM = require_numerical().BADNUM;
-      exports.moduleType = "transform";
-      exports.name = "aggregate";
-      var attrs = exports.attributes = {
-        enabled: {
-          valType: "boolean",
-          dflt: true,
-          editType: "calc"
-        },
-        groups: {
-          // TODO: groupby should support string or array grouping this way too
-          // currently groupby only allows a grouping array
-          valType: "string",
-          strict: true,
-          noBlank: true,
-          arrayOk: true,
-          dflt: "x",
-          editType: "calc"
-        },
-        aggregations: {
-          _isLinkedToArray: "aggregation",
-          target: {
-            valType: "string",
-            editType: "calc"
-          },
-          func: {
-            valType: "enumerated",
-            values: ["count", "sum", "avg", "median", "mode", "rms", "stddev", "min", "max", "first", "last", "change", "range"],
-            dflt: "first",
-            editType: "calc"
-          },
-          funcmode: {
-            valType: "enumerated",
-            values: ["sample", "population"],
-            dflt: "sample",
-            editType: "calc"
-          },
-          enabled: {
-            valType: "boolean",
-            dflt: true,
-            editType: "calc"
-          },
-          editType: "calc"
-        },
-        editType: "calc"
-      };
-      var aggAttrs = attrs.aggregations;
-      exports.supplyDefaults = function(transformIn, traceOut) {
-        var transformOut = {};
-        var i;
-        function coerce(attr, dflt) {
-          return Lib.coerce(transformIn, transformOut, attrs, attr, dflt);
-        }
-        var enabled = coerce("enabled");
-        if (!enabled) return transformOut;
-        var arrayAttrArray = PlotSchema.findArrayAttributes(traceOut);
-        var arrayAttrs = {};
-        for (i = 0; i < arrayAttrArray.length; i++) arrayAttrs[arrayAttrArray[i]] = 1;
-        var groups = coerce("groups");
-        if (!Array.isArray(groups)) {
-          if (!arrayAttrs[groups]) {
-            transformOut.enabled = false;
-            return transformOut;
-          }
-          arrayAttrs[groups] = 0;
-        }
-        var aggregationsIn = transformIn.aggregations || [];
-        var aggregationsOut = transformOut.aggregations = new Array(aggregationsIn.length);
-        var aggregationOut;
-        function coercei(attr, dflt) {
-          return Lib.coerce(aggregationsIn[i], aggregationOut, aggAttrs, attr, dflt);
-        }
-        for (i = 0; i < aggregationsIn.length; i++) {
-          aggregationOut = { _index: i };
-          var target = coercei("target");
-          var func = coercei("func");
-          var enabledi = coercei("enabled");
-          if (enabledi && target && (arrayAttrs[target] || func === "count" && arrayAttrs[target] === void 0)) {
-            if (func === "stddev") coercei("funcmode");
-            arrayAttrs[target] = 0;
-            aggregationsOut[i] = aggregationOut;
-          } else aggregationsOut[i] = { enabled: false, _index: i };
-        }
-        for (i = 0; i < arrayAttrArray.length; i++) {
-          if (arrayAttrs[arrayAttrArray[i]]) {
-            aggregationsOut.push({
-              target: arrayAttrArray[i],
-              func: aggAttrs.func.dflt,
-              enabled: true,
-              _index: -1
-            });
-          }
-        }
-        return transformOut;
-      };
-      exports.calcTransform = function(gd, trace, opts) {
-        if (!opts.enabled) return;
-        var groups = opts.groups;
-        var groupArray = Lib.getTargetArray(trace, { target: groups });
-        if (!groupArray) return;
-        var i, vi, groupIndex, newGrouping;
-        var groupIndices = {};
-        var indexToPoints = {};
-        var groupings = [];
-        var originalPointsAccessor = pointsAccessorFunction(trace.transforms, opts);
-        var len = groupArray.length;
-        if (trace._length) len = Math.min(len, trace._length);
-        for (i = 0; i < len; i++) {
-          vi = groupArray[i];
-          groupIndex = groupIndices[vi];
-          if (groupIndex === void 0) {
-            groupIndices[vi] = groupings.length;
-            newGrouping = [i];
-            groupings.push(newGrouping);
-            indexToPoints[groupIndices[vi]] = originalPointsAccessor(i);
-          } else {
-            groupings[groupIndex].push(i);
-            indexToPoints[groupIndices[vi]] = (indexToPoints[groupIndices[vi]] || []).concat(originalPointsAccessor(i));
-          }
-        }
-        opts._indexToPoints = indexToPoints;
-        var aggregations = opts.aggregations;
-        for (i = 0; i < aggregations.length; i++) {
-          aggregateOneArray(gd, trace, groupings, aggregations[i]);
-        }
-        if (typeof groups === "string") {
-          aggregateOneArray(gd, trace, groupings, {
-            target: groups,
-            func: "first",
-            enabled: true
-          });
-        }
-        trace._length = groupings.length;
-      };
-      function aggregateOneArray(gd, trace, groupings, aggregation) {
-        if (!aggregation.enabled) return;
-        var attr = aggregation.target;
-        var targetNP = Lib.nestedProperty(trace, attr);
-        var arrayIn = targetNP.get();
-        var conversions = Axes.getDataConversions(gd, trace, attr, arrayIn);
-        var func = getAggregateFunction(aggregation, conversions);
-        var arrayOut = new Array(groupings.length);
-        for (var i = 0; i < groupings.length; i++) {
-          arrayOut[i] = func(arrayIn, groupings[i]);
-        }
-        targetNP.set(arrayOut);
-        if (aggregation.func === "count") {
-          Lib.pushUnique(trace._arrayAttrs, attr);
-        }
-      }
-      function getAggregateFunction(opts, conversions) {
-        var func = opts.func;
-        var d2c = conversions.d2c;
-        var c2d = conversions.c2d;
-        switch (func) {
-          // count, first, and last don't depend on anything about the data
-          // point back to pure functions for performance
-          case "count":
-            return count;
-          case "first":
-            return first;
-          case "last":
-            return last;
-          case "sum":
-            return function(array, indices) {
-              var total = 0;
-              for (var i = 0; i < indices.length; i++) {
-                var vi = d2c(array[indices[i]]);
-                if (vi !== BADNUM) total += vi;
-              }
-              return c2d(total);
-            };
-          case "avg":
-            return function(array, indices) {
-              var total = 0;
-              var cnt = 0;
-              for (var i = 0; i < indices.length; i++) {
-                var vi = d2c(array[indices[i]]);
-                if (vi !== BADNUM) {
-                  total += vi;
-                  cnt++;
-                }
-              }
-              return cnt ? c2d(total / cnt) : BADNUM;
-            };
-          case "min":
-            return function(array, indices) {
-              var out = Infinity;
-              for (var i = 0; i < indices.length; i++) {
-                var vi = d2c(array[indices[i]]);
-                if (vi !== BADNUM) out = Math.min(out, vi);
-              }
-              return out === Infinity ? BADNUM : c2d(out);
-            };
-          case "max":
-            return function(array, indices) {
-              var out = -Infinity;
-              for (var i = 0; i < indices.length; i++) {
-                var vi = d2c(array[indices[i]]);
-                if (vi !== BADNUM) out = Math.max(out, vi);
-              }
-              return out === -Infinity ? BADNUM : c2d(out);
-            };
-          case "range":
-            return function(array, indices) {
-              var min = Infinity;
-              var max = -Infinity;
-              for (var i = 0; i < indices.length; i++) {
-                var vi = d2c(array[indices[i]]);
-                if (vi !== BADNUM) {
-                  min = Math.min(min, vi);
-                  max = Math.max(max, vi);
-                }
-              }
-              return max === -Infinity || min === Infinity ? BADNUM : c2d(max - min);
-            };
-          case "change":
-            return function(array, indices) {
-              var first2 = d2c(array[indices[0]]);
-              var last2 = d2c(array[indices[indices.length - 1]]);
-              return first2 === BADNUM || last2 === BADNUM ? BADNUM : c2d(last2 - first2);
-            };
-          case "median":
-            return function(array, indices) {
-              var sortCalc = [];
-              for (var i = 0; i < indices.length; i++) {
-                var vi = d2c(array[indices[i]]);
-                if (vi !== BADNUM) sortCalc.push(vi);
-              }
-              if (!sortCalc.length) return BADNUM;
-              sortCalc.sort(Lib.sorterAsc);
-              var mid = (sortCalc.length - 1) / 2;
-              return c2d((sortCalc[Math.floor(mid)] + sortCalc[Math.ceil(mid)]) / 2);
-            };
-          case "mode":
-            return function(array, indices) {
-              var counts = {};
-              var maxCnt = 0;
-              var out = BADNUM;
-              for (var i = 0; i < indices.length; i++) {
-                var vi = d2c(array[indices[i]]);
-                if (vi !== BADNUM) {
-                  var counti = counts[vi] = (counts[vi] || 0) + 1;
-                  if (counti > maxCnt) {
-                    maxCnt = counti;
-                    out = vi;
-                  }
-                }
-              }
-              return maxCnt ? c2d(out) : BADNUM;
-            };
-          case "rms":
-            return function(array, indices) {
-              var total = 0;
-              var cnt = 0;
-              for (var i = 0; i < indices.length; i++) {
-                var vi = d2c(array[indices[i]]);
-                if (vi !== BADNUM) {
-                  total += vi * vi;
-                  cnt++;
-                }
-              }
-              return cnt ? c2d(Math.sqrt(total / cnt)) : BADNUM;
-            };
-          case "stddev":
-            return function(array, indices) {
-              var total = 0;
-              var total2 = 0;
-              var cnt = 1;
-              var v0 = BADNUM;
-              var i;
-              for (i = 0; i < indices.length && v0 === BADNUM; i++) {
-                v0 = d2c(array[indices[i]]);
-              }
-              if (v0 === BADNUM) return BADNUM;
-              for (; i < indices.length; i++) {
-                var vi = d2c(array[indices[i]]);
-                if (vi !== BADNUM) {
-                  var dv = vi - v0;
-                  total += dv;
-                  total2 += dv * dv;
-                  cnt++;
-                }
-              }
-              var norm = opts.funcmode === "sample" ? cnt - 1 : cnt;
-              if (!norm) return 0;
-              return Math.sqrt((total2 - total * total / cnt) / norm);
-            };
-        }
-      }
-      function count(array, indices) {
-        return indices.length;
-      }
-      function first(array, indices) {
-        return array[indices[0]];
-      }
-      function last(array, indices) {
-        return array[indices[indices.length - 1]];
-      }
-    }
-  });
-
-  // lib/aggregate.js
-  var require_aggregate2 = __commonJS({
-    "lib/aggregate.js"(exports, module) {
-      "use strict";
-      module.exports = require_aggregate();
-    }
-  });
-
-  // src/constants/filter_ops.js
-  var require_filter_ops = __commonJS({
-    "src/constants/filter_ops.js"(exports, module) {
-      "use strict";
-      module.exports = {
-        COMPARISON_OPS: ["=", "!=", "<", ">=", ">", "<="],
-        COMPARISON_OPS2: ["=", "<", ">=", ">", "<="],
-        INTERVAL_OPS: ["[]", "()", "[)", "(]", "][", ")(", "](", ")["],
-        SET_OPS: ["{}", "}{"],
-        CONSTRAINT_REDUCTION: {
-          // for contour constraints, open/closed endpoints are equivalent
-          "=": "=",
-          "<": "<",
-          "<=": "<",
-          ">": ">",
-          ">=": ">",
-          "[]": "[]",
-          "()": "[]",
-          "[)": "[]",
-          "(]": "[]",
-          "][": "][",
-          ")(": "][",
-          "](": "][",
-          ")[": "]["
-        }
-      };
-    }
-  });
-
-  // src/transforms/filter.js
-  var require_filter = __commonJS({
-    "src/transforms/filter.js"(exports) {
-      "use strict";
-      var Lib = require_lib();
-      var Registry = require_registry();
-      var Axes = require_axes();
-      var pointsAccessorFunction = require_helpers12().pointsAccessorFunction;
-      var filterOps = require_filter_ops();
-      var COMPARISON_OPS = filterOps.COMPARISON_OPS;
-      var INTERVAL_OPS = filterOps.INTERVAL_OPS;
-      var SET_OPS = filterOps.SET_OPS;
-      exports.moduleType = "transform";
-      exports.name = "filter";
-      exports.attributes = {
-        enabled: {
-          valType: "boolean",
-          dflt: true,
-          editType: "calc"
-        },
-        target: {
-          valType: "string",
-          strict: true,
-          noBlank: true,
-          arrayOk: true,
-          dflt: "x",
-          editType: "calc"
-        },
-        operation: {
-          valType: "enumerated",
-          values: [].concat(COMPARISON_OPS).concat(INTERVAL_OPS).concat(SET_OPS),
-          dflt: "=",
-          editType: "calc"
-        },
-        value: {
-          valType: "any",
-          dflt: 0,
-          editType: "calc"
-        },
-        preservegaps: {
-          valType: "boolean",
-          dflt: false,
-          editType: "calc"
-        },
-        editType: "calc"
-      };
-      exports.supplyDefaults = function(transformIn) {
-        var transformOut = {};
-        function coerce(attr, dflt) {
-          return Lib.coerce(transformIn, transformOut, exports.attributes, attr, dflt);
-        }
-        var enabled = coerce("enabled");
-        if (enabled) {
-          var target = coerce("target");
-          if (Lib.isArrayOrTypedArray(target) && target.length === 0) {
-            transformOut.enabled = false;
-            return transformOut;
-          }
-          coerce("preservegaps");
-          coerce("operation");
-          coerce("value");
-          var handleCalendarDefaults = Registry.getComponentMethod("calendars", "handleDefaults");
-          handleCalendarDefaults(transformIn, transformOut, "valuecalendar", null);
-          handleCalendarDefaults(transformIn, transformOut, "targetcalendar", null);
-        }
-        return transformOut;
-      };
-      exports.calcTransform = function(gd, trace, opts) {
-        if (!opts.enabled) return;
-        var targetArray = Lib.getTargetArray(trace, opts);
-        if (!targetArray) return;
-        var target = opts.target;
-        var len = targetArray.length;
-        if (trace._length) len = Math.min(len, trace._length);
-        var targetCalendar = opts.targetcalendar;
-        var arrayAttrs = trace._arrayAttrs;
-        var preservegaps = opts.preservegaps;
-        if (typeof target === "string") {
-          var attrTargetCalendar = Lib.nestedProperty(trace, target + "calendar").get();
-          if (attrTargetCalendar) targetCalendar = attrTargetCalendar;
-        }
-        var d2c = Axes.getDataToCoordFunc(gd, trace, target, targetArray);
-        var filterFunc = getFilterFunc(opts, d2c, targetCalendar);
-        var originalArrays = {};
-        var indexToPoints = {};
-        var index = 0;
-        function forAllAttrs(fn, index2) {
-          for (var j = 0; j < arrayAttrs.length; j++) {
-            var np = Lib.nestedProperty(trace, arrayAttrs[j]);
-            fn(np, index2);
-          }
-        }
-        var initFn;
-        var fillFn;
-        if (preservegaps) {
-          initFn = function(np) {
-            originalArrays[np.astr] = Lib.extendDeep([], np.get());
-            np.set(new Array(len));
-          };
-          fillFn = function(np, index2) {
-            var val = originalArrays[np.astr][index2];
-            np.get()[index2] = val;
-          };
-        } else {
-          initFn = function(np) {
-            originalArrays[np.astr] = Lib.extendDeep([], np.get());
-            np.set([]);
-          };
-          fillFn = function(np, index2) {
-            var val = originalArrays[np.astr][index2];
-            np.get().push(val);
-          };
-        }
-        forAllAttrs(initFn);
-        var originalPointsAccessor = pointsAccessorFunction(trace.transforms, opts);
-        for (var i = 0; i < len; i++) {
-          var passed = filterFunc(targetArray[i]);
-          if (passed) {
-            forAllAttrs(fillFn, i);
-            indexToPoints[index++] = originalPointsAccessor(i);
-          } else if (preservegaps) index++;
-        }
-        opts._indexToPoints = indexToPoints;
-        trace._length = index;
-      };
-      function getFilterFunc(opts, d2c, targetCalendar) {
-        var operation = opts.operation;
-        var value = opts.value;
-        var hasArrayValue = Lib.isArrayOrTypedArray(value);
-        function isOperationIn(array) {
-          return array.indexOf(operation) !== -1;
-        }
-        var d2cValue = function(v) {
-          return d2c(v, 0, opts.valuecalendar);
-        };
-        var d2cTarget = function(v) {
-          return d2c(v, 0, targetCalendar);
-        };
-        var coercedValue;
-        if (isOperationIn(COMPARISON_OPS)) {
-          coercedValue = hasArrayValue ? d2cValue(value[0]) : d2cValue(value);
-        } else if (isOperationIn(INTERVAL_OPS)) {
-          coercedValue = hasArrayValue ? [d2cValue(value[0]), d2cValue(value[1])] : [d2cValue(value), d2cValue(value)];
-        } else if (isOperationIn(SET_OPS)) {
-          coercedValue = hasArrayValue ? value.map(d2cValue) : [d2cValue(value)];
-        }
-        switch (operation) {
-          case "=":
-            return function(v) {
-              return d2cTarget(v) === coercedValue;
-            };
-          case "!=":
-            return function(v) {
-              return d2cTarget(v) !== coercedValue;
-            };
-          case "<":
-            return function(v) {
-              return d2cTarget(v) < coercedValue;
-            };
-          case "<=":
-            return function(v) {
-              return d2cTarget(v) <= coercedValue;
-            };
-          case ">":
-            return function(v) {
-              return d2cTarget(v) > coercedValue;
-            };
-          case ">=":
-            return function(v) {
-              return d2cTarget(v) >= coercedValue;
-            };
-          case "[]":
-            return function(v) {
-              var cv = d2cTarget(v);
-              return cv >= coercedValue[0] && cv <= coercedValue[1];
-            };
-          case "()":
-            return function(v) {
-              var cv = d2cTarget(v);
-              return cv > coercedValue[0] && cv < coercedValue[1];
-            };
-          case "[)":
-            return function(v) {
-              var cv = d2cTarget(v);
-              return cv >= coercedValue[0] && cv < coercedValue[1];
-            };
-          case "(]":
-            return function(v) {
-              var cv = d2cTarget(v);
-              return cv > coercedValue[0] && cv <= coercedValue[1];
-            };
-          case "][":
-            return function(v) {
-              var cv = d2cTarget(v);
-              return cv <= coercedValue[0] || cv >= coercedValue[1];
-            };
-          case ")(":
-            return function(v) {
-              var cv = d2cTarget(v);
-              return cv < coercedValue[0] || cv > coercedValue[1];
-            };
-          case "](":
-            return function(v) {
-              var cv = d2cTarget(v);
-              return cv <= coercedValue[0] || cv > coercedValue[1];
-            };
-          case ")[":
-            return function(v) {
-              var cv = d2cTarget(v);
-              return cv < coercedValue[0] || cv >= coercedValue[1];
-            };
-          case "{}":
-            return function(v) {
-              return coercedValue.indexOf(d2cTarget(v)) !== -1;
-            };
-          case "}{":
-            return function(v) {
-              return coercedValue.indexOf(d2cTarget(v)) === -1;
-            };
-        }
-      }
-    }
-  });
-
-  // lib/filter.js
-  var require_filter2 = __commonJS({
-    "lib/filter.js"(exports, module) {
-      "use strict";
-      module.exports = require_filter();
-    }
-  });
-
-  // src/transforms/groupby.js
-  var require_groupby = __commonJS({
-    "src/transforms/groupby.js"(exports) {
-      "use strict";
-      var Lib = require_lib();
-      var PlotSchema = require_plot_schema();
-      var Plots = require_plots();
-      var pointsAccessorFunction = require_helpers12().pointsAccessorFunction;
-      exports.moduleType = "transform";
-      exports.name = "groupby";
-      exports.attributes = {
-        enabled: {
-          valType: "boolean",
-          dflt: true,
-          editType: "calc"
-        },
-        groups: {
-          valType: "data_array",
-          dflt: [],
-          editType: "calc"
-        },
-        nameformat: {
-          valType: "string",
-          editType: "calc"
-        },
-        styles: {
-          _isLinkedToArray: "style",
-          target: {
-            valType: "string",
-            editType: "calc"
-          },
-          value: {
-            valType: "any",
-            dflt: {},
-            editType: "calc",
-            _compareAsJSON: true
-          },
-          editType: "calc"
-        },
-        editType: "calc"
-      };
-      exports.supplyDefaults = function(transformIn, traceOut, layout) {
-        var i;
-        var transformOut = {};
-        function coerce(attr, dflt) {
-          return Lib.coerce(transformIn, transformOut, exports.attributes, attr, dflt);
-        }
-        var enabled = coerce("enabled");
-        if (!enabled) return transformOut;
-        coerce("groups");
-        coerce("nameformat", layout._dataLength > 1 ? "%{group} (%{trace})" : "%{group}");
-        var styleIn = transformIn.styles;
-        var styleOut = transformOut.styles = [];
-        if (styleIn) {
-          for (i = 0; i < styleIn.length; i++) {
-            var thisStyle = styleOut[i] = {};
-            Lib.coerce(styleIn[i], styleOut[i], exports.attributes.styles, "target");
-            var value = Lib.coerce(styleIn[i], styleOut[i], exports.attributes.styles, "value");
-            if (Lib.isPlainObject(value)) thisStyle.value = Lib.extendDeep({}, value);
-            else if (value) delete thisStyle.value;
-          }
-        }
-        return transformOut;
-      };
-      exports.transform = function(data, state) {
-        var newTraces, i, j;
-        var newData = [];
-        for (i = 0; i < data.length; i++) {
-          newTraces = transformOne(data[i], state);
-          for (j = 0; j < newTraces.length; j++) {
-            newData.push(newTraces[j]);
-          }
-        }
-        return newData;
-      };
-      function transformOne(trace, state) {
-        var i, j, k, attr, srcArray, groupName, newTrace, transforms, arrayLookup;
-        var groupNameObj;
-        var opts = state.transform;
-        var transformIndex = state.transformIndex;
-        var groups = trace.transforms[transformIndex].groups;
-        var originalPointsAccessor = pointsAccessorFunction(trace.transforms, opts);
-        if (!Lib.isArrayOrTypedArray(groups) || groups.length === 0) {
-          return [trace];
-        }
-        var groupNames = Lib.filterUnique(groups);
-        var newData = new Array(groupNames.length);
-        var len = groups.length;
-        var arrayAttrs = PlotSchema.findArrayAttributes(trace);
-        var styles = opts.styles || [];
-        var styleLookup = {};
-        for (i = 0; i < styles.length; i++) {
-          styleLookup[styles[i].target] = styles[i].value;
-        }
-        if (opts.styles) {
-          groupNameObj = Lib.keyedContainer(opts, "styles", "target", "value.name");
-        }
-        var indexLookup = {};
-        var indexCnts = {};
-        for (i = 0; i < groupNames.length; i++) {
-          groupName = groupNames[i];
-          indexLookup[groupName] = i;
-          indexCnts[groupName] = 0;
-          newTrace = newData[i] = Lib.extendDeepNoArrays({}, trace);
-          newTrace._group = groupName;
-          newTrace.transforms[transformIndex]._indexToPoints = {};
-          var suppliedName = null;
-          if (groupNameObj) {
-            suppliedName = groupNameObj.get(groupName);
-          }
-          if (suppliedName || suppliedName === "") {
-            newTrace.name = suppliedName;
-          } else {
-            newTrace.name = Lib.templateString(opts.nameformat, {
-              trace: trace.name,
-              group: groupName
-            });
-          }
-          transforms = newTrace.transforms;
-          newTrace.transforms = [];
-          for (j = 0; j < transforms.length; j++) {
-            newTrace.transforms[j] = Lib.extendDeepNoArrays({}, transforms[j]);
-          }
-          for (j = 0; j < arrayAttrs.length; j++) {
-            Lib.nestedProperty(newTrace, arrayAttrs[j]).set([]);
-          }
-        }
-        for (k = 0; k < arrayAttrs.length; k++) {
-          attr = arrayAttrs[k];
-          for (j = 0, arrayLookup = []; j < groupNames.length; j++) {
-            arrayLookup[j] = Lib.nestedProperty(newData[j], attr).get();
-          }
-          srcArray = Lib.nestedProperty(trace, attr).get();
-          for (j = 0; j < len; j++) {
-            arrayLookup[indexLookup[groups[j]]].push(srcArray[j]);
-          }
-        }
-        for (j = 0; j < len; j++) {
-          newTrace = newData[indexLookup[groups[j]]];
-          var indexToPoints = newTrace.transforms[transformIndex]._indexToPoints;
-          indexToPoints[indexCnts[groups[j]]] = originalPointsAccessor(j);
-          indexCnts[groups[j]]++;
-        }
-        for (i = 0; i < groupNames.length; i++) {
-          groupName = groupNames[i];
-          newTrace = newData[i];
-          Plots.clearExpandedTraceDefaultColors(newTrace);
-          newTrace = Lib.extendDeepNoArrays(newTrace, styleLookup[groupName] || {});
-        }
-        return newData;
-      }
-    }
-  });
-
-  // lib/groupby.js
-  var require_groupby2 = __commonJS({
-    "lib/groupby.js"(exports, module) {
-      "use strict";
-      module.exports = require_groupby();
-    }
-  });
-
-  // src/transforms/sort.js
-  var require_sort = __commonJS({
-    "src/transforms/sort.js"(exports) {
-      "use strict";
-      var Lib = require_lib();
-      var Axes = require_axes();
-      var pointsAccessorFunction = require_helpers12().pointsAccessorFunction;
-      var BADNUM = require_numerical().BADNUM;
-      exports.moduleType = "transform";
-      exports.name = "sort";
-      exports.attributes = {
-        enabled: {
-          valType: "boolean",
-          dflt: true,
-          editType: "calc"
-        },
-        target: {
-          valType: "string",
-          strict: true,
-          noBlank: true,
-          arrayOk: true,
-          dflt: "x",
-          editType: "calc"
-        },
-        order: {
-          valType: "enumerated",
-          values: ["ascending", "descending"],
-          dflt: "ascending",
-          editType: "calc"
-        },
-        editType: "calc"
-      };
-      exports.supplyDefaults = function(transformIn) {
-        var transformOut = {};
-        function coerce(attr, dflt) {
-          return Lib.coerce(transformIn, transformOut, exports.attributes, attr, dflt);
-        }
-        var enabled = coerce("enabled");
-        if (enabled) {
-          coerce("target");
-          coerce("order");
-        }
-        return transformOut;
-      };
-      exports.calcTransform = function(gd, trace, opts) {
-        if (!opts.enabled) return;
-        var targetArray = Lib.getTargetArray(trace, opts);
-        if (!targetArray) return;
-        var target = opts.target;
-        var len = targetArray.length;
-        if (trace._length) len = Math.min(len, trace._length);
-        var arrayAttrs = trace._arrayAttrs;
-        var d2c = Axes.getDataToCoordFunc(gd, trace, target, targetArray);
-        var indices = getIndices(opts, targetArray, d2c, len);
-        var originalPointsAccessor = pointsAccessorFunction(trace.transforms, opts);
-        var indexToPoints = {};
-        var i, j;
-        for (i = 0; i < arrayAttrs.length; i++) {
-          var np = Lib.nestedProperty(trace, arrayAttrs[i]);
-          var arrayOld = np.get();
-          var arrayNew = new Array(len);
-          for (j = 0; j < len; j++) {
-            arrayNew[j] = arrayOld[indices[j]];
-          }
-          np.set(arrayNew);
-        }
-        for (j = 0; j < len; j++) {
-          indexToPoints[j] = originalPointsAccessor(indices[j]);
-        }
-        opts._indexToPoints = indexToPoints;
-        trace._length = len;
-      };
-      function getIndices(opts, targetArray, d2c, len) {
-        var sortedArray = new Array(len);
-        var indices = new Array(len);
-        var i;
-        for (i = 0; i < len; i++) {
-          sortedArray[i] = { v: targetArray[i], i };
-        }
-        sortedArray.sort(getSortFunc(opts, d2c));
-        for (i = 0; i < len; i++) {
-          indices[i] = sortedArray[i].i;
-        }
-        return indices;
-      }
-      function getSortFunc(opts, d2c) {
-        switch (opts.order) {
-          case "ascending":
-            return function(a, b) {
-              var ac = d2c(a.v);
-              var bc = d2c(b.v);
-              if (ac === BADNUM) {
-                return 1;
-              }
-              if (bc === BADNUM) {
-                return -1;
-              }
-              return ac - bc;
-            };
-          case "descending":
-            return function(a, b) {
-              var ac = d2c(a.v);
-              var bc = d2c(b.v);
-              if (ac === BADNUM) {
-                return 1;
-              }
-              if (bc === BADNUM) {
-                return -1;
-              }
-              return bc - ac;
-            };
-        }
-      }
-    }
-  });
-
-  // lib/sort.js
-  var require_sort2 = __commonJS({
-    "lib/sort.js"(exports, module) {
-      "use strict";
-      module.exports = require_sort();
     }
   });
 
@@ -111721,21 +108417,6 @@ var Plotly = (() => {
             polar: {
               radialaxis: { calendar: axisAttrs }
             }
-          },
-          transforms: {
-            filter: {
-              valuecalendar: makeAttrs([
-                "WARNING: All transforms are deprecated and may be removed from the API in next major version.",
-                "Sets the calendar system to use for `value`, if it is a date."
-              ].join(" ")),
-              targetcalendar: makeAttrs([
-                "WARNING: All transforms are deprecated and may be removed from the API in next major version.",
-                "Sets the calendar system to use for `target`, if it is an",
-                "array of dates. If `target` is a string (eg *x*) we use the",
-                "corresponding trace attribute (eg `xcalendar`) if it exists,",
-                "even if `targetcalendar` is provided."
-              ].join(" "))
-            }
           }
         },
         layoutAttributes: attributes,
@@ -111771,11 +108452,6 @@ var Plotly = (() => {
         require_mesh3d2(),
         require_cone2(),
         require_streamtube2(),
-        // transforms
-        require_aggregate2(),
-        require_filter2(),
-        require_groupby2(),
-        require_sort2(),
         // components
         require_calendars3()
       ]);
@@ -111832,8 +108508,6 @@ object-assign/index.js:
   *)
 */
 
-if (!(typeof define === "function" && define.amd)) {
- window.Plotly = Plotly;
-}
+window.Plotly = Plotly;
 return Plotly;
 }));
