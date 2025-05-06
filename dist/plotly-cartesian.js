@@ -1,6 +1,6 @@
 /**
 * plotly.js (cartesian) v2.35.2
-* Copyright 2012-2024, Plotly, Inc.
+* Copyright 2012-2025, Plotly, Inc.
 * All rights reserved.
 * Licensed under the MIT license
 */
@@ -54476,6 +54476,8 @@ var Plotly = (() => {
           if (d.source && d.source.slice(0, 5) === "data:") {
             thisImage.attr("xlink:href", d.source);
             this._imgSrc = d.source;
+          } else if (d.source && d.source.endsWith(".pmtiles")) {
+            this._imgSrc = d.source;
           } else {
             var imagePromise = new Promise(function(resolve) {
               var img2 = new Image();
@@ -54565,6 +54567,20 @@ var Plotly = (() => {
             clipAxes ? "clip" + fullLayout._uid + clipAxes : null,
             gd
           );
+          if ("escapeHatch" in d._input)
+            d._input.escapeHatch.call(this, {
+              d,
+              image: {
+                x: xPos,
+                y: yPos,
+                width,
+                height
+              },
+              axes: {
+                x: xa,
+                y: ya
+              }
+            });
         }
         var imagesBelow = fullLayout._imageLowerLayer.selectAll("image").data(imageDataBelow);
         var imagesAbove = fullLayout._imageUpperLayer.selectAll("image").data(imageDataAbove);
