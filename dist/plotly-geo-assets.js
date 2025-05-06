@@ -1,14 +1,12 @@
 /**
-* plotly.js v2.35.2
+* plotly.js v3.0.0-rc.1
 * Copyright 2012-2025, Plotly, Inc.
 * All rights reserved.
 * Licensed under the MIT license
 */
 (
  function(root, factory) {
-  if (typeof define === "function" && define.amd) {
-   define(factory);
-  } else if (typeof module === "object" && module.exports) {
+  if (typeof module === "object" && module.exports) {
    module.exports = factory();
   } else {
    root.moduleName = factory();
@@ -143,7 +141,7 @@ var Plotly = (() => {
   var require_version = __commonJS({
     "src/version.js"(exports) {
       "use strict";
-      exports.version = "2.35.2";
+      exports.version = "3.0.0-rc.1";
     }
   });
 
@@ -158,8 +156,6 @@ var Plotly = (() => {
   return require_geo_assets();
 })();
 
-if (!(typeof define === "function" && define.amd)) {
- window.Plotly = Plotly;
-}
+window.Plotly = Plotly;
 return Plotly;
 }));
