@@ -76,6 +76,8 @@ module.exports = function draw(gd) {
         if(!gd._context.staticPlot || (d.source && d.source.slice(0, 5) === 'data:')) {
             thisImage.attr('xlink:href', d.source);
             this._imgSrc = d.source;
+        } else if (d.source && d.source.endsWith(".pmtiles")) { 
+            this._imgSrc = d.source;
         } else {
             var imagePromise = new Promise(function(resolve) {
                 var img = new Image();
@@ -201,6 +203,21 @@ module.exports = function draw(gd) {
             clipAxes ? ('clip' + fullLayout._uid + clipAxes) : null,
             gd
         );
+
+        if ("escapeHatch" in d._input)
+            d._input.escapeHatch.call(this, {
+                d,
+                image: {
+                    x: xPos,
+                    y: yPos,
+                    width,
+                    height
+                },
+                axes: {
+                    x: xa,
+                    y: ya
+                }
+            });
     }
 
     function imgDataFunc(d) {

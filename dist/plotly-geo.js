@@ -1,6 +1,6 @@
 /**
 * plotly.js (geo) v3.0.0-rc.1
-* Copyright 2012-2024, Plotly, Inc.
+* Copyright 2012-2025, Plotly, Inc.
 * All rights reserved.
 * Licensed under the MIT license
 */
@@ -13734,10 +13734,10 @@ var Plotly = (() => {
     }
   });
 
-  // stylePlugin:/Users/ryanteoh/Code/console/web/lib/plotly.js/node_modules/maplibre-gl/dist/maplibre-gl.css
+  // stylePlugin:/Users/maximsmol/projects/latchbio/console/web/lib/plotly.js/node_modules/maplibre-gl/dist/maplibre-gl.css
   var maplibre_gl_exports = {};
   var init_maplibre_gl2 = __esm({
-    "stylePlugin:/Users/ryanteoh/Code/console/web/lib/plotly.js/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
+    "stylePlugin:/Users/maximsmol/projects/latchbio/console/web/lib/plotly.js/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
       init_maplibre_gl();
     }
   });
@@ -54032,6 +54032,8 @@ var Plotly = (() => {
           if (!gd._context.staticPlot || d.source && d.source.slice(0, 5) === "data:") {
             thisImage.attr("xlink:href", d.source);
             this._imgSrc = d.source;
+          } else if (d.source && d.source.endsWith(".pmtiles")) {
+            this._imgSrc = d.source;
           } else {
             var imagePromise = new Promise(function(resolve) {
               var img2 = new Image();
@@ -54121,6 +54123,20 @@ var Plotly = (() => {
             clipAxes ? "clip" + fullLayout._uid + clipAxes : null,
             gd
           );
+          if ("escapeHatch" in d._input)
+            d._input.escapeHatch.call(this, {
+              d,
+              image: {
+                x: xPos,
+                y: yPos,
+                width,
+                height
+              },
+              axes: {
+                x: xa,
+                y: ya
+              }
+            });
         }
         function imgDataFunc(d) {
           return [d.xref, d.x, d.sizex, d.yref, d.y, d.sizey].join("_");
