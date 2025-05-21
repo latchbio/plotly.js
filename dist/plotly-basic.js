@@ -3,8 +3,6 @@
 * Copyright 2012-2025, Plotly, Inc.
 * All rights reserved.
 * Licensed under the MIT license
-* @param root
-* @param factory
 */
 (
  function(root, factory) {
@@ -44,21 +42,21 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/native-promise-only/lib/npo.src.js
+  // node_modules/.pnpm/native-promise-only@0.8.1/node_modules/native-promise-only/lib/npo.src.js
   var require_npo_src = __commonJS({
-    "node_modules/native-promise-only/lib/npo.src.js"(exports, module) {
+    "node_modules/.pnpm/native-promise-only@0.8.1/node_modules/native-promise-only/lib/npo.src.js"(exports, module) {
       (function UMD(name, context, definition) {
         context[name] = context[name] || definition();
-        if (module !== undefined && module.exports) {
+        if (typeof module != "undefined" && module.exports) {
           module.exports = context[name];
-        } else if (typeof define === "function" && define.amd) {
+        } else if (typeof define == "function" && define.amd) {
           define(function $AMD$() {
             return context[name];
           });
         }
-      })("Promise", typeof window !== "undefined" ? window : exports, function DEF() {
+      })("Promise", typeof window != "undefined" ? window : exports, function DEF() {
         "use strict";
-        var builtInProp, cycle, scheduling_queue, ToString = Object.prototype.toString, timer = typeof setImmediate !== "undefined" ? function timer2(fn) {
+        var builtInProp, cycle, scheduling_queue, ToString = Object.prototype.toString, timer = typeof setImmediate != "undefined" ? function timer2(fn) {
           return setImmediate(fn);
         } : setTimeout;
         try {
@@ -70,7 +68,7 @@ var Plotly = (() => {
               configurable: config !== false
             });
           };
-        } catch {
+        } catch (err) {
           builtInProp = function builtInProp2(obj, name, val) {
             obj[name] = val;
             return obj;
@@ -115,7 +113,7 @@ var Plotly = (() => {
           if (o != null && (o_type == "object" || o_type == "function")) {
             _then = o.then;
           }
-          return typeof _then === "function" ? _then : false;
+          return typeof _then == "function" ? _then : false;
         }
         function notify() {
           for (var i = 0; i < this.chain.length; i++) {
@@ -146,8 +144,8 @@ var Plotly = (() => {
                 chain.resolve(ret);
               }
             }
-          } catch (error) {
-            chain.reject(error);
+          } catch (err) {
+            chain.reject(err);
           }
         }
         function resolve(msg) {
@@ -173,8 +171,8 @@ var Plotly = (() => {
                       reject.apply(def_wrapper, arguments);
                     }
                   );
-                } catch (error) {
-                  reject.call(def_wrapper, error);
+                } catch (err) {
+                  reject.call(def_wrapper, err);
                 }
               });
             } else {
@@ -184,8 +182,8 @@ var Plotly = (() => {
                 schedule(notify, self2);
               }
             }
-          } catch (error) {
-            reject.call(new MakeDefWrapper(self2), error);
+          } catch (err) {
+            reject.call(new MakeDefWrapper(self2), err);
           }
         }
         function reject(msg) {
@@ -227,22 +225,22 @@ var Plotly = (() => {
           this.msg = void 0;
         }
         function Promise2(executor) {
-          if (typeof executor !== "function") {
-            throw new TypeError("Not a function");
+          if (typeof executor != "function") {
+            throw TypeError("Not a function");
           }
           if (this.__NPO__ !== 0) {
-            throw new TypeError("Not a promise");
+            throw TypeError("Not a promise");
           }
           this.__NPO__ = 1;
           var def = new MakeDef(this);
           this["then"] = function then(success, failure) {
             var o = {
-              success: typeof success === "function" ? success : true,
-              failure: typeof failure === "function" ? failure : false
+              success: typeof success == "function" ? success : true,
+              failure: typeof failure == "function" ? failure : false
             };
             o.promise = new this.constructor(function extractChain(resolve2, reject2) {
-              if (typeof resolve2 !== "function" || typeof reject2 !== "function") {
-                throw new TypeError("Not a function");
+              if (typeof resolve2 != "function" || typeof reject2 != "function") {
+                throw TypeError("Not a function");
               }
               o.resolve = resolve2;
               o.reject = reject2;
@@ -266,8 +264,8 @@ var Plotly = (() => {
                 reject.call(def, msg);
               }
             );
-          } catch (error) {
-            reject.call(def, error);
+          } catch (err) {
+            reject.call(def, err);
           }
         }
         var PromisePrototype = builtInProp(
@@ -287,20 +285,20 @@ var Plotly = (() => {
         );
         builtInProp(Promise2, "resolve", function Promise$resolve(msg) {
           var Constructor = this;
-          if (msg && typeof msg === "object" && msg.__NPO__ === 1) {
+          if (msg && typeof msg == "object" && msg.__NPO__ === 1) {
             return msg;
           }
           return new Constructor(function executor(resolve2, reject2) {
-            if (typeof resolve2 !== "function" || typeof reject2 !== "function") {
-              throw new TypeError("Not a function");
+            if (typeof resolve2 != "function" || typeof reject2 != "function") {
+              throw TypeError("Not a function");
             }
             resolve2(msg);
           });
         });
         builtInProp(Promise2, "reject", function Promise$reject(msg) {
           return new this(function executor(resolve2, reject2) {
-            if (typeof resolve2 !== "function" || typeof reject2 !== "function") {
-              throw new TypeError("Not a function");
+            if (typeof resolve2 != "function" || typeof reject2 != "function") {
+              throw TypeError("Not a function");
             }
             reject2(msg);
           });
@@ -314,10 +312,10 @@ var Plotly = (() => {
             return Constructor.resolve([]);
           }
           return new Constructor(function executor(resolve2, reject2) {
-            if (typeof resolve2 !== "function" || typeof reject2 !== "function") {
-              throw new TypeError("Not a function");
+            if (typeof resolve2 != "function" || typeof reject2 != "function") {
+              throw TypeError("Not a function");
             }
-            var len = arr.length, msgs = new Array(len), count = 0;
+            var len = arr.length, msgs = Array(len), count = 0;
             iteratePromises(Constructor, arr, function resolver(idx, msg) {
               msgs[idx] = msg;
               if (++count === len) {
@@ -332,8 +330,8 @@ var Plotly = (() => {
             return Constructor.reject(TypeError("Not an array"));
           }
           return new Constructor(function executor(resolve2, reject2) {
-            if (typeof resolve2 !== "function" || typeof reject2 !== "function") {
-              throw new TypeError("Not a function");
+            if (typeof resolve2 != "function" || typeof reject2 != "function") {
+              throw TypeError("Not a function");
             }
             iteratePromises(Constructor, arr, function resolver(idx, msg) {
               resolve2(msg);
@@ -345,9 +343,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/@plotly/d3/d3.js
+  // node_modules/.pnpm/@plotly+d3@3.8.2/node_modules/@plotly/d3/d3.js
   var require_d3 = __commonJS({
-    "node_modules/@plotly/d3/d3.js"(exports, module) {
+    "node_modules/.pnpm/@plotly+d3@3.8.2/node_modules/@plotly/d3/d3.js"(exports, module) {
       !function() {
         var d3 = {
           version: "3.8.2"
@@ -365,7 +363,7 @@ var Plotly = (() => {
         if (d3_document) {
           try {
             d3_array(d3_document.documentElement.childNodes)[0].nodeType;
-          } catch {
+          } catch (e) {
             d3_array = function(list) {
               var i = list.length, array = new Array(i);
               while (i--) array[i] = list[i];
@@ -374,12 +372,12 @@ var Plotly = (() => {
           }
         }
         if (!Date.now) Date.now = function() {
-          return Date.now();
+          return +/* @__PURE__ */ new Date();
         };
         if (d3_document) {
           try {
             d3_document.createElement("DIV").style.setProperty("opacity", 0, "");
-          } catch {
+          } catch (error) {
             var d3_element_prototype = this.Element.prototype, d3_element_setAttribute = d3_element_prototype.setAttribute, d3_element_setAttributeNS = d3_element_prototype.setAttributeNS, d3_style_prototype = this.CSSStyleDeclaration.prototype, d3_style_setProperty = d3_style_prototype.setProperty;
             d3_element_prototype.setAttribute = function(name, value) {
               d3_element_setAttribute.call(this, name, value + "");
@@ -394,10 +392,10 @@ var Plotly = (() => {
         }
         d3.ascending = d3_ascending;
         function d3_ascending(a, b) {
-          return a < b ? -1 : a > b ? 1 : a >= b ? 0 : Number.NaN;
+          return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
         }
         d3.descending = function(a, b) {
-          return b < a ? -1 : b > a ? 1 : b >= a ? 0 : Number.NaN;
+          return b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN;
         };
         d3.min = function(array, f) {
           var i = -1, n = array.length, a, b;
@@ -457,7 +455,7 @@ var Plotly = (() => {
           return [a, c];
         };
         function d3_number(x) {
-          return x === null ? Number.NaN : +x;
+          return x === null ? NaN : +x;
         }
         function d3_numeric(x) {
           return !isNaN(x);
@@ -493,7 +491,7 @@ var Plotly = (() => {
           } else {
             while (++i < n) if (d3_numeric(a = d3_number(f.call(array, array[i], i)))) numbers.push(a);
           }
-          if (numbers.length > 0) return d3.quantile(numbers.sort(d3_ascending), 0.5);
+          if (numbers.length) return d3.quantile(numbers.sort(d3_ascending), 0.5);
         };
         d3.variance = function(array, f) {
           var n = array.length, m = 0, a, d, s = 0, i = -1, j = 0;
@@ -517,7 +515,7 @@ var Plotly = (() => {
           if (j > 1) return s / (j - 1);
         };
         d3.deviation = function() {
-          var v = Reflect.apply(d3.variance, this, arguments);
+          var v = d3.variance.apply(this, arguments);
           return v ? Math.sqrt(v) : v;
         };
         function d3_bisector(compare) {
@@ -629,7 +627,7 @@ var Plotly = (() => {
               start = 0;
             }
           }
-          if ((stop - start) / step === Number.POSITIVE_INFINITY) throw new Error("infinite range");
+          if ((stop - start) / step === Infinity) throw new Error("infinite range");
           var range = [], k = d3_range_integerScale(abs(step)), i = -1, j;
           start *= k, stop *= k, step *= k;
           if (step < 0) while ((j = start + step * ++i) > stop) range.push(j / k);
@@ -652,9 +650,9 @@ var Plotly = (() => {
         d3.map = function(object, f) {
           var map = new d3_Map();
           if (object instanceof d3_Map) {
-            for (const [value, key2] of object.entries()) {
+            object.forEach(function(key2, value) {
               map.set(key2, value);
-            }
+            });
           } else if (Array.isArray(object)) {
             var i = -1, n = object.length, o;
             if (arguments.length === 1) while (++i < n) map.set(i, object[i]);
@@ -726,7 +724,7 @@ var Plotly = (() => {
         d3.nest = function() {
           var nest = {}, keys = [], sortKeys = [], sortValues, rollup;
           function map(mapType, array, depth) {
-            if (depth >= keys.length) return rollup ? rollup.call(nest, array) : (sortValues ? array.sort(sortValues) : array);
+            if (depth >= keys.length) return rollup ? rollup.call(nest, array) : sortValues ? array.sort(sortValues) : array;
             var i = -1, n = array.length, key = keys[depth++], keyValue, object, setter, valuesByKey = new d3_Map(), values;
             while (++i < n) {
               if (values = valuesByKey.get(keyValue = key(object = array[i]))) {
@@ -752,12 +750,12 @@ var Plotly = (() => {
           function entries(map2, depth) {
             if (depth >= keys.length) return map2;
             var array = [], sortKey = sortKeys[depth++];
-            for (const [keyMap, key] of map2.entries()) {
+            map2.forEach(function(key, keyMap) {
               array.push({
                 key,
                 values: entries(keyMap, depth)
               });
-            }
+            });
             return sortKey ? array.sort(function(a, b) {
               return sortKey(a.key, b.key);
             }) : array;
@@ -832,13 +830,15 @@ var Plotly = (() => {
           }
         }
         var d3_vendorPrefixes = ["webkit", "ms", "moz", "Moz", "o", "O"];
-        function d3_noop() {}
+        function d3_noop() {
+        }
         d3.dispatch = function() {
           var dispatch = new d3_dispatch(), i = -1, n = arguments.length;
           while (++i < n) dispatch[arguments[i]] = d3_dispatch_event(dispatch);
           return dispatch;
         };
-        function d3_dispatch() {}
+        function d3_dispatch() {
+        }
         d3_dispatch.prototype.on = function(type, listener) {
           var i = type.indexOf("."), name = "";
           if (i >= 0) {
@@ -857,7 +857,7 @@ var Plotly = (() => {
           var listeners = [], listenerByName = new d3_Map();
           function event() {
             var z = listeners, i = -1, n = z.length, l;
-            while (++i < n) if (l = z[i].on) Reflect.apply(l, this, arguments);
+            while (++i < n) if (l = z[i].on) l.apply(this, arguments);
             return dispatch;
           }
           event.on = function(name, listener) {
@@ -902,9 +902,9 @@ var Plotly = (() => {
           return dispatch;
         }
         d3.requote = function(s) {
-          return s.replaceAll(d3_requote_re, "\\$&");
+          return s.replace(d3_requote_re, "\\$&");
         };
-        var d3_requote_re = /[$()*+.?[\\\]^{|}]/g;
+        var d3_requote_re = /[\\\^\$\*\+\?\|\[\]\(\)\.\{\}]/g;
         var d3_subclass = {}.__proto__ ? function(object, prototype) {
           object.__proto__ = prototype;
         } : function(object, prototype) {
@@ -1022,19 +1022,19 @@ var Plotly = (() => {
             this.setAttributeNS(name.space, name.local, value);
           }
           function attrFunction() {
-            var x = Reflect.apply(value, this, arguments);
+            var x = value.apply(this, arguments);
             if (x == null) this.removeAttribute(name);
             else this.setAttribute(name, x);
           }
           function attrFunctionNS() {
-            var x = Reflect.apply(value, this, arguments);
+            var x = value.apply(this, arguments);
             if (x == null) this.removeAttributeNS(name.space, name.local);
             else this.setAttributeNS(name.space, name.local, x);
           }
-          return value == null ? (name.local ? attrNullNS : attrNull) : typeof value === "function" ? name.local ? attrFunctionNS : attrFunction : name.local ? attrConstantNS : attrConstant;
+          return value == null ? name.local ? attrNullNS : attrNull : typeof value === "function" ? name.local ? attrFunctionNS : attrFunction : name.local ? attrConstantNS : attrConstant;
         }
         function d3_collapse(s) {
-          return s.trim().replaceAll(/\s+/g, " ");
+          return s.trim().replace(/\s+/g, " ");
         }
         d3_selectionPrototype.classed = function(name, value) {
           if (arguments.length < 2) {
@@ -1067,7 +1067,7 @@ var Plotly = (() => {
             while (++i < n) name[i](this, value);
           }
           function classedFunction() {
-            var i = -1, x = Reflect.apply(value, this, arguments);
+            var i = -1, x = value.apply(this, arguments);
             while (++i < n) name[i](this, x);
           }
           return typeof value === "function" ? classedFunction : classedConstant;
@@ -1109,11 +1109,11 @@ var Plotly = (() => {
             this.style.setProperty(name, value, priority);
           }
           function styleFunction() {
-            var x = Reflect.apply(value, this, arguments);
+            var x = value.apply(this, arguments);
             if (x == null) this.style.removeProperty(name);
             else this.style.setProperty(name, x, priority);
           }
-          return value == null ? styleNull : (typeof value === "function" ? styleFunction : styleConstant);
+          return value == null ? styleNull : typeof value === "function" ? styleFunction : styleConstant;
         }
         d3_selectionPrototype.property = function(name, value) {
           if (arguments.length < 2) {
@@ -1131,36 +1131,36 @@ var Plotly = (() => {
             this[name] = value;
           }
           function propertyFunction() {
-            var x = Reflect.apply(value, this, arguments);
+            var x = value.apply(this, arguments);
             if (x == null) delete this[name];
             else this[name] = x;
           }
-          return value == null ? propertyNull : (typeof value === "function" ? propertyFunction : propertyConstant);
+          return value == null ? propertyNull : typeof value === "function" ? propertyFunction : propertyConstant;
         }
         d3_selectionPrototype.text = function(value) {
-          return arguments.length > 0 ? this.each(typeof value === "function" ? function() {
-            var v = Reflect.apply(value, this, arguments);
+          return arguments.length ? this.each(typeof value === "function" ? function() {
+            var v = value.apply(this, arguments);
             this.textContent = v == null ? "" : v;
-          } : (value == null ? function() {
+          } : value == null ? function() {
             this.textContent = "";
           } : function() {
             this.textContent = value;
-          })) : this.node().textContent;
+          }) : this.node().textContent;
         };
         d3_selectionPrototype.html = function(value) {
-          return arguments.length > 0 ? this.each(typeof value === "function" ? function() {
-            var v = Reflect.apply(value, this, arguments);
+          return arguments.length ? this.each(typeof value === "function" ? function() {
+            var v = value.apply(this, arguments);
             this.innerHTML = v == null ? "" : v;
-          } : (value == null ? function() {
+          } : value == null ? function() {
             this.innerHTML = "";
           } : function() {
             this.innerHTML = value;
-          })) : this.node().innerHTML;
+          }) : this.node().innerHTML;
         };
         d3_selectionPrototype.append = function(name) {
           name = d3_selection_creator(name);
           return this.select(function() {
-            return this.appendChild(Reflect.apply(name, this, arguments));
+            return this.appendChild(name.apply(this, arguments));
           });
         };
         function d3_selection_creator(name) {
@@ -1171,13 +1171,13 @@ var Plotly = (() => {
           function createNS() {
             return this.ownerDocument.createElementNS(name.space, name.local);
           }
-          return typeof name === "function" ? name : ((name = d3.ns.qualify(name)).local ? createNS : create);
+          return typeof name === "function" ? name : (name = d3.ns.qualify(name)).local ? createNS : create;
         }
         d3_selectionPrototype.insert = function(name, before) {
           name = d3_selection_creator(name);
           before = d3_selection_selector(before);
           return this.select(function() {
-            return this.insertBefore(Reflect.apply(name, this, arguments), Reflect.apply(before, this, arguments) || null);
+            return this.insertBefore(name.apply(this, arguments), before.apply(this, arguments) || null);
           });
         };
         d3_selectionPrototype.remove = function() {
@@ -1185,12 +1185,12 @@ var Plotly = (() => {
         };
         function d3_selectionRemove() {
           var parent = this.parentNode;
-          if (parent) this.remove();
+          if (parent) parent.removeChild(this);
         }
         d3_selectionPrototype.data = function(value, key) {
           var i = -1, n = this.length, group, node;
-          if (arguments.length === 0) {
-            value = Array.from({length: n = (group = this[0]).length});
+          if (!arguments.length) {
+            value = new Array(n = (group = this[0]).length);
             while (++i < n) {
               if (node = group[i]) {
                 value[i] = node.__data__;
@@ -1274,7 +1274,7 @@ var Plotly = (() => {
           };
         }
         d3_selectionPrototype.datum = function(value) {
-          return arguments.length > 0 ? this.property("__data__", value) : this.property("__data__");
+          return arguments.length ? this.property("__data__", value) : this.property("__data__");
         };
         d3_selectionPrototype.filter = function(filter) {
           var subgroups = [], subgroup, group, node;
@@ -1307,12 +1307,12 @@ var Plotly = (() => {
           return this;
         };
         d3_selectionPrototype.sort = function(comparator) {
-          comparator = Reflect.apply(d3_selection_sortComparator, this, arguments);
+          comparator = d3_selection_sortComparator.apply(this, arguments);
           for (var j = -1, m = this.length; ++j < m; ) this[j].sort(comparator);
           return this.order();
         };
         function d3_selection_sortComparator(comparator) {
-          if (arguments.length === 0) comparator = d3_ascending;
+          if (!arguments.length) comparator = d3_ascending;
           return function(a, b) {
             return a && b ? comparator(a.__data__, b.__data__) : !a - !b;
           };
@@ -1460,16 +1460,16 @@ var Plotly = (() => {
               }
             }
           }
-          return i ? (listener ? onAdd : onRemove) : (listener ? d3_noop : removeAll);
+          return i ? listener ? onAdd : onRemove : listener ? d3_noop : removeAll;
         }
         var d3_selection_onFilters = d3.map({
           mouseenter: "mouseover",
           mouseleave: "mouseout"
         });
         if (d3_document) {
-          for (const k of d3_selection_onFilters) {
+          d3_selection_onFilters.forEach(function(k) {
             if ("on" + k in d3_document) d3_selection_onFilters.remove(k);
-          }
+          });
         }
         function d3_selection_onListener(listener, argumentz) {
           return function(e) {
@@ -1601,7 +1601,7 @@ var Plotly = (() => {
             };
           }
           drag.origin = function(x) {
-            if (arguments.length === 0) return origin;
+            if (!arguments.length) return origin;
             origin = x;
             return drag;
           };
@@ -1620,16 +1620,16 @@ var Plotly = (() => {
         };
         var \u03B5 = 1e-6, \u03B52 = \u03B5 * \u03B5, \u03C0 = Math.PI, \u03C4 = 2 * \u03C0, \u03C4\u03B5 = \u03C4 - \u03B5, half\u03C0 = \u03C0 / 2, d3_radians = \u03C0 / 180, d3_degrees = 180 / \u03C0;
         function d3_sgn(x) {
-          return x > 0 ? 1 : (x < 0 ? -1 : 0);
+          return x > 0 ? 1 : x < 0 ? -1 : 0;
         }
         function d3_cross2d(a, b, c) {
           return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
         }
         function d3_acos(x) {
-          return x > 1 ? 0 : (x < -1 ? \u03C0 : Math.acos(x));
+          return x > 1 ? 0 : x < -1 ? \u03C0 : Math.acos(x);
         }
         function d3_asin(x) {
-          return x > 1 ? half\u03C0 : (x < -1 ? -half\u03C0 : Math.asin(x));
+          return x > 1 ? half\u03C0 : x < -1 ? -half\u03C0 : Math.asin(x);
         }
         function d3_sinh(x) {
           return ((x = Math.exp(x)) - 1 / x) / 2;
@@ -1671,11 +1671,11 @@ var Plotly = (() => {
           if (!d3_behavior_zoomWheel) {
             d3_behavior_zoomWheel = "onwheel" in d3_document ? (d3_behavior_zoomDelta = function() {
               return -d3.event.deltaY * (d3.event.deltaMode ? 120 : 1);
-            }, "wheel") : ("onmousewheel" in d3_document ? (d3_behavior_zoomDelta = function() {
+            }, "wheel") : "onmousewheel" in d3_document ? (d3_behavior_zoomDelta = function() {
               return d3.event.wheelDelta;
             }, "mousewheel") : (d3_behavior_zoomDelta = function() {
               return -d3.event.detail;
-            }, "MozMousePixelScroll"));
+            }, "MozMousePixelScroll");
           }
           function zoom(g) {
             g.on(mousedown, mousedowned).on(d3_behavior_zoomWheel + ".zoom", mousewheeled).on("dblclick.zoom", dblclicked).on(touchstart, touchstarted);
@@ -1716,7 +1716,7 @@ var Plotly = (() => {
             });
           };
           zoom.translate = function(_) {
-            if (arguments.length === 0) return [view.x, view.y];
+            if (!arguments.length) return [view.x, view.y];
             view = {
               x: +_[0],
               y: +_[1],
@@ -1726,7 +1726,7 @@ var Plotly = (() => {
             return zoom;
           };
           zoom.scale = function(_) {
-            if (arguments.length === 0) return view.k;
+            if (!arguments.length) return view.k;
             view = {
               x: view.x,
               y: view.y,
@@ -1737,27 +1737,27 @@ var Plotly = (() => {
             return zoom;
           };
           zoom.scaleExtent = function(_) {
-            if (arguments.length === 0) return scaleExtent;
+            if (!arguments.length) return scaleExtent;
             scaleExtent = _ == null ? d3_behavior_zoomInfinity : [+_[0], +_[1]];
             return zoom;
           };
           zoom.center = function(_) {
-            if (arguments.length === 0) return center;
+            if (!arguments.length) return center;
             center = _ && [+_[0], +_[1]];
             return zoom;
           };
           zoom.size = function(_) {
-            if (arguments.length === 0) return size;
+            if (!arguments.length) return size;
             size = _ && [+_[0], +_[1]];
             return zoom;
           };
           zoom.duration = function(_) {
-            if (arguments.length === 0) return duration;
+            if (!arguments.length) return duration;
             duration = +_;
             return zoom;
           };
           zoom.x = function(z) {
-            if (arguments.length === 0) return x1;
+            if (!arguments.length) return x1;
             x1 = z;
             x0 = z.copy();
             view = {
@@ -1768,7 +1768,7 @@ var Plotly = (() => {
             return zoom;
           };
           zoom.y = function(z) {
-            if (arguments.length === 0) return y1;
+            if (!arguments.length) return y1;
             y1 = z;
             y0 = z.copy();
             view = {
@@ -1853,9 +1853,9 @@ var Plotly = (() => {
             function relocate() {
               var touches = d3.touches(that);
               scale0 = view.k;
-              for (const t of touches) {
+              touches.forEach(function(t) {
                 if (t.identifier in locations0) locations0[t.identifier] = location(t);
-              }
+              });
               return touches;
             }
             function started() {
@@ -1870,7 +1870,7 @@ var Plotly = (() => {
               if (touches.length === 1) {
                 if (now - touchtime < 500) {
                   var p = touches[0];
-                  zoomTo(that, p, locations0[p.identifier], Math.floor(Math.log2(view.k)) + 1);
+                  zoomTo(that, p, locations0[p.identifier], Math.floor(Math.log(view.k) / Math.LN2) + 1);
                   d3_eventPreventDefault();
                 }
                 touchtime = now;
@@ -1900,7 +1900,7 @@ var Plotly = (() => {
               zoomed(dispatch);
             }
             function ended() {
-              if (d3.event.touches.length > 0) {
+              if (d3.event.touches.length) {
                 var changed = d3.event.changedTouches;
                 for (var i = 0, n = changed.length; i < n; ++i) {
                   delete locations0[changed[i].identifier];
@@ -1929,14 +1929,15 @@ var Plotly = (() => {
             zoomed(dispatch);
           }
           function dblclicked() {
-            var p = d3.mouse(this), k = Math.log2(view.k);
+            var p = d3.mouse(this), k = Math.log(view.k) / Math.LN2;
             zoomTo(this, p, location(p), d3.event.shiftKey ? Math.ceil(k) - 1 : Math.floor(k) + 1);
           }
           return d3.rebind(zoom, event, "on");
         };
-        var d3_behavior_zoomInfinity = [0, Number.POSITIVE_INFINITY], d3_behavior_zoomDelta, d3_behavior_zoomWheel;
+        var d3_behavior_zoomInfinity = [0, Infinity], d3_behavior_zoomDelta, d3_behavior_zoomWheel;
         d3.color = d3_color;
-        function d3_color() {}
+        function d3_color() {
+        }
         d3_color.prototype.toString = function() {
           return this.rgb() + "";
         };
@@ -1946,11 +1947,11 @@ var Plotly = (() => {
         }
         var d3_hslPrototype = d3_hsl.prototype = new d3_color();
         d3_hslPrototype.brighter = function(k) {
-          k = Math.pow(0.7, arguments.length > 0 ? k : 1);
+          k = Math.pow(0.7, arguments.length ? k : 1);
           return new d3_hsl(this.h, this.s, this.l / k);
         };
         d3_hslPrototype.darker = function(k) {
-          k = Math.pow(0.7, arguments.length > 0 ? k : 1);
+          k = Math.pow(0.7, arguments.length ? k : 1);
           return new d3_hsl(this.h, this.s, k * this.l);
         };
         d3_hslPrototype.rgb = function() {
@@ -1958,9 +1959,9 @@ var Plotly = (() => {
         };
         function d3_hsl_rgb(h, s, l) {
           var m1, m2;
-          h = isNaN(h) ? 0 : ((h %= 360) < 0 ? h + 360 : h);
+          h = isNaN(h) ? 0 : (h %= 360) < 0 ? h + 360 : h;
           s = isNaN(s) ? 0 : s < 0 ? 0 : s > 1 ? 1 : s;
-          l = l < 0 ? 0 : (l > 1 ? 1 : l);
+          l = l < 0 ? 0 : l > 1 ? 1 : l;
           m2 = l <= 0.5 ? l * (1 + s) : l + s - l * s;
           m1 = 2 * l - m2;
           function v(h2) {
@@ -1982,10 +1983,10 @@ var Plotly = (() => {
         }
         var d3_hclPrototype = d3_hcl.prototype = new d3_color();
         d3_hclPrototype.brighter = function(k) {
-          return new d3_hcl(this.h, this.c, Math.min(100, this.l + d3_lab_K * (arguments.length > 0 ? k : 1)));
+          return new d3_hcl(this.h, this.c, Math.min(100, this.l + d3_lab_K * (arguments.length ? k : 1)));
         };
         d3_hclPrototype.darker = function(k) {
-          return new d3_hcl(this.h, this.c, Math.max(0, this.l - d3_lab_K * (arguments.length > 0 ? k : 1)));
+          return new d3_hcl(this.h, this.c, Math.max(0, this.l - d3_lab_K * (arguments.length ? k : 1)));
         };
         d3_hclPrototype.rgb = function() {
           return d3_hcl_lab(this.h, this.c, this.l).rgb();
@@ -2000,13 +2001,13 @@ var Plotly = (() => {
           return this instanceof d3_lab ? void (this.l = +l, this.a = +a, this.b = +b) : arguments.length < 2 ? l instanceof d3_lab ? new d3_lab(l.l, l.a, l.b) : l instanceof d3_hcl ? d3_hcl_lab(l.h, l.c, l.l) : d3_rgb_lab((l = d3_rgb(l)).r, l.g, l.b) : new d3_lab(l, a, b);
         }
         var d3_lab_K = 18;
-        var d3_lab_X = 0.950_47, d3_lab_Y = 1, d3_lab_Z = 1.088_83;
+        var d3_lab_X = 0.95047, d3_lab_Y = 1, d3_lab_Z = 1.08883;
         var d3_labPrototype = d3_lab.prototype = new d3_color();
         d3_labPrototype.brighter = function(k) {
-          return new d3_lab(Math.min(100, this.l + d3_lab_K * (arguments.length > 0 ? k : 1)), this.a, this.b);
+          return new d3_lab(Math.min(100, this.l + d3_lab_K * (arguments.length ? k : 1)), this.a, this.b);
         };
         d3_labPrototype.darker = function(k) {
-          return new d3_lab(Math.max(0, this.l - d3_lab_K * (arguments.length > 0 ? k : 1)), this.a, this.b);
+          return new d3_lab(Math.max(0, this.l - d3_lab_K * (arguments.length ? k : 1)), this.a, this.b);
         };
         d3_labPrototype.rgb = function() {
           return d3_lab_rgb(this.l, this.a, this.b);
@@ -2016,23 +2017,23 @@ var Plotly = (() => {
           x = d3_lab_xyz(x) * d3_lab_X;
           y = d3_lab_xyz(y) * d3_lab_Y;
           z = d3_lab_xyz(z) * d3_lab_Z;
-          return new d3_rgb(d3_xyz_rgb(3.240_454_2 * x - 1.537_138_5 * y - 0.498_531_4 * z), d3_xyz_rgb(-0.969_266 * x + 1.876_010_8 * y + 0.041_556 * z), d3_xyz_rgb(0.055_643_4 * x - 0.204_025_9 * y + 1.057_225_2 * z));
+          return new d3_rgb(d3_xyz_rgb(3.2404542 * x - 1.5371385 * y - 0.4985314 * z), d3_xyz_rgb(-0.969266 * x + 1.8760108 * y + 0.041556 * z), d3_xyz_rgb(0.0556434 * x - 0.2040259 * y + 1.0572252 * z));
         }
         function d3_lab_hcl(l, a, b) {
-          return l > 0 ? new d3_hcl(Math.atan2(b, a) * d3_degrees, Math.hypot(a, b), l) : new d3_hcl(Number.NaN, Number.NaN, l);
+          return l > 0 ? new d3_hcl(Math.atan2(b, a) * d3_degrees, Math.sqrt(a * a + b * b), l) : new d3_hcl(NaN, NaN, l);
         }
         function d3_lab_xyz(x) {
-          return x > 0.206_893_034 ? x * x * x : (x - 4 / 29) / 7.787_037;
+          return x > 0.206893034 ? x * x * x : (x - 4 / 29) / 7.787037;
         }
         function d3_xyz_lab(x) {
-          return x > 8856e-6 ? Math.pow(x, 1 / 3) : 7.787_037 * x + 4 / 29;
+          return x > 8856e-6 ? Math.pow(x, 1 / 3) : 7.787037 * x + 4 / 29;
         }
         function d3_xyz_rgb(r) {
           return Math.round(255 * (r <= 304e-5 ? 12.92 * r : 1.055 * Math.pow(r, 1 / 2.4) - 0.055));
         }
         d3.rgb = d3_rgb;
         function d3_rgb(r, g, b) {
-          return this instanceof d3_rgb ? void (this.r = Math.trunc(r), this.g = Math.trunc(g), this.b = Math.trunc(b)) : arguments.length < 2 ? r instanceof d3_rgb ? new d3_rgb(r.r, r.g, r.b) : d3_rgb_parse("" + r, d3_rgb, d3_hsl_rgb) : new d3_rgb(r, g, b);
+          return this instanceof d3_rgb ? void (this.r = ~~r, this.g = ~~g, this.b = ~~b) : arguments.length < 2 ? r instanceof d3_rgb ? new d3_rgb(r.r, r.g, r.b) : d3_rgb_parse("" + r, d3_rgb, d3_hsl_rgb) : new d3_rgb(r, g, b);
         }
         function d3_rgbNumber(value) {
           return new d3_rgb(value >> 16, value >> 8 & 255, value & 255);
@@ -2042,7 +2043,7 @@ var Plotly = (() => {
         }
         var d3_rgbPrototype = d3_rgb.prototype = new d3_color();
         d3_rgbPrototype.brighter = function(k) {
-          k = Math.pow(0.7, arguments.length > 0 ? k : 1);
+          k = Math.pow(0.7, arguments.length ? k : 1);
           var r = this.r, g = this.g, b = this.b, i = 30;
           if (!r && !g && !b) return new d3_rgb(i, i, i);
           if (r && r < i) r = i;
@@ -2051,7 +2052,7 @@ var Plotly = (() => {
           return new d3_rgb(Math.min(255, r / k), Math.min(255, g / k), Math.min(255, b / k));
         };
         d3_rgbPrototype.darker = function(k) {
-          k = Math.pow(0.7, arguments.length > 0 ? k : 1);
+          k = Math.pow(0.7, arguments.length ? k : 1);
           return new d3_rgb(k * this.r, k * this.g, k * this.b);
         };
         d3_rgbPrototype.hsl = function() {
@@ -2070,7 +2071,7 @@ var Plotly = (() => {
             m2 = m1[2].split(",");
             switch (m1[1]) {
               case "hsl": {
-                return hsl(Number.parseFloat(m2[0]), Number.parseFloat(m2[1]) / 100, Number.parseFloat(m2[2]) / 100);
+                return hsl(parseFloat(m2[0]), parseFloat(m2[1]) / 100, parseFloat(m2[2]) / 100);
               }
               case "rgb": {
                 return rgb(d3_rgb_parseNumber(m2[0]), d3_rgb_parseNumber(m2[1]), d3_rgb_parseNumber(m2[2]));
@@ -2080,7 +2081,7 @@ var Plotly = (() => {
           if (color = d3_rgb_names.get(format)) {
             return rgb(color.r, color.g, color.b);
           }
-          if (format != null && format.charAt(0) === "#" && !isNaN(color = Number.parseInt(format.slice(1), 16))) {
+          if (format != null && format.charAt(0) === "#" && !isNaN(color = parseInt(format.slice(1), 16))) {
             if (format.length === 4) {
               r = (color & 3840) >> 4;
               r = r >> 4 | r;
@@ -2089,8 +2090,8 @@ var Plotly = (() => {
               b = color & 15;
               b = b << 4 | b;
             } else if (format.length === 7) {
-              r = (color & 16_711_680) >> 16;
-              g = (color & 65_280) >> 8;
+              r = (color & 16711680) >> 16;
+              g = (color & 65280) >> 8;
               b = color & 255;
             }
           }
@@ -2105,7 +2106,7 @@ var Plotly = (() => {
             else h = (r - g) / d + 4;
             h *= 60;
           } else {
-            h = Number.NaN;
+            h = NaN;
             s = l > 0 && l < 1 ? 0 : h;
           }
           return new d3_hsl(h, s, l);
@@ -2114,169 +2115,169 @@ var Plotly = (() => {
           r = d3_rgb_xyz(r);
           g = d3_rgb_xyz(g);
           b = d3_rgb_xyz(b);
-          var x = d3_xyz_lab((0.412_456_4 * r + 0.357_576_1 * g + 0.180_437_5 * b) / d3_lab_X), y = d3_xyz_lab((0.212_672_9 * r + 0.715_152_2 * g + 0.072_175 * b) / d3_lab_Y), z = d3_xyz_lab((0.019_333_9 * r + 0.119_192 * g + 0.950_304_1 * b) / d3_lab_Z);
+          var x = d3_xyz_lab((0.4124564 * r + 0.3575761 * g + 0.1804375 * b) / d3_lab_X), y = d3_xyz_lab((0.2126729 * r + 0.7151522 * g + 0.072175 * b) / d3_lab_Y), z = d3_xyz_lab((0.0193339 * r + 0.119192 * g + 0.9503041 * b) / d3_lab_Z);
           return d3_lab(116 * y - 16, 500 * (x - y), 200 * (y - z));
         }
         function d3_rgb_xyz(r) {
-          return (r /= 255) <= 0.040_45 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4);
+          return (r /= 255) <= 0.04045 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4);
         }
         function d3_rgb_parseNumber(c) {
-          var f = Number.parseFloat(c);
+          var f = parseFloat(c);
           return c.charAt(c.length - 1) === "%" ? Math.round(f * 2.55) : f;
         }
         var d3_rgb_names = d3.map({
-          aliceblue: 15_792_383,
-          antiquewhite: 16_444_375,
-          aqua: 65_535,
-          aquamarine: 8_388_564,
-          azure: 15_794_175,
-          beige: 16_119_260,
-          bisque: 16_770_244,
+          aliceblue: 15792383,
+          antiquewhite: 16444375,
+          aqua: 65535,
+          aquamarine: 8388564,
+          azure: 15794175,
+          beige: 16119260,
+          bisque: 16770244,
           black: 0,
-          blanchedalmond: 16_772_045,
+          blanchedalmond: 16772045,
           blue: 255,
-          blueviolet: 9_055_202,
-          brown: 10_824_234,
-          burlywood: 14_596_231,
-          cadetblue: 6_266_528,
-          chartreuse: 8_388_352,
-          chocolate: 13_789_470,
-          coral: 16_744_272,
-          cornflowerblue: 6_591_981,
-          cornsilk: 16_775_388,
-          crimson: 14_423_100,
-          cyan: 65_535,
+          blueviolet: 9055202,
+          brown: 10824234,
+          burlywood: 14596231,
+          cadetblue: 6266528,
+          chartreuse: 8388352,
+          chocolate: 13789470,
+          coral: 16744272,
+          cornflowerblue: 6591981,
+          cornsilk: 16775388,
+          crimson: 14423100,
+          cyan: 65535,
           darkblue: 139,
-          darkcyan: 35_723,
-          darkgoldenrod: 12_092_939,
-          darkgray: 11_119_017,
-          darkgreen: 25_600,
-          darkgrey: 11_119_017,
-          darkkhaki: 12_433_259,
-          darkmagenta: 9_109_643,
-          darkolivegreen: 5_597_999,
-          darkorange: 16_747_520,
-          darkorchid: 10_040_012,
-          darkred: 9_109_504,
-          darksalmon: 15_308_410,
-          darkseagreen: 9_419_919,
-          darkslateblue: 4_734_347,
-          darkslategray: 3_100_495,
-          darkslategrey: 3_100_495,
-          darkturquoise: 52_945,
-          darkviolet: 9_699_539,
-          deeppink: 16_716_947,
-          deepskyblue: 49_151,
-          dimgray: 6_908_265,
-          dimgrey: 6_908_265,
-          dodgerblue: 2_003_199,
-          firebrick: 11_674_146,
-          floralwhite: 16_775_920,
-          forestgreen: 2_263_842,
-          fuchsia: 16_711_935,
-          gainsboro: 14_474_460,
-          ghostwhite: 16_316_671,
-          gold: 16_766_720,
-          goldenrod: 14_329_120,
-          gray: 8_421_504,
-          green: 32_768,
-          greenyellow: 11_403_055,
-          grey: 8_421_504,
-          honeydew: 15_794_160,
-          hotpink: 16_738_740,
-          indianred: 13_458_524,
-          indigo: 4_915_330,
-          ivory: 16_777_200,
-          khaki: 15_787_660,
-          lavender: 15_132_410,
-          lavenderblush: 16_773_365,
-          lawngreen: 8_190_976,
-          lemonchiffon: 16_775_885,
-          lightblue: 11_393_254,
-          lightcoral: 15_761_536,
-          lightcyan: 14_745_599,
-          lightgoldenrodyellow: 16_448_210,
-          lightgray: 13_882_323,
-          lightgreen: 9_498_256,
-          lightgrey: 13_882_323,
-          lightpink: 16_758_465,
-          lightsalmon: 16_752_762,
-          lightseagreen: 2_142_890,
-          lightskyblue: 8_900_346,
-          lightslategray: 7_833_753,
-          lightslategrey: 7_833_753,
-          lightsteelblue: 11_584_734,
-          lightyellow: 16_777_184,
-          lime: 65_280,
-          limegreen: 3_329_330,
-          linen: 16_445_670,
-          magenta: 16_711_935,
-          maroon: 8_388_608,
-          mediumaquamarine: 6_737_322,
+          darkcyan: 35723,
+          darkgoldenrod: 12092939,
+          darkgray: 11119017,
+          darkgreen: 25600,
+          darkgrey: 11119017,
+          darkkhaki: 12433259,
+          darkmagenta: 9109643,
+          darkolivegreen: 5597999,
+          darkorange: 16747520,
+          darkorchid: 10040012,
+          darkred: 9109504,
+          darksalmon: 15308410,
+          darkseagreen: 9419919,
+          darkslateblue: 4734347,
+          darkslategray: 3100495,
+          darkslategrey: 3100495,
+          darkturquoise: 52945,
+          darkviolet: 9699539,
+          deeppink: 16716947,
+          deepskyblue: 49151,
+          dimgray: 6908265,
+          dimgrey: 6908265,
+          dodgerblue: 2003199,
+          firebrick: 11674146,
+          floralwhite: 16775920,
+          forestgreen: 2263842,
+          fuchsia: 16711935,
+          gainsboro: 14474460,
+          ghostwhite: 16316671,
+          gold: 16766720,
+          goldenrod: 14329120,
+          gray: 8421504,
+          green: 32768,
+          greenyellow: 11403055,
+          grey: 8421504,
+          honeydew: 15794160,
+          hotpink: 16738740,
+          indianred: 13458524,
+          indigo: 4915330,
+          ivory: 16777200,
+          khaki: 15787660,
+          lavender: 15132410,
+          lavenderblush: 16773365,
+          lawngreen: 8190976,
+          lemonchiffon: 16775885,
+          lightblue: 11393254,
+          lightcoral: 15761536,
+          lightcyan: 14745599,
+          lightgoldenrodyellow: 16448210,
+          lightgray: 13882323,
+          lightgreen: 9498256,
+          lightgrey: 13882323,
+          lightpink: 16758465,
+          lightsalmon: 16752762,
+          lightseagreen: 2142890,
+          lightskyblue: 8900346,
+          lightslategray: 7833753,
+          lightslategrey: 7833753,
+          lightsteelblue: 11584734,
+          lightyellow: 16777184,
+          lime: 65280,
+          limegreen: 3329330,
+          linen: 16445670,
+          magenta: 16711935,
+          maroon: 8388608,
+          mediumaquamarine: 6737322,
           mediumblue: 205,
-          mediumorchid: 12_211_667,
-          mediumpurple: 9_662_683,
-          mediumseagreen: 3_978_097,
-          mediumslateblue: 8_087_790,
-          mediumspringgreen: 64_154,
-          mediumturquoise: 4_772_300,
-          mediumvioletred: 13_047_173,
-          midnightblue: 1_644_912,
-          mintcream: 16_121_850,
-          mistyrose: 16_770_273,
-          moccasin: 16_770_229,
-          navajowhite: 16_768_685,
+          mediumorchid: 12211667,
+          mediumpurple: 9662683,
+          mediumseagreen: 3978097,
+          mediumslateblue: 8087790,
+          mediumspringgreen: 64154,
+          mediumturquoise: 4772300,
+          mediumvioletred: 13047173,
+          midnightblue: 1644912,
+          mintcream: 16121850,
+          mistyrose: 16770273,
+          moccasin: 16770229,
+          navajowhite: 16768685,
           navy: 128,
-          oldlace: 16_643_558,
-          olive: 8_421_376,
-          olivedrab: 7_048_739,
-          orange: 16_753_920,
-          orangered: 16_729_344,
-          orchid: 14_315_734,
-          palegoldenrod: 15_657_130,
-          palegreen: 10_025_880,
-          paleturquoise: 11_529_966,
-          palevioletred: 14_381_203,
-          papayawhip: 16_773_077,
-          peachpuff: 16_767_673,
-          peru: 13_468_991,
-          pink: 16_761_035,
-          plum: 14_524_637,
-          powderblue: 11_591_910,
-          purple: 8_388_736,
-          rebeccapurple: 6_697_881,
-          red: 16_711_680,
-          rosybrown: 12_357_519,
-          royalblue: 4_286_945,
-          saddlebrown: 9_127_187,
-          salmon: 16_416_882,
-          sandybrown: 16_032_864,
-          seagreen: 3_050_327,
-          seashell: 16_774_638,
-          sienna: 10_506_797,
-          silver: 12_632_256,
-          skyblue: 8_900_331,
-          slateblue: 6_970_061,
-          slategray: 7_372_944,
-          slategrey: 7_372_944,
-          snow: 16_775_930,
-          springgreen: 65_407,
-          steelblue: 4_620_980,
-          tan: 13_808_780,
-          teal: 32_896,
-          thistle: 14_204_888,
-          tomato: 16_737_095,
-          turquoise: 4_251_856,
-          violet: 15_631_086,
-          wheat: 16_113_331,
-          white: 16_777_215,
-          whitesmoke: 16_119_285,
-          yellow: 16_776_960,
-          yellowgreen: 10_145_074
+          oldlace: 16643558,
+          olive: 8421376,
+          olivedrab: 7048739,
+          orange: 16753920,
+          orangered: 16729344,
+          orchid: 14315734,
+          palegoldenrod: 15657130,
+          palegreen: 10025880,
+          paleturquoise: 11529966,
+          palevioletred: 14381203,
+          papayawhip: 16773077,
+          peachpuff: 16767673,
+          peru: 13468991,
+          pink: 16761035,
+          plum: 14524637,
+          powderblue: 11591910,
+          purple: 8388736,
+          rebeccapurple: 6697881,
+          red: 16711680,
+          rosybrown: 12357519,
+          royalblue: 4286945,
+          saddlebrown: 9127187,
+          salmon: 16416882,
+          sandybrown: 16032864,
+          seagreen: 3050327,
+          seashell: 16774638,
+          sienna: 10506797,
+          silver: 12632256,
+          skyblue: 8900331,
+          slateblue: 6970061,
+          slategray: 7372944,
+          slategrey: 7372944,
+          snow: 16775930,
+          springgreen: 65407,
+          steelblue: 4620980,
+          tan: 13808780,
+          teal: 32896,
+          thistle: 14204888,
+          tomato: 16737095,
+          turquoise: 4251856,
+          violet: 15631086,
+          wheat: 16113331,
+          white: 16777215,
+          whitesmoke: 16119285,
+          yellow: 16776960,
+          yellowgreen: 10145074
         });
-        for (const [value, key] of d3_rgb_names.entries()) {
+        d3_rgb_names.forEach(function(key, value) {
           d3_rgb_names.set(key, d3_rgbNumber(value));
-        }
+        });
         function d3_functor(v) {
           return typeof v === "function" ? v : function() {
             return v;
@@ -2301,8 +2302,8 @@ var Plotly = (() => {
             if (!status && d3_xhrHasResponse(request) || status >= 200 && status < 300 || status === 304) {
               try {
                 result = response.call(xhr, request);
-              } catch (error) {
-                dispatch.error.call(xhr, error);
+              } catch (e) {
+                dispatch.error.call(xhr, e);
                 return;
               }
               dispatch.load.call(xhr, result);
@@ -2310,7 +2311,7 @@ var Plotly = (() => {
               dispatch.error.call(xhr, request);
             }
           }
-          request.addEventListener('progress', function(event) {
+          request.onprogress = function(event) {
             var o = d3.event;
             d3.event = event;
             try {
@@ -2318,7 +2319,7 @@ var Plotly = (() => {
             } finally {
               d3.event = o;
             }
-          });
+          };
           xhr.header = function(name, value) {
             name = (name + "").toLowerCase();
             if (arguments.length < 2) return headers[name];
@@ -2327,12 +2328,12 @@ var Plotly = (() => {
             return xhr;
           };
           xhr.mimeType = function(value) {
-            if (arguments.length === 0) return mimeType;
+            if (!arguments.length) return mimeType;
             mimeType = value == null ? null : value + "";
             return xhr;
           };
           xhr.responseType = function(value) {
-            if (arguments.length === 0) return responseType;
+            if (!arguments.length) return responseType;
             responseType = value;
             return xhr;
           };
@@ -2340,11 +2341,11 @@ var Plotly = (() => {
             response = value;
             return xhr;
           };
-          for (const method of ["get", "post"]) {
+          ["get", "post"].forEach(function(method) {
             xhr[method] = function() {
               return xhr.send.apply(xhr, [method].concat(d3_array(arguments)));
             };
-          }
+          });
           xhr.send = function(method, data, callback2) {
             if (arguments.length === 2 && typeof data === "function") callback2 = data, data = null;
             request.open(method, url, true);
@@ -2381,7 +2382,7 @@ var Plotly = (() => {
             if (arguments.length < 3) callback = row, row = null;
             var xhr = d3_xhr(url, mimeType, row == null ? response : typedResponse(row), callback);
             xhr.row = function(_) {
-              return arguments.length > 0 ? xhr.response((row = _) == null ? response : typedResponse(_)) : row;
+              return arguments.length ? xhr.response((row = _) == null ? response : typedResponse(_)) : row;
             };
             return xhr;
           }
@@ -2432,7 +2433,7 @@ var Plotly = (() => {
                 } else if (c === 10) {
                   eol = true;
                 }
-                return text.slice(j + 1, i).replaceAll('""', '"');
+                return text.slice(j + 1, i).replace(/""/g, '"');
               }
               while (I < N) {
                 var c = text.charCodeAt(I++), k = 1;
@@ -2459,13 +2460,13 @@ var Plotly = (() => {
           dsv.format = function(rows) {
             if (Array.isArray(rows[0])) return dsv.formatRows(rows);
             var fieldSet = new d3_Set(), fields = [];
-            for (const row of rows) {
+            rows.forEach(function(row) {
               for (var field in row) {
                 if (!fieldSet.has(field)) {
                   fields.push(fieldSet.add(field));
                 }
               }
-            }
+            });
             return [fields.map(formatValue).join(delimiter)].concat(rows.map(function(row) {
               return fields.map(function(field) {
                 return formatValue(row[field]);
@@ -2479,7 +2480,7 @@ var Plotly = (() => {
             return row.map(formatValue).join(delimiter);
           }
           function formatValue(text) {
-            return reFormat.test(text) ? '"' + text.replaceAll('"', '""') + '"' : text;
+            return reFormat.test(text) ? '"' + text.replace(/\"/g, '""') + '"' : text;
           }
           return dsv;
         };
@@ -2489,7 +2490,7 @@ var Plotly = (() => {
           setTimeout(callback, 17);
         };
         d3.timer = function() {
-          Reflect.apply(d3_timer, this, arguments);
+          d3_timer.apply(this, arguments);
         };
         function d3_timer(callback, delay, then) {
           var n = arguments.length;
@@ -2536,7 +2537,7 @@ var Plotly = (() => {
           return now;
         }
         function d3_timer_sweep() {
-          var t0, t1 = d3_timer_queueHead, time = Number.POSITIVE_INFINITY;
+          var t0, t1 = d3_timer_queueHead, time = Infinity;
           while (t1) {
             if (t1.c) {
               if (t1.t < time) time = t1.t;
@@ -2560,7 +2561,7 @@ var Plotly = (() => {
         }
         d3.geom.hull = function(vertices) {
           var x = d3_geom_pointX, y = d3_geom_pointY;
-          if (arguments.length > 0) return hull(vertices);
+          if (arguments.length) return hull(vertices);
           function hull(data) {
             if (data.length < 3) return [];
             var fx = d3_functor(x), fy = d3_functor(y), i, n = data.length, points = [], flippedPoints = [];
@@ -2570,16 +2571,16 @@ var Plotly = (() => {
             points.sort(d3_geom_hullOrder);
             for (i = 0; i < n; i++) flippedPoints.push([points[i][0], -points[i][1]]);
             var upper = d3_geom_hullUpper(points), lower = d3_geom_hullUpper(flippedPoints);
-            var skipLeft = lower[0] === upper[0], skipRight = lower.at(-1) === upper.at(-1), polygon = [];
+            var skipLeft = lower[0] === upper[0], skipRight = lower[lower.length - 1] === upper[upper.length - 1], polygon = [];
             for (i = upper.length - 1; i >= 0; --i) polygon.push(data[points[upper[i]][2]]);
             for (i = +skipLeft; i < lower.length - skipRight; ++i) polygon.push(data[points[lower[i]][2]]);
             return polygon;
           }
           hull.x = function(_) {
-            return arguments.length > 0 ? (x = _, hull) : x;
+            return arguments.length ? (x = _, hull) : x;
           };
           hull.y = function(_) {
-            return arguments.length > 0 ? (y = _, hull) : y;
+            return arguments.length ? (y = _, hull) : y;
           };
           return hull;
         };
@@ -2610,7 +2611,7 @@ var Plotly = (() => {
         };
         d3_geom_polygonPrototype.centroid = function(k) {
           var i = -1, n = this.length, x = 0, y = 0, a, b = this[n - 1], c;
-          if (arguments.length === 0) k = -1 / (6 * this.area());
+          if (!arguments.length) k = -1 / (6 * this.area());
           while (++i < n) {
             a = b;
             b = this[i];
@@ -2623,7 +2624,7 @@ var Plotly = (() => {
         d3_geom_polygonPrototype.clip = function(subject) {
           var input, closed = d3_geom_polygonClosed(subject), i = -1, n = this.length - d3_geom_polygonClosed(this), j, m, a = this[n - 1], b, c, d;
           while (++i < n) {
-            input = [...subject];
+            input = subject.slice();
             subject.length = 0;
             b = this[i];
             c = input[(m = input.length - closed) - 1];
@@ -2653,7 +2654,7 @@ var Plotly = (() => {
           return [x1 + ua * x21, y1 + ua * y21];
         }
         function d3_geom_polygonClosed(coordinates) {
-          var a = coordinates[0], b = coordinates.at(-1);
+          var a = coordinates[0], b = coordinates[coordinates.length - 1];
           return !(a[0] - b[0] || a[1] - b[1]);
         }
         var d3_geom_voronoiEdges, d3_geom_voronoiCells, d3_geom_voronoiBeaches, d3_geom_voronoiBeachPool = [], d3_geom_voronoiFirstCircle, d3_geom_voronoiCircles, d3_geom_voronoiCirclePool = [];
@@ -2767,7 +2768,7 @@ var Plotly = (() => {
           var site = arc.site, rfocx = site.x, rfocy = site.y, pby2 = rfocy - directrix;
           if (!pby2) return rfocx;
           var lArc = arc.P;
-          if (!lArc) return Number.NEGATIVE_INFINITY;
+          if (!lArc) return -Infinity;
           site = lArc.site;
           var lfocx = site.x, lfocy = site.y, plby2 = lfocy - directrix;
           if (!plby2) return lfocx;
@@ -2779,7 +2780,7 @@ var Plotly = (() => {
           var rArc = arc.N;
           if (rArc) return d3_geom_voronoiLeftBreakPoint(rArc, directrix);
           var site = arc.site;
-          return site.y === directrix ? site.x : Number.POSITIVE_INFINITY;
+          return site.y === directrix ? site.x : Infinity;
         }
         function d3_geom_voronoiCell(site) {
           this.site = site;
@@ -2844,7 +2845,7 @@ var Plotly = (() => {
           circle.arc = arc;
           circle.site = cSite;
           circle.x = x + bx;
-          circle.y = cy + Math.hypot(x, y);
+          circle.y = cy + Math.sqrt(x * x + y * y);
           circle.cy = cy;
           arc.circle = circle;
           var before = null, node = d3_geom_voronoiCircles._;
@@ -3056,7 +3057,7 @@ var Plotly = (() => {
           var va = edge.a, vb = edge.b;
           this.edge = edge;
           this.site = lSite;
-          this.angle = rSite ? Math.atan2(rSite.y - lSite.y, rSite.x - lSite.x) : (edge.l === lSite ? Math.atan2(vb.x - va.x, va.y - vb.y) : Math.atan2(va.x - vb.x, vb.y - va.y));
+          this.angle = rSite ? Math.atan2(rSite.y - lSite.y, rSite.x - lSite.x) : edge.l === lSite ? Math.atan2(vb.x - va.x, va.y - vb.y) : Math.atan2(va.x - vb.x, vb.y - va.y);
         }
         d3_geom_voronoiHalfEdge.prototype = {
           start: function() {
@@ -3270,7 +3271,7 @@ var Plotly = (() => {
         function d3_geom_voronoi(sites, bbox) {
           var site = sites.sort(d3_geom_voronoiVertexOrder).pop(), x0, y0, circle;
           d3_geom_voronoiEdges = [];
-          d3_geom_voronoiCells = Array.from({length: sites.length});
+          d3_geom_voronoiCells = new Array(sites.length);
           d3_geom_voronoiBeaches = new d3_geom_voronoiRedBlackTree();
           d3_geom_voronoiCircles = new d3_geom_voronoiRedBlackTree();
           while (true) {
@@ -3303,14 +3304,14 @@ var Plotly = (() => {
           var x = d3_geom_pointX, y = d3_geom_pointY, fx = x, fy = y, clipExtent = d3_geom_voronoiClipExtent;
           if (points) return voronoi(points);
           function voronoi(data) {
-            var polygons = Array.from({length: data.length}), x0 = clipExtent[0][0], y0 = clipExtent[0][1], x1 = clipExtent[1][0], y1 = clipExtent[1][1];
-            for (const [i, cell] of d3_geom_voronoi(sites(data), clipExtent).cells.entries()) {
+            var polygons = new Array(data.length), x0 = clipExtent[0][0], y0 = clipExtent[0][1], x1 = clipExtent[1][0], y1 = clipExtent[1][1];
+            d3_geom_voronoi(sites(data), clipExtent).cells.forEach(function(cell, i) {
               var edges = cell.edges, site = cell.site, polygon = polygons[i] = edges.length ? edges.map(function(e) {
                 var s = e.start();
                 return [s.x, s.y];
               }) : site.x >= x0 && site.x <= x1 && site.y >= y0 && site.y <= y1 ? [[x0, y1], [x1, y1], [x1, y0], [x0, y0]] : [];
               polygon.point = data[i];
-            }
+            });
             return polygons;
           }
           function sites(data) {
@@ -3334,7 +3335,7 @@ var Plotly = (() => {
           };
           voronoi.triangles = function(data) {
             var triangles = [];
-            for (const [i, cell] of d3_geom_voronoi(sites(data)).cells.entries()) {
+            d3_geom_voronoi(sites(data)).cells.forEach(function(cell, i) {
               var site = cell.site, edges = cell.edges.sort(d3_geom_voronoiHalfEdgeOrder), j = -1, m = edges.length, e0, s0, e1 = edges[m - 1].edge, s1 = e1.l === site ? e1.r : e1.l;
               while (++j < m) {
                 e0 = e1;
@@ -3345,22 +3346,22 @@ var Plotly = (() => {
                   triangles.push([data[i], data[s0.i], data[s1.i]]);
                 }
               }
-            }
+            });
             return triangles;
           };
           voronoi.x = function(_) {
-            return arguments.length > 0 ? (fx = d3_functor(x = _), voronoi) : x;
+            return arguments.length ? (fx = d3_functor(x = _), voronoi) : x;
           };
           voronoi.y = function(_) {
-            return arguments.length > 0 ? (fy = d3_functor(y = _), voronoi) : y;
+            return arguments.length ? (fy = d3_functor(y = _), voronoi) : y;
           };
           voronoi.clipExtent = function(_) {
-            if (arguments.length === 0) return clipExtent === d3_geom_voronoiClipExtent ? null : clipExtent;
+            if (!arguments.length) return clipExtent === d3_geom_voronoiClipExtent ? null : clipExtent;
             clipExtent = _ == null ? d3_geom_voronoiClipExtent : _;
             return voronoi;
           };
           voronoi.size = function(_) {
-            if (arguments.length === 0) return clipExtent === d3_geom_voronoiClipExtent ? null : clipExtent && clipExtent[1];
+            if (!arguments.length) return clipExtent === d3_geom_voronoiClipExtent ? null : clipExtent && clipExtent[1];
             return voronoi.clipExtent(_ && [[0, 0], _]);
           };
           return voronoi;
@@ -3389,7 +3390,7 @@ var Plotly = (() => {
             if (x1 != null) {
               x1_ = x1, y1_ = y1, x2_ = x2, y2_ = y2;
             } else {
-              x2_ = y2_ = -(x1_ = y1_ = Number.POSITIVE_INFINITY);
+              x2_ = y2_ = -(x1_ = y1_ = Infinity);
               xs = [], ys = [];
               n = data.length;
               if (compat) for (i = 0; i < n; ++i) {
@@ -3465,19 +3466,19 @@ var Plotly = (() => {
             return root;
           }
           quadtree.x = function(_) {
-            return arguments.length > 0 ? (x = _, quadtree) : x;
+            return arguments.length ? (x = _, quadtree) : x;
           };
           quadtree.y = function(_) {
-            return arguments.length > 0 ? (y = _, quadtree) : y;
+            return arguments.length ? (y = _, quadtree) : y;
           };
           quadtree.extent = function(_) {
-            if (arguments.length === 0) return x1 == null ? null : [[x1, y1], [x2, y2]];
+            if (!arguments.length) return x1 == null ? null : [[x1, y1], [x2, y2]];
             if (_ == null) x1 = y1 = x2 = y2 = null;
             else x1 = +_[0][0], y1 = +_[0][1], x2 = +_[1][0], y2 = +_[1][1];
             return quadtree;
           };
           quadtree.size = function(_) {
-            if (arguments.length === 0) return x1 == null ? null : [x2 - x1, y2 - y1];
+            if (!arguments.length) return x1 == null ? null : [x2 - x1, y2 - y1];
             if (_ == null) x1 = y1 = x2 = y2 = null;
             else x1 = y1 = 0, x2 = +_[0], y2 = +_[1];
             return quadtree;
@@ -3509,7 +3510,7 @@ var Plotly = (() => {
           }
         }
         function d3_geom_quadtreeFind(root, x, y, x0, y0, x3, y3) {
-          var minDistance2 = Number.POSITIVE_INFINITY, closestPoint;
+          var minDistance2 = Infinity, closestPoint;
           (function find(node, x1, y1, x2, y2) {
             if (x1 > x3 || y1 > y3 || x2 < x0 || y2 < y0) return;
             if (point = node.point) {
@@ -3524,22 +3525,18 @@ var Plotly = (() => {
             var children = node.nodes, xm = (x1 + x2) * 0.5, ym = (y1 + y2) * 0.5, right = x >= xm, below = y >= ym;
             for (var i = below << 1 | right, j = i + 4; i < j; ++i) {
               if (node = children[i & 3]) switch (i & 3) {
-                case 0: {
+                case 0:
                   find(node, x1, y1, xm, ym);
                   break;
-                }
-                case 1: {
+                case 1:
                   find(node, xm, y1, x2, ym);
                   break;
-                }
-                case 2: {
+                case 2:
                   find(node, x1, ym, xm, y2);
                   break;
-                }
-                case 3: {
+                case 3:
                   find(node, xm, ym, x2, y2);
                   break;
-                }
               }
             }
           })(root, x0, y0, x3, y3);
@@ -3608,16 +3605,16 @@ var Plotly = (() => {
             if (s[i]) s[i] += bs;
             else s[++i] = bs;
           }
-          return s.length < 2 ? (q[0] ? (b = q[0].x, function(t) {
+          return s.length < 2 ? q[0] ? (b = q[0].x, function(t) {
             return b(t) + "";
           }) : function() {
             return b;
-          }) : (b = q.length, function(t) {
+          } : (b = q.length, function(t) {
             for (var i2 = 0, o; i2 < b; ++i2) s[(o = q[i2]).i] = o.x(t);
             return s.join("");
           });
         }
-        var d3_interpolate_numberA = /[+-]?(?:\d+\.?\d*|\.?\d+)(?:[Ee][+-]?\d+)?/g, d3_interpolate_numberB = new RegExp(d3_interpolate_numberA.source, "g");
+        var d3_interpolate_numberA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g, d3_interpolate_numberB = new RegExp(d3_interpolate_numberA.source, "g");
         d3.interpolate = d3_interpolate;
         function d3_interpolate(a, b) {
           var i = d3.interpolators.length, f;
@@ -3626,7 +3623,7 @@ var Plotly = (() => {
         }
         d3.interpolators = [function(a, b) {
           var t = typeof b;
-          return (t === "string" ? (d3_rgb_names.has(b.toLowerCase()) || /^(#|rgb\(|hsl\()/i.test(b) ? d3_interpolateRgb : d3_interpolateString) : b instanceof d3_color ? d3_interpolateRgb : Array.isArray(b) ? d3_interpolateArray : t === "object" && isNaN(b) ? d3_interpolateObject : d3_interpolateNumber)(a, b);
+          return (t === "string" ? d3_rgb_names.has(b.toLowerCase()) || /^(#|rgb\(|hsl\()/i.test(b) ? d3_interpolateRgb : d3_interpolateString : b instanceof d3_color ? d3_interpolateRgb : Array.isArray(b) ? d3_interpolateArray : t === "object" && isNaN(b) ? d3_interpolateObject : d3_interpolateNumber)(a, b);
         }];
         d3.interpolateArray = d3_interpolateArray;
         function d3_interpolateArray(a, b) {
@@ -3682,7 +3679,7 @@ var Plotly = (() => {
         };
         function d3_ease_clamp(f) {
           return function(t) {
-            return t <= 0 ? 0 : (t >= 1 ? 1 : f(t));
+            return t <= 0 ? 0 : t >= 1 ? 1 : f(t);
           };
         }
         function d3_ease_reverse(f) {
@@ -3724,20 +3721,20 @@ var Plotly = (() => {
         function d3_ease_elastic(a, p) {
           var s;
           if (arguments.length < 2) p = 0.45;
-          if (arguments.length > 0) s = p / \u03C4 * Math.asin(1 / a);
+          if (arguments.length) s = p / \u03C4 * Math.asin(1 / a);
           else a = 1, s = p / 4;
           return function(t) {
             return 1 + a * Math.pow(2, -10 * t) * Math.sin((t - s) * \u03C4 / p);
           };
         }
         function d3_ease_back(s) {
-          if (!s) s = 1.701_58;
+          if (!s) s = 1.70158;
           return function(t) {
             return t * t * ((s + 1) * t - s);
           };
         }
         function d3_ease_bounce(t) {
-          return t < 1 / 2.75 ? 7.5625 * t * t : t < 2 / 2.75 ? 7.5625 * (t -= 1.5 / 2.75) * t + 0.75 : t < 2.5 / 2.75 ? 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375 : 7.5625 * (t -= 2.625 / 2.75) * t + 0.984_375;
+          return t < 1 / 2.75 ? 7.5625 * t * t : t < 2 / 2.75 ? 7.5625 * (t -= 1.5 / 2.75) * t + 0.75 : t < 2.5 / 2.75 ? 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375 : 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
         }
         d3.interpolateHcl = d3_interpolateHcl;
         function d3_interpolateHcl(a, b) {
@@ -3833,7 +3830,7 @@ var Plotly = (() => {
         };
         d3.interpolateTransform = d3_interpolateTransform;
         function d3_interpolateTransformPop(s) {
-          return s.length > 0 ? s.pop() + "," : "";
+          return s.length ? s.pop() + "," : "";
         }
         function d3_interpolateTranslate(ta, tb, s, q) {
           if (ta[0] !== tb[0] || ta[1] !== tb[1]) {
@@ -3974,11 +3971,11 @@ var Plotly = (() => {
               });
             }
             if (sortSubgroups) {
-              for (const [i2, d] of subgroupIndex.entries()) {
+              subgroupIndex.forEach(function(d, i2) {
                 d.sort(function(a, b) {
                   return sortSubgroups(matrix[i2][a], matrix[i2][b]);
                 });
-              }
+              });
             }
             k = (\u03C4 - padding * n) / k;
             x = 0, i = -1;
@@ -4026,31 +4023,31 @@ var Plotly = (() => {
             });
           }
           chord.matrix = function(x) {
-            if (arguments.length === 0) return matrix;
+            if (!arguments.length) return matrix;
             n = (matrix = x) && matrix.length;
             chords = groups = null;
             return chord;
           };
           chord.padding = function(x) {
-            if (arguments.length === 0) return padding;
+            if (!arguments.length) return padding;
             padding = x;
             chords = groups = null;
             return chord;
           };
           chord.sortGroups = function(x) {
-            if (arguments.length === 0) return sortGroups;
+            if (!arguments.length) return sortGroups;
             sortGroups = x;
             chords = groups = null;
             return chord;
           };
           chord.sortSubgroups = function(x) {
-            if (arguments.length === 0) return sortSubgroups;
+            if (!arguments.length) return sortSubgroups;
             sortSubgroups = x;
             chords = null;
             return chord;
           };
           chord.sortChords = function(x) {
-            if (arguments.length === 0) return sortChords;
+            if (!arguments.length) return sortChords;
             sortChords = x;
             if (chords) resort();
             return chord;
@@ -4150,64 +4147,64 @@ var Plotly = (() => {
             });
           };
           force.nodes = function(x) {
-            if (arguments.length === 0) return nodes;
+            if (!arguments.length) return nodes;
             nodes = x;
             return force;
           };
           force.links = function(x) {
-            if (arguments.length === 0) return links;
+            if (!arguments.length) return links;
             links = x;
             return force;
           };
           force.size = function(x) {
-            if (arguments.length === 0) return size;
+            if (!arguments.length) return size;
             size = x;
             return force;
           };
           force.linkDistance = function(x) {
-            if (arguments.length === 0) return linkDistance;
+            if (!arguments.length) return linkDistance;
             linkDistance = typeof x === "function" ? x : +x;
             return force;
           };
           force.distance = force.linkDistance;
           force.linkStrength = function(x) {
-            if (arguments.length === 0) return linkStrength;
+            if (!arguments.length) return linkStrength;
             linkStrength = typeof x === "function" ? x : +x;
             return force;
           };
           force.friction = function(x) {
-            if (arguments.length === 0) return friction;
+            if (!arguments.length) return friction;
             friction = +x;
             return force;
           };
           force.charge = function(x) {
-            if (arguments.length === 0) return charge;
+            if (!arguments.length) return charge;
             charge = typeof x === "function" ? x : +x;
             return force;
           };
           force.chargeDistance = function(x) {
-            if (arguments.length === 0) return Math.sqrt(chargeDistance2);
+            if (!arguments.length) return Math.sqrt(chargeDistance2);
             chargeDistance2 = x * x;
             return force;
           };
           force.gravity = function(x) {
-            if (arguments.length === 0) return gravity;
+            if (!arguments.length) return gravity;
             gravity = +x;
             return force;
           };
           force.theta = function(x) {
-            if (arguments.length === 0) return Math.sqrt(theta2);
+            if (!arguments.length) return Math.sqrt(theta2);
             theta2 = x * x;
             return force;
           };
           force.alpha = function(x) {
-            if (arguments.length === 0) return alpha;
+            if (!arguments.length) return alpha;
             x = +x;
             if (alpha) {
               if (x > 0) {
                 alpha = x;
               } else {
-                timer.c = null, timer.t = Number.NaN, timer = null;
+                timer.c = null, timer.t = NaN, timer = null;
                 event.end({
                   type: "end",
                   alpha: alpha = 0
@@ -4230,8 +4227,8 @@ var Plotly = (() => {
             }
             for (i = 0; i < m; ++i) {
               o = links[i];
-              if (typeof o.source === "number") o.source = nodes[o.source];
-              if (typeof o.target === "number") o.target = nodes[o.target];
+              if (typeof o.source == "number") o.source = nodes[o.source];
+              if (typeof o.target == "number") o.target = nodes[o.target];
               ++o.source.weight;
               ++o.target.weight;
             }
@@ -4277,7 +4274,7 @@ var Plotly = (() => {
           };
           force.drag = function() {
             if (!drag) drag = d3.behavior.drag().origin(d3_identity).on("dragstart.force", d3_layout_forceDragstart).on("drag.force", dragmove).on("dragend.force", d3_layout_forceDragend);
-            if (arguments.length === 0) return drag;
+            if (!arguments.length) return drag;
             this.on("mouseover.force", d3_layout_forceMouseover).on("mouseout.force", d3_layout_forceMouseout).call(drag);
           };
           function dragmove(d) {
@@ -4326,7 +4323,7 @@ var Plotly = (() => {
           quad.cx = cx / quad.charge;
           quad.cy = cy / quad.charge;
         }
-        var d3_layout_forceLinkDistance = 20, d3_layout_forceLinkStrength = 1, d3_layout_forceChargeDistance2 = Number.POSITIVE_INFINITY;
+        var d3_layout_forceLinkDistance = 20, d3_layout_forceLinkStrength = 1, d3_layout_forceChargeDistance2 = Infinity;
         d3.layout.hierarchy = function() {
           var sort = d3_layout_hierarchySort, children = d3_layout_hierarchyChildren, value = d3_layout_hierarchyValue;
           function hierarchy(root) {
@@ -4356,17 +4353,17 @@ var Plotly = (() => {
             return nodes;
           }
           hierarchy.sort = function(x) {
-            if (arguments.length === 0) return sort;
+            if (!arguments.length) return sort;
             sort = x;
             return hierarchy;
           };
           hierarchy.children = function(x) {
-            if (arguments.length === 0) return children;
+            if (!arguments.length) return children;
             children = x;
             return hierarchy;
           };
           hierarchy.value = function(x) {
-            if (arguments.length === 0) return value;
+            if (!arguments.length) return value;
             value = x;
             return hierarchy;
           };
@@ -4464,7 +4461,7 @@ var Plotly = (() => {
             return nodes;
           }
           partition.size = function(x) {
-            if (arguments.length === 0) return size;
+            if (!arguments.length) return size;
             size = x;
             return partition;
           };
@@ -4475,13 +4472,13 @@ var Plotly = (() => {
           function pie(data) {
             var n = data.length, values = data.map(function(d, i) {
               return +value.call(pie, d, i);
-            }), a = +(typeof startAngle === "function" ? Reflect.apply(startAngle, this, arguments) : startAngle), da = (typeof endAngle === "function" ? Reflect.apply(endAngle, this, arguments) : endAngle) - a, p = Math.min(Math.abs(da) / n, +(typeof padAngle === "function" ? Reflect.apply(padAngle, this, arguments) : padAngle)), pa = p * (da < 0 ? -1 : 1), sum = d3.sum(values), k = sum ? (da - n * pa) / sum : 0, index = d3.range(n), arcs = [], v;
+            }), a = +(typeof startAngle === "function" ? startAngle.apply(this, arguments) : startAngle), da = (typeof endAngle === "function" ? endAngle.apply(this, arguments) : endAngle) - a, p = Math.min(Math.abs(da) / n, +(typeof padAngle === "function" ? padAngle.apply(this, arguments) : padAngle)), pa = p * (da < 0 ? -1 : 1), sum = d3.sum(values), k = sum ? (da - n * pa) / sum : 0, index = d3.range(n), arcs = [], v;
             if (sort != null) index.sort(sort === d3_layout_pieSortByValue ? function(i, j) {
               return values[j] - values[i];
             } : function(i, j) {
               return sort(data[i], data[j]);
             });
-            for (const i of index) {
+            index.forEach(function(i) {
               arcs[i] = {
                 data: data[i],
                 value: v = values[i],
@@ -4489,31 +4486,31 @@ var Plotly = (() => {
                 endAngle: a += v * k + pa,
                 padAngle: p
               };
-            }
+            });
             return arcs;
           }
           pie.value = function(_) {
-            if (arguments.length === 0) return value;
+            if (!arguments.length) return value;
             value = _;
             return pie;
           };
           pie.sort = function(_) {
-            if (arguments.length === 0) return sort;
+            if (!arguments.length) return sort;
             sort = _;
             return pie;
           };
           pie.startAngle = function(_) {
-            if (arguments.length === 0) return startAngle;
+            if (!arguments.length) return startAngle;
             startAngle = _;
             return pie;
           };
           pie.endAngle = function(_) {
-            if (arguments.length === 0) return endAngle;
+            if (!arguments.length) return endAngle;
             endAngle = _;
             return pie;
           };
           pie.padAngle = function(_) {
-            if (arguments.length === 0) return padAngle;
+            if (!arguments.length) return padAngle;
             padAngle = _;
             return pie;
           };
@@ -4546,32 +4543,32 @@ var Plotly = (() => {
             return data;
           }
           stack.values = function(x2) {
-            if (arguments.length === 0) return values;
+            if (!arguments.length) return values;
             values = x2;
             return stack;
           };
           stack.order = function(x2) {
-            if (arguments.length === 0) return order;
+            if (!arguments.length) return order;
             order = typeof x2 === "function" ? x2 : d3_layout_stackOrders.get(x2) || d3_layout_stackOrderDefault;
             return stack;
           };
           stack.offset = function(x2) {
-            if (arguments.length === 0) return offset;
+            if (!arguments.length) return offset;
             offset = typeof x2 === "function" ? x2 : d3_layout_stackOffsets.get(x2) || d3_layout_stackOffsetZero;
             return stack;
           };
           stack.x = function(z) {
-            if (arguments.length === 0) return x;
+            if (!arguments.length) return x;
             x = z;
             return stack;
           };
           stack.y = function(z) {
-            if (arguments.length === 0) return y;
+            if (!arguments.length) return y;
             y = z;
             return stack;
           };
           stack.out = function(z) {
-            if (arguments.length === 0) return out;
+            if (!arguments.length) return out;
             out = z;
             return stack;
           };
@@ -4602,7 +4599,7 @@ var Plotly = (() => {
                 bottoms.push(j);
               }
             }
-            return [...bottoms.reverse(), ...tops];
+            return bottoms.reverse().concat(tops);
           },
           reverse: function(data) {
             return d3.range(data.length).reverse();
@@ -4698,31 +4695,31 @@ var Plotly = (() => {
             return bins;
           }
           histogram.value = function(x) {
-            if (arguments.length === 0) return valuer;
+            if (!arguments.length) return valuer;
             valuer = x;
             return histogram;
           };
           histogram.range = function(x) {
-            if (arguments.length === 0) return ranger;
+            if (!arguments.length) return ranger;
             ranger = d3_functor(x);
             return histogram;
           };
           histogram.bins = function(x) {
-            if (arguments.length === 0) return binner;
+            if (!arguments.length) return binner;
             binner = typeof x === "number" ? function(range) {
               return d3_layout_histogramBinFixed(range, x);
             } : d3_functor(x);
             return histogram;
           };
           histogram.frequency = function(x) {
-            if (arguments.length === 0) return frequency;
+            if (!arguments.length) return frequency;
             frequency = !!x;
             return histogram;
           };
           return histogram;
         };
         function d3_layout_histogramBinSturges(range, values) {
-          return d3_layout_histogramBinFixed(range, Math.ceil(Math.log2(values.length) + 1));
+          return d3_layout_histogramBinFixed(range, Math.ceil(Math.log(values.length) / Math.LN2 + 1));
         }
         function d3_layout_histogramBinFixed(range, n) {
           var x = -1, b = +range[0], m = (range[1] - b) / n, f = [];
@@ -4735,9 +4732,9 @@ var Plotly = (() => {
         d3.layout.pack = function() {
           var hierarchy = d3.layout.hierarchy().sort(d3_layout_packSort), padding = 0, size = [1, 1], radius;
           function pack(d, i) {
-            var nodes = hierarchy.call(this, d, i), root = nodes[0], w = size[0], h = size[1], r = radius == null ? Math.sqrt : (typeof radius === "function" ? radius : function() {
+            var nodes = hierarchy.call(this, d, i), root = nodes[0], w = size[0], h = size[1], r = radius == null ? Math.sqrt : typeof radius === "function" ? radius : function() {
               return radius;
-            });
+            };
             root.x = root.y = 0;
             d3_layout_hierarchyVisitAfter(root, function(d2) {
               d2.r = +r(d2.value);
@@ -4757,17 +4754,17 @@ var Plotly = (() => {
             return nodes;
           }
           pack.size = function(_) {
-            if (arguments.length === 0) return size;
+            if (!arguments.length) return size;
             size = _;
             return pack;
           };
           pack.radius = function(_) {
-            if (arguments.length === 0) return radius;
+            if (!arguments.length) return radius;
             radius = _ == null || typeof _ === "function" ? _ : +_;
             return pack;
           };
           pack.padding = function(_) {
-            if (arguments.length === 0) return padding;
+            if (!arguments.length) return padding;
             padding = +_;
             return pack;
           };
@@ -4793,7 +4790,7 @@ var Plotly = (() => {
         }
         function d3_layout_packSiblings(node) {
           if (!(nodes = node.children) || !(n = nodes.length)) return;
-          var nodes, xMin = Number.POSITIVE_INFINITY, xMax = Number.NEGATIVE_INFINITY, yMin = Number.POSITIVE_INFINITY, yMax = Number.NEGATIVE_INFINITY, a, b, c, i, j, k, n;
+          var nodes, xMin = Infinity, xMax = -Infinity, yMin = Infinity, yMax = -Infinity, a, b, c, i, j, k, n;
           function bound(node2) {
             xMin = Math.min(node2.x - node2.r, xMin);
             xMax = Math.max(node2.x + node2.r, xMax);
@@ -4851,7 +4848,7 @@ var Plotly = (() => {
             c = nodes[i];
             c.x -= cx;
             c.y -= cy;
-            cr = Math.max(cr, c.r + Math.hypot(c.x, c.y));
+            cr = Math.max(cr, c.r + Math.sqrt(c.x * c.x + c.y * c.y));
           }
           node.r = cr;
           nodes.forEach(d3_layout_packUnlink);
@@ -4919,7 +4916,7 @@ var Plotly = (() => {
                 queue.push((children[i] = child = {
                   _: children[i],
                   parent: node1,
-                  children: (child = children[i].children) && [...child] || [],
+                  children: (child = children[i].children) && child.slice() || [],
                   A: null,
                   a: null,
                   z: 0,
@@ -4935,9 +4932,9 @@ var Plotly = (() => {
           }
           function firstWalk(v) {
             var children = v.children, siblings = v.parent.children, w = v.i ? siblings[v.i - 1] : null;
-            if (children.length > 0) {
+            if (children.length) {
               d3_layout_treeShift(v);
-              var midpoint = (children[0].z + children.at(-1).z) / 2;
+              var midpoint = (children[0].z + children[children.length - 1].z) / 2;
               if (w) {
                 v.z = w.z + separation(v._, w._);
                 v.m = v.z - midpoint;
@@ -4988,17 +4985,17 @@ var Plotly = (() => {
             node.y = node.depth * size[1];
           }
           tree.separation = function(x) {
-            if (arguments.length === 0) return separation;
+            if (!arguments.length) return separation;
             separation = x;
             return tree;
           };
           tree.size = function(x) {
-            if (arguments.length === 0) return nodeSize ? null : size;
+            if (!arguments.length) return nodeSize ? null : size;
             nodeSize = (size = x) == null ? sizeNode : null;
             return tree;
           };
           tree.nodeSize = function(x) {
-            if (arguments.length === 0) return nodeSize ? size : null;
+            if (!arguments.length) return nodeSize ? size : null;
             nodeSize = (size = x) == null ? null : sizeNode;
             return tree;
           };
@@ -5009,7 +5006,7 @@ var Plotly = (() => {
         }
         function d3_layout_treeLeft(v) {
           var children = v.children;
-          return children.length > 0 ? children[0] : v.t;
+          return children.length ? children[0] : v.t;
         }
         function d3_layout_treeRight(v) {
           var children = v.children, n;
@@ -5041,7 +5038,7 @@ var Plotly = (() => {
             var nodes = hierarchy.call(this, d, i), root = nodes[0], previousNode, x = 0;
             d3_layout_hierarchyVisitAfter(root, function(node) {
               var children = node.children;
-              if (children && children.length > 0) {
+              if (children && children.length) {
                 node.x = d3_layout_clusterX(children);
                 node.y = d3_layout_clusterY(children);
               } else {
@@ -5061,17 +5058,17 @@ var Plotly = (() => {
             return nodes;
           }
           cluster.separation = function(x) {
-            if (arguments.length === 0) return separation;
+            if (!arguments.length) return separation;
             separation = x;
             return cluster;
           };
           cluster.size = function(x) {
-            if (arguments.length === 0) return nodeSize ? null : size;
+            if (!arguments.length) return nodeSize ? null : size;
             nodeSize = (size = x) == null;
             return cluster;
           };
           cluster.nodeSize = function(x) {
-            if (arguments.length === 0) return nodeSize ? size : null;
+            if (!arguments.length) return nodeSize ? size : null;
             nodeSize = (size = x) != null;
             return cluster;
           };
@@ -5089,7 +5086,7 @@ var Plotly = (() => {
         }
         function d3_layout_clusterLeft(node) {
           var children = node.children;
-          return children && children.length > 0 ? d3_layout_clusterLeft(children[0]) : node;
+          return children && children.length ? d3_layout_clusterLeft(children[0]) : node;
         }
         function d3_layout_clusterRight(node) {
           var children = node.children, n;
@@ -5106,8 +5103,8 @@ var Plotly = (() => {
           }
           function squarify(node) {
             var children = node.children;
-            if (children && children.length > 0) {
-              var rect = pad(node), row = [], remaining = [...children], child, best = Number.POSITIVE_INFINITY, score, u = mode === "slice" ? rect.dx : mode === "dice" ? rect.dy : mode === "slice-dice" ? node.depth & 1 ? rect.dy : rect.dx : Math.min(rect.dx, rect.dy), n;
+            if (children && children.length) {
+              var rect = pad(node), row = [], remaining = children.slice(), child, best = Infinity, score, u = mode === "slice" ? rect.dx : mode === "dice" ? rect.dy : mode === "slice-dice" ? node.depth & 1 ? rect.dy : rect.dx : Math.min(rect.dx, rect.dy), n;
               scale(remaining, rect.dx * rect.dy / node.value);
               row.area = 0;
               while ((n = remaining.length) > 0) {
@@ -5121,10 +5118,10 @@ var Plotly = (() => {
                   position(row, u, rect, false);
                   u = Math.min(rect.dx, rect.dy);
                   row.length = row.area = 0;
-                  best = Number.POSITIVE_INFINITY;
+                  best = Infinity;
                 }
               }
-              if (row.length > 0) {
+              if (row.length) {
                 position(row, u, rect, true);
                 row.length = row.area = 0;
               }
@@ -5133,15 +5130,15 @@ var Plotly = (() => {
           }
           function stickify(node) {
             var children = node.children;
-            if (children && children.length > 0) {
-              var rect = pad(node), remaining = [...children], child, row = [];
+            if (children && children.length) {
+              var rect = pad(node), remaining = children.slice(), child, row = [];
               scale(remaining, rect.dx * rect.dy / node.value);
               row.area = 0;
               while (child = remaining.pop()) {
                 row.push(child);
                 row.area += child.area;
                 if (child.z != null) {
-                  position(row, child.z ? rect.dx : rect.dy, rect, remaining.length === 0);
+                  position(row, child.z ? rect.dx : rect.dy, rect, !remaining.length);
                   row.length = row.area = 0;
                 }
               }
@@ -5149,7 +5146,7 @@ var Plotly = (() => {
             }
           }
           function worst(row, u) {
-            var s = row.area, r, rmax = 0, rmin = Number.POSITIVE_INFINITY, i = -1, n = row.length;
+            var s = row.area, r, rmax = 0, rmin = Infinity, i = -1, n = row.length;
             while (++i < n) {
               if (!(r = row[i].area)) continue;
               if (r < rmin) rmin = r;
@@ -5157,7 +5154,7 @@ var Plotly = (() => {
             }
             s *= s;
             u *= u;
-            return s ? Math.max(u * rmax * ratio / s, s / (u * rmin * ratio)) : Number.POSITIVE_INFINITY;
+            return s ? Math.max(u * rmax * ratio / s, s / (u * rmin * ratio)) : Infinity;
           }
           function position(row, u, rect, flush) {
             var i = -1, n = row.length, x = rect.x, y = rect.y, v = u ? round(row.area / u) : 0, o;
@@ -5201,12 +5198,12 @@ var Plotly = (() => {
             return nodes;
           }
           treemap.size = function(x) {
-            if (arguments.length === 0) return size;
+            if (!arguments.length) return size;
             size = x;
             return treemap;
           };
           treemap.padding = function(x) {
-            if (arguments.length === 0) return padding;
+            if (!arguments.length) return padding;
             function padFunction(node) {
               var p = x.call(treemap, node, node.depth);
               return p == null ? d3_layout_treemapPadNull(node) : d3_layout_treemapPad(node, typeof p === "number" ? [p, p, p, p] : p);
@@ -5219,23 +5216,23 @@ var Plotly = (() => {
             return treemap;
           };
           treemap.round = function(x) {
-            if (arguments.length === 0) return round != Number;
+            if (!arguments.length) return round != Number;
             round = x ? Math.round : Number;
             return treemap;
           };
           treemap.sticky = function(x) {
-            if (arguments.length === 0) return sticky;
+            if (!arguments.length) return sticky;
             sticky = x;
             stickies = null;
             return treemap;
           };
           treemap.ratio = function(x) {
-            if (arguments.length === 0) return ratio;
+            if (!arguments.length) return ratio;
             ratio = x;
             return treemap;
           };
           treemap.mode = function(x) {
-            if (arguments.length === 0) return mode;
+            if (!arguments.length) return mode;
             mode = x + "";
             return treemap;
           };
@@ -5302,7 +5299,7 @@ var Plotly = (() => {
         };
         d3.scale = {};
         function d3_scaleExtent(domain) {
-          var start = domain[0], stop = domain.at(-1);
+          var start = domain[0], stop = domain[domain.length - 1];
           return start < stop ? [start, stop] : [stop, start];
         }
         function d3_scaleRange(scale) {
@@ -5341,8 +5338,8 @@ var Plotly = (() => {
         function d3_scale_polylinear(domain, range, uninterpolate, interpolate) {
           var u = [], i = [], j = 0, k = Math.min(domain.length, range.length) - 1;
           if (domain[k] < domain[0]) {
-            domain = [...domain].reverse();
-            range = [...range].reverse();
+            domain = domain.slice().reverse();
+            range = range.slice().reverse();
           }
           while (++j <= k) {
             u.push(uninterpolate(domain[j - 1], domain[j]));
@@ -5371,12 +5368,12 @@ var Plotly = (() => {
             return input(y);
           };
           scale.domain = function(x) {
-            if (arguments.length === 0) return domain;
+            if (!arguments.length) return domain;
             domain = x.map(Number);
             return rescale();
           };
           scale.range = function(x) {
-            if (arguments.length === 0) return range;
+            if (!arguments.length) return range;
             range = x;
             return rescale();
           };
@@ -5384,12 +5381,12 @@ var Plotly = (() => {
             return scale.range(x).interpolate(d3_interpolateRound);
           };
           scale.clamp = function(x) {
-            if (arguments.length === 0) return clamp;
+            if (!arguments.length) return clamp;
             clamp = x;
             return rescale();
           };
           scale.interpolate = function(x) {
-            if (arguments.length === 0) return interpolate;
+            if (!arguments.length) return interpolate;
             interpolate = x;
             return rescale();
           };
@@ -5418,7 +5415,7 @@ var Plotly = (() => {
         }
         function d3_scale_linearTickRange(domain, m) {
           if (m == null) m = 10;
-          var extent = d3_scaleExtent(domain), span = extent[1] - extent[0], step = Math.pow(10, Math.floor(Math.log10(span / m))), err = m / span * step;
+          var extent = d3_scaleExtent(domain), span = extent[1] - extent[0], step = Math.pow(10, Math.floor(Math.log(span / m) / Math.LN10)), err = m / span * step;
           if (err <= 0.15) step *= 10;
           else if (err <= 0.35) step *= 5;
           else if (err <= 0.75) step *= 2;
@@ -5438,7 +5435,7 @@ var Plotly = (() => {
           e: 1
         };
         function d3_scale_linearPrecision(value) {
-          return -Math.floor(Math.log10(value) + 0.01);
+          return -Math.floor(Math.log(value) / Math.LN10 + 0.01);
         }
         function d3_scale_linearFormatPrecision(type, range) {
           var p = d3_scale_linearPrecision(range[2]);
@@ -5461,13 +5458,13 @@ var Plotly = (() => {
             return pow(linear.invert(x));
           };
           scale.domain = function(x) {
-            if (arguments.length === 0) return domain;
+            if (!arguments.length) return domain;
             positive = x[0] >= 0;
             linear.domain((domain = x.map(Number)).map(log));
             return scale;
           };
           scale.base = function(_) {
-            if (arguments.length === 0) return base;
+            if (!arguments.length) return base;
             base = +_;
             linear.domain(domain.map(log));
             return scale;
@@ -5488,8 +5485,10 @@ var Plotly = (() => {
                 ticks.push(pow(i));
                 for (; i++ < j; ) for (var k = n - 1; k > 0; k--) ticks.push(pow(i) * k);
               }
-              for (i = 0; ticks[i] < u; i++) {}
-              for (j = ticks.length; ticks[j - 1] > v; j--) {}
+              for (i = 0; ticks[i] < u; i++) {
+              }
+              for (j = ticks.length; ticks[j - 1] > v; j--) {
+              }
               ticks = ticks.slice(i, j);
             }
             return ticks;
@@ -5519,7 +5518,7 @@ var Plotly = (() => {
             return powb(linear.invert(x));
           };
           scale.domain = function(x) {
-            if (arguments.length === 0) return domain;
+            if (!arguments.length) return domain;
             linear.domain((domain = x.map(Number)).map(powp));
             return scale;
           };
@@ -5533,7 +5532,7 @@ var Plotly = (() => {
             return scale.domain(d3_scale_linearNice(domain, m));
           };
           scale.exponent = function(x) {
-            if (arguments.length === 0) return exponent;
+            if (!arguments.length) return exponent;
             powp = d3_scale_powPow(exponent = x);
             powb = d3_scale_powPow(1 / exponent);
             linear.domain(domain.map(powp));
@@ -5561,7 +5560,7 @@ var Plotly = (() => {
         function d3_scale_ordinal(domain, ranger) {
           var index, range, rangeBand;
           function scale(x) {
-            return range[((index.get(x) || (ranger.t === "range" ? index.set(x, domain.push(x)) : Number.NaN)) - 1) % range.length];
+            return range[((index.get(x) || (ranger.t === "range" ? index.set(x, domain.push(x)) : NaN)) - 1) % range.length];
           }
           function steps(start, step) {
             return d3.range(domain.length).map(function(i) {
@@ -5569,7 +5568,7 @@ var Plotly = (() => {
             });
           }
           scale.domain = function(x) {
-            if (arguments.length === 0) return domain;
+            if (!arguments.length) return domain;
             domain = [];
             index = new d3_Map();
             var i = -1, n = x.length, xi;
@@ -5577,7 +5576,7 @@ var Plotly = (() => {
             return scale[ranger.t].apply(scale, ranger.a);
           };
           scale.range = function(x) {
-            if (arguments.length === 0) return range;
+            if (!arguments.length) return range;
             range = x;
             rangeBand = 0;
             ranger = {
@@ -5657,10 +5656,10 @@ var Plotly = (() => {
         d3.scale.category20c = function() {
           return d3.scale.ordinal().range(d3_category20c);
         };
-        var d3_category10 = [2_062_260, 16_744_206, 2_924_588, 14_034_728, 9_725_885, 9_197_131, 14_907_330, 8_355_711, 12_369_186, 1_556_175].map(d3_rgbString);
-        var d3_category20 = [2_062_260, 11_454_440, 16_744_206, 16_759_672, 2_924_588, 10_018_698, 14_034_728, 16_750_742, 9_725_885, 12_955_861, 9_197_131, 12_885_140, 14_907_330, 16_234_194, 8_355_711, 13_092_807, 12_369_186, 14_408_589, 1_556_175, 10_410_725].map(d3_rgbString);
-        var d3_category20b = [3_750_777, 5_395_619, 7_040_719, 10_264_286, 6_519_097, 9_216_594, 11_915_115, 13_556_636, 9_202_993, 12_426_809, 15_186_514, 15_190_932, 8_666_169, 11_356_490, 14_049_643, 15_177_372, 8_077_683, 10_834_324, 13_528_509, 14_589_654].map(d3_rgbString);
-        var d3_category20c = [3_244_733, 7_057_110, 10_406_625, 13_032_431, 15_095_053, 16_616_764, 16_625_259, 16_634_018, 3_253_076, 7_652_470, 10_607_003, 13_101_504, 7_695_281, 10_394_312, 12_369_372, 14_342_891, 6_513_507, 9_868_950, 12_434_877, 14_277_081].map(d3_rgbString);
+        var d3_category10 = [2062260, 16744206, 2924588, 14034728, 9725885, 9197131, 14907330, 8355711, 12369186, 1556175].map(d3_rgbString);
+        var d3_category20 = [2062260, 11454440, 16744206, 16759672, 2924588, 10018698, 14034728, 16750742, 9725885, 12955861, 9197131, 12885140, 14907330, 16234194, 8355711, 13092807, 12369186, 14408589, 1556175, 10410725].map(d3_rgbString);
+        var d3_category20b = [3750777, 5395619, 7040719, 10264286, 6519097, 9216594, 11915115, 13556636, 9202993, 12426809, 15186514, 15190932, 8666169, 11356490, 14049643, 15177372, 8077683, 10834324, 13528509, 14589654].map(d3_rgbString);
+        var d3_category20c = [3244733, 7057110, 10406625, 13032431, 15095053, 16616764, 16625259, 16634018, 3253076, 7652470, 10607003, 13101504, 7695281, 10394312, 12369372, 14342891, 6513507, 9868950, 12434877, 14277081].map(d3_rgbString);
         d3.scale.quantile = function() {
           return d3_scale_quantile([], []);
         };
@@ -5676,12 +5675,12 @@ var Plotly = (() => {
             if (!isNaN(x = +x)) return range[d3.bisect(thresholds, x)];
           }
           scale.domain = function(x) {
-            if (arguments.length === 0) return domain;
+            if (!arguments.length) return domain;
             domain = x.map(d3_number).filter(d3_numeric).sort(d3_ascending);
             return rescale();
           };
           scale.range = function(x) {
-            if (arguments.length === 0) return range;
+            if (!arguments.length) return range;
             range = x;
             return rescale();
           };
@@ -5690,7 +5689,7 @@ var Plotly = (() => {
           };
           scale.invertExtent = function(y) {
             y = range.indexOf(y);
-            return y < 0 ? [Number.NaN, Number.NaN] : [y > 0 ? thresholds[y - 1] : domain[0], y < thresholds.length ? thresholds[y] : domain.at(-1)];
+            return y < 0 ? [NaN, NaN] : [y > 0 ? thresholds[y - 1] : domain[0], y < thresholds.length ? thresholds[y] : domain[domain.length - 1]];
           };
           scale.copy = function() {
             return d3_scale_quantile(domain, range);
@@ -5711,19 +5710,19 @@ var Plotly = (() => {
             return scale;
           }
           scale.domain = function(x) {
-            if (arguments.length === 0) return [x0, x1];
+            if (!arguments.length) return [x0, x1];
             x0 = +x[0];
-            x1 = +x.at(-1);
+            x1 = +x[x.length - 1];
             return rescale();
           };
           scale.range = function(x) {
-            if (arguments.length === 0) return range;
+            if (!arguments.length) return range;
             range = x;
             return rescale();
           };
           scale.invertExtent = function(y) {
             y = range.indexOf(y);
-            y = y < 0 ? Number.NaN : y / kx + x0;
+            y = y < 0 ? NaN : y / kx + x0;
             return [y, y + 1 / kx];
           };
           scale.copy = function() {
@@ -5739,12 +5738,12 @@ var Plotly = (() => {
             if (x <= x) return range[d3.bisect(domain, x)];
           }
           scale.domain = function(_) {
-            if (arguments.length === 0) return domain;
+            if (!arguments.length) return domain;
             domain = _;
             return scale;
           };
           scale.range = function(_) {
-            if (arguments.length === 0) return range;
+            if (!arguments.length) return range;
             range = _;
             return scale;
           };
@@ -5766,7 +5765,7 @@ var Plotly = (() => {
           }
           identity.invert = identity;
           identity.domain = identity.range = function(x) {
-            if (arguments.length === 0) return domain;
+            if (!arguments.length) return domain;
             domain = x.map(identity);
             return identity;
           };
@@ -5788,12 +5787,12 @@ var Plotly = (() => {
         d3.svg.arc = function() {
           var innerRadius = d3_svg_arcInnerRadius, outerRadius = d3_svg_arcOuterRadius, cornerRadius = d3_zero, padRadius = d3_svg_arcAuto, startAngle = d3_svg_arcStartAngle, endAngle = d3_svg_arcEndAngle, padAngle = d3_svg_arcPadAngle;
           function arc() {
-            var r0 = Math.max(0, +Reflect.apply(innerRadius, this, arguments)), r1 = Math.max(0, +Reflect.apply(outerRadius, this, arguments)), a0 = Reflect.apply(startAngle, this, arguments) - half\u03C0, a1 = Reflect.apply(endAngle, this, arguments) - half\u03C0, da = Math.abs(a1 - a0), cw = a0 > a1 ? 0 : 1;
+            var r0 = Math.max(0, +innerRadius.apply(this, arguments)), r1 = Math.max(0, +outerRadius.apply(this, arguments)), a0 = startAngle.apply(this, arguments) - half\u03C0, a1 = endAngle.apply(this, arguments) - half\u03C0, da = Math.abs(a1 - a0), cw = a0 > a1 ? 0 : 1;
             if (r1 < r0) rc = r1, r1 = r0, r0 = rc;
             if (da >= \u03C4\u03B5) return circleSegment(r1, cw) + (r0 ? circleSegment(r0, 1 - cw) : "") + "Z";
             var rc, cr, rp, ap, p0 = 0, p1 = 0, x0, y0, x1, y1, x2, y2, x3, y3, path = [];
-            if (ap = (+Reflect.apply(padAngle, this, arguments) || 0) / 2) {
-              rp = padRadius === d3_svg_arcAuto ? Math.hypot(r0, r1) : +Reflect.apply(padRadius, this, arguments);
+            if (ap = (+padAngle.apply(this, arguments) || 0) / 2) {
+              rp = padRadius === d3_svg_arcAuto ? Math.sqrt(r0 * r0 + r1 * r1) : +padRadius.apply(this, arguments);
               if (!cw) p1 *= -1;
               if (r1) p1 = d3_asin(rp / r1 * Math.sin(ap));
               if (r0) p0 = d3_asin(rp / r0 * Math.sin(ap));
@@ -5828,11 +5827,11 @@ var Plotly = (() => {
             } else {
               x2 = y2 = 0;
             }
-            if (da > \u03B5 && (rc = Math.min(Math.abs(r1 - r0) / 2, +Reflect.apply(cornerRadius, this, arguments))) > 1e-3) {
+            if (da > \u03B5 && (rc = Math.min(Math.abs(r1 - r0) / 2, +cornerRadius.apply(this, arguments))) > 1e-3) {
               cr = r0 < r1 ^ cw ? 0 : 1;
               var rc1 = rc, rc0 = rc;
               if (da < \u03C0) {
-                var oc = x3 == null ? [x2, y2] : (x1 == null ? [x0, y0] : d3_geom_polygonIntersect([x0, y0], [x3, y3], [x1, y1], [x2, y2])), ax = x0 - oc[0], ay = y0 - oc[1], bx = x1 - oc[0], by = y1 - oc[1], kc = 1 / Math.sin(Math.acos((ax * bx + ay * by) / (Math.hypot(ax, ay) * Math.hypot(bx, by))) / 2), lc = Math.hypot(oc[0], oc[1]);
+                var oc = x3 == null ? [x2, y2] : x1 == null ? [x0, y0] : d3_geom_polygonIntersect([x0, y0], [x3, y3], [x1, y1], [x2, y2]), ax = x0 - oc[0], ay = y0 - oc[1], bx = x1 - oc[0], by = y1 - oc[1], kc = 1 / Math.sin(Math.acos((ax * bx + ay * by) / (Math.sqrt(ax * ax + ay * ay) * Math.sqrt(bx * bx + by * by))) / 2), lc = Math.sqrt(oc[0] * oc[0] + oc[1] * oc[1]);
                 rc0 = Math.min(rc, (r0 - lc) / (kc - 1));
                 rc1 = Math.min(rc, (r1 - lc) / (kc + 1));
               }
@@ -5869,42 +5868,42 @@ var Plotly = (() => {
             return "M0," + r1 + "A" + r1 + "," + r1 + " 0 1," + cw + " 0," + -r1 + "A" + r1 + "," + r1 + " 0 1," + cw + " 0," + r1;
           }
           arc.innerRadius = function(v) {
-            if (arguments.length === 0) return innerRadius;
+            if (!arguments.length) return innerRadius;
             innerRadius = d3_functor(v);
             return arc;
           };
           arc.outerRadius = function(v) {
-            if (arguments.length === 0) return outerRadius;
+            if (!arguments.length) return outerRadius;
             outerRadius = d3_functor(v);
             return arc;
           };
           arc.cornerRadius = function(v) {
-            if (arguments.length === 0) return cornerRadius;
+            if (!arguments.length) return cornerRadius;
             cornerRadius = d3_functor(v);
             return arc;
           };
           arc.padRadius = function(v) {
-            if (arguments.length === 0) return padRadius;
+            if (!arguments.length) return padRadius;
             padRadius = v == d3_svg_arcAuto ? d3_svg_arcAuto : d3_functor(v);
             return arc;
           };
           arc.startAngle = function(v) {
-            if (arguments.length === 0) return startAngle;
+            if (!arguments.length) return startAngle;
             startAngle = d3_functor(v);
             return arc;
           };
           arc.endAngle = function(v) {
-            if (arguments.length === 0) return endAngle;
+            if (!arguments.length) return endAngle;
             endAngle = d3_functor(v);
             return arc;
           };
           arc.padAngle = function(v) {
-            if (arguments.length === 0) return padAngle;
+            if (!arguments.length) return padAngle;
             padAngle = d3_functor(v);
             return arc;
           };
           arc.centroid = function() {
-            var r = (+Reflect.apply(innerRadius, this, arguments) + +Reflect.apply(outerRadius, this, arguments)) / 2, a = (+Reflect.apply(startAngle, this, arguments) + +Reflect.apply(endAngle, this, arguments)) / 2 - half\u03C0;
+            var r = (+innerRadius.apply(this, arguments) + +outerRadius.apply(this, arguments)) / 2, a = (+startAngle.apply(this, arguments) + +endAngle.apply(this, arguments)) / 2 - half\u03C0;
             return [Math.cos(a) * r, Math.sin(a) * r];
           };
           return arc;
@@ -5929,7 +5928,7 @@ var Plotly = (() => {
           return (x0 - x1) * y0 - (y0 - y1) * x0 > 0 ? 0 : 1;
         }
         function d3_svg_arcCornerTangents(p0, p1, r1, rc, cw) {
-          var x01 = p0[0] - p1[0], y01 = p0[1] - p1[1], lo = (cw ? rc : -rc) / Math.hypot(x01, y01), ox = lo * y01, oy = -lo * x01, x1 = p0[0] + ox, y1 = p0[1] + oy, x2 = p1[0] + ox, y2 = p1[1] + oy, x3 = (x1 + x2) / 2, y3 = (y1 + y2) / 2, dx = x2 - x1, dy = y2 - y1, d2 = dx * dx + dy * dy, r = r1 - rc, D = x1 * y2 - x2 * y1, d = (dy < 0 ? -1 : 1) * Math.sqrt(Math.max(0, r * r * d2 - D * D)), cx0 = (D * dy - dx * d) / d2, cy0 = (-D * dx - dy * d) / d2, cx1 = (D * dy + dx * d) / d2, cy1 = (-D * dx + dy * d) / d2, dx0 = cx0 - x3, dy0 = cy0 - y3, dx1 = cx1 - x3, dy1 = cy1 - y3;
+          var x01 = p0[0] - p1[0], y01 = p0[1] - p1[1], lo = (cw ? rc : -rc) / Math.sqrt(x01 * x01 + y01 * y01), ox = lo * y01, oy = -lo * x01, x1 = p0[0] + ox, y1 = p0[1] + oy, x2 = p1[0] + ox, y2 = p1[1] + oy, x3 = (x1 + x2) / 2, y3 = (y1 + y2) / 2, dx = x2 - x1, dy = y2 - y1, d2 = dx * dx + dy * dy, r = r1 - rc, D = x1 * y2 - x2 * y1, d = (dy < 0 ? -1 : 1) * Math.sqrt(Math.max(0, r * r * d2 - D * D)), cx0 = (D * dy - dx * d) / d2, cy0 = (-D * dx - dy * d) / d2, cx1 = (D * dy + dx * d) / d2, cy1 = (-D * dx + dy * d) / d2, dx0 = cx0 - x3, dy0 = cy0 - y3, dx1 = cx1 - x3, dy1 = cy1 - y3;
           if (dx0 * dx0 + dy0 * dy0 > dx1 * dx1 + dy1 * dy1) cx0 = cx1, cy0 = cy1;
           return [[cx0 - ox, cy0 - oy], [cx0 * r1 / r, cy0 * r1 / r]];
         }
@@ -5946,37 +5945,37 @@ var Plotly = (() => {
             while (++i < n) {
               if (defined.call(this, d = data[i], i)) {
                 points.push([+fx.call(this, d, i), +fy.call(this, d, i)]);
-              } else if (points.length > 0) {
+              } else if (points.length) {
                 segment();
                 points = [];
               }
             }
-            if (points.length > 0) segment();
-            return segments.length > 0 ? segments.join("") : null;
+            if (points.length) segment();
+            return segments.length ? segments.join("") : null;
           }
           line.x = function(_) {
-            if (arguments.length === 0) return x;
+            if (!arguments.length) return x;
             x = _;
             return line;
           };
           line.y = function(_) {
-            if (arguments.length === 0) return y;
+            if (!arguments.length) return y;
             y = _;
             return line;
           };
           line.defined = function(_) {
-            if (arguments.length === 0) return defined;
+            if (!arguments.length) return defined;
             defined = _;
             return line;
           };
           line.interpolate = function(_) {
-            if (arguments.length === 0) return interpolateKey;
+            if (!arguments.length) return interpolateKey;
             if (typeof _ === "function") interpolateKey = interpolate = _;
             else interpolateKey = (interpolate = d3_svg_lineInterpolators.get(_) || d3_svg_lineLinear).key;
             return line;
           };
           line.tension = function(_) {
-            if (arguments.length === 0) return tension;
+            if (!arguments.length) return tension;
             tension = _;
             return line;
           };
@@ -6000,10 +5999,10 @@ var Plotly = (() => {
           "cardinal-closed": d3_svg_lineCardinalClosed,
           monotone: d3_svg_lineMonotone
         });
-        for (const [value, key] of d3_svg_lineInterpolators.entries()) {
+        d3_svg_lineInterpolators.forEach(function(key, value) {
           value.key = key;
           value.closed = /-closed$/.test(key);
-        }
+        });
         function d3_svg_lineLinear(points) {
           return points.length > 1 ? points.join("L") : points + "Z";
         }
@@ -6030,13 +6029,13 @@ var Plotly = (() => {
           return points.length < 4 ? d3_svg_lineLinear(points) : points[1] + d3_svg_lineHermite(points.slice(1, -1), d3_svg_lineCardinalTangents(points, tension));
         }
         function d3_svg_lineCardinalClosed(points, tension) {
-          return points.length < 3 ? d3_svg_lineLinearClosed(points) : points[0] + d3_svg_lineHermite((points.push(points[0]), points), d3_svg_lineCardinalTangents([points.at(-2)].concat(points, [points[1]]), tension));
+          return points.length < 3 ? d3_svg_lineLinearClosed(points) : points[0] + d3_svg_lineHermite((points.push(points[0]), points), d3_svg_lineCardinalTangents([points[points.length - 2]].concat(points, [points[1]]), tension));
         }
         function d3_svg_lineCardinal(points, tension) {
           return points.length < 3 ? d3_svg_lineLinear(points) : points[0] + d3_svg_lineHermite(points, d3_svg_lineCardinalTangents(points, tension));
         }
         function d3_svg_lineHermite(points, tangents) {
-          if (tangents.length === 0 || points.length != tangents.length && points.length != tangents.length + 2) {
+          if (tangents.length < 1 || points.length != tangents.length && points.length != tangents.length + 2) {
             return d3_svg_lineLinear(points);
           }
           var quad = points.length != tangents.length, path = "", p0 = points[0], p = points[1], t0 = tangents[0], t = t0, pi = 1;
@@ -6217,52 +6216,52 @@ var Plotly = (() => {
               if (defined.call(this, d = data[i], i)) {
                 points0.push([x = +fx0.call(this, d, i), y = +fy0.call(this, d, i)]);
                 points1.push([+fx1.call(this, d, i), +fy1.call(this, d, i)]);
-              } else if (points0.length > 0) {
+              } else if (points0.length) {
                 segment();
                 points0 = [];
                 points1 = [];
               }
             }
-            if (points0.length > 0) segment();
-            return segments.length > 0 ? segments.join("") : null;
+            if (points0.length) segment();
+            return segments.length ? segments.join("") : null;
           }
           area.x = function(_) {
-            if (arguments.length === 0) return x1;
+            if (!arguments.length) return x1;
             x0 = x1 = _;
             return area;
           };
           area.x0 = function(_) {
-            if (arguments.length === 0) return x0;
+            if (!arguments.length) return x0;
             x0 = _;
             return area;
           };
           area.x1 = function(_) {
-            if (arguments.length === 0) return x1;
+            if (!arguments.length) return x1;
             x1 = _;
             return area;
           };
           area.y = function(_) {
-            if (arguments.length === 0) return y1;
+            if (!arguments.length) return y1;
             y0 = y1 = _;
             return area;
           };
           area.y0 = function(_) {
-            if (arguments.length === 0) return y0;
+            if (!arguments.length) return y0;
             y0 = _;
             return area;
           };
           area.y1 = function(_) {
-            if (arguments.length === 0) return y1;
+            if (!arguments.length) return y1;
             y1 = _;
             return area;
           };
           area.defined = function(_) {
-            if (arguments.length === 0) return defined;
+            if (!arguments.length) return defined;
             defined = _;
             return area;
           };
           area.interpolate = function(_) {
-            if (arguments.length === 0) return interpolateKey;
+            if (!arguments.length) return interpolateKey;
             if (typeof _ === "function") interpolateKey = interpolate = _;
             else interpolateKey = (interpolate = d3_svg_lineInterpolators.get(_) || d3_svg_lineLinear).key;
             interpolateReverse = interpolate.reverse || interpolate;
@@ -6270,7 +6269,7 @@ var Plotly = (() => {
             return area;
           };
           area.tension = function(_) {
-            if (arguments.length === 0) return tension;
+            if (!arguments.length) return tension;
             tension = _;
             return area;
           };
@@ -6323,27 +6322,27 @@ var Plotly = (() => {
             return "Q 0,0 " + p1;
           }
           chord.radius = function(v) {
-            if (arguments.length === 0) return radius;
+            if (!arguments.length) return radius;
             radius = d3_functor(v);
             return chord;
           };
           chord.source = function(v) {
-            if (arguments.length === 0) return source;
+            if (!arguments.length) return source;
             source = d3_functor(v);
             return chord;
           };
           chord.target = function(v) {
-            if (arguments.length === 0) return target;
+            if (!arguments.length) return target;
             target = d3_functor(v);
             return chord;
           };
           chord.startAngle = function(v) {
-            if (arguments.length === 0) return startAngle;
+            if (!arguments.length) return startAngle;
             startAngle = d3_functor(v);
             return chord;
           };
           chord.endAngle = function(v) {
-            if (arguments.length === 0) return endAngle;
+            if (!arguments.length) return endAngle;
             endAngle = d3_functor(v);
             return chord;
           };
@@ -6366,17 +6365,17 @@ var Plotly = (() => {
             return "M" + p[0] + "C" + p[1] + " " + p[2] + " " + p[3];
           }
           diagonal.source = function(x) {
-            if (arguments.length === 0) return source;
+            if (!arguments.length) return source;
             source = d3_functor(x);
             return diagonal;
           };
           diagonal.target = function(x) {
-            if (arguments.length === 0) return target;
+            if (!arguments.length) return target;
             target = d3_functor(x);
             return diagonal;
           };
           diagonal.projection = function(x) {
-            if (arguments.length === 0) return projection;
+            if (!arguments.length) return projection;
             projection = x;
             return diagonal;
           };
@@ -6388,13 +6387,13 @@ var Plotly = (() => {
         d3.svg.diagonal.radial = function() {
           var diagonal = d3.svg.diagonal(), projection = d3_svg_diagonalProjection, projection_ = diagonal.projection;
           diagonal.projection = function(x) {
-            return arguments.length > 0 ? projection_(d3_svg_diagonalRadialProjection(projection = x)) : projection;
+            return arguments.length ? projection_(d3_svg_diagonalRadialProjection(projection = x)) : projection;
           };
           return diagonal;
         };
         function d3_svg_diagonalRadialProjection(projection) {
           return function() {
-            var d = Reflect.apply(projection, this, arguments), r = d[0], a = d[1] - half\u03C0;
+            var d = projection.apply(this, arguments), r = d[0], a = d[1] - half\u03C0;
             return [r * Math.cos(a), r * Math.sin(a)];
           };
         }
@@ -6404,12 +6403,12 @@ var Plotly = (() => {
             return (d3_svg_symbols.get(type.call(this, d, i)) || d3_svg_symbolCircle)(size.call(this, d, i));
           }
           symbol.type = function(x) {
-            if (arguments.length === 0) return type;
+            if (!arguments.length) return type;
             type = d3_functor(x);
             return symbol;
           };
           symbol.size = function(x) {
-            if (arguments.length === 0) return size;
+            if (!arguments.length) return size;
             size = d3_functor(x);
             return symbol;
           };
@@ -6475,7 +6474,7 @@ var Plotly = (() => {
             var lock, activeId, active;
             if ((lock = this[ns]) && (active = lock[activeId = lock.active])) {
               active.timer.c = null;
-              active.timer.t = Number.NaN;
+              active.timer.t = NaN;
               if (--lock.count) delete lock[activeId];
               else delete this[ns];
               lock.active += 0.5;
@@ -6495,7 +6494,7 @@ var Plotly = (() => {
         d3_transitionPrototype.node = d3_selectionPrototype.node;
         d3_transitionPrototype.size = d3_selectionPrototype.size;
         d3.transition = function(selection, name) {
-          return selection && selection.transition ? (d3_transitionInheritId ? selection.transition(name) : selection) : d3.selection().transition(selection);
+          return selection && selection.transition ? d3_transitionInheritId ? selection.transition(name) : selection : d3.selection().transition(selection);
         };
         d3.transition.prototype = d3_transitionPrototype;
         d3_transitionPrototype.select = function(selector) {
@@ -6655,12 +6654,12 @@ var Plotly = (() => {
           var ns = this.namespace;
           return this.each("end.transition", function() {
             var p;
-            if (this[ns].count < 2 && (p = this.parentNode)) this.remove();
+            if (this[ns].count < 2 && (p = this.parentNode)) p.removeChild(this);
           });
         };
         d3_transitionPrototype.ease = function(value) {
           var id = this.id, ns = this.namespace;
-          if (arguments.length === 0) return this.node()[ns][id].ease;
+          if (arguments.length < 1) return this.node()[ns][id].ease;
           if (typeof value !== "function") value = d3.ease.apply(d3, arguments);
           return d3_selection_each(this, function(node) {
             node[ns][id].ease = value;
@@ -6668,7 +6667,7 @@ var Plotly = (() => {
         };
         d3_transitionPrototype.delay = function(value) {
           var id = this.id, ns = this.namespace;
-          if (arguments.length === 0) return this.node()[ns][id].delay;
+          if (arguments.length < 1) return this.node()[ns][id].delay;
           return d3_selection_each(this, typeof value === "function" ? function(node, i, j) {
             node[ns][id].delay = +value.call(node, node.__data__, i, j);
           } : (value = +value, function(node) {
@@ -6677,7 +6676,7 @@ var Plotly = (() => {
         };
         d3_transitionPrototype.duration = function(value) {
           var id = this.id, ns = this.namespace;
-          if (arguments.length === 0) return this.node()[ns][id].duration;
+          if (arguments.length < 1) return this.node()[ns][id].duration;
           return d3_selection_each(this, typeof value === "function" ? function(node, i, j) {
             node[ns][id].duration = Math.max(1, value.call(node, node.__data__, i, j));
           } : (value = Math.max(1, value), function(node) {
@@ -6743,7 +6742,7 @@ var Plotly = (() => {
             var activeId = lock.active, active = lock[activeId];
             if (active) {
               active.timer.c = null;
-              active.timer.t = Number.NaN;
+              active.timer.t = NaN;
               --lock.count;
               delete lock[activeId];
               active.event && active.event.interrupt.call(node, node.__data__, active.index);
@@ -6752,7 +6751,7 @@ var Plotly = (() => {
               if (+cancelId < id) {
                 var cancel = lock[cancelId];
                 cancel.timer.c = null;
-                cancel.timer.t = Number.NaN;
+                cancel.timer.t = NaN;
                 --lock.count;
                 delete lock[cancelId];
               }
@@ -6761,18 +6760,18 @@ var Plotly = (() => {
             d3_timer(function() {
               if (timer.c && tick(elapsed || 1)) {
                 timer.c = null;
-                timer.t = Number.NaN;
+                timer.t = NaN;
               }
               return 1;
             }, 0, time);
             lock.active = id;
             transition.event && transition.event.start.call(node, node.__data__, i);
             tweens = [];
-            for (let [value, key] of transition.tween.entries()) {
+            transition.tween.forEach(function(key, value) {
               if (value = value.call(node, node.__data__, i)) {
                 tweens.push(value);
               }
-            }
+            });
             ease = transition.ease;
             duration = transition.duration;
           }
@@ -6810,7 +6809,7 @@ var Plotly = (() => {
             g.each(function() {
               var g2 = d3.select(this);
               var scale0 = this.__chart__ || scale, scale1 = this.__chart__ = scale.copy();
-              var ticks = tickValues == null ? (scale1.ticks ? scale1.ticks.apply(scale1, tickArguments_) : scale1.domain()) : tickValues, tickFormat = tickFormat_ == null ? (scale1.tickFormat ? scale1.tickFormat.apply(scale1, tickArguments_) : d3_identity) : tickFormat_, tick = g2.selectAll(".tick").data(ticks, scale1), tickEnter = tick.enter().insert("g", ".domain").attr("class", "tick").style("opacity", \u03B5), tickExit = d3.transition(tick.exit()).style("opacity", \u03B5).remove(), tickUpdate = d3.transition(tick.order()).style("opacity", 1), tickSpacing = Math.max(innerTickSize, 0) + tickPadding, tickTransform;
+              var ticks = tickValues == null ? scale1.ticks ? scale1.ticks.apply(scale1, tickArguments_) : scale1.domain() : tickValues, tickFormat = tickFormat_ == null ? scale1.tickFormat ? scale1.tickFormat.apply(scale1, tickArguments_) : d3_identity : tickFormat_, tick = g2.selectAll(".tick").data(ticks, scale1), tickEnter = tick.enter().insert("g", ".domain").attr("class", "tick").style("opacity", \u03B5), tickExit = d3.transition(tick.exit()).style("opacity", \u03B5).remove(), tickUpdate = d3.transition(tick.order()).style("opacity", 1), tickSpacing = Math.max(innerTickSize, 0) + tickPadding, tickTransform;
               var range = d3_scaleRange(scale1), path = g2.selectAll(".domain").data([0]), pathUpdate = (path.enter().append("path").attr("class", "domain"), d3.transition(path));
               tickEnter.append("line");
               tickEnter.append("text");
@@ -6843,27 +6842,27 @@ var Plotly = (() => {
             });
           }
           axis.scale = function(x) {
-            if (arguments.length === 0) return scale;
+            if (!arguments.length) return scale;
             scale = x;
             return axis;
           };
           axis.orient = function(x) {
-            if (arguments.length === 0) return orient;
+            if (!arguments.length) return orient;
             orient = x in d3_svg_axisOrients ? x + "" : d3_svg_axisDefaultOrient;
             return axis;
           };
           axis.ticks = function() {
-            if (arguments.length === 0) return tickArguments_;
+            if (!arguments.length) return tickArguments_;
             tickArguments_ = d3_array(arguments);
             return axis;
           };
           axis.tickValues = function(x) {
-            if (arguments.length === 0) return tickValues;
+            if (!arguments.length) return tickValues;
             tickValues = x;
             return axis;
           };
           axis.tickFormat = function(x) {
-            if (arguments.length === 0) return tickFormat_;
+            if (!arguments.length) return tickFormat_;
             tickFormat_ = x;
             return axis;
           };
@@ -6875,17 +6874,17 @@ var Plotly = (() => {
             return axis;
           };
           axis.innerTickSize = function(x) {
-            if (arguments.length === 0) return innerTickSize;
+            if (!arguments.length) return innerTickSize;
             innerTickSize = +x;
             return axis;
           };
           axis.outerTickSize = function(x) {
-            if (arguments.length === 0) return outerTickSize;
+            if (!arguments.length) return outerTickSize;
             outerTickSize = +x;
             return axis;
           };
           axis.tickPadding = function(x) {
-            if (arguments.length === 0) return tickPadding;
+            if (!arguments.length) return tickPadding;
             tickPadding = +x;
             return axis;
           };
@@ -7002,7 +7001,7 @@ var Plotly = (() => {
           };
           function redraw(g) {
             g.selectAll(".resize").attr("transform", function(d) {
-              return "translate(" + xExtent[+d.endsWith('e')] + "," + yExtent[+d.startsWith('s')] + ")";
+              return "translate(" + xExtent[+/e$/.test(d)] + "," + yExtent[+/^s/.test(d)] + ")";
             });
           }
           function redrawX(g) {
@@ -7026,11 +7025,11 @@ var Plotly = (() => {
               origin[0] = xExtent[0] - origin[0];
               origin[1] = yExtent[0] - origin[1];
             } else if (resizing) {
-              var ex = +resizing.endsWith('w'), ey = +resizing.startsWith('n');
+              var ex = +/w$/.test(resizing), ey = +/^n/.test(resizing);
               offset = [xExtent[1 - ex] - origin[0], yExtent[1 - ey] - origin[1]];
               origin[0] = xExtent[ex];
               origin[1] = yExtent[ey];
-            } else if (d3.event.altKey) center = [...origin];
+            } else if (d3.event.altKey) center = origin.slice();
             g.style("pointer-events", "none").selectAll(".resize").style("display", null);
             d3.select("body").style("cursor", eventTarget.style("cursor"));
             event_({
@@ -7123,19 +7122,19 @@ var Plotly = (() => {
             }
           }
           brush.x = function(z) {
-            if (arguments.length === 0) return x;
+            if (!arguments.length) return x;
             x = z;
             resizes = d3_svg_brushResizes[!x << 1 | !y];
             return brush;
           };
           brush.y = function(z) {
-            if (arguments.length === 0) return y;
+            if (!arguments.length) return y;
             y = z;
             resizes = d3_svg_brushResizes[!x << 1 | !y];
             return brush;
           };
           brush.clamp = function(z) {
-            if (arguments.length === 0) return x && y ? [xClamp, yClamp] : x ? xClamp : y ? yClamp : null;
+            if (!arguments.length) return x && y ? [xClamp, yClamp] : x ? xClamp : y ? yClamp : null;
             if (x && y) xClamp = !!z[0], yClamp = !!z[1];
             else if (x) xClamp = !!z;
             else if (y) yClamp = !!z;
@@ -7143,7 +7142,7 @@ var Plotly = (() => {
           };
           brush.extent = function(z) {
             var x0, x1, y0, y1, t;
-            if (arguments.length === 0) {
+            if (!arguments.length) {
               if (x) {
                 if (xExtentDomain) {
                   x0 = xExtentDomain[0], x1 = xExtentDomain[1];
@@ -7162,7 +7161,7 @@ var Plotly = (() => {
                   if (y1 < y0) t = y0, y0 = y1, y1 = t;
                 }
               }
-              return x && y ? [[x0, y0], [x1, y1]] : (x ? [x0, x1] : y && [y0, y1]);
+              return x && y ? [[x0, y0], [x1, y1]] : x ? [x0, x1] : y && [y0, y1];
             }
             if (x) {
               x0 = z[0], x1 = z[1];
@@ -7232,11 +7231,11 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/d3-time/dist/d3-time.js
+  // node_modules/.pnpm/d3-time@1.1.0/node_modules/d3-time/dist/d3-time.js
   var require_d3_time = __commonJS({
-    "node_modules/d3-time/dist/d3-time.js"(exports, module) {
+    "node_modules/.pnpm/d3-time@1.1.0/node_modules/d3-time/dist/d3-time.js"(exports, module) {
       (function(global2, factory) {
-        typeof exports === "object" && module !== undefined ? factory(exports) : (typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {})));
+        typeof exports === "object" && typeof module !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
       })(exports, function(exports2) {
         "use strict";
         var t0 = /* @__PURE__ */ new Date(), t1 = /* @__PURE__ */ new Date();
@@ -7273,10 +7272,12 @@ var Plotly = (() => {
             }, function(date, step) {
               if (date >= date) {
                 if (step < 0) while (++step <= 0) {
-                  while (offseti(date, -1), !test(date)) {}
+                  while (offseti(date, -1), !test(date)) {
+                  }
                 }
                 else while (--step >= 0) {
-                  while (offseti(date, 1), !test(date)) {}
+                  while (offseti(date, 1), !test(date)) {
+                  }
                 }
               }
             });
@@ -7289,16 +7290,17 @@ var Plotly = (() => {
             };
             interval.every = function(step) {
               step = Math.floor(step);
-              return !isFinite(step) || !(step > 0) ? null : (!(step > 1) ? interval : interval.filter(field ? function(d) {
+              return !isFinite(step) || !(step > 0) ? null : !(step > 1) ? interval : interval.filter(field ? function(d) {
                 return field(d) % step === 0;
               } : function(d) {
                 return interval.count(0, d) % step === 0;
-              }));
+              });
             };
           }
           return interval;
         }
-        var millisecond = newInterval(function() {}, function(date, step) {
+        var millisecond = newInterval(function() {
+        }, function(date, step) {
           date.setTime(+date + step);
         }, function(start, end) {
           return end - start;
@@ -7567,11 +7569,11 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/d3-time-format/dist/d3-time-format.js
+  // node_modules/.pnpm/d3-time-format@2.3.0/node_modules/d3-time-format/dist/d3-time-format.js
   var require_d3_time_format = __commonJS({
-    "node_modules/d3-time-format/dist/d3-time-format.js"(exports, module) {
+    "node_modules/.pnpm/d3-time-format@2.3.0/node_modules/d3-time-format/dist/d3-time-format.js"(exports, module) {
       (function(global2, factory) {
-        typeof exports === "object" && module !== undefined ? factory(exports, require_d3_time()) : (typeof define === "function" && define.amd ? define(["exports", "d3-time"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3)));
+        typeof exports === "object" && typeof module !== "undefined" ? factory(exports, require_d3_time()) : typeof define === "function" && define.amd ? define(["exports", "d3-time"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
       })(exports, function(exports2, d3Time) {
         "use strict";
         function localDate(d) {
@@ -7605,6 +7607,8 @@ var Plotly = (() => {
             "d": formatDayOfMonth,
             "e": formatDayOfMonth,
             "f": formatMicroseconds,
+            "g": formatYearISO,
+            "G": formatFullYearISO,
             "H": formatHour24,
             "I": formatHour12,
             "j": formatDayOfYear,
@@ -7637,6 +7641,8 @@ var Plotly = (() => {
             "d": formatUTCDayOfMonth,
             "e": formatUTCDayOfMonth,
             "f": formatUTCMicroseconds,
+            "g": formatUTCYearISO,
+            "G": formatUTCFullYearISO,
             "H": formatUTCHour24,
             "I": formatUTCHour12,
             "j": formatUTCDayOfYear,
@@ -7669,6 +7675,8 @@ var Plotly = (() => {
             "d": parseDayOfMonth,
             "e": parseDayOfMonth,
             "f": parseMicroseconds,
+            "g": parseYear,
+            "G": parseFullYear,
             "H": parseHour24,
             "I": parseHour24,
             "j": parseDayOfYear,
@@ -7744,7 +7752,7 @@ var Plotly = (() => {
                   d.d = week.getDate() + (d.w + 6) % 7;
                 }
               } else if ("W" in d || "U" in d) {
-                if (!("w" in d)) d.w = "u" in d ? d.u % 7 : ("W" in d ? 1 : 0);
+                if (!("w" in d)) d.w = "u" in d ? d.u % 7 : "W" in d ? 1 : 0;
                 day = "Z" in d ? utcDate(newDate(d.y, 0, 1)).getUTCDay() : localDate(newDate(d.y, 0, 1)).getDay();
                 d.m = 0;
                 d.d = "W" in d ? (d.w + 6) % 7 + d.W * 7 - (day + 5) % 7 : d.w + d.U * 7 - (day + 6) % 7;
@@ -7817,7 +7825,7 @@ var Plotly = (() => {
             return locale_periods[+(d.getHours() >= 12)];
           }
           function formatQuarter(d) {
-            return 1 + Math.trunc(d.getMonth() / 3);
+            return 1 + ~~(d.getMonth() / 3);
           }
           function formatUTCShortWeekday(d) {
             return locale_shortWeekdays[d.getUTCDay()];
@@ -7835,7 +7843,7 @@ var Plotly = (() => {
             return locale_periods[+(d.getUTCHours() >= 12)];
           }
           function formatUTCQuarter(d) {
-            return 1 + Math.trunc(d.getUTCMonth() / 3);
+            return 1 + ~~(d.getUTCMonth() / 3);
           }
           return {
             format: function(specifier) {
@@ -7868,13 +7876,13 @@ var Plotly = (() => {
             }
           };
         }
-        var pads = { "-": "", "_": " ", "0": "0" }, numberRe = /^\s*\d+/, percentRe = /^%/, requoteRe = /[$()*+.?[\\\]^{|}]/g;
+        var pads = { "-": "", "_": " ", "0": "0" }, numberRe = /^\s*\d+/, percentRe = /^%/, requoteRe = /[\\^$*+?|[\]().{}]/g;
         function pad(value, fill, width) {
           var sign = value < 0 ? "-" : "", string = (sign ? -value : value) + "", length = string.length;
           return sign + (length < width ? new Array(width - length + 1).join(fill) + string : string);
         }
         function requote(s) {
-          return s.replaceAll(requoteRe, "\\$&");
+          return s.replace(requoteRe, "\\$&");
         }
         function formatRe(names) {
           return new RegExp("^(?:" + names.map(requote).join("|") + ")", "i");
@@ -7998,9 +8006,12 @@ var Plotly = (() => {
         function formatWeekNumberSunday(d, p) {
           return pad(d3Time.timeSunday.count(d3Time.timeYear(d) - 1, d), p, 2);
         }
-        function formatWeekNumberISO(d, p) {
+        function dISO(d) {
           var day = d.getDay();
-          d = day >= 4 || day === 0 ? d3Time.timeThursday(d) : d3Time.timeThursday.ceil(d);
+          return day >= 4 || day === 0 ? d3Time.timeThursday(d) : d3Time.timeThursday.ceil(d);
+        }
+        function formatWeekNumberISO(d, p) {
+          d = dISO(d);
           return pad(d3Time.timeThursday.count(d3Time.timeYear(d), d) + (d3Time.timeYear(d).getDay() === 4), p, 2);
         }
         function formatWeekdayNumberSunday(d) {
@@ -8012,7 +8023,16 @@ var Plotly = (() => {
         function formatYear(d, p) {
           return pad(d.getFullYear() % 100, p, 2);
         }
+        function formatYearISO(d, p) {
+          d = dISO(d);
+          return pad(d.getFullYear() % 100, p, 2);
+        }
         function formatFullYear(d, p) {
+          return pad(d.getFullYear() % 1e4, p, 4);
+        }
+        function formatFullYearISO(d, p) {
+          var day = d.getDay();
+          d = day >= 4 || day === 0 ? d3Time.timeThursday(d) : d3Time.timeThursday.ceil(d);
           return pad(d.getFullYear() % 1e4, p, 4);
         }
         function formatZone(d) {
@@ -8053,9 +8073,12 @@ var Plotly = (() => {
         function formatUTCWeekNumberSunday(d, p) {
           return pad(d3Time.utcSunday.count(d3Time.utcYear(d) - 1, d), p, 2);
         }
-        function formatUTCWeekNumberISO(d, p) {
+        function UTCdISO(d) {
           var day = d.getUTCDay();
-          d = day >= 4 || day === 0 ? d3Time.utcThursday(d) : d3Time.utcThursday.ceil(d);
+          return day >= 4 || day === 0 ? d3Time.utcThursday(d) : d3Time.utcThursday.ceil(d);
+        }
+        function formatUTCWeekNumberISO(d, p) {
+          d = UTCdISO(d);
           return pad(d3Time.utcThursday.count(d3Time.utcYear(d), d) + (d3Time.utcYear(d).getUTCDay() === 4), p, 2);
         }
         function formatUTCWeekdayNumberSunday(d) {
@@ -8067,7 +8090,16 @@ var Plotly = (() => {
         function formatUTCYear(d, p) {
           return pad(d.getUTCFullYear() % 100, p, 2);
         }
+        function formatUTCYearISO(d, p) {
+          d = UTCdISO(d);
+          return pad(d.getUTCFullYear() % 100, p, 2);
+        }
         function formatUTCFullYear(d, p) {
+          return pad(d.getUTCFullYear() % 1e4, p, 4);
+        }
+        function formatUTCFullYearISO(d, p) {
+          var day = d.getUTCDay();
+          d = day >= 4 || day === 0 ? d3Time.utcThursday(d) : d3Time.utcThursday.ceil(d);
           return pad(d.getUTCFullYear() % 1e4, p, 4);
         }
         function formatUTCZone() {
@@ -8120,15 +8152,15 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/d3-format/dist/d3-format.js
+  // node_modules/.pnpm/d3-format@1.4.5/node_modules/d3-format/dist/d3-format.js
   var require_d3_format = __commonJS({
-    "node_modules/d3-format/dist/d3-format.js"(exports, module) {
+    "node_modules/.pnpm/d3-format@1.4.5/node_modules/d3-format/dist/d3-format.js"(exports, module) {
       (function(global2, factory) {
-        typeof exports === "object" && module !== undefined ? factory(exports) : (typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {})));
+        typeof exports === "object" && typeof module !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}));
       })(exports, function(exports2) {
         "use strict";
         function formatDecimal(x) {
-          return Math.abs(x = Math.round(x)) >= 1e21 ? x.toLocaleString("en").replaceAll(',', "") : x.toString(10);
+          return Math.abs(x = Math.round(x)) >= 1e21 ? x.toLocaleString("en").replace(/,/g, "") : x.toString(10);
         }
         function formatDecimalParts(x, p) {
           if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null;
@@ -8139,7 +8171,7 @@ var Plotly = (() => {
           ];
         }
         function exponent(x) {
-          return x = formatDecimalParts(Math.abs(x)), x ? x[1] : Number.NaN;
+          return x = formatDecimalParts(Math.abs(x)), x ? x[1] : NaN;
         }
         function formatGroup(grouping, thousands) {
           return function(value, width) {
@@ -8155,12 +8187,12 @@ var Plotly = (() => {
         }
         function formatNumerals(numerals) {
           return function(value) {
-            return value.replaceAll(/\d/g, function(i) {
+            return value.replace(/[0-9]/g, function(i) {
               return numerals[+i];
             });
           };
         }
-        var re = /^(?:(.)?([<=>^]))?([ (+\-])?([#$])?(0)?(\d+)?(,)?(\.\d+)?(~)?([%a-z])?$/i;
+        var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
         function formatSpecifier(specifier) {
           if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
           var match;
@@ -8196,20 +8228,17 @@ var Plotly = (() => {
         function formatTrim(s) {
           out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
             switch (s[i]) {
-              case ".": {
+              case ".":
                 i0 = i1 = i;
                 break;
-              }
-              case "0": {
+              case "0":
                 if (i0 === 0) i0 = i;
                 i1 = i;
                 break;
-              }
-              default: {
+              default:
                 if (!+s[i]) break out;
                 if (i0 > 0) i0 = 0;
                 break;
-              }
             }
           }
           return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
@@ -8219,13 +8248,13 @@ var Plotly = (() => {
           var d = formatDecimalParts(x, p);
           if (!d) return x + "";
           var coefficient = d[0], exponent2 = d[1], i = exponent2 - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent2 / 3))) * 3) + 1, n = coefficient.length;
-          return i === n ? coefficient : i > n ? coefficient + new Array(i - n + 1).join("0") : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i) : "0." + Array.from({length: 1 - i}).join("0") + formatDecimalParts(x, Math.max(0, p + i - 1))[0];
+          return i === n ? coefficient : i > n ? coefficient + new Array(i - n + 1).join("0") : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i) : "0." + new Array(1 - i).join("0") + formatDecimalParts(x, Math.max(0, p + i - 1))[0];
         }
         function formatRounded(x, p) {
           var d = formatDecimalParts(x, p);
           if (!d) return x + "";
           var coefficient = d[0], exponent2 = d[1];
-          return exponent2 < 0 ? "0." + new Array(-exponent2).join("0") + coefficient : (coefficient.length > exponent2 + 1 ? coefficient.slice(0, exponent2 + 1) + "." + coefficient.slice(exponent2 + 1) : coefficient + new Array(exponent2 - coefficient.length + 2).join("0"));
+          return exponent2 < 0 ? "0." + new Array(-exponent2).join("0") + coefficient : coefficient.length > exponent2 + 1 ? coefficient.slice(0, exponent2 + 1) + "." + coefficient.slice(exponent2 + 1) : coefficient + new Array(exponent2 - coefficient.length + 2).join("0");
         }
         var formatTypes = {
           "%": function(x, p) {
@@ -8265,7 +8294,7 @@ var Plotly = (() => {
         function identity(x) {
           return x;
         }
-        var map = Array.prototype.map, prefixes = ["y", "z", "a", "f", "p", "n", "\u00B5", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"];
+        var map = Array.prototype.map, prefixes = ["y", "z", "a", "f", "p", "n", "\xB5", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y"];
         function formatLocale(locale2) {
           var group = locale2.grouping === void 0 || locale2.thousands === void 0 ? identity : formatGroup(map.call(locale2.grouping, Number), locale2.thousands + ""), currencyPrefix = locale2.currency === void 0 ? "" : locale2.currency[0] + "", currencySuffix = locale2.currency === void 0 ? "" : locale2.currency[1] + "", decimal = locale2.decimal === void 0 ? "." : locale2.decimal + "", numerals = locale2.numerals === void 0 ? identity : formatNumerals(map.call(locale2.numerals, String)), percent = locale2.percent === void 0 ? "%" : locale2.percent + "", minus = locale2.minus === void 0 ? "-" : locale2.minus + "", nan = locale2.nan === void 0 ? "NaN" : locale2.nan + "";
           function newFormat(specifier) {
@@ -8274,9 +8303,9 @@ var Plotly = (() => {
             if (type === "n") comma = true, type = "g";
             else if (!formatTypes[type]) precision === void 0 && (precision = 12), trim = true, type = "g";
             if (zero || fill === "0" && align === "=") zero = true, fill = "0", align = "=";
-            var prefix = symbol === "$" ? currencyPrefix : (symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : ""), suffix = symbol === "$" ? currencySuffix : (/[%p]/.test(type) ? percent : "");
-            var formatType = formatTypes[type], maybeSuffix = /[%d-gprs]/.test(type);
-            precision = precision === void 0 ? 6 : (/[gprs]/.test(type) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision)));
+            var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "", suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "";
+            var formatType = formatTypes[type], maybeSuffix = /[defgprs%]/.test(type);
+            precision = precision === void 0 ? 6 : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
             function format(value) {
               var valuePrefix = prefix, valueSuffix = suffix, i, n, c;
               if (type === "c") {
@@ -8288,7 +8317,7 @@ var Plotly = (() => {
                 value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
                 if (trim) value = formatTrim(value);
                 if (valueNegative && +value === 0 && sign !== "+") valueNegative = false;
-                valuePrefix = (valueNegative ? (sign === "(" ? sign : minus) : (sign === "-" || sign === "(" ? "" : sign)) + valuePrefix;
+                valuePrefix = (valueNegative ? sign === "(" ? sign : minus : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
                 valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
                 if (maybeSuffix) {
                   i = -1, n = value.length;
@@ -8301,26 +8330,22 @@ var Plotly = (() => {
                   }
                 }
               }
-              if (comma && !zero) value = group(value, Number.POSITIVE_INFINITY);
+              if (comma && !zero) value = group(value, Infinity);
               var length = valuePrefix.length + value.length + valueSuffix.length, padding = length < width ? new Array(width - length + 1).join(fill) : "";
-              if (comma && zero) value = group(padding + value, padding.length > 0 ? width - valueSuffix.length : Number.POSITIVE_INFINITY), padding = "";
+              if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
               switch (align) {
-                case "<": {
+                case "<":
                   value = valuePrefix + value + valueSuffix + padding;
                   break;
-                }
-                case "=": {
+                case "=":
                   value = valuePrefix + padding + value + valueSuffix;
                   break;
-                }
-                case "^": {
+                case "^":
                   value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length);
                   break;
-                }
-                default: {
+                default:
                   value = padding + valuePrefix + value + valueSuffix;
                   break;
-                }
               }
               return numerals(value);
             }
@@ -8376,15 +8401,15 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/is-string-blank/index.js
+  // node_modules/.pnpm/is-string-blank@1.0.1/node_modules/is-string-blank/index.js
   var require_is_string_blank = __commonJS({
-    "node_modules/is-string-blank/index.js"(exports, module) {
+    "node_modules/.pnpm/is-string-blank@1.0.1/node_modules/is-string-blank/index.js"(exports, module) {
       "use strict";
       module.exports = function(str) {
         var l = str.length, a;
         for (var i = 0; i < l; i++) {
           a = str.charCodeAt(i);
-          if ((a < 9 || a > 13) && a !== 32 && a !== 133 && a !== 160 && a !== 5760 && a !== 6158 && (a < 8192 || a > 8205) && a !== 8232 && a !== 8233 && a !== 8239 && a !== 8287 && a !== 8288 && a !== 12_288 && a !== 65_279) {
+          if ((a < 9 || a > 13) && a !== 32 && a !== 133 && a !== 160 && a !== 5760 && a !== 6158 && (a < 8192 || a > 8205) && a !== 8232 && a !== 8233 && a !== 8239 && a !== 8287 && a !== 8288 && a !== 12288 && a !== 65279) {
             return false;
           }
         }
@@ -8393,9 +8418,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/fast-isnumeric/index.js
+  // node_modules/.pnpm/fast-isnumeric@1.1.4/node_modules/fast-isnumeric/index.js
   var require_fast_isnumeric = __commonJS({
-    "node_modules/fast-isnumeric/index.js"(exports, module) {
+    "node_modules/.pnpm/fast-isnumeric@1.1.4/node_modules/fast-isnumeric/index.js"(exports, module) {
       "use strict";
       var allBlankCharCodes = require_is_string_blank();
       module.exports = function(n) {
@@ -8434,23 +8459,23 @@ var Plotly = (() => {
          * to remind us that not all years and months
          * have the same length
          */
-        ONEMAXYEAR: 316_224e5,
+        ONEMAXYEAR: 316224e5,
         // 366 * ONEDAY
-        ONEAVGYEAR: 315_576e5,
+        ONEAVGYEAR: 315576e5,
         // 365.25 days
-        ONEMINYEAR: 31_536e6,
+        ONEMINYEAR: 31536e6,
         // 365 * ONEDAY
-        ONEMAXQUARTER: 79_488e5,
+        ONEMAXQUARTER: 79488e5,
         // 92 * ONEDAY
-        ONEAVGQUARTER: 78_894e5,
+        ONEAVGQUARTER: 78894e5,
         // 1/4 of ONEAVGYEAR
-        ONEMINQUARTER: 76_896e5,
+        ONEMINQUARTER: 76896e5,
         // 89 * ONEDAY
-        ONEMAXMONTH: 26_784e5,
+        ONEMAXMONTH: 26784e5,
         // 31 * ONEDAY
-        ONEAVGMONTH: 26_298e5,
+        ONEAVGMONTH: 26298e5,
         // 1/12 of ONEAVGYEAR
-        ONEMINMONTH: 24_192e5,
+        ONEMINMONTH: 24192e5,
         // 28 * ONEDAY
         ONEWEEK: 6048e5,
         // 7 * ONEDAY
@@ -8465,7 +8490,7 @@ var Plotly = (() => {
          * For fast conversion btwn world calendars and epoch ms, the Julian Day Number
          * of the unix epoch. From calendars.instance().newDate(1970, 1, 1).toJD()
          */
-        EPOCHJD: 24_405_875e-1,
+        EPOCHJD: 24405875e-1,
         /*
          * Are two values nearly equal? Compare to 1PPM
          */
@@ -8484,11 +8509,11 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/base64-arraybuffer/dist/base64-arraybuffer.umd.js
+  // node_modules/.pnpm/base64-arraybuffer@1.0.2/node_modules/base64-arraybuffer/dist/base64-arraybuffer.umd.js
   var require_base64_arraybuffer_umd = __commonJS({
-    "node_modules/base64-arraybuffer/dist/base64-arraybuffer.umd.js"(exports, module) {
+    "node_modules/.pnpm/base64-arraybuffer@1.0.2/node_modules/base64-arraybuffer/dist/base64-arraybuffer.umd.js"(exports, module) {
       (function(global2, factory) {
-        typeof exports === "object" && module !== undefined ? factory(exports) : (typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2["base64-arraybuffer"] = {})));
+        typeof exports === "object" && typeof module !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2["base64-arraybuffer"] = {}));
       })(exports, function(exports2) {
         "use strict";
         var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -8505,17 +8530,17 @@ var Plotly = (() => {
             base64 += chars[bytes[i2 + 2] & 63];
           }
           if (len % 3 === 2) {
-            base64 = base64.slice(0, Math.max(0, base64.length - 1)) + "=";
+            base64 = base64.substring(0, base64.length - 1) + "=";
           } else if (len % 3 === 1) {
-            base64 = base64.slice(0, Math.max(0, base64.length - 2)) + "==";
+            base64 = base64.substring(0, base64.length - 2) + "==";
           }
           return base64;
         };
         var decode = function(base64) {
           var bufferLength = base64.length * 0.75, len = base64.length, i2, p = 0, encoded1, encoded2, encoded3, encoded4;
-          if (base64.at(-1) === "=") {
+          if (base64[base64.length - 1] === "=") {
             bufferLength--;
-            if (base64.at(-2) === "=") {
+            if (base64[base64.length - 2] === "=") {
               bufferLength--;
             }
           }
@@ -8699,7 +8724,7 @@ var Plotly = (() => {
           }
         }
         if (!totalLen) return [];
-        if (args.length === 0) return arg0;
+        if (!args.length) return arg0;
         if (allArray) return arg0.concat.apply(arg0, args);
         if (_constructor) {
           out = new _constructor(totalLen);
@@ -8724,14 +8749,14 @@ var Plotly = (() => {
         return _rowLength(z, Math.max, 0);
       };
       exports.minRowLength = function(z) {
-        return _rowLength(z, Math.min, Number.POSITIVE_INFINITY);
+        return _rowLength(z, Math.min, Infinity);
       };
       function _rowLength(z, fn, len0) {
         if (isArrayOrTypedArray(z)) {
           if (isArrayOrTypedArray(z[0])) {
             var len = len0;
-            for (const element of z) {
-              len = fn(len, element.length);
+            for (var i = 0; i < z.length; i++) {
+              len = fn(len, z[i].length);
             }
             return len;
           } else {
@@ -8751,7 +8776,7 @@ var Plotly = (() => {
       var isArrayOrTypedArray = require_array().isArrayOrTypedArray;
       module.exports = function nestedProperty(container, propStr) {
         if (isNumeric(propStr)) propStr = String(propStr);
-        else if (typeof propStr !== "string" || propStr.slice(propStr.length - 4) === "[-1]") {
+        else if (typeof propStr !== "string" || propStr.substr(propStr.length - 4) === "[-1]") {
           throw "bad property string";
         }
         var propParts = propStr.split(".");
@@ -8765,12 +8790,12 @@ var Plotly = (() => {
         }
         j = 0;
         while (j < propParts.length) {
-          indexed = String(propParts[j]).match(/^([^[\]]*)((\[-?\d*])+)$/);
+          indexed = String(propParts[j]).match(/^([^\[\]]*)((\[\-?[0-9]*\])+)$/);
           if (indexed) {
             if (indexed[1]) propParts[j] = indexed[1];
             else if (j === 0) propParts.splice(0, 1);
             else throw "bad property string";
-            indices = indexed[2].slice(1, 1 + indexed[2].length - 2).split("][");
+            indices = indexed[2].substr(1, indexed[2].length - 2).split("][");
             for (i = 0; i < indices.length; i++) {
               j++;
               propParts.splice(j, 0, Number(indices[i]));
@@ -8824,7 +8849,7 @@ var Plotly = (() => {
       }
       var ARGS_PATTERN = /(^|\.)args\[/;
       function isDeletable(val, propStr) {
-        return val === void 0 || val === null && !ARGS_PATTERN.test(propStr);
+        return val === void 0 || val === null && !propStr.match(ARGS_PATTERN);
       }
       function npSet(cont, parts, propStr) {
         return function(val) {
@@ -8858,7 +8883,7 @@ var Plotly = (() => {
             if (i === parts.length - 1) {
               delete curCont[parts[i]];
               if (Array.isArray(curCont) && +parts[i] === curCont.length - 1) {
-                while (curCont.length > 0 && curCont.at(-1) === void 0) {
+                while (curCont.length && curCont[curCont.length - 1] === void 0) {
                   curCont.pop();
                 }
               }
@@ -8907,7 +8932,8 @@ var Plotly = (() => {
           set: function() {
             throw "bad container";
           },
-          get: function() {},
+          get: function() {
+          },
           astr: propStr,
           parts: propParts,
           obj: container
@@ -8932,7 +8958,7 @@ var Plotly = (() => {
         valueName = valueName || "value";
         var i, arr, baseProp;
         var changeTypes = {};
-        if (path && path.length > 0) {
+        if (path && path.length) {
           baseProp = nestedProperty(baseObj, path);
           arr = baseProp.get();
         } else {
@@ -9023,8 +9049,8 @@ var Plotly = (() => {
             var astr, idx;
             var update = {};
             var changed = Object.keys(changeTypes);
-            for (const element of changed) {
-              idx = element;
+            for (var i2 = 0; i2 < changed.length; i2++) {
+              idx = changed[i2];
               astr = path + "[" + idx + "]";
               if (arr[idx]) {
                 if (changeTypes[idx] & NAME) {
@@ -9053,13 +9079,13 @@ var Plotly = (() => {
   var require_relative_attr = __commonJS({
     "src/lib/relative_attr.js"(exports, module) {
       "use strict";
-      var ASCEND = /^(.*)(\.[^.[\]]+|\[\d])$/;
-      var SIMPLEATTR = /^[^.[\]]+$/;
+      var ASCEND = /^(.*)(\.[^\.\[\]]+|\[\d\])$/;
+      var SIMPLEATTR = /^[^\.\[\]]+$/;
       module.exports = function(baseAttr, relativeAttr) {
         while (relativeAttr) {
           var match = baseAttr.match(ASCEND);
           if (match) baseAttr = match[1];
-          else if (SIMPLEATTR.test(baseAttr)) baseAttr = "";
+          else if (baseAttr.match(SIMPLEATTR)) baseAttr = "";
           else throw new Error("bad relativeAttr call:" + [baseAttr, relativeAttr]);
           if (relativeAttr.charAt(0) === "^") relativeAttr = relativeAttr.slice(1);
           else break;
@@ -9078,9 +9104,9 @@ var Plotly = (() => {
       "use strict";
       var isNumeric = require_fast_isnumeric();
       module.exports = function toLogRange(val, range) {
-        if (val > 0) return Math.log10(val);
-        var newVal = Math.log10(Math.min(range[0], range[1]));
-        if (!isNumeric(newVal)) newVal = Math.log10(Math.max(range[0], range[1])) - 6;
+        if (val > 0) return Math.log(val) / Math.LN10;
+        var newVal = Math.log(Math.min(range[0], range[1])) / Math.LN10;
+        if (!isNumeric(newVal)) newVal = Math.log(Math.max(range[0], range[1])) / Math.LN10 - 6;
         return newVal;
       };
     }
@@ -9110,7 +9136,7 @@ var Plotly = (() => {
             }
           } else if (isPlainObject(fromVal) && isPlainObject(toVal)) {
             relinkPrivateKeys(toVal, fromVal);
-            if (Object.keys(toVal).length === 0) delete toContainer[k];
+            if (!Object.keys(toVal).length) delete toContainer[k];
           }
         }
       };
@@ -9135,11 +9161,23 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/tinycolor2/tinycolor.js
+  // node_modules/.pnpm/tinycolor2@1.6.0/node_modules/tinycolor2/cjs/tinycolor.js
   var require_tinycolor = __commonJS({
-    "node_modules/tinycolor2/tinycolor.js"(exports, module) {
-      (function(Math2) {
-        var trimLeft = /^\s+/, trimRight = /\s+$/, tinyCounter = 0, mathRound = Math2.round, mathMin = Math2.min, mathMax = Math2.max, mathRandom = Math2.random;
+    "node_modules/.pnpm/tinycolor2@1.6.0/node_modules/tinycolor2/cjs/tinycolor.js"(exports, module) {
+      (function(global2, factory) {
+        typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, global2.tinycolor = factory());
+      })(exports, function() {
+        "use strict";
+        function _typeof(obj) {
+          "@babel/helpers - typeof";
+          return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj2) {
+            return typeof obj2;
+          } : function(obj2) {
+            return obj2 && "function" == typeof Symbol && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
+          }, _typeof(obj);
+        }
+        var trimLeft = /^\s+/;
+        var trimRight = /\s+$/;
         function tinycolor(color, opts) {
           color = color ? color : "";
           opts = opts || {};
@@ -9150,114 +9188,118 @@ var Plotly = (() => {
             return new tinycolor(color, opts);
           }
           var rgb = inputToRGB(color);
-          this._originalInput = color, this._r = rgb.r, this._g = rgb.g, this._b = rgb.b, this._a = rgb.a, this._roundA = mathRound(100 * this._a) / 100, this._format = opts.format || rgb.format;
+          this._originalInput = color, this._r = rgb.r, this._g = rgb.g, this._b = rgb.b, this._a = rgb.a, this._roundA = Math.round(100 * this._a) / 100, this._format = opts.format || rgb.format;
           this._gradientType = opts.gradientType;
-          if (this._r < 1) {
-            this._r = mathRound(this._r);
-          }
-          if (this._g < 1) {
-            this._g = mathRound(this._g);
-          }
-          if (this._b < 1) {
-            this._b = mathRound(this._b);
-          }
+          if (this._r < 1) this._r = Math.round(this._r);
+          if (this._g < 1) this._g = Math.round(this._g);
+          if (this._b < 1) this._b = Math.round(this._b);
           this._ok = rgb.ok;
-          this._tc_id = tinyCounter++;
         }
         tinycolor.prototype = {
-          isDark: function() {
+          isDark: function isDark() {
             return this.getBrightness() < 128;
           },
-          isLight: function() {
+          isLight: function isLight() {
             return !this.isDark();
           },
-          isValid: function() {
+          isValid: function isValid() {
             return this._ok;
           },
-          getOriginalInput: function() {
+          getOriginalInput: function getOriginalInput() {
             return this._originalInput;
           },
-          getFormat: function() {
+          getFormat: function getFormat() {
             return this._format;
           },
-          getAlpha: function() {
+          getAlpha: function getAlpha() {
             return this._a;
           },
-          getBrightness: function() {
+          getBrightness: function getBrightness() {
             var rgb = this.toRgb();
             return (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1e3;
           },
-          getLuminance: function() {
+          getLuminance: function getLuminance() {
             var rgb = this.toRgb();
             var RsRGB, GsRGB, BsRGB, R, G, B;
             RsRGB = rgb.r / 255;
             GsRGB = rgb.g / 255;
             BsRGB = rgb.b / 255;
-            if (RsRGB <= 0.039_28) {
-              R = RsRGB / 12.92;
-            } else {
-              R = Math2.pow((RsRGB + 0.055) / 1.055, 2.4);
-            }
-            if (GsRGB <= 0.039_28) {
-              G = GsRGB / 12.92;
-            } else {
-              G = Math2.pow((GsRGB + 0.055) / 1.055, 2.4);
-            }
-            if (BsRGB <= 0.039_28) {
-              B = BsRGB / 12.92;
-            } else {
-              B = Math2.pow((BsRGB + 0.055) / 1.055, 2.4);
-            }
+            if (RsRGB <= 0.03928) R = RsRGB / 12.92;
+            else R = Math.pow((RsRGB + 0.055) / 1.055, 2.4);
+            if (GsRGB <= 0.03928) G = GsRGB / 12.92;
+            else G = Math.pow((GsRGB + 0.055) / 1.055, 2.4);
+            if (BsRGB <= 0.03928) B = BsRGB / 12.92;
+            else B = Math.pow((BsRGB + 0.055) / 1.055, 2.4);
             return 0.2126 * R + 0.7152 * G + 0.0722 * B;
           },
-          setAlpha: function(value) {
+          setAlpha: function setAlpha(value) {
             this._a = boundAlpha(value);
-            this._roundA = mathRound(100 * this._a) / 100;
+            this._roundA = Math.round(100 * this._a) / 100;
             return this;
           },
-          toHsv: function() {
+          toHsv: function toHsv() {
             var hsv = rgbToHsv(this._r, this._g, this._b);
-            return { h: hsv.h * 360, s: hsv.s, v: hsv.v, a: this._a };
+            return {
+              h: hsv.h * 360,
+              s: hsv.s,
+              v: hsv.v,
+              a: this._a
+            };
           },
-          toHsvString: function() {
+          toHsvString: function toHsvString() {
             var hsv = rgbToHsv(this._r, this._g, this._b);
-            var h = mathRound(hsv.h * 360), s = mathRound(hsv.s * 100), v = mathRound(hsv.v * 100);
+            var h = Math.round(hsv.h * 360), s = Math.round(hsv.s * 100), v = Math.round(hsv.v * 100);
             return this._a == 1 ? "hsv(" + h + ", " + s + "%, " + v + "%)" : "hsva(" + h + ", " + s + "%, " + v + "%, " + this._roundA + ")";
           },
-          toHsl: function() {
+          toHsl: function toHsl() {
             var hsl = rgbToHsl(this._r, this._g, this._b);
-            return { h: hsl.h * 360, s: hsl.s, l: hsl.l, a: this._a };
+            return {
+              h: hsl.h * 360,
+              s: hsl.s,
+              l: hsl.l,
+              a: this._a
+            };
           },
-          toHslString: function() {
+          toHslString: function toHslString() {
             var hsl = rgbToHsl(this._r, this._g, this._b);
-            var h = mathRound(hsl.h * 360), s = mathRound(hsl.s * 100), l = mathRound(hsl.l * 100);
+            var h = Math.round(hsl.h * 360), s = Math.round(hsl.s * 100), l = Math.round(hsl.l * 100);
             return this._a == 1 ? "hsl(" + h + ", " + s + "%, " + l + "%)" : "hsla(" + h + ", " + s + "%, " + l + "%, " + this._roundA + ")";
           },
-          toHex: function(allow3Char) {
+          toHex: function toHex(allow3Char) {
             return rgbToHex(this._r, this._g, this._b, allow3Char);
           },
-          toHexString: function(allow3Char) {
+          toHexString: function toHexString(allow3Char) {
             return "#" + this.toHex(allow3Char);
           },
-          toHex8: function(allow4Char) {
+          toHex8: function toHex8(allow4Char) {
             return rgbaToHex(this._r, this._g, this._b, this._a, allow4Char);
           },
-          toHex8String: function(allow4Char) {
+          toHex8String: function toHex8String(allow4Char) {
             return "#" + this.toHex8(allow4Char);
           },
-          toRgb: function() {
-            return { r: mathRound(this._r), g: mathRound(this._g), b: mathRound(this._b), a: this._a };
+          toRgb: function toRgb() {
+            return {
+              r: Math.round(this._r),
+              g: Math.round(this._g),
+              b: Math.round(this._b),
+              a: this._a
+            };
           },
-          toRgbString: function() {
-            return this._a == 1 ? "rgb(" + mathRound(this._r) + ", " + mathRound(this._g) + ", " + mathRound(this._b) + ")" : "rgba(" + mathRound(this._r) + ", " + mathRound(this._g) + ", " + mathRound(this._b) + ", " + this._roundA + ")";
+          toRgbString: function toRgbString() {
+            return this._a == 1 ? "rgb(" + Math.round(this._r) + ", " + Math.round(this._g) + ", " + Math.round(this._b) + ")" : "rgba(" + Math.round(this._r) + ", " + Math.round(this._g) + ", " + Math.round(this._b) + ", " + this._roundA + ")";
           },
-          toPercentageRgb: function() {
-            return { r: mathRound(bound01(this._r, 255) * 100) + "%", g: mathRound(bound01(this._g, 255) * 100) + "%", b: mathRound(bound01(this._b, 255) * 100) + "%", a: this._a };
+          toPercentageRgb: function toPercentageRgb() {
+            return {
+              r: Math.round(bound01(this._r, 255) * 100) + "%",
+              g: Math.round(bound01(this._g, 255) * 100) + "%",
+              b: Math.round(bound01(this._b, 255) * 100) + "%",
+              a: this._a
+            };
           },
-          toPercentageRgbString: function() {
-            return this._a == 1 ? "rgb(" + mathRound(bound01(this._r, 255) * 100) + "%, " + mathRound(bound01(this._g, 255) * 100) + "%, " + mathRound(bound01(this._b, 255) * 100) + "%)" : "rgba(" + mathRound(bound01(this._r, 255) * 100) + "%, " + mathRound(bound01(this._g, 255) * 100) + "%, " + mathRound(bound01(this._b, 255) * 100) + "%, " + this._roundA + ")";
+          toPercentageRgbString: function toPercentageRgbString() {
+            return this._a == 1 ? "rgb(" + Math.round(bound01(this._r, 255) * 100) + "%, " + Math.round(bound01(this._g, 255) * 100) + "%, " + Math.round(bound01(this._b, 255) * 100) + "%)" : "rgba(" + Math.round(bound01(this._r, 255) * 100) + "%, " + Math.round(bound01(this._g, 255) * 100) + "%, " + Math.round(bound01(this._b, 255) * 100) + "%, " + this._roundA + ")";
           },
-          toName: function() {
+          toName: function toName() {
             if (this._a === 0) {
               return "transparent";
             }
@@ -9266,7 +9308,7 @@ var Plotly = (() => {
             }
             return hexNames[rgbToHex(this._r, this._g, this._b, true)] || false;
           },
-          toFilter: function(secondColor) {
+          toFilter: function toFilter(secondColor) {
             var hex8String = "#" + rgbaToArgbHex(this._r, this._g, this._b, this._a);
             var secondHex8String = hex8String;
             var gradientType = this._gradientType ? "GradientType = 1, " : "";
@@ -9276,7 +9318,7 @@ var Plotly = (() => {
             }
             return "progid:DXImageTransform.Microsoft.gradient(" + gradientType + "startColorstr=" + hex8String + ",endColorstr=" + secondHex8String + ")";
           },
-          toString: function(format) {
+          toString: function toString(format) {
             var formatSet = !!format;
             format = format || this._format;
             var formattedString = false;
@@ -9317,62 +9359,66 @@ var Plotly = (() => {
             }
             return formattedString || this.toHexString();
           },
-          clone: function() {
+          clone: function clone() {
             return tinycolor(this.toString());
           },
-          _applyModification: function(fn, args) {
-            var color = fn.apply(null, [this].concat(Array.prototype.slice.call(args)));
+          _applyModification: function _applyModification(fn, args) {
+            var color = fn.apply(null, [this].concat([].slice.call(args)));
             this._r = color._r;
             this._g = color._g;
             this._b = color._b;
             this.setAlpha(color._a);
             return this;
           },
-          lighten: function() {
-            return this._applyModification(lighten, arguments);
+          lighten: function lighten() {
+            return this._applyModification(_lighten, arguments);
           },
-          brighten: function() {
-            return this._applyModification(brighten, arguments);
+          brighten: function brighten() {
+            return this._applyModification(_brighten, arguments);
           },
-          darken: function() {
-            return this._applyModification(darken, arguments);
+          darken: function darken() {
+            return this._applyModification(_darken, arguments);
           },
-          desaturate: function() {
-            return this._applyModification(desaturate, arguments);
+          desaturate: function desaturate() {
+            return this._applyModification(_desaturate, arguments);
           },
-          saturate: function() {
-            return this._applyModification(saturate, arguments);
+          saturate: function saturate() {
+            return this._applyModification(_saturate, arguments);
           },
-          greyscale: function() {
-            return this._applyModification(greyscale, arguments);
+          greyscale: function greyscale() {
+            return this._applyModification(_greyscale, arguments);
           },
-          spin: function() {
-            return this._applyModification(spin, arguments);
+          spin: function spin() {
+            return this._applyModification(_spin, arguments);
           },
-          _applyCombination: function(fn, args) {
-            return fn.apply(null, [this].concat(Array.prototype.slice.call(args)));
+          _applyCombination: function _applyCombination(fn, args) {
+            return fn.apply(null, [this].concat([].slice.call(args)));
           },
-          analogous: function() {
-            return this._applyCombination(analogous, arguments);
+          analogous: function analogous() {
+            return this._applyCombination(_analogous, arguments);
           },
-          complement: function() {
-            return this._applyCombination(complement, arguments);
+          complement: function complement() {
+            return this._applyCombination(_complement, arguments);
           },
-          monochromatic: function() {
-            return this._applyCombination(monochromatic, arguments);
+          monochromatic: function monochromatic() {
+            return this._applyCombination(_monochromatic, arguments);
           },
-          splitcomplement: function() {
-            return this._applyCombination(splitcomplement, arguments);
+          splitcomplement: function splitcomplement() {
+            return this._applyCombination(_splitcomplement, arguments);
           },
-          triad: function() {
-            return this._applyCombination(triad, arguments);
+          // Disabled until https://github.com/bgrins/TinyColor/issues/254
+          // polyad: function (number) {
+          //   return this._applyCombination(polyad, [number]);
+          // },
+          triad: function triad() {
+            return this._applyCombination(polyad, [3]);
           },
-          tetrad: function() {
-            return this._applyCombination(tetrad, arguments);
+          tetrad: function tetrad() {
+            return this._applyCombination(polyad, [4]);
           }
         };
         tinycolor.fromRatio = function(color, opts) {
-          if (typeof color === "object") {
+          if (_typeof(color) == "object") {
             var newColor = {};
             for (var i in color) {
               if (color.hasOwnProperty(i)) {
@@ -9388,21 +9434,25 @@ var Plotly = (() => {
           return tinycolor(color, opts);
         };
         function inputToRGB(color) {
-          var rgb = { r: 0, g: 0, b: 0 };
+          var rgb = {
+            r: 0,
+            g: 0,
+            b: 0
+          };
           var a = 1;
           var s = null;
           var v = null;
           var l = null;
           var ok = false;
           var format = false;
-          if (typeof color === "string") {
+          if (typeof color == "string") {
             color = stringInputToObject(color);
           }
-          if (typeof color === "object") {
+          if (_typeof(color) == "object") {
             if (isValidCSSUnit(color.r) && isValidCSSUnit(color.g) && isValidCSSUnit(color.b)) {
               rgb = rgbToRgb(color.r, color.g, color.b);
               ok = true;
-              format = String(color.r).slice(-1) === "%" ? "prgb" : "rgb";
+              format = String(color.r).substr(-1) === "%" ? "prgb" : "rgb";
             } else if (isValidCSSUnit(color.h) && isValidCSSUnit(color.s) && isValidCSSUnit(color.v)) {
               s = convertToPercentage(color.s);
               v = convertToPercentage(color.v);
@@ -9424,9 +9474,9 @@ var Plotly = (() => {
           return {
             ok,
             format: color.format || format,
-            r: mathMin(255, mathMax(rgb.r, 0)),
-            g: mathMin(255, mathMax(rgb.g, 0)),
-            b: mathMin(255, mathMax(rgb.b, 0)),
+            r: Math.min(255, Math.max(rgb.r, 0)),
+            g: Math.min(255, Math.max(rgb.g, 0)),
+            b: Math.min(255, Math.max(rgb.b, 0)),
             a
           };
         }
@@ -9441,7 +9491,7 @@ var Plotly = (() => {
           r = bound01(r, 255);
           g = bound01(g, 255);
           b = bound01(b, 255);
-          var max = mathMax(r, g, b), min = mathMin(r, g, b);
+          var max = Math.max(r, g, b), min = Math.min(r, g, b);
           var h, s, l = (max + min) / 2;
           if (max == min) {
             h = s = 0;
@@ -9449,22 +9499,23 @@ var Plotly = (() => {
             var d = max - min;
             s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
             switch (max) {
-              case r: {
+              case r:
                 h = (g - b) / d + (g < b ? 6 : 0);
                 break;
-              }
-              case g: {
+              case g:
                 h = (b - r) / d + 2;
                 break;
-              }
-              case b: {
+              case b:
                 h = (r - g) / d + 4;
                 break;
-              }
             }
             h /= 6;
           }
-          return { h, s, l };
+          return {
+            h,
+            s,
+            l
+          };
         }
         function hslToRgb(h, s, l) {
           var r, g, b;
@@ -9488,13 +9539,17 @@ var Plotly = (() => {
             g = hue2rgb(p, q, h);
             b = hue2rgb(p, q, h - 1 / 3);
           }
-          return { r: r * 255, g: g * 255, b: b * 255 };
+          return {
+            r: r * 255,
+            g: g * 255,
+            b: b * 255
+          };
         }
         function rgbToHsv(r, g, b) {
           r = bound01(r, 255);
           g = bound01(g, 255);
           b = bound01(b, 255);
-          var max = mathMax(r, g, b), min = mathMin(r, g, b);
+          var max = Math.max(r, g, b), min = Math.min(r, g, b);
           var h, s, v = max;
           var d = max - min;
           s = max === 0 ? 0 : d / max;
@@ -9502,154 +9557,144 @@ var Plotly = (() => {
             h = 0;
           } else {
             switch (max) {
-              case r: {
+              case r:
                 h = (g - b) / d + (g < b ? 6 : 0);
                 break;
-              }
-              case g: {
+              case g:
                 h = (b - r) / d + 2;
                 break;
-              }
-              case b: {
+              case b:
                 h = (r - g) / d + 4;
                 break;
-              }
             }
             h /= 6;
           }
-          return { h, s, v };
+          return {
+            h,
+            s,
+            v
+          };
         }
         function hsvToRgb(h, s, v) {
           h = bound01(h, 360) * 6;
           s = bound01(s, 100);
           v = bound01(v, 100);
-          var i = Math2.floor(h), f = h - i, p = v * (1 - s), q = v * (1 - f * s), t = v * (1 - (1 - f) * s), mod = i % 6, r = [v, q, p, p, t, v][mod], g = [t, v, v, q, p, p][mod], b = [p, p, t, v, v, q][mod];
-          return { r: r * 255, g: g * 255, b: b * 255 };
+          var i = Math.floor(h), f = h - i, p = v * (1 - s), q = v * (1 - f * s), t = v * (1 - (1 - f) * s), mod = i % 6, r = [v, q, p, p, t, v][mod], g = [t, v, v, q, p, p][mod], b = [p, p, t, v, v, q][mod];
+          return {
+            r: r * 255,
+            g: g * 255,
+            b: b * 255
+          };
         }
         function rgbToHex(r, g, b, allow3Char) {
-          var hex = [
-            pad2(mathRound(r).toString(16)),
-            pad2(mathRound(g).toString(16)),
-            pad2(mathRound(b).toString(16))
-          ];
+          var hex = [pad2(Math.round(r).toString(16)), pad2(Math.round(g).toString(16)), pad2(Math.round(b).toString(16))];
           if (allow3Char && hex[0].charAt(0) == hex[0].charAt(1) && hex[1].charAt(0) == hex[1].charAt(1) && hex[2].charAt(0) == hex[2].charAt(1)) {
             return hex[0].charAt(0) + hex[1].charAt(0) + hex[2].charAt(0);
           }
           return hex.join("");
         }
         function rgbaToHex(r, g, b, a, allow4Char) {
-          var hex = [
-            pad2(mathRound(r).toString(16)),
-            pad2(mathRound(g).toString(16)),
-            pad2(mathRound(b).toString(16)),
-            pad2(convertDecimalToHex(a))
-          ];
+          var hex = [pad2(Math.round(r).toString(16)), pad2(Math.round(g).toString(16)), pad2(Math.round(b).toString(16)), pad2(convertDecimalToHex(a))];
           if (allow4Char && hex[0].charAt(0) == hex[0].charAt(1) && hex[1].charAt(0) == hex[1].charAt(1) && hex[2].charAt(0) == hex[2].charAt(1) && hex[3].charAt(0) == hex[3].charAt(1)) {
             return hex[0].charAt(0) + hex[1].charAt(0) + hex[2].charAt(0) + hex[3].charAt(0);
           }
           return hex.join("");
         }
         function rgbaToArgbHex(r, g, b, a) {
-          var hex = [
-            pad2(convertDecimalToHex(a)),
-            pad2(mathRound(r).toString(16)),
-            pad2(mathRound(g).toString(16)),
-            pad2(mathRound(b).toString(16))
-          ];
+          var hex = [pad2(convertDecimalToHex(a)), pad2(Math.round(r).toString(16)), pad2(Math.round(g).toString(16)), pad2(Math.round(b).toString(16))];
           return hex.join("");
         }
         tinycolor.equals = function(color1, color2) {
-          if (!color1 || !color2) {
-            return false;
-          }
+          if (!color1 || !color2) return false;
           return tinycolor(color1).toRgbString() == tinycolor(color2).toRgbString();
         };
         tinycolor.random = function() {
           return tinycolor.fromRatio({
-            r: mathRandom(),
-            g: mathRandom(),
-            b: mathRandom()
+            r: Math.random(),
+            g: Math.random(),
+            b: Math.random()
           });
         };
-        function desaturate(color, amount) {
+        function _desaturate(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
           var hsl = tinycolor(color).toHsl();
           hsl.s -= amount / 100;
           hsl.s = clamp01(hsl.s);
           return tinycolor(hsl);
         }
-        function saturate(color, amount) {
+        function _saturate(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
           var hsl = tinycolor(color).toHsl();
           hsl.s += amount / 100;
           hsl.s = clamp01(hsl.s);
           return tinycolor(hsl);
         }
-        function greyscale(color) {
+        function _greyscale(color) {
           return tinycolor(color).desaturate(100);
         }
-        function lighten(color, amount) {
+        function _lighten(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
           var hsl = tinycolor(color).toHsl();
           hsl.l += amount / 100;
           hsl.l = clamp01(hsl.l);
           return tinycolor(hsl);
         }
-        function brighten(color, amount) {
+        function _brighten(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
           var rgb = tinycolor(color).toRgb();
-          rgb.r = mathMax(0, mathMin(255, rgb.r - mathRound(255 * -(amount / 100))));
-          rgb.g = mathMax(0, mathMin(255, rgb.g - mathRound(255 * -(amount / 100))));
-          rgb.b = mathMax(0, mathMin(255, rgb.b - mathRound(255 * -(amount / 100))));
+          rgb.r = Math.max(0, Math.min(255, rgb.r - Math.round(255 * -(amount / 100))));
+          rgb.g = Math.max(0, Math.min(255, rgb.g - Math.round(255 * -(amount / 100))));
+          rgb.b = Math.max(0, Math.min(255, rgb.b - Math.round(255 * -(amount / 100))));
           return tinycolor(rgb);
         }
-        function darken(color, amount) {
+        function _darken(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
           var hsl = tinycolor(color).toHsl();
           hsl.l -= amount / 100;
           hsl.l = clamp01(hsl.l);
           return tinycolor(hsl);
         }
-        function spin(color, amount) {
+        function _spin(color, amount) {
           var hsl = tinycolor(color).toHsl();
           var hue = (hsl.h + amount) % 360;
           hsl.h = hue < 0 ? 360 + hue : hue;
           return tinycolor(hsl);
         }
-        function complement(color) {
+        function _complement(color) {
           var hsl = tinycolor(color).toHsl();
           hsl.h = (hsl.h + 180) % 360;
           return tinycolor(hsl);
         }
-        function triad(color) {
+        function polyad(color, number) {
+          if (isNaN(number) || number <= 0) {
+            throw new Error("Argument to polyad must be a positive number");
+          }
+          var hsl = tinycolor(color).toHsl();
+          var result = [tinycolor(color)];
+          var step = 360 / number;
+          for (var i = 1; i < number; i++) {
+            result.push(tinycolor({
+              h: (hsl.h + i * step) % 360,
+              s: hsl.s,
+              l: hsl.l
+            }));
+          }
+          return result;
+        }
+        function _splitcomplement(color) {
           var hsl = tinycolor(color).toHsl();
           var h = hsl.h;
-          return [
-            tinycolor(color),
-            tinycolor({ h: (h + 120) % 360, s: hsl.s, l: hsl.l }),
-            tinycolor({ h: (h + 240) % 360, s: hsl.s, l: hsl.l })
-          ];
+          return [tinycolor(color), tinycolor({
+            h: (h + 72) % 360,
+            s: hsl.s,
+            l: hsl.l
+          }), tinycolor({
+            h: (h + 216) % 360,
+            s: hsl.s,
+            l: hsl.l
+          })];
         }
-        function tetrad(color) {
-          var hsl = tinycolor(color).toHsl();
-          var h = hsl.h;
-          return [
-            tinycolor(color),
-            tinycolor({ h: (h + 90) % 360, s: hsl.s, l: hsl.l }),
-            tinycolor({ h: (h + 180) % 360, s: hsl.s, l: hsl.l }),
-            tinycolor({ h: (h + 270) % 360, s: hsl.s, l: hsl.l })
-          ];
-        }
-        function splitcomplement(color) {
-          var hsl = tinycolor(color).toHsl();
-          var h = hsl.h;
-          return [
-            tinycolor(color),
-            tinycolor({ h: (h + 72) % 360, s: hsl.s, l: hsl.l }),
-            tinycolor({ h: (h + 216) % 360, s: hsl.s, l: hsl.l })
-          ];
-        }
-        function analogous(color, results, slices) {
+        function _analogous(color, results, slices) {
           results = results || 6;
           slices = slices || 30;
           var hsl = tinycolor(color).toHsl();
@@ -9661,14 +9706,18 @@ var Plotly = (() => {
           }
           return ret;
         }
-        function monochromatic(color, results) {
+        function _monochromatic(color, results) {
           results = results || 6;
           var hsv = tinycolor(color).toHsv();
           var h = hsv.h, s = hsv.s, v = hsv.v;
           var ret = [];
           var modification = 1 / results;
           while (results--) {
-            ret.push(tinycolor({ h, s, v }));
+            ret.push(tinycolor({
+              h,
+              s,
+              v
+            }));
             v = (v + modification) % 1;
           }
           return ret;
@@ -9689,7 +9738,7 @@ var Plotly = (() => {
         tinycolor.readability = function(color1, color2) {
           var c1 = tinycolor(color1);
           var c2 = tinycolor(color2);
-          return (Math2.max(c1.getLuminance(), c2.getLuminance()) + 0.05) / (Math2.min(c1.getLuminance(), c2.getLuminance()) + 0.05);
+          return (Math.max(c1.getLuminance(), c2.getLuminance()) + 0.05) / (Math.min(c1.getLuminance(), c2.getLuminance()) + 0.05);
         };
         tinycolor.isReadable = function(color1, color2, wcag2) {
           var readability = tinycolor.readability(color1, color2);
@@ -9698,18 +9747,15 @@ var Plotly = (() => {
           wcag2Parms = validateWCAG2Parms(wcag2);
           switch (wcag2Parms.level + wcag2Parms.size) {
             case "AAsmall":
-            case "AAAlarge": {
+            case "AAAlarge":
               out = readability >= 4.5;
               break;
-            }
-            case "AAlarge": {
+            case "AAlarge":
               out = readability >= 3;
               break;
-            }
-            case "AAAsmall": {
+            case "AAAsmall":
               out = readability >= 7;
               break;
-            }
           }
           return out;
         };
@@ -9722,14 +9768,17 @@ var Plotly = (() => {
           includeFallbackColors = args.includeFallbackColors;
           level = args.level;
           size = args.size;
-          for (const element of colorList) {
-            readability = tinycolor.readability(baseColor, element);
+          for (var i = 0; i < colorList.length; i++) {
+            readability = tinycolor.readability(baseColor, colorList[i]);
             if (readability > bestScore) {
               bestScore = readability;
-              bestColor = tinycolor(element);
+              bestColor = tinycolor(colorList[i]);
             }
           }
-          if (tinycolor.isReadable(baseColor, bestColor, { "level": level, "size": size }) || !includeFallbackColors) {
+          if (tinycolor.isReadable(baseColor, bestColor, {
+            level,
+            size
+          }) || !includeFallbackColors) {
             return bestColor;
           } else {
             args.includeFallbackColors = false;
@@ -9898,37 +9947,35 @@ var Plotly = (() => {
           return flipped;
         }
         function boundAlpha(a) {
-          a = Number.parseFloat(a);
+          a = parseFloat(a);
           if (isNaN(a) || a < 0 || a > 1) {
             a = 1;
           }
           return a;
         }
         function bound01(n, max) {
-          if (isOnePointZero(n)) {
-            n = "100%";
-          }
+          if (isOnePointZero(n)) n = "100%";
           var processPercent = isPercentage(n);
-          n = mathMin(max, mathMax(0, Number.parseFloat(n)));
+          n = Math.min(max, Math.max(0, parseFloat(n)));
           if (processPercent) {
-            n = Number.parseInt(n * max, 10) / 100;
+            n = parseInt(n * max, 10) / 100;
           }
-          if (Math2.abs(n - max) < 1e-6) {
+          if (Math.abs(n - max) < 1e-6) {
             return 1;
           }
-          return n % max / Number.parseFloat(max);
+          return n % max / parseFloat(max);
         }
         function clamp01(val) {
-          return mathMin(1, mathMax(0, val));
+          return Math.min(1, Math.max(0, val));
         }
         function parseIntFromHex(val) {
-          return Number.parseInt(val, 16);
+          return parseInt(val, 16);
         }
         function isOnePointZero(n) {
-          return typeof n === "string" && n.includes(".") && Number.parseFloat(n) === 1;
+          return typeof n == "string" && n.indexOf(".") != -1 && parseFloat(n) === 1;
         }
         function isPercentage(n) {
-          return typeof n === "string" && n.includes("%");
+          return typeof n === "string" && n.indexOf("%") != -1;
         }
         function pad2(c) {
           return c.length == 1 ? "0" + c : "" + c;
@@ -9940,7 +9987,7 @@ var Plotly = (() => {
           return n;
         }
         function convertDecimalToHex(d) {
-          return Math2.round(Number.parseFloat(d) * 255).toString(16);
+          return Math.round(parseFloat(d) * 255).toString(16);
         }
         function convertHexToDecimal(h) {
           return parseIntFromHex(h) / 255;
@@ -9959,10 +10006,10 @@ var Plotly = (() => {
             hsla: new RegExp("hsla" + PERMISSIVE_MATCH4),
             hsv: new RegExp("hsv" + PERMISSIVE_MATCH3),
             hsva: new RegExp("hsva" + PERMISSIVE_MATCH4),
-            hex3: /^#?([\dA-Fa-f])([\dA-Fa-f])([\dA-Fa-f])$/,
-            hex6: /^#?([\dA-Fa-f]{2})([\dA-Fa-f]{2})([\dA-Fa-f]{2})$/,
-            hex4: /^#?([\dA-Fa-f])([\dA-Fa-f])([\dA-Fa-f])([\dA-Fa-f])$/,
-            hex8: /^#?([\dA-Fa-f]{2})([\dA-Fa-f]{2})([\dA-Fa-f]{2})([\dA-Fa-f]{2})$/
+            hex3: /^#?([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,
+            hex6: /^#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/,
+            hex4: /^#?([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,
+            hex8: /^#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
           };
         }();
         function isValidCSSUnit(color) {
@@ -9975,26 +10022,59 @@ var Plotly = (() => {
             color = names[color];
             named = true;
           } else if (color == "transparent") {
-            return { r: 0, g: 0, b: 0, a: 0, format: "name" };
+            return {
+              r: 0,
+              g: 0,
+              b: 0,
+              a: 0,
+              format: "name"
+            };
           }
           var match;
           if (match = matchers.rgb.exec(color)) {
-            return { r: match[1], g: match[2], b: match[3] };
+            return {
+              r: match[1],
+              g: match[2],
+              b: match[3]
+            };
           }
           if (match = matchers.rgba.exec(color)) {
-            return { r: match[1], g: match[2], b: match[3], a: match[4] };
+            return {
+              r: match[1],
+              g: match[2],
+              b: match[3],
+              a: match[4]
+            };
           }
           if (match = matchers.hsl.exec(color)) {
-            return { h: match[1], s: match[2], l: match[3] };
+            return {
+              h: match[1],
+              s: match[2],
+              l: match[3]
+            };
           }
           if (match = matchers.hsla.exec(color)) {
-            return { h: match[1], s: match[2], l: match[3], a: match[4] };
+            return {
+              h: match[1],
+              s: match[2],
+              l: match[3],
+              a: match[4]
+            };
           }
           if (match = matchers.hsv.exec(color)) {
-            return { h: match[1], s: match[2], v: match[3] };
+            return {
+              h: match[1],
+              s: match[2],
+              v: match[3]
+            };
           }
           if (match = matchers.hsva.exec(color)) {
-            return { h: match[1], s: match[2], v: match[3], a: match[4] };
+            return {
+              h: match[1],
+              s: match[2],
+              v: match[3],
+              a: match[4]
+            };
           }
           if (match = matchers.hex8.exec(color)) {
             return {
@@ -10034,7 +10114,10 @@ var Plotly = (() => {
         }
         function validateWCAG2Parms(parms) {
           var level, size;
-          parms = parms || { "level": "AA", "size": "small" };
+          parms = parms || {
+            level: "AA",
+            size: "small"
+          };
           level = (parms.level || "AA").toUpperCase();
           size = (parms.size || "small").toLowerCase();
           if (level !== "AA" && level !== "AAA") {
@@ -10043,18 +10126,13 @@ var Plotly = (() => {
           if (size !== "small" && size !== "large") {
             size = "small";
           }
-          return { "level": level, "size": size };
+          return {
+            level,
+            size
+          };
         }
-        if (module !== undefined && module.exports) {
-          module.exports = tinycolor;
-        } else if (typeof define === "function" && define.amd) {
-          define(function() {
-            return tinycolor;
-          });
-        } else {
-          window.tinycolor = tinycolor;
-        }
-      })(Math);
+        return tinycolor;
+      });
     }
   });
 
@@ -10116,7 +10194,7 @@ var Plotly = (() => {
                 clone = src && isPlainObject(src) ? src : {};
               }
               target[key] = _extend([clone, copy], isDeep, keepAllKeys, noArrayCopies);
-            } else if (copy !== undefined || keepAllKeys) {
+            } else if (typeof copy !== "undefined" || keepAllKeys) {
               target[key] = copy;
             }
           }
@@ -10656,41 +10734,41 @@ var Plotly = (() => {
         ],
         Viridis: [
           [0, "#440154"],
-          [0.062_745_098_039_215_69, "#48186a"],
-          [0.125_490_196_078_431_37, "#472d7b"],
-          [0.188_235_294_117_647_06, "#424086"],
-          [0.250_980_392_156_862_74, "#3b528b"],
-          [0.313_725_490_196_078_4, "#33638d"],
-          [0.376_470_588_235_294_1, "#2c728e"],
-          [0.439_215_686_274_509_8, "#26828e"],
-          [0.501_960_784_313_725_5, "#21918c"],
-          [0.564_705_882_352_941_2, "#1fa088"],
-          [0.627_450_980_392_156_9, "#28ae80"],
-          [0.690_196_078_431_372_5, "#3fbc73"],
-          [0.752_941_176_470_588_2, "#5ec962"],
-          [0.815_686_274_509_803_9, "#84d44b"],
-          [0.878_431_372_549_019_6, "#addc30"],
-          [0.941_176_470_588_235_3, "#d8e219"],
+          [0.06274509803921569, "#48186a"],
+          [0.12549019607843137, "#472d7b"],
+          [0.18823529411764706, "#424086"],
+          [0.25098039215686274, "#3b528b"],
+          [0.3137254901960784, "#33638d"],
+          [0.3764705882352941, "#2c728e"],
+          [0.4392156862745098, "#26828e"],
+          [0.5019607843137255, "#21918c"],
+          [0.5647058823529412, "#1fa088"],
+          [0.6274509803921569, "#28ae80"],
+          [0.6901960784313725, "#3fbc73"],
+          [0.7529411764705882, "#5ec962"],
+          [0.8156862745098039, "#84d44b"],
+          [0.8784313725490196, "#addc30"],
+          [0.9411764705882353, "#d8e219"],
           [1, "#fde725"]
         ],
         Cividis: [
           [0, "rgb(0,32,76)"],
-          [0.058_824, "rgb(0,42,102)"],
-          [0.117_647, "rgb(0,52,110)"],
-          [0.176_471, "rgb(39,63,108)"],
-          [0.235_294, "rgb(60,74,107)"],
-          [0.294_118, "rgb(76,85,107)"],
-          [0.352_941, "rgb(91,95,109)"],
-          [0.411_765, "rgb(104,106,112)"],
-          [0.470_588, "rgb(117,117,117)"],
-          [0.529_412, "rgb(131,129,120)"],
-          [0.588_235, "rgb(146,140,120)"],
-          [0.647_059, "rgb(161,152,118)"],
-          [0.705_882, "rgb(176,165,114)"],
-          [0.764_706, "rgb(192,177,109)"],
-          [0.823_529, "rgb(209,191,102)"],
-          [0.882_353, "rgb(225,204,92)"],
-          [0.941_176, "rgb(243,219,79)"],
+          [0.058824, "rgb(0,42,102)"],
+          [0.117647, "rgb(0,52,110)"],
+          [0.176471, "rgb(39,63,108)"],
+          [0.235294, "rgb(60,74,107)"],
+          [0.294118, "rgb(76,85,107)"],
+          [0.352941, "rgb(91,95,109)"],
+          [0.411765, "rgb(104,106,112)"],
+          [0.470588, "rgb(117,117,117)"],
+          [0.529412, "rgb(131,129,120)"],
+          [0.588235, "rgb(146,140,120)"],
+          [0.647059, "rgb(161,152,118)"],
+          [0.705882, "rgb(176,165,114)"],
+          [0.764706, "rgb(192,177,109)"],
+          [0.823529, "rgb(209,191,102)"],
+          [0.882353, "rgb(225,204,92)"],
+          [0.941176, "rgb(243,219,79)"],
           [1, "rgb(255,233,69)"]
         ]
       };
@@ -10701,7 +10779,7 @@ var Plotly = (() => {
         function parseScale() {
           try {
             scl = scales[scl] || JSON.parse(scl);
-          } catch {
+          } catch (e) {
             scl = dflt;
           }
         }
@@ -10715,9 +10793,10 @@ var Plotly = (() => {
       function isValidScaleArray(scl) {
         var highestVal = 0;
         if (!Array.isArray(scl) || scl.length < 2) return false;
-        if (!scl[0] || !scl.at(-1)) return false;
-        if (+scl[0][0] !== 0 || +scl.at(-1)[0] !== 1) return false;
-        for (var si of scl) {
+        if (!scl[0] || !scl[scl.length - 1]) return false;
+        if (+scl[0][0] !== 0 || +scl[scl.length - 1][0] !== 1) return false;
+        for (var i = 0; i < scl.length; i++) {
+          var si = scl[i];
           if (si.length !== 2 || +si[0] < highestVal || !tinycolor(si[1]).isValid()) {
             return false;
           }
@@ -10828,7 +10907,7 @@ var Plotly = (() => {
       color.contrast = function(cstr, lightAmount, darkAmount) {
         var tc = tinycolor(cstr);
         if (tc.getAlpha() !== 1) tc = tinycolor(color.combine(cstr, background));
-        var newColor = tc.isDark() ? (lightAmount ? tc.lighten(lightAmount) : background) : (darkAmount ? tc.darken(darkAmount) : defaultLine);
+        var newColor = tc.isDark() ? lightAmount ? tc.lighten(lightAmount) : background : darkAmount ? tc.darken(darkAmount) : defaultLine;
         return newColor.toString();
       };
       color.stroke = function(s, c) {
@@ -10849,11 +10928,11 @@ var Plotly = (() => {
         for (i = 0; i < keys.length; i++) {
           key = keys[i];
           val = container[key];
-          if (key.slice(key.length - 5) === "color") {
+          if (key.substr(key.length - 5) === "color") {
             if (Array.isArray(val)) {
               for (j = 0; j < val.length; j++) val[j] = cleanOne(val[j]);
             } else container[key] = cleanOne(val);
-          } else if (key.slice(key.length - 10) === "colorscale" && Array.isArray(val)) {
+          } else if (key.substr(key.length - 10) === "colorscale" && Array.isArray(val)) {
             for (j = 0; j < val.length; j++) {
               if (Array.isArray(val[j])) val[j][1] = cleanOne(val[j][1]);
             }
@@ -10868,14 +10947,14 @@ var Plotly = (() => {
       function cleanOne(val) {
         if (isNumeric(val) || typeof val !== "string") return val;
         var valTrim = val.trim();
-        if (valTrim.slice(0, 3) !== "rgb") return val;
+        if (valTrim.substr(0, 3) !== "rgb") return val;
         var match = valTrim.match(/^rgba?\s*\(([^()]*)\)$/);
         if (!match) return val;
         var parts = match[1].trim().split(/\s*[\s,]\s*/);
         var rgba = valTrim.charAt(3) === "a" && parts.length === 4;
         if (!rgba && parts.length !== 3) return val;
         for (var i = 0; i < parts.length; i++) {
-          if (parts[i].length === 0) return val;
+          if (!parts[i].length) return val;
           parts[i] = Number(parts[i]);
           if (!(parts[i] >= 0)) {
             return val;
@@ -10946,25 +11025,25 @@ var Plotly = (() => {
           // You can use *dflt=[] to force said array to exist though.
           coerceFunction: function(v, propOut, dflt) {
             propOut.set(
-              isArrayOrTypedArray(v) ? v : (isTypedArraySpec(v) ? decodeTypedArraySpec(v) : dflt)
+              isArrayOrTypedArray(v) ? v : isTypedArraySpec(v) ? decodeTypedArraySpec(v) : dflt
             );
           }
         },
         enumerated: {
           coerceFunction: function(v, propOut, dflt, opts) {
             if (opts.coerceNumber) v = +v;
-            if (!opts.values.includes(v)) propOut.set(dflt);
+            if (opts.values.indexOf(v) === -1) propOut.set(dflt);
             else propOut.set(v);
           },
           validateFunction: function(v, opts) {
             if (opts.coerceNumber) v = +v;
             var values = opts.values;
-            for (const value of values) {
-              var k = String(value);
+            for (var i = 0; i < values.length; i++) {
+              var k = String(values[i]);
               if (k.charAt(0) === "/" && k.charAt(k.length - 1) === "/") {
                 var regex = new RegExp(k.substr(1, k.length - 2));
                 if (regex.test(v)) return true;
-              } else if (v === value) return true;
+              } else if (v === values[i]) return true;
             }
             return false;
           }
@@ -10985,7 +11064,7 @@ var Plotly = (() => {
         },
         integer: {
           coerceFunction: function(v, propOut, dflt, opts) {
-            if ((opts.extras || []).includes(v)) {
+            if ((opts.extras || []).indexOf(v) !== -1) {
               propOut.set(v);
               return;
             }
@@ -11018,7 +11097,7 @@ var Plotly = (() => {
             function isColor(color) {
               return tinycolor(color).isValid();
             }
-            if (!Array.isArray(v) || v.length === 0) propOut.set(dflt);
+            if (!Array.isArray(v) || !v.length) propOut.set(dflt);
             else if (v.every(isColor)) propOut.set(v);
             else propOut.set(dflt);
           }
@@ -11055,7 +11134,7 @@ var Plotly = (() => {
         },
         flaglist: {
           coerceFunction: function(v, propOut, dflt, opts) {
-            if ((opts.extras || []).includes(v)) {
+            if ((opts.extras || []).indexOf(v) !== -1) {
               propOut.set(v);
               return;
             }
@@ -11067,11 +11146,11 @@ var Plotly = (() => {
             var i = 0;
             while (i < vParts.length) {
               var vi = vParts[i];
-              if (!opts.flags.includes(vi) || vParts.indexOf(vi) < i) {
+              if (opts.flags.indexOf(vi) === -1 || vParts.indexOf(vi) < i) {
                 vParts.splice(i, 1);
               } else i++;
             }
-            if (vParts.length === 0) propOut.set(dflt);
+            if (!vParts.length) propOut.set(dflt);
             else propOut.set(vParts.join("+"));
           }
         },
@@ -11145,17 +11224,17 @@ var Plotly = (() => {
             var arrayItems = Array.isArray(items);
             var twoD = opts.dimensions === 2;
             if (!opts.freeLength && v.length !== items.length) return false;
-            for (const [i, element] of v.entries()) {
+            for (var i = 0; i < v.length; i++) {
               if (twoD) {
-                if (!isArrayOrTypedArray(element) || !opts.freeLength && element.length !== items[i].length) {
+                if (!isArrayOrTypedArray(v[i]) || !opts.freeLength && v[i].length !== items[i].length) {
                   return false;
                 }
-                for (var j = 0; j < element.length; j++) {
-                  if (!validate(element[j], arrayItems ? items[i][j] : items)) {
+                for (var j = 0; j < v[i].length; j++) {
+                  if (!validate(v[i][j], arrayItems ? items[i][j] : items)) {
                     return false;
                   }
                 }
-              } else if (!validate(element, arrayItems ? items[i] : items)) return false;
+              } else if (!validate(v[i], arrayItems ? items[i] : items)) return false;
             }
             return true;
           }
@@ -11252,7 +11331,7 @@ var Plotly = (() => {
         var valObj = attrs.hoverinfo;
         var dflt;
         if (layoutOut._dataLength === 1) {
-          var flags = valObj.dflt === "all" ? [...valObj.flags] : valObj.dflt.split("+");
+          var flags = valObj.dflt === "all" ? valObj.flags.slice() : valObj.dflt.split("+");
           flags.splice(flags.indexOf("name"), 1);
           dflt = flags.join("+");
         }
@@ -11531,7 +11610,7 @@ var Plotly = (() => {
       var isNumeric = require_fast_isnumeric();
       var NOTEDATA = [];
       module.exports = function(text, displayLength) {
-        if (NOTEDATA.includes(text)) return;
+        if (NOTEDATA.indexOf(text) !== -1) return;
         NOTEDATA.push(text);
         var ts = 1e3;
         if (isNumeric(displayLength)) ts = displayLength;
@@ -11553,9 +11632,9 @@ var Plotly = (() => {
           });
           var p = note.append("p");
           var lines = thisText.split(/<br\s*\/?>/g);
-          for (const [i, line] of lines.entries()) {
+          for (var i = 0; i < lines.length; i++) {
             if (i) p.append("br");
-            p.append("span").text(line);
+            p.append("span").text(lines[i]);
           }
           if (displayLength === "stick") {
             note.transition().duration(350).style("opacity", 1);
@@ -11632,7 +11711,8 @@ var Plotly = (() => {
   var require_noop = __commonJS({
     "src/lib/noop.js"(exports, module) {
       "use strict";
-      module.exports = function noop() {};
+      module.exports = function noop() {
+      };
     }
   });
 
@@ -11649,15 +11729,15 @@ var Plotly = (() => {
             }
           }
           array.push(item);
-        } else if ((item || item === 0) && !array.includes(item)) array.push(item);
+        } else if ((item || item === 0) && array.indexOf(item) === -1) array.push(item);
         return array;
       };
     }
   });
 
-  // node_modules/gl-mat4/create.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/create.js
   var require_create = __commonJS({
-    "node_modules/gl-mat4/create.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/create.js"(exports, module) {
       module.exports = create;
       function create() {
         var out = new Float32Array(16);
@@ -11682,9 +11762,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/clone.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/clone.js
   var require_clone = __commonJS({
-    "node_modules/gl-mat4/clone.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/clone.js"(exports, module) {
       module.exports = clone;
       function clone(a) {
         var out = new Float32Array(16);
@@ -11709,9 +11789,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/copy.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/copy.js
   var require_copy = __commonJS({
-    "node_modules/gl-mat4/copy.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/copy.js"(exports, module) {
       module.exports = copy;
       function copy(out, a) {
         out[0] = a[0];
@@ -11735,9 +11815,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/identity.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/identity.js
   var require_identity = __commonJS({
-    "node_modules/gl-mat4/identity.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/identity.js"(exports, module) {
       module.exports = identity;
       function identity(out) {
         out[0] = 1;
@@ -11761,9 +11841,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/transpose.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/transpose.js
   var require_transpose = __commonJS({
-    "node_modules/gl-mat4/transpose.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/transpose.js"(exports, module) {
       module.exports = transpose;
       function transpose(out, a) {
         if (out === a) {
@@ -11803,9 +11883,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/invert.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/invert.js
   var require_invert = __commonJS({
-    "node_modules/gl-mat4/invert.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/invert.js"(exports, module) {
       module.exports = invert;
       function invert(out, a) {
         var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11], a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15], b00 = a00 * a11 - a01 * a10, b01 = a00 * a12 - a02 * a10, b02 = a00 * a13 - a03 * a10, b03 = a01 * a12 - a02 * a11, b04 = a01 * a13 - a03 * a11, b05 = a02 * a13 - a03 * a12, b06 = a20 * a31 - a21 * a30, b07 = a20 * a32 - a22 * a30, b08 = a20 * a33 - a23 * a30, b09 = a21 * a32 - a22 * a31, b10 = a21 * a33 - a23 * a31, b11 = a22 * a33 - a23 * a32, det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
@@ -11834,9 +11914,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/adjoint.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/adjoint.js
   var require_adjoint = __commonJS({
-    "node_modules/gl-mat4/adjoint.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/adjoint.js"(exports, module) {
       module.exports = adjoint;
       function adjoint(out, a) {
         var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11], a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15];
@@ -11861,9 +11941,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/determinant.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/determinant.js
   var require_determinant = __commonJS({
-    "node_modules/gl-mat4/determinant.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/determinant.js"(exports, module) {
       module.exports = determinant;
       function determinant(a) {
         var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11], a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15], b00 = a00 * a11 - a01 * a10, b01 = a00 * a12 - a02 * a10, b02 = a00 * a13 - a03 * a10, b03 = a01 * a12 - a02 * a11, b04 = a01 * a13 - a03 * a11, b05 = a02 * a13 - a03 * a12, b06 = a20 * a31 - a21 * a30, b07 = a20 * a32 - a22 * a30, b08 = a20 * a33 - a23 * a30, b09 = a21 * a32 - a22 * a31, b10 = a21 * a33 - a23 * a31, b11 = a22 * a33 - a23 * a32;
@@ -11872,9 +11952,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/multiply.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/multiply.js
   var require_multiply = __commonJS({
-    "node_modules/gl-mat4/multiply.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/multiply.js"(exports, module) {
       module.exports = multiply;
       function multiply(out, a, b) {
         var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11], a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15];
@@ -11912,9 +11992,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/translate.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/translate.js
   var require_translate = __commonJS({
-    "node_modules/gl-mat4/translate.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/translate.js"(exports, module) {
       module.exports = translate;
       function translate(out, a, v) {
         var x = v[0], y = v[1], z = v[2], a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23;
@@ -11958,9 +12038,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/scale.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/scale.js
   var require_scale = __commonJS({
-    "node_modules/gl-mat4/scale.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/scale.js"(exports, module) {
       module.exports = scale;
       function scale(out, a, v) {
         var x = v[0], y = v[1], z = v[2];
@@ -11985,12 +12065,12 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/rotate.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotate.js
   var require_rotate = __commonJS({
-    "node_modules/gl-mat4/rotate.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotate.js"(exports, module) {
       module.exports = rotate;
       function rotate(out, a, rad, axis) {
-        var x = axis[0], y = axis[1], z = axis[2], len = Math.hypot(x, y, z), s, c, t, a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23, b00, b01, b02, b10, b11, b12, b20, b21, b22;
+        var x = axis[0], y = axis[1], z = axis[2], len = Math.sqrt(x * x + y * y + z * z), s, c, t, a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23, b00, b01, b02, b10, b11, b12, b20, b21, b22;
         if (Math.abs(len) < 1e-6) {
           return null;
         }
@@ -12045,9 +12125,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/rotateX.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateX.js
   var require_rotateX = __commonJS({
-    "node_modules/gl-mat4/rotateX.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateX.js"(exports, module) {
       module.exports = rotateX;
       function rotateX(out, a, rad) {
         var s = Math.sin(rad), c = Math.cos(rad), a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11];
@@ -12074,9 +12154,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/rotateY.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateY.js
   var require_rotateY = __commonJS({
-    "node_modules/gl-mat4/rotateY.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateY.js"(exports, module) {
       module.exports = rotateY;
       function rotateY(out, a, rad) {
         var s = Math.sin(rad), c = Math.cos(rad), a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11];
@@ -12103,9 +12183,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/rotateZ.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateZ.js
   var require_rotateZ = __commonJS({
-    "node_modules/gl-mat4/rotateZ.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateZ.js"(exports, module) {
       module.exports = rotateZ;
       function rotateZ(out, a, rad) {
         var s = Math.sin(rad), c = Math.cos(rad), a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7];
@@ -12132,16 +12212,16 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromRotation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromRotation.js
   var require_fromRotation = __commonJS({
-    "node_modules/gl-mat4/fromRotation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromRotation.js"(exports, module) {
       module.exports = fromRotation;
       function fromRotation(out, rad, axis) {
         var s, c, t;
         var x = axis[0];
         var y = axis[1];
         var z = axis[2];
-        var len = Math.hypot(x, y, z);
+        var len = Math.sqrt(x * x + y * y + z * z);
         if (Math.abs(len) < 1e-6) {
           return null;
         }
@@ -12173,9 +12253,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromRotationTranslation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromRotationTranslation.js
   var require_fromRotationTranslation = __commonJS({
-    "node_modules/gl-mat4/fromRotationTranslation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromRotationTranslation.js"(exports, module) {
       module.exports = fromRotationTranslation;
       function fromRotationTranslation(out, q, v) {
         var x = q[0], y = q[1], z = q[2], w = q[3], x2 = x + x, y2 = y + y, z2 = z + z, xx = x * x2, xy = x * y2, xz = x * z2, yy = y * y2, yz = y * z2, zz = z * z2, wx = w * x2, wy = w * y2, wz = w * z2;
@@ -12200,9 +12280,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromScaling.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromScaling.js
   var require_fromScaling = __commonJS({
-    "node_modules/gl-mat4/fromScaling.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromScaling.js"(exports, module) {
       module.exports = fromScaling;
       function fromScaling(out, v) {
         out[0] = v[0];
@@ -12226,9 +12306,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromTranslation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromTranslation.js
   var require_fromTranslation = __commonJS({
-    "node_modules/gl-mat4/fromTranslation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromTranslation.js"(exports, module) {
       module.exports = fromTranslation;
       function fromTranslation(out, v) {
         out[0] = 1;
@@ -12252,9 +12332,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromXRotation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromXRotation.js
   var require_fromXRotation = __commonJS({
-    "node_modules/gl-mat4/fromXRotation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromXRotation.js"(exports, module) {
       module.exports = fromXRotation;
       function fromXRotation(out, rad) {
         var s = Math.sin(rad), c = Math.cos(rad);
@@ -12279,9 +12359,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromYRotation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromYRotation.js
   var require_fromYRotation = __commonJS({
-    "node_modules/gl-mat4/fromYRotation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromYRotation.js"(exports, module) {
       module.exports = fromYRotation;
       function fromYRotation(out, rad) {
         var s = Math.sin(rad), c = Math.cos(rad);
@@ -12306,9 +12386,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromZRotation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromZRotation.js
   var require_fromZRotation = __commonJS({
-    "node_modules/gl-mat4/fromZRotation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromZRotation.js"(exports, module) {
       module.exports = fromZRotation;
       function fromZRotation(out, rad) {
         var s = Math.sin(rad), c = Math.cos(rad);
@@ -12333,9 +12413,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromQuat.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromQuat.js
   var require_fromQuat = __commonJS({
-    "node_modules/gl-mat4/fromQuat.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromQuat.js"(exports, module) {
       module.exports = fromQuat;
       function fromQuat(out, q) {
         var x = q[0], y = q[1], z = q[2], w = q[3], x2 = x + x, y2 = y + y, z2 = z + z, xx = x * x2, yx = y * x2, yy = y * y2, zx = z * x2, zy = z * y2, zz = z * z2, wx = w * x2, wy = w * y2, wz = w * z2;
@@ -12360,9 +12440,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/frustum.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/frustum.js
   var require_frustum = __commonJS({
-    "node_modules/gl-mat4/frustum.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/frustum.js"(exports, module) {
       module.exports = frustum;
       function frustum(out, left, right, bottom, top, near, far) {
         var rl = 1 / (right - left), tb = 1 / (top - bottom), nf = 1 / (near - far);
@@ -12387,9 +12467,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/perspective.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/perspective.js
   var require_perspective = __commonJS({
-    "node_modules/gl-mat4/perspective.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/perspective.js"(exports, module) {
       module.exports = perspective;
       function perspective(out, fovy, aspect, near, far) {
         var f = 1 / Math.tan(fovy / 2), nf = 1 / (near - far);
@@ -12414,9 +12494,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/perspectiveFromFieldOfView.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/perspectiveFromFieldOfView.js
   var require_perspectiveFromFieldOfView = __commonJS({
-    "node_modules/gl-mat4/perspectiveFromFieldOfView.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/perspectiveFromFieldOfView.js"(exports, module) {
       module.exports = perspectiveFromFieldOfView;
       function perspectiveFromFieldOfView(out, fov, near, far) {
         var upTan = Math.tan(fov.upDegrees * Math.PI / 180), downTan = Math.tan(fov.downDegrees * Math.PI / 180), leftTan = Math.tan(fov.leftDegrees * Math.PI / 180), rightTan = Math.tan(fov.rightDegrees * Math.PI / 180), xScale = 2 / (leftTan + rightTan), yScale = 2 / (upTan + downTan);
@@ -12441,9 +12521,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/ortho.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/ortho.js
   var require_ortho = __commonJS({
-    "node_modules/gl-mat4/ortho.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/ortho.js"(exports, module) {
       module.exports = ortho;
       function ortho(out, left, right, bottom, top, near, far) {
         var lr = 1 / (left - right), bt = 1 / (bottom - top), nf = 1 / (near - far);
@@ -12468,9 +12548,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/lookAt.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/lookAt.js
   var require_lookAt = __commonJS({
-    "node_modules/gl-mat4/lookAt.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/lookAt.js"(exports, module) {
       var identity = require_identity();
       module.exports = lookAt;
       function lookAt(out, eye, center, up) {
@@ -12481,14 +12561,14 @@ var Plotly = (() => {
         z0 = eyex - centerx;
         z1 = eyey - centery;
         z2 = eyez - centerz;
-        len = 1 / Math.hypot(z0, z1, z2);
+        len = 1 / Math.sqrt(z0 * z0 + z1 * z1 + z2 * z2);
         z0 *= len;
         z1 *= len;
         z2 *= len;
         x0 = upy * z2 - upz * z1;
         x1 = upz * z0 - upx * z2;
         x2 = upx * z1 - upy * z0;
-        len = Math.hypot(x0, x1, x2);
+        len = Math.sqrt(x0 * x0 + x1 * x1 + x2 * x2);
         if (!len) {
           x0 = 0;
           x1 = 0;
@@ -12502,7 +12582,7 @@ var Plotly = (() => {
         y0 = z1 * x2 - z2 * x1;
         y1 = z2 * x0 - z0 * x2;
         y2 = z0 * x1 - z1 * x0;
-        len = Math.hypot(y0, y1, y2);
+        len = Math.sqrt(y0 * y0 + y1 * y1 + y2 * y2);
         if (!len) {
           y0 = 0;
           y1 = 0;
@@ -12534,9 +12614,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/str.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/str.js
   var require_str = __commonJS({
-    "node_modules/gl-mat4/str.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/str.js"(exports, module) {
       module.exports = str;
       function str(a) {
         return "mat4(" + a[0] + ", " + a[1] + ", " + a[2] + ", " + a[3] + ", " + a[4] + ", " + a[5] + ", " + a[6] + ", " + a[7] + ", " + a[8] + ", " + a[9] + ", " + a[10] + ", " + a[11] + ", " + a[12] + ", " + a[13] + ", " + a[14] + ", " + a[15] + ")";
@@ -12544,9 +12624,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/index.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/index.js
   var require_gl_mat4 = __commonJS({
-    "node_modules/gl-mat4/index.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/index.js"(exports, module) {
       module.exports = {
         create: require_create(),
         clone: require_clone(),
@@ -12604,16 +12684,16 @@ var Plotly = (() => {
         return t;
       };
       exports.dot = function(x, y) {
-        if (!(x.length > 0 && y.length > 0) || x.length !== y.length) return null;
+        if (!(x.length && y.length) || x.length !== y.length) return null;
         var len = x.length;
         var out;
         var i;
-        if (x[0].length > 0) {
+        if (x[0].length) {
           out = new Array(len);
           for (i = 0; i < len; i++) out[i] = exports.dot(x[i], y);
-        } else if (y[0].length > 0) {
+        } else if (y[0].length) {
           var yTranspose = exports.transposeRagged(y);
-          out = Array.from({length: yTranspose.length});
+          out = new Array(yTranspose.length);
           for (i = 0; i < yTranspose.length; i++) out[i] = exports.dot(x, yTranspose[i]);
         } else {
           out = 0;
@@ -12748,7 +12828,7 @@ var Plotly = (() => {
       }
       function removeElement(el) {
         var elParent = el && el.parentNode;
-        if (elParent) el.remove();
+        if (elParent) elParent.removeChild(el);
       }
       function addStyleRule(selector, styleString) {
         addRelatedStyleRule("global", selector, styleString);
@@ -12762,8 +12842,8 @@ var Plotly = (() => {
         if (!style) {
           style = document.createElement("style");
           style.setAttribute("id", id);
-          style.append(document.createTextNode(""));
-          document.head.append(style);
+          style.appendChild(document.createTextNode(""));
+          document.head.appendChild(style);
         }
         var styleSheet = style.sheet;
         if (!styleSheet) {
@@ -12783,7 +12863,7 @@ var Plotly = (() => {
         var activeStyleParts = activeStyle.split(":");
         var inactiveStyleParts = inactiveStyle.split(":");
         var eventAddedAttrName = "data-btn-style-event-added";
-        for (const el of document.querySelectorAll(selector)) {
+        document.querySelectorAll(selector).forEach(function(el) {
           if (!el.getAttribute(eventAddedAttrName)) {
             el.addEventListener("mouseenter", function() {
               var childEl = this.querySelector(childSelector);
@@ -12803,7 +12883,7 @@ var Plotly = (() => {
             });
             el.setAttribute(eventAddedAttrName, true);
           }
-        }
+        });
       }
       function getFullTransformMatrix(element) {
         var allElements = getElementAndAncestors(element);
@@ -12825,13 +12905,13 @@ var Plotly = (() => {
           0,
           1
         ];
-        for (const e of allElements) {
+        allElements.forEach(function(e) {
           var t = getElementTransformMatrix(e);
           if (t) {
             var m = matrix.convertCssMatrix(t);
             out = mat4X4.multiply(out, out, m);
           }
-        }
+        });
         return out;
       }
       function getElementTransformMatrix(element) {
@@ -12993,8 +13073,8 @@ var Plotly = (() => {
           "colorbars"
         ]
       };
-      var traceEditTypeFlags = [...traceOpts.flags].concat(["fullReplot"]);
-      var layoutEditTypeFlags = [...layoutOpts.flags].concat("layoutReplot");
+      var traceEditTypeFlags = traceOpts.flags.slice().concat(["fullReplot"]);
+      var layoutEditTypeFlags = layoutOpts.flags.slice().concat("layoutReplot");
       module.exports = {
         traces: traceOpts,
         layout: layoutOpts,
@@ -13019,8 +13099,8 @@ var Plotly = (() => {
           var editType = attr.editType;
           if (editType && editType !== "none") {
             var editTypeParts = editType.split("+");
-            for (const editTypePart of editTypeParts) {
-              flags[editTypePart] = true;
+            for (var i = 0; i < editTypeParts.length; i++) {
+              flags[editTypeParts[i]] = true;
             }
           }
         },
@@ -13047,7 +13127,7 @@ var Plotly = (() => {
           var out = extendFlat({}, attr);
           out.editType = editTypeOverride;
           if (Array.isArray(attr.items)) {
-            out.items = Array.from({length: attr.items.length});
+            out.items = new Array(attr.items.length);
             for (var i = 0; i < attr.items.length; i++) {
               out.items[i] = overrideOne(attr.items[i], editTypeOverride, "from-root");
             }
@@ -13151,8 +13231,8 @@ var Plotly = (() => {
         var keys = extra.keys || [];
         if (keys.length > 0) {
           var quotedKeys = [];
-          for (const [i, key] of keys.entries()) {
-            quotedKeys[i] = "`" + key + "`";
+          for (var i = 0; i < keys.length; i++) {
+            quotedKeys[i] = "`" + keys[i] + "`";
           }
           descPart = descPart + "Finally, the template string has access to ";
           if (keys.length === 1) {
@@ -13739,15 +13819,16 @@ var Plotly = (() => {
     }
   });
 
-  // temp_stylePlugin:node_modules/maplibre-gl/dist/maplibre-gl.css
+  // temp_stylePlugin:node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css
   var init_maplibre_gl = __esm({
-    "temp_stylePlugin:node_modules/maplibre-gl/dist/maplibre-gl.css"() {}
+    "temp_stylePlugin:node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
+    }
   });
 
-  // stylePlugin:/Users/maximsmol/projects/latchbio/console/web/lib/plotly.js/node_modules/maplibre-gl/dist/maplibre-gl.css
+  // stylePlugin:/Users/aidan/latch/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css
   var maplibre_gl_exports = {};
   var init_maplibre_gl2 = __esm({
-    "stylePlugin:/Users/maximsmol/projects/latchbio/console/web/lib/plotly.js/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
+    "stylePlugin:/Users/aidan/latch/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
       init_maplibre_gl();
     }
   });
@@ -13784,35 +13865,30 @@ var Plotly = (() => {
         } else if (_modules && !Array.isArray(_modules)) {
           _modules = [_modules];
         }
-        for (var newModule of _modules) {
+        for (var i = 0; i < _modules.length; i++) {
+          var newModule = _modules[i];
           if (!newModule) {
             throw new Error("Invalid module was attempted to be registered!");
           }
           switch (newModule.moduleType) {
-            case "trace": {
+            case "trace":
               registerTraceModule(newModule);
               break;
-            }
-            case "transform": {
+            case "transform":
               registerTransformModule(newModule);
               break;
-            }
-            case "component": {
+            case "component":
               registerComponentModule(newModule);
               break;
-            }
-            case "locale": {
+            case "locale":
               registerLocale(newModule);
               break;
-            }
-            case "apiMethod": {
+            case "apiMethod":
               var name = newModule.name;
               exports.apiMethodRegistry[name] = newModule.fn;
               break;
-            }
-            default: {
+            default:
               throw new Error("Invalid module was attempted to be registered!");
-            }
           }
         }
       };
@@ -13840,7 +13916,7 @@ var Plotly = (() => {
       };
       exports.call = function() {
         var name = arguments[0];
-        var args = Array.prototype.slice.call(arguments, 1);
+        var args = [].slice.call(arguments, 1);
         return exports.apiMethodRegistry[name].apply(null, args);
       };
       function registerTraceModule(_module) {
@@ -13855,15 +13931,15 @@ var Plotly = (() => {
           registerSubplot(_module.basePlotModule);
         }
         var categoryObj = {};
-        for (const element of categoriesIn) {
-          categoryObj[element] = true;
-          exports.allCategories[element] = true;
+        for (var i = 0; i < categoriesIn.length; i++) {
+          categoryObj[categoriesIn[i]] = true;
+          exports.allCategories[categoriesIn[i]] = true;
         }
         exports.modules[thisType] = {
           _module,
           categories: categoryObj
         };
-        if (meta && Object.keys(meta).length > 0) {
+        if (meta && Object.keys(meta).length) {
           exports.modules[thisType].meta = meta;
         }
         exports.allTypes.push(thisType);
@@ -13902,7 +13978,7 @@ var Plotly = (() => {
       }
       function registerComponentModule(_module) {
         if (typeof _module.name !== "string") {
-          throw new TypeError("Component module *name* must be a string.");
+          throw new Error("Component module *name* must be a string.");
         }
         var name = _module.name;
         exports.componentsRegistry[name] = _module;
@@ -13924,7 +14000,7 @@ var Plotly = (() => {
       }
       function registerTransformModule(_module) {
         if (typeof _module.name !== "string") {
-          throw new TypeError("Transform module *name* must be a string.");
+          throw new Error("Transform module *name* must be a string.");
         }
         var prefix = "Transform module " + _module.name;
         var hasTransform = typeof _module.transform === "function";
@@ -13973,8 +14049,8 @@ var Plotly = (() => {
         if (_module.layoutAttributes) {
           var arrayAttrRegexps = _module.layoutAttributes._arrayAttrRegexps;
           if (arrayAttrRegexps) {
-            for (const arrayAttrRegexp of arrayAttrRegexps) {
-              pushUnique(exports.layoutArrayRegexes, arrayAttrRegexp);
+            for (var i = 0; i < arrayAttrRegexps.length; i++) {
+              pushUnique(exports.layoutArrayRegexes, arrayAttrRegexps[i]);
             }
           }
         }
@@ -14072,10 +14148,10 @@ var Plotly = (() => {
         var isWorld = isWorldCalendar(calendar);
         var s0 = s.charAt(0);
         if (isWorld && (s0 === "G" || s0 === "g")) {
-          s = s.slice(1);
+          s = s.substr(1);
           calendar = "";
         }
-        var isChinese = isWorld && calendar.slice(0, 7) === "chinese";
+        var isChinese = isWorld && calendar.substr(0, 7) === "chinese";
         var match = s.match(isChinese ? DATETIME_REGEXP_CN : DATETIME_REGEXP);
         if (!match) return BADNUM;
         var y = match[1];
@@ -14092,12 +14168,12 @@ var Plotly = (() => {
             var calInstance = Registry.getComponentMethod("calendars", "getCal")(calendar);
             if (isChinese) {
               var isIntercalary = m.charAt(m.length - 1) === "i";
-              m = Number.parseInt(m, 10);
+              m = parseInt(m, 10);
               cDate = calInstance.newDate(y, calInstance.toMonthIndex(y, m, isIntercalary), d);
             } else {
               cDate = calInstance.newDate(y, Number(m), d);
             }
-          } catch {
+          } catch (e) {
             return BADNUM;
           }
           if (!cDate) return BADNUM;
@@ -14119,7 +14195,7 @@ var Plotly = (() => {
         return exports.dateTime2ms(s, calendar) !== BADNUM;
       };
       function lpad(val, digits) {
-        return String(val + Math.pow(10, digits)).slice(1);
+        return String(val + Math.pow(10, digits)).substr(1);
       }
       var NINETYDAYS = 90 * ONEDAY;
       var THREEHOURS = 3 * ONEHOUR;
@@ -14135,11 +14211,11 @@ var Plotly = (() => {
           var timeMs = Math.floor(mod(ms, ONEDAY));
           try {
             dateStr = Registry.getComponentMethod("calendars", "getCal")(calendar).fromJD(dateJD).formatDate("yyyy-mm-dd");
-          } catch {
+          } catch (e) {
             dateStr = utcFormat("G%Y-%m-%d")(new Date(msRounded));
           }
           if (dateStr.charAt(0) === "-") {
-            while (dateStr.length < 11) dateStr = "-0" + dateStr.slice(1);
+            while (dateStr.length < 11) dateStr = "-0" + dateStr.substr(1);
           } else {
             while (dateStr.length < 10) dateStr = "0" + dateStr;
           }
@@ -14209,19 +14285,19 @@ var Plotly = (() => {
         4: "2"
       };
       function modDateFormat(fmt, x, formatter, calendar) {
-        fmt = fmt.replaceAll(fracMatch, function(match) {
+        fmt = fmt.replace(fracMatch, function(match) {
           var digits = Math.min(+match.charAt(1) || 6, 6);
-          var fracSecs = (x / 1e3 % 1 + 2).toFixed(digits).slice(2).replace(/0+$/, "") || "0";
+          var fracSecs = (x / 1e3 % 1 + 2).toFixed(digits).substr(2).replace(/0+$/, "") || "0";
           return fracSecs;
         });
         var d = new Date(Math.floor(x + 0.05));
-        fmt = fmt.replaceAll(halfYearMatch, function() {
+        fmt = fmt.replace(halfYearMatch, function() {
           return quarterToHalfYear[formatter("%q")(d)];
         });
         if (isWorldCalendar(calendar)) {
           try {
             fmt = Registry.getComponentMethod("calendars", "worldCalFmt")(fmt, x, calendar);
-          } catch {
+          } catch (e) {
             return "Invalid";
           }
         }
@@ -14234,9 +14310,9 @@ var Plotly = (() => {
         if (tr !== "M") {
           if (!isNumeric(tr)) tr = 0;
           var sec = Math.min(mod(x / ONESEC, 60), MAXSECONDS[tr]);
-          var secStr = (100 + sec).toFixed(tr).slice(1);
+          var secStr = (100 + sec).toFixed(tr).substr(1);
           if (tr > 0) {
-            secStr = secStr.replace(/0+$/, "").replace(/\.$/, "");
+            secStr = secStr.replace(/0+$/, "").replace(/[\.]$/, "");
           }
           timeStr += ":" + secStr;
         }
@@ -14268,7 +14344,7 @@ var Plotly = (() => {
             if (dMonth % 12) calInstance.add(cDate, dMonth, "m");
             else calInstance.add(cDate, dMonth / 12, "y");
             return (cDate.toJD() - EPOCHJD) * ONEDAY + timeMs;
-          } catch {
+          } catch (e) {
             Loggers.error("invalid ms " + ms + " in calendar " + calendar);
           }
         }
@@ -14283,8 +14359,8 @@ var Plotly = (() => {
         var d;
         var di;
         var calInstance = isWorldCalendar(calendar) && Registry.getComponentMethod("calendars", "getCal")(calendar);
-        for (const datum of data) {
-          di = datum;
+        for (var i = 0; i < data.length; i++) {
+          di = data[i];
           if (!isNumeric(di)) {
             blankCount++;
             continue;
@@ -14297,7 +14373,8 @@ var Plotly = (() => {
                 if (d.month() === 1) exactYears++;
                 else exactMonths++;
               } else exactDays++;
-            } catch {}
+            } catch (e) {
+            }
           } else {
             d = new Date(di);
             if (d.getUTCDate() === 1) {
@@ -14380,7 +14457,7 @@ var Plotly = (() => {
         return b - a;
       };
       exports.distinctVals = function(valsIn) {
-        var vals = [...valsIn];
+        var vals = valsIn.slice();
         vals.sort(exports.sorterAsc);
         var last;
         for (last = vals.length - 1; last > -1; last--) {
@@ -14432,10 +14509,10 @@ var Plotly = (() => {
       };
       exports.findIndexOfMin = function(arr, fn) {
         fn = fn || identity;
-        var min = Number.POSITIVE_INFINITY;
+        var min = Infinity;
         var ind;
-        for (const [i, element] of arr.entries()) {
-          var v = fn(element);
+        for (var i = 0; i < arr.length; i++) {
+          var v = fn(arr[i]);
           if (v < min) {
             min = v;
             ind = i;
@@ -14509,14 +14586,14 @@ var Plotly = (() => {
         return Math.sqrt(exports.variance(data, len, mean));
       };
       exports.median = function(data) {
-        var b = [...data].sort();
+        var b = data.slice().sort();
         return exports.interp(b, 0.5);
       };
       exports.interp = function(arr, n) {
         if (!isNumeric(n)) throw "n should be a finite number";
         n = n * arr.length - 0.5;
         if (n < 0) return arr[0];
-        if (n > arr.length - 1) return arr.at(-1);
+        if (n > arr.length - 1) return arr[arr.length - 1];
         var frac = n % 1;
         return frac * arr[Math.ceil(n)] + (1 - frac) * arr[Math.floor(n)];
       };
@@ -14762,9 +14839,9 @@ var Plotly = (() => {
           var pt = path.getPointAtLength(len);
           if (len === 0) pt0 = pt;
           else if (len === pTotal) ptTotal = pt;
-          var dx = pt.x < left ? left - pt.x : (pt.x > right ? pt.x - right : 0);
-          var dy = pt.y < top ? top - pt.y : (pt.y > bottom ? pt.y - bottom : 0);
-          return Math.hypot(dx, dy);
+          var dx = pt.x < left ? left - pt.x : pt.x > right ? pt.x - right : 0;
+          var dy = pt.y < top ? top - pt.y : pt.y > bottom ? pt.y - bottom : 0;
+          return Math.sqrt(dx * dx + dy * dy);
         }
         var distToPlot = getDistToPlot(pMin);
         while (distToPlot) {
@@ -14894,9 +14971,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/is-mobile/index.js
+  // node_modules/.pnpm/is-mobile@4.0.0/node_modules/is-mobile/index.js
   var require_is_mobile = __commonJS({
-    "node_modules/is-mobile/index.js"(exports, module) {
+    "node_modules/.pnpm/is-mobile@4.0.0/node_modules/is-mobile/index.js"(exports, module) {
       "use strict";
       module.exports = isMobile;
       module.exports.isMobile = isMobile;
@@ -14913,7 +14990,7 @@ var Plotly = (() => {
         }
         if (typeof ua !== "string") return false;
         let result = mobileRE.test(ua) && !notMobileRE.test(ua) || !!opts.tablet && tabletRE.test(ua);
-        if (!result && opts.tablet && opts.featureDetect && navigator && navigator.maxTouchPoints > 1 && ua.includes("Macintosh") && ua.includes("Safari")) {
+        if (!result && opts.tablet && opts.featureDetect && navigator && navigator.maxTouchPoints > 1 && ua.indexOf("Macintosh") !== -1 && ua.indexOf("Safari") !== -1) {
           result = true;
         }
         return result;
@@ -14944,11 +15021,11 @@ var Plotly = (() => {
           var allParts = ua.split(" ");
           for (var i = 1; i < allParts.length; i++) {
             var part = allParts[i];
-            if (part.includes("Safari")) {
+            if (part.indexOf("Safari") !== -1) {
               for (var k = i - 1; k > -1; k--) {
                 var prevPart = allParts[k];
-                if (prevPart.slice(0, 8) === "Version/") {
-                  var v = prevPart.slice(8).split(".")[0];
+                if (prevPart.substr(0, 8) === "Version/") {
+                  var v = prevPart.substr(8).split(".")[0];
                   if (isNumeric(v)) v = +v;
                   if (v >= 13) return true;
                 }
@@ -14977,7 +15054,7 @@ var Plotly = (() => {
       "use strict";
       var d3 = require_d3();
       module.exports = function makeTraceGroups(traceLayer, cdModule, cls) {
-        var traces = traceLayer.selectAll("g." + cls.replaceAll(/\s/g, ".")).data(cdModule, function(cd) {
+        var traces = traceLayer.selectAll("g." + cls.replace(/\s/g, ".")).data(cdModule, function(cd) {
           return cd[0].trace.uid;
         });
         traces.exit().remove();
@@ -15026,7 +15103,8 @@ var Plotly = (() => {
         var seen = {};
         var out = [];
         var j = 0;
-        for (var item of array) {
+        for (var i = 0; i < array.length; i++) {
+          var item = array[i];
           if (seen[item] !== 1) {
             seen[item] = 1;
             out[j++] = item;
@@ -15044,7 +15122,8 @@ var Plotly = (() => {
       module.exports = function filterVisible(container) {
         var filterFn = isCalcData(container) ? calcDataFilter : baseFilter;
         var out = [];
-        for (var item of container) {
+        for (var i = 0; i < container.length; i++) {
+          var item = container[i];
           if (filterFn(item)) out.push(item);
         }
         return out;
@@ -15075,8 +15154,8 @@ var Plotly = (() => {
           var lenDt = String(delta).length;
           var lenX0 = String(x).length;
           if (lenX1 >= lenX0 + lenDt) {
-            var s = Number.parseFloat(newX).toPrecision(12);
-            if (!s.includes("e+")) newX = +s;
+            var s = parseFloat(newX).toPrecision(12);
+            if (s.indexOf("e+") === -1) newX = +s;
           }
         }
         return newX;
@@ -15090,10 +15169,10 @@ var Plotly = (() => {
       "use strict";
       var isNumeric = require_fast_isnumeric();
       var BADNUM = require_numerical().BADNUM;
-      var JUNK = /^[\s"#$%',]+|[ ,]|[\s"#$%',]+$/g;
+      var JUNK = /^['"%,$#\s']+|[, ]|['"%,$#\s']+$/g;
       module.exports = function cleanNumber(v) {
         if (typeof v === "string") {
-          v = v.replaceAll(JUNK, "");
+          v = v.replace(JUNK, "");
         }
         if (isNumeric(v)) return Number(v);
         return BADNUM;
@@ -15115,11 +15194,11 @@ var Plotly = (() => {
       var BADNUM = numConstants.BADNUM;
       var lib = module.exports = {};
       lib.adjustFormat = function adjustFormat(formatStr) {
-        if (!formatStr || /^\d\.\df/.test(formatStr) || /\.\d%/.test(formatStr)) return formatStr;
+        if (!formatStr || /^\d[.]\df/.test(formatStr) || /[.]\d%/.test(formatStr)) return formatStr;
         if (formatStr === "0.f") return "~f";
         if (/^\d%/.test(formatStr)) return "~%";
         if (/^\ds/.test(formatStr)) return "~s";
-        if (!/^[$,.0~]/.test(formatStr) && /[&fps]/.test(formatStr)) return "~" + formatStr;
+        if (!/^[~,.0$]/.test(formatStr) && /[&fps]/.test(formatStr)) return "~" + formatStr;
         return formatStr;
       };
       var seenBadFormats = {};
@@ -15130,12 +15209,14 @@ var Plotly = (() => {
           lib.warn('encountered bad format: "' + key + '"');
         }
       };
-      lib.noFormat = String;
+      lib.noFormat = function(value) {
+        return String(value);
+      };
       lib.numberFormat = function(formatStr) {
         var fn;
         try {
           fn = d3Format(lib.adjustFormat(formatStr));
-        } catch {
+        } catch (e) {
           lib.warnBadFormat(formatStr);
           return lib.noFormat;
         }
@@ -15296,7 +15377,8 @@ var Plotly = (() => {
       lib.swapAttrs = function(cont, attrList, part1, part2) {
         if (!part1) part1 = "x";
         if (!part2) part2 = "y";
-        for (var attr of attrList) {
+        for (var i = 0; i < attrList.length; i++) {
+          var attr = attrList[i];
           var xp = lib.nestedProperty(cont, attr.replace("?", part1));
           var yp = lib.nestedProperty(cont, attr.replace("?", part2));
           var temp = xp.get();
@@ -15305,7 +15387,7 @@ var Plotly = (() => {
         }
       };
       lib.raiseToTop = function raiseToTop(elem) {
-        elem.parentNode.append(elem);
+        elem.parentNode.appendChild(elem);
       };
       lib.cancelTransition = function(selection) {
         return selection.transition().duration(0);
@@ -15331,7 +15413,7 @@ var Plotly = (() => {
         var digits = Math.log(Math.pow(2, bits)) / Math.log(base);
         var res = "";
         var i, b, x;
-        for (i = 2; digits === Number.POSITIVE_INFINITY; i *= 2) {
+        for (i = 2; digits === Infinity; i *= 2) {
           digits = Math.log(Math.pow(2, bits / i)) / Math.log(base) * i;
         }
         var rem = digits - Math.floor(digits);
@@ -15344,8 +15426,8 @@ var Plotly = (() => {
           x = Math.floor(Math.random() * b).toString(base);
           res = x + res;
         }
-        var parsed = Number.parseInt(res, base);
-        if (existing && existing[res] || parsed !== Number.POSITIVE_INFINITY && parsed >= Math.pow(2, bits)) {
+        var parsed = parseInt(res, base);
+        if (existing && existing[res] || parsed !== Infinity && parsed >= Math.pow(2, bits)) {
           if (_recursion > 10) {
             lib.warn("randstr failed uniqueness");
             return res;
@@ -15400,7 +15482,7 @@ var Plotly = (() => {
         function continueAsync() {
           return lib.syncOrAsync(sequence, arg, finalStep);
         }
-        while (sequence.length > 0) {
+        while (sequence.length) {
           fni = sequence.splice(0, 1)[0];
           ret = fni(arg);
           if (ret && ret.then) {
@@ -15410,7 +15492,7 @@ var Plotly = (() => {
         return finalStep && finalStep(arg);
       };
       lib.stripTrailingSlash = function(str) {
-        if (str.slice(-1) === "/") return str.slice(0, Math.max(0, str.length - 1));
+        if (str.substr(-1) === "/") return str.substr(0, str.length - 1);
         return str;
       };
       lib.noneOrAll = function(containerIn, containerOut, attrList) {
@@ -15443,14 +15525,14 @@ var Plotly = (() => {
       lib.mergeArrayCastPositive = function(traceAttr, cd, cdAttr) {
         return lib.mergeArray(traceAttr, cd, cdAttr, function(v) {
           var w = +v;
-          return !isFinite(w) ? 0 : (w > 0 ? w : 0);
+          return !isFinite(w) ? 0 : w > 0 ? w : 0;
         });
       };
       lib.fillArray = function(traceAttr, cd, cdAttr, fn) {
         fn = fn || lib.identity;
         if (lib.isArrayOrTypedArray(traceAttr)) {
-          for (const [i, element] of cd.entries()) {
-            element[cdAttr] = fn(traceAttr[i]);
+          for (var i = 0; i < cd.length; i++) {
+            cd[i][cdAttr] = fn(traceAttr[i]);
           }
         }
       };
@@ -15476,8 +15558,8 @@ var Plotly = (() => {
         var ptIndex2ptNumber = {};
         for (var k in indexToPoints) {
           var pts = indexToPoints[k];
-          for (const pt of pts) {
-            ptIndex2ptNumber[pt] = +k;
+          for (var j = 0; j < pts.length; j++) {
+            ptIndex2ptNumber[pts[j]] = +k;
           }
         }
         return ptIndex2ptNumber;
@@ -15492,7 +15574,8 @@ var Plotly = (() => {
         function isCdIndexValid(v) {
           return v !== void 0 && v < calcTrace.length;
         }
-        for (var ptIndex of selectedpoints) {
+        for (var i = 0; i < selectedpoints.length; i++) {
+          var ptIndex = selectedpoints[i];
           if (lib.isIndex(ptIndex) || lib.isArrayOrTypedArray(ptIndex) && lib.isIndex(ptIndex[0]) && lib.isIndex(ptIndex[1])) {
             var ptNumber = ptIndex2ptNumber ? ptIndex2ptNumber[ptIndex] : ptIndex;
             var cdIndex = ptNumber2cdIndex ? ptNumber2cdIndex[ptNumber] : ptNumber;
@@ -15508,7 +15591,8 @@ var Plotly = (() => {
         if (indexToPoints) {
           var ptIndex2ptNumber = makePtIndex2PtNumber(indexToPoints);
           var out = [];
-          for (var ptIndex of selectedpoints) {
+          for (var i = 0; i < selectedpoints.length; i++) {
+            var ptIndex = selectedpoints[i];
             if (lib.isIndex(ptIndex)) {
               var ptNumber = ptIndex2ptNumber[ptIndex];
               if (lib.isIndex(ptNumber)) {
@@ -15544,7 +15628,7 @@ var Plotly = (() => {
           else if (k === "module") objOut[k] = v;
           else if (Array.isArray(v)) {
             if (k === "colorscale" || arrayLen === -1) {
-              objOut[k] = [...v];
+              objOut[k] = v.slice();
             } else {
               objOut[k] = v.slice(0, arrayLen);
             }
@@ -15569,15 +15653,15 @@ var Plotly = (() => {
       }
       lib.minExtend = minExtend;
       lib.titleCase = function(s) {
-        return s.charAt(0).toUpperCase() + s.slice(1);
+        return s.charAt(0).toUpperCase() + s.substr(1);
       };
       lib.containsAny = function(s, fragments) {
-        for (const fragment of fragments) {
-          if (s.indexOf(fragment) !== -1) return true;
+        for (var i = 0; i < fragments.length; i++) {
+          if (s.indexOf(fragments[i]) !== -1) return true;
         }
         return false;
       };
-      var IS_SAFARI_REGEX = /Version\/[\d.]+.*Safari/;
+      var IS_SAFARI_REGEX = /Version\/[\d\.]+.*Safari/;
       lib.isSafari = function() {
         return IS_SAFARI_REGEX.test(window.navigator.userAgent);
       };
@@ -15589,7 +15673,7 @@ var Plotly = (() => {
       lib.getFirefoxVersion = function() {
         var match = FIREFOX_VERSION_REGEX.exec(window.navigator.userAgent);
         if (match && match.length === 2) {
-          var versionInt = Number.parseInt(match[1]);
+          var versionInt = parseInt(match[1]);
           if (!isNaN(versionInt)) {
             return versionInt;
           }
@@ -15621,7 +15705,7 @@ var Plotly = (() => {
         for (var i = 0; i < keys.length; i++) {
           var key = keys[i];
           var el = null;
-          var parts = keys[i].match(/(.*)\[(\d+)]/);
+          var parts = keys[i].match(/(.*)\[([0-9]+)\]/);
           if (parts) {
             key = parts[1];
             el = parts[2];
@@ -15643,8 +15727,8 @@ var Plotly = (() => {
         }
         return obj;
       };
-      var dottedPropertyRegex = /^([^.[]+)\.(.+)?/;
-      var indexedPropertyRegex = /^([^.]+)\[(\d+)](\.)?(.+)?/;
+      var dottedPropertyRegex = /^([^\[\.]+)\.(.+)?/;
+      var indexedPropertyRegex = /^([^\.]+)\[([0-9]+)\](\.)?(.+)?/;
       function notValid(prop) {
         return prop.slice(0, 2) === "__";
       }
@@ -15663,7 +15747,7 @@ var Plotly = (() => {
                 datum = data[key];
                 prop = match[1];
                 if (notValid(prop)) continue;
-                idx = Number.parseInt(match[2]);
+                idx = parseInt(match[2]);
                 delete data[key];
                 data[prop] = data[prop] || [];
                 if (match[3] === ".") {
@@ -15704,7 +15788,7 @@ var Plotly = (() => {
         }
         return x1 + x2;
       };
-      lib.TEMPLATE_STRING_REGEX = /%{([^\s%:{}]*)([:|][^}]*)?}/g;
+      lib.TEMPLATE_STRING_REGEX = /%{([^\s%{}:]*)([:|\|][^}]*)?}/g;
       var SIMPLE_PROPERTY_REGEX = /^\w*$/;
       lib.templateString = function(string, obj) {
         var getterCache = {};
@@ -15735,7 +15819,7 @@ var Plotly = (() => {
       lib.texttemplateString = function() {
         return templateFormatString.apply(texttemplateWarnings, arguments);
       };
-      var MULT_DIV_REGEX = /^(\S+)([*/])(-?\d+(\.\d+)?)$/;
+      var MULT_DIV_REGEX = /^(\S+)([\*\/])(-?\d+(\.\d+)?)$/;
       function multDivParser(inputStr) {
         var match = inputStr.match(MULT_DIV_REGEX);
         if (match) return { key: match[1], op: match[2], number: Number(match[3]) };
@@ -15750,7 +15834,7 @@ var Plotly = (() => {
       lib.texttemplateStringForShapes = function() {
         return templateFormatString.apply(texttemplateWarningsForShapes, arguments);
       };
-      var TEMPLATE_STRING_FORMAT_SEPARATOR = /^[:|]/;
+      var TEMPLATE_STRING_FORMAT_SEPARATOR = /^[:|\|]/;
       function templateFormatString(string, labels, d3locale) {
         var opts = this;
         var args = arguments;
@@ -15763,8 +15847,8 @@ var Plotly = (() => {
           var isOtherSpace = rawKey === "xother_" || rawKey === "yother_";
           var hasOther = isOther || isSpaceOther || isOtherSpace || isSpaceOtherSpace;
           var key = rawKey;
-          if (isSpaceOther || isSpaceOtherSpace) key = key.slice(1);
-          if (isOtherSpace || isSpaceOtherSpace) key = key.slice(0, Math.max(0, key.length - 1));
+          if (isSpaceOther || isSpaceOtherSpace) key = key.substring(1);
+          if (isOtherSpace || isSpaceOtherSpace) key = key.substring(0, key.length - 1);
           var parsedOp = null;
           var parsedNumber = null;
           if (opts.parseMultDiv) {
@@ -15860,9 +15944,9 @@ var Plotly = (() => {
       };
       lib.pseudoRandom = function() {
         var lastVal = randSeed;
-        randSeed = (69_069 * randSeed + 1) % 4_294_967_296;
-        if (Math.abs(randSeed - lastVal) < 429_496_729) return lib.pseudoRandom();
-        return randSeed / 4_294_967_296;
+        randSeed = (69069 * randSeed + 1) % 4294967296;
+        if (Math.abs(randSeed - lastVal) < 429496729) return lib.pseudoRandom();
+        return randSeed / 4294967296;
       };
       lib.fillText = function(calcPt, trace, contOut) {
         var fill = Array.isArray(contOut) ? function(v) {
@@ -15882,7 +15966,7 @@ var Plotly = (() => {
         n = n || 0;
         var str = (Math.round(100 * ratio * Math.pow(10, n)) * Math.pow(0.1, n)).toFixed(n) + "%";
         for (var i = 0; i < n; i++) {
-          if (str.includes(".")) {
+          if (str.indexOf(".") !== -1) {
             str = str.replace("0%", "%");
             str = str.replace(".%", "%");
           }
@@ -16017,7 +16101,7 @@ var Plotly = (() => {
         "Y .notifier-close:hover": "color:#444;text-decoration:none;cursor:pointer;"
       };
       for (selector in rules) {
-        fullSelector = selector.replace(/^,/, " ,").replaceAll('X', ".js-plotly-plot .plotly").replaceAll('Y', ".plotly-notifier");
+        fullSelector = selector.replace(/^,/, " ,").replace(/X/g, ".js-plotly-plot .plotly").replace(/Y/g, ".plotly-notifier");
         Lib.addStyleRule(fullSelector, rules[selector]);
       }
       var fullSelector;
@@ -16025,16 +16109,16 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/is-browser/client.js
+  // node_modules/.pnpm/is-browser@2.1.0/node_modules/is-browser/client.js
   var require_client = __commonJS({
-    "node_modules/is-browser/client.js"(exports, module) {
+    "node_modules/.pnpm/is-browser@2.1.0/node_modules/is-browser/client.js"(exports, module) {
       module.exports = true;
     }
   });
 
-  // node_modules/has-hover/index.js
+  // node_modules/.pnpm/has-hover@1.0.1/node_modules/has-hover/index.js
   var require_has_hover = __commonJS({
-    "node_modules/has-hover/index.js"(exports, module) {
+    "node_modules/.pnpm/has-hover@1.0.1/node_modules/has-hover/index.js"(exports, module) {
       "use strict";
       var isBrowser = require_client();
       var hasHover;
@@ -16047,9 +16131,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/events/events.js
+  // ../../node_modules/.pnpm/events@3.3.0/node_modules/events/events.js
   var require_events = __commonJS({
-    "node_modules/events/events.js"(exports, module) {
+    "../../node_modules/.pnpm/events@3.3.0/node_modules/events/events.js"(exports, module) {
       "use strict";
       var R = typeof Reflect === "object" ? Reflect : null;
       var ReflectApply = R && typeof R.apply === "function" ? R.apply : function ReflectApply2(target, receiver, args) {
@@ -16365,7 +16449,7 @@ var Plotly = (() => {
         list.pop();
       }
       function unwrapListeners(arr) {
-        var ret = Array.from({length: arr.length});
+        var ret = new Array(arr.length);
         for (var i = 0; i < ret.length; ++i) {
           ret[i] = arr[i].listener || arr[i];
         }
@@ -16381,9 +16465,9 @@ var Plotly = (() => {
             if (typeof emitter.removeListener === "function") {
               emitter.removeListener("error", errorListener);
             }
-            resolve(Array.prototype.slice.call(arguments));
+            resolve([].slice.call(arguments));
           }
-          
+          ;
           eventTargetAgnosticAddListener(emitter, name, resolver, { once: true });
           if (name !== "error") {
             addErrorHandlerIfEventEmitter(emitter, errorListener, { once: true });
@@ -16501,8 +16585,8 @@ var Plotly = (() => {
       function copyArgArray(gd, args) {
         var copy = [];
         var arg;
-        for (const [i, arg_] of args.entries()) {
-          arg = arg_;
+        for (var i = 0; i < args.length; i++) {
+          arg = args[i];
           if (arg === gd) copy[i] = arg;
           else if (typeof arg === "object") {
             copy[i] = Array.isArray(arg) ? Lib.extendDeep([], arg) : Lib.extendDeepAll({}, arg);
@@ -16641,13 +16725,13 @@ var Plotly = (() => {
       exports.UNDERSCORE_ATTRS = UNDERSCORE_ATTRS;
       exports.get = function() {
         var traces = {};
-        for (const type of Registry.allTypes) {
+        Registry.allTypes.forEach(function(type) {
           traces[type] = getTraceAttributes(type);
-        }
+        });
         return {
           defs: {
             valObjects: valObjectMeta,
-            metaKeys: [...UNDERSCORE_ATTRS, "description", "role", "editType", "impliedEdits"],
+            metaKeys: UNDERSCORE_ATTRS.concat(["description", "role", "editType", "impliedEdits"]),
             editType: {
               traces: editTypes.traces,
               layout: editTypes.layout
@@ -16664,16 +16748,16 @@ var Plotly = (() => {
       exports.crawl = function(attrs, callback, specifiedLevel, attrString) {
         var level = specifiedLevel || 0;
         attrString = attrString || "";
-        for (const attrName of Object.keys(attrs)) {
+        Object.keys(attrs).forEach(function(attrName) {
           var attr = attrs[attrName];
-          if (UNDERSCORE_ATTRS.indexOf(attrName) !== -1) continue;
+          if (UNDERSCORE_ATTRS.indexOf(attrName) !== -1) return;
           var fullAttrString = (attrString ? attrString + "." : "") + attrName;
           callback(attr, attrName, attrs, level, fullAttrString);
-          if (exports.isValObject(attr)) continue;
+          if (exports.isValObject(attr)) return;
           if (isPlainObject(attr) && attrName !== "impliedEdits") {
             exports.crawl(attr, callback, level + 1, fullAttrString);
           }
-        }
+        });
       };
       exports.isValObject = function(obj) {
         return obj && obj.valType !== void 0;
@@ -16684,8 +16768,8 @@ var Plotly = (() => {
         var isArrayStack = [];
         var baseContainer, baseAttrName;
         function callback(attr, attrName, attrs, level) {
-          stack = [...stack.slice(0, level), attrName];
-          isArrayStack = [...isArrayStack.slice(0, level), attr && attr._isLinkedToArray];
+          stack = stack.slice(0, level).concat([attrName]);
+          isArrayStack = isArrayStack.slice(0, level).concat([attr && attr._isLinkedToArray]);
           var splittableAttr = attr && (attr.valType === "data_array" || attr.arrayOk === true) && !(stack[level - 1] === "colorbar" && (attrName === "ticktext" || attrName === "tickvals"));
           if (!splittableAttr) return;
           crawlIntoTrace(baseContainer, 0, "");
@@ -16700,9 +16784,9 @@ var Plotly = (() => {
           } else {
             if (isArrayStack[i]) {
               if (Array.isArray(item)) {
-                for (const [j, element] of item.entries()) {
-                  if (isPlainObject(element)) {
-                    crawlIntoTrace(element, i + 1, newAstrPartial + "[" + j + "].");
+                for (var j = 0; j < item.length; j++) {
+                  if (isPlainObject(item[j])) {
+                    crawlIntoTrace(item[j], i + 1, newAstrPartial + "[" + j + "].");
                   }
                 }
               }
@@ -17007,7 +17091,7 @@ var Plotly = (() => {
         var traceType, typeTemplates;
         for (traceType in dataTemplate) {
           typeTemplates = dataTemplate[traceType];
-          if (Array.isArray(typeTemplates) && typeTemplates.length > 0) {
+          if (Array.isArray(typeTemplates) && typeTemplates.length) {
             traceCounts[traceType] = 0;
           }
         }
@@ -17019,7 +17103,8 @@ var Plotly = (() => {
             var typei = traceCounts[traceType] % typeTemplates.length;
             traceCounts[traceType]++;
             traceOut._template = typeTemplates[typei];
-          } else {}
+          } else {
+          }
           return traceOut;
         }
         return {
@@ -17038,7 +17123,7 @@ var Plotly = (() => {
         var template = container._template;
         var defaultsTemplate = template && template[arrayDefaultKey(name)];
         var templateItems = template && template[name];
-        if (!Array.isArray(templateItems) || templateItems.length === 0) {
+        if (!Array.isArray(templateItems) || !templateItems.length) {
           templateItems = [];
         }
         var usedNames = {};
@@ -17049,7 +17134,8 @@ var Plotly = (() => {
             out._template = defaultsTemplate;
             return out;
           }
-          for (var templateItem of templateItems) {
+          for (var i = 0; i < templateItems.length; i++) {
+            var templateItem = templateItems[i];
             if (templateItem.name === templateItemName) {
               usedNames[templateItemName] = 1;
               out._template = templateItem;
@@ -17062,7 +17148,8 @@ var Plotly = (() => {
         }
         function defaultItems() {
           var out = [];
-          for (var templateItem of templateItems) {
+          for (var i = 0; i < templateItems.length; i++) {
+            var templateItem = templateItems[i];
             var name2 = templateItem.name;
             if (validItemName(name2) && !usedNames[name2]) {
               var outi = {
@@ -17090,7 +17177,7 @@ var Plotly = (() => {
         if (name.charAt(lastChar) !== "s") {
           Lib.warn("bad argument to arrayDefaultKey: " + name);
         }
-        return name.slice(0, Math.max(0, name.length - 1)) + "defaults";
+        return name.substr(0, name.length - 1) + "defaults";
       }
       exports.arrayDefaultKey = arrayDefaultKey;
       exports.arrayEditor = function(parentIn, containerStr, itemOut) {
@@ -17157,10 +17244,10 @@ var Plotly = (() => {
         // pattern matching axis ids and names
         // note that this is more permissive than counterRegex, as
         // id2name, name2id, and cleanId accept "x1" etc
-        AX_ID_PATTERN: /^[x-z]\d*( domain)?$/,
-        AX_NAME_PATTERN: /^[x-z]axis\d*$/,
+        AX_ID_PATTERN: /^[xyz][0-9]*( domain)?$/,
+        AX_NAME_PATTERN: /^[xyz]axis[0-9]*$/,
         // and for 2D subplots
-        SUBPLOT_PATTERN: /^x(\d*)y(\d*)$/,
+        SUBPLOT_PATTERN: /^x([0-9]*)y([0-9]*)$/,
         HOUR_PATTERN: "hour",
         WEEKDAY_PATTERN: "day of week",
         // pixels to move mouse before you stop clamping to starting point
@@ -17215,13 +17302,13 @@ var Plotly = (() => {
       var constants = require_constants2();
       exports.id2name = function id2name(id) {
         if (typeof id !== "string" || !id.match(constants.AX_ID_PATTERN)) return;
-        var axNum = id.split(" ")[0].slice(1);
+        var axNum = id.split(" ")[0].substr(1);
         if (axNum === "1") axNum = "";
         return id.charAt(0) + "axis" + axNum;
       };
       exports.name2id = function name2id(name) {
         if (!name.match(constants.AX_NAME_PATTERN)) return;
-        var axNum = name.slice(5);
+        var axNum = name.substr(5);
         if (axNum === "1") axNum = "";
         return name.charAt(0) + axNum;
       };
@@ -17230,7 +17317,7 @@ var Plotly = (() => {
         if (typeof id !== "string" || !id.match(constants.AX_ID_PATTERN)) return;
         if (axLetter && id.charAt(0) !== axLetter) return;
         if (domainTest && !domainId) return;
-        var axNum = id.split(" ")[0].slice(1).replace(/^0+/, "");
+        var axNum = id.split(" ")[0].substr(1).replace(/^0+/, "");
         if (axNum === "1") axNum = "";
         return id.charAt(0) + axNum + (domainTest && domainId ? " domain" : "");
       };
@@ -17238,11 +17325,11 @@ var Plotly = (() => {
         var fullLayout = gd._fullLayout;
         if (!fullLayout) return [];
         var idList = exports.listIds(gd, axLetter);
-        var out = Array.from({length: idList.length});
+        var out = new Array(idList.length);
         var i;
         for (i = 0; i < idList.length; i++) {
           var idi = idList[i];
-          out[i] = fullLayout[idi.charAt(0) + "axis" + idi.slice(1)];
+          out[i] = fullLayout[idi.charAt(0) + "axis" + idi.substr(1)];
         }
         if (!only2d) {
           var sceneIds3D = fullLayout._subplots.gl3d || [];
@@ -17264,8 +17351,8 @@ var Plotly = (() => {
       exports.getFromId = function(gd, id, type) {
         var fullLayout = gd._fullLayout;
         id = id === void 0 || typeof id !== "string" ? id : id.replace(" domain", "");
-        if (type === "x") id = id.replace(/y\d*/, "");
-        else if (type === "y") id = id.replace(/x\d*/, "");
+        if (type === "x") id = id.replace(/y[0-9]*/, "");
+        else if (type === "y") id = id.replace(/x[0-9]*/, "");
         return fullLayout[exports.id2name(id)];
       };
       exports.getFromTrace = function(gd, fullTrace, type) {
@@ -17273,7 +17360,7 @@ var Plotly = (() => {
         var ax = null;
         if (Registry.traceIs(fullTrace, "gl3d")) {
           var scene = fullTrace.scene;
-          if (scene.slice(0, 5) === "scene") {
+          if (scene.substr(0, 5) === "scene") {
             ax = fullLayout[scene][type + "axis"];
           }
         } else {
@@ -17285,15 +17372,15 @@ var Plotly = (() => {
         var letter1 = id1.charAt(0);
         var letter2 = id2.charAt(0);
         if (letter1 !== letter2) return letter1 > letter2 ? 1 : -1;
-        return +(id1.slice(1) || 1) - +(id2.slice(1) || 1);
+        return +(id1.substr(1) || 1) - +(id2.substr(1) || 1);
       };
       exports.ref2id = function(ar) {
-        return /^[x-z]/.test(ar) ? ar.split(" ")[0] : false;
+        return /^[xyz]/.test(ar) ? ar.split(" ")[0] : false;
       };
       function isFound(axId, list) {
-        if (list && list.length > 0) {
-          for (const element of list) {
-            if (element[axId]) return true;
+        if (list && list.length) {
+          for (var i = 0; i < list.length; i++) {
+            if (list[i][axId]) return true;
           }
         }
         return false;
@@ -17360,7 +17447,8 @@ var Plotly = (() => {
         if (!basePlotModule) return [];
         var attr = basePlotModule.attr;
         var subplotCalcData = [];
-        for (var calcTrace of calcData) {
+        for (var i = 0; i < calcData.length; i++) {
+          var calcTrace = calcData[i];
           var trace = calcTrace[0].trace;
           if (trace[attr] === subplotId) subplotCalcData.push(calcTrace);
         }
@@ -17381,7 +17469,8 @@ var Plotly = (() => {
           return [moduleCalcData, calcdata];
         }
         var zorder = arg2;
-        for (var cd of calcdata) {
+        for (var i = 0; i < calcdata.length; i++) {
+          var cd = calcdata[i];
           var trace = cd[0].trace;
           var filterByZ = trace.zorder !== void 0;
           if (trace.visible !== true || trace._length === 0) continue;
@@ -17398,8 +17487,8 @@ var Plotly = (() => {
         var attr = Registry.subplotsRegistry[type].attr;
         var subplotData = [];
         var trace, subplotX, subplotY;
-        for (const datum of data) {
-          trace = datum;
+        for (var i = 0; i < data.length; i++) {
+          trace = data[i];
           if (trace[attr] === subplotId) subplotData.push(trace);
         }
         return subplotData;
@@ -17440,7 +17529,8 @@ var Plotly = (() => {
           ret.check = function check() {
             if (!enabled) return;
             var update = bindingValueHasChanged(gd, binding, ret.cache);
-            if (update.changed && onchange && ret.lookupTable[update.value] !== void 0) {
+            if (update.changed && onchange) {
+              if (ret.lookupTable[update.value] !== void 0) {
                 ret.disable();
                 Promise.resolve(onchange({
                   value: update.value,
@@ -17450,6 +17540,7 @@ var Plotly = (() => {
                   index: ret.lookupTable[update.value]
                 })).then(ret.enable, ret.enable);
               }
+            }
             return update.changed;
           };
           var checkEvents = [
@@ -17460,18 +17551,19 @@ var Plotly = (() => {
             "plotly_animatingframe",
             "plotly_afterplot"
           ];
-          for (const checkEvent of checkEvents) {
-            gd._internalOn(checkEvent, ret.check);
+          for (var i = 0; i < checkEvents.length; i++) {
+            gd._internalOn(checkEvents[i], ret.check);
           }
           ret.remove = function() {
-            for (const checkEvent of checkEvents) {
-              gd._removeInternalListener(checkEvent, ret.check);
+            for (var i2 = 0; i2 < checkEvents.length; i2++) {
+              gd._removeInternalListener(checkEvents[i2], ret.check);
             }
           };
         } else {
           Lib.log("Unable to automatically bind plot updates to API command");
           ret.lookupTable = {};
-          ret.remove = function() {};
+          ret.remove = function() {
+          };
         }
         ret.disable = function disable() {
           enabled = false;
@@ -17558,9 +17650,11 @@ var Plotly = (() => {
         }
         value = Lib.nestedProperty(container, binding.prop).get();
         obj = cache[binding.type] = cache[binding.type] || {};
-        if (obj.hasOwnProperty(binding.prop) && obj[binding.prop] !== value) {
+        if (obj.hasOwnProperty(binding.prop)) {
+          if (obj[binding.prop] !== value) {
             changed = true;
           }
+        }
         obj[binding.prop] = value;
         return {
           changed,
@@ -17572,42 +17666,37 @@ var Plotly = (() => {
         var _method = Registry.apiMethodRegistry[method];
         var allArgs = [gd];
         if (!Array.isArray(args)) args = [];
-        for (const arg of args) {
-          allArgs.push(arg);
+        for (var i = 0; i < args.length; i++) {
+          allArgs.push(args[i]);
         }
-        return _method.apply(null, allArgs).catch(function(error) {
-          Lib.warn("API call to Plotly." + method + " rejected.", error);
-          return Promise.reject(error);
+        return _method.apply(null, allArgs).catch(function(err) {
+          Lib.warn("API call to Plotly." + method + " rejected.", err);
+          return Promise.reject(err);
         });
       };
       exports.computeAPICommandBindings = function(gd, method, args) {
         var bindings;
         if (!Array.isArray(args)) args = [];
         switch (method) {
-          case "restyle": {
+          case "restyle":
             bindings = computeDataBindings(gd, args);
             break;
-          }
-          case "relayout": {
+          case "relayout":
             bindings = computeLayoutBindings(gd, args);
             break;
-          }
-          case "update": {
+          case "update":
             bindings = computeDataBindings(gd, [args[0], args[2]]).concat(computeLayoutBindings(gd, [args[1]]));
             break;
-          }
-          case "animate": {
+          case "animate":
             bindings = computeAnimateBindings(gd, args);
             break;
-          }
-          default: {
+          default:
             bindings = [];
-          }
         }
         return bindings;
       };
       function computeAnimateBindings(gd, args) {
-        if (Array.isArray(args[0]) && args[0].length === 1 && ["string", "number"].includes(typeof args[0][0])) {
+        if (Array.isArray(args[0]) && args[0].length === 1 && ["string", "number"].indexOf(typeof args[0][0]) !== -1) {
           return [{ type: "layout", prop: "_currentFrame", value: args[0][0].toString() }];
         } else {
           return [];
@@ -17653,7 +17742,7 @@ var Plotly = (() => {
           var thisTraces;
           var attr;
           if (Array.isArray(_attr)) {
-            attr = [..._attr];
+            attr = _attr.slice();
             var nAttr = Math.min(attr.length, gd.data.length);
             if (traces) {
               nAttr = Math.min(nAttr, traces.length);
@@ -17664,7 +17753,7 @@ var Plotly = (() => {
             }
           } else {
             attr = _attr;
-            thisTraces = traces ? [...traces] : null;
+            thisTraces = traces ? traces.slice() : null;
           }
           if (thisTraces === null) {
             if (Array.isArray(attr)) {
@@ -17690,16 +17779,16 @@ var Plotly = (() => {
         return bindings;
       }
       function crawl(attrs, callback, path, depth) {
-        for (const attrName of Object.keys(attrs)) {
+        Object.keys(attrs).forEach(function(attrName) {
           var attr = attrs[attrName];
-          if (attrName[0] === "_") continue;
+          if (attrName[0] === "_") return;
           var thisPath = path + (depth > 0 ? "." : "") + attrName;
           if (Lib.isPlainObject(attr)) {
             crawl(attr, callback, thisPath, depth + 1);
           } else {
             callback(thisPath, attrName, attr);
           }
-        }
+        });
       }
     }
   });
@@ -17782,7 +17871,7 @@ var Plotly = (() => {
         return p;
       };
       plots.previousPromises = function(gd) {
-        if ((gd._promises || []).length > 0) {
+        if ((gd._promises || []).length) {
           return Promise.all(gd._promises).then(function() {
             gd._promises = [];
           });
@@ -18018,7 +18107,8 @@ var Plotly = (() => {
         }
       };
       plots.supplyDefaultsUpdateCalc = function(oldCalcdata, newFullData) {
-        for (var [i, newTrace] of newFullData.entries()) {
+        for (var i = 0; i < newFullData.length; i++) {
+          var newTrace = newFullData[i];
           var cd0 = (oldCalcdata[i] || [])[0];
           if (cd0 && cd0.trace) {
             var oldTrace = cd0.trace;
@@ -18027,7 +18117,7 @@ var Plotly = (() => {
               var j, astr, oldArrayVal;
               for (j = 0; j < arrayAttrs.length; j++) {
                 astr = arrayAttrs[j];
-                oldArrayVal = [...Lib.nestedProperty(oldTrace, astr).get()];
+                oldArrayVal = Lib.nestedProperty(oldTrace, astr).get().slice();
                 Lib.nestedProperty(newTrace, astr).set(oldArrayVal);
               }
             }
@@ -18098,7 +18188,8 @@ var Plotly = (() => {
         var formatObj = {};
         function includeFormat(newFormat) {
           var formatFinished = true;
-          for (var formatKey of formatKeys) {
+          for (var i2 = 0; i2 < formatKeys.length; i2++) {
+            var formatKey = formatKeys[i2];
             if (!formatObj[formatKey]) {
               if (newFormat[formatKey]) {
                 formatObj[formatKey] = newFormat[formatKey];
@@ -18133,7 +18224,7 @@ var Plotly = (() => {
               formatStr = formatLocale(formatObj).format(
                 Lib.adjustFormat(formatStr)
               );
-            } catch {
+            } catch (e) {
               Lib.warnBadFormat(formatStr);
               return Lib.noFormat;
             }
@@ -18151,7 +18242,8 @@ var Plotly = (() => {
             layout: { meta: newFullLayout.meta }
           };
         }
-        for (var trace of newFullData) {
+        for (var i = 0; i < newFullData.length; i++) {
+          var trace = newFullData[i];
           if (trace.meta) {
             meta4data[trace.index] = trace._meta = { meta: trace.meta };
           } else if (newFullLayout.meta) {
@@ -18161,7 +18253,7 @@ var Plotly = (() => {
             trace._meta.layout = { meta: newFullLayout.meta };
           }
         }
-        if (meta4data.length > 0) {
+        if (meta4data.length) {
           if (!_meta) {
             _meta = newFullLayout._meta = {};
           }
@@ -18211,11 +18303,13 @@ var Plotly = (() => {
         }
         var hadGl = oldFullLayout._has && oldFullLayout._has("gl");
         var hasGl = newFullLayout._has && newFullLayout._has("gl");
-        if (hadGl && !hasGl && oldFullLayout._glcontainer !== void 0) {
+        if (hadGl && !hasGl) {
+          if (oldFullLayout._glcontainer !== void 0) {
             oldFullLayout._glcontainer.selectAll(".gl-canvas").remove();
             oldFullLayout._glcontainer.selectAll(".no-webgl").remove();
             oldFullLayout._glcanvas = null;
           }
+        }
         var hasInfoLayer = !!oldFullLayout._infolayer;
         oldLoop:
           for (i = 0; i < oldFullData.length; i++) {
@@ -18280,7 +18374,7 @@ var Plotly = (() => {
             }
           }
           ax._mainAxis = mainAx || ax;
-          if (mainAx) ax.domain = [...mainAx.domain];
+          if (mainAx) ax.domain = mainAx.domain.slice();
           ax._anchorAxis = ax.anchor === "free" ? null : axisIDs.getFromId(mockGd, ax.anchor);
         }
         for (i = 0; i < axList.length; i++) {
@@ -18288,7 +18382,7 @@ var Plotly = (() => {
           ax._counterAxes.sort(axisIDs.idSort);
           ax._subplotsWith.sort(Lib.subplotSort);
           ax._mainSubplot = findMainSubplot(ax, newFullLayout);
-          if (ax._counterAxes.length > 0 && (ax.spikemode && ax.spikemode.includes("across") || ax.automargin && ax.mirror && ax.anchor !== "free" || Registry.getComponentMethod("rangeslider", "isVisible")(ax))) {
+          if (ax._counterAxes.length && (ax.spikemode && ax.spikemode.indexOf("across") !== -1 || ax.automargin && ax.mirror && ax.anchor !== "free" || Registry.getComponentMethod("rangeslider", "isVisible")(ax))) {
             var min = 1;
             var max = 0;
             for (j = 0; j < ax._counterAxes.length; j++) {
@@ -18317,7 +18411,8 @@ var Plotly = (() => {
         if (!mainSubplotID || !fullLayout._plots[mainSubplotID]) {
           mainSubplotID = "";
           var counterIDs = ax._counterAxes;
-          for (var counterPart of counterIDs) {
+          for (var j = 0; j < counterIDs.length; j++) {
+            var counterPart = counterIDs[j];
             var id = isX ? ax._id + counterPart : counterPart + ax._id;
             if (!nextBestMainSubplotID) nextBestMainSubplotID = id;
             var counterAx = axisIDs.getFromId(mockGd, counterPart);
@@ -18537,7 +18632,7 @@ var Plotly = (() => {
           if (_module && _module.selectPoints) {
             var selectedpoints = coerce("selectedpoints");
             if (Lib.isTypedArray(selectedpoints)) {
-              traceOut.selectedpoints = [...selectedpoints];
+              traceOut.selectedpoints = Array.from(selectedpoints);
             }
           }
         }
@@ -18645,7 +18740,7 @@ var Plotly = (() => {
         Lib.coerce(layoutIn, layoutOut, scatterAttrs, "scattermode");
       };
       function getComputedSize(attr) {
-        return typeof attr === "string" && attr.slice(attr.length - 2) === "px" && Number.parseFloat(attr);
+        return typeof attr === "string" && attr.substr(attr.length - 2) === "px" && parseFloat(attr);
       }
       plots.plotAutoSize = function plotAutoSize(gd, layout, fullLayout) {
         var context = gd._context || {};
@@ -18694,7 +18789,7 @@ var Plotly = (() => {
             _module.includeBasePlot(layoutIn, layoutOut);
           }
         }
-        if (basePlotModules.length === 0) {
+        if (!basePlotModules.length) {
           basePlotModules.push(Cartesian);
         }
         if (layoutOut._has("cartesian")) {
@@ -18945,9 +19040,11 @@ var Plotly = (() => {
           for (var s in reservedMargins) {
             var autoMarginPush = 0;
             for (var m in pushMargin) {
-              if (m !== "base" && isNumeric(pushMargin[m][s].size)) {
+              if (m !== "base") {
+                if (isNumeric(pushMargin[m][s].size)) {
                   autoMarginPush = pushMargin[m][s].size > autoMarginPush ? pushMargin[m][s].size : autoMarginPush;
                 }
+              }
             }
             var extraMargin = Math.max(0, margin[s] - autoMarginPush);
             reservedMargins[s] = Math.max(0, reservedMargins[s] - extraMargin);
@@ -19040,19 +19137,20 @@ var Plotly = (() => {
       };
       function refineTicks(gd) {
         var axList = axisIDs.list(gd, "", true);
-        for (const k of [
+        [
           "_adjustTickLabelsOverflow",
           "_hideCounterAxisInsideTickLabels"
-        ]) {
+        ].forEach(function(k) {
           for (var i = 0; i < axList.length; i++) {
             var hideFn = axList[i][k];
             if (hideFn) hideFn();
           }
-        }
+        });
       }
       var marginKeys = ["l", "r", "t", "b", "p", "w", "h"];
       plots.didMarginChange = function(margin0, margin1) {
-        for (var k of marginKeys) {
+        for (var i = 0; i < marginKeys.length; i++) {
+          var k = marginKeys[i];
           var m0 = margin0[k];
           var m1 = margin1[k];
           if (!isNumeric(m0) || Math.abs(m1 - m0) > 1) {
@@ -19075,31 +19173,31 @@ var Plotly = (() => {
           if (Lib.isPlainObject(d)) {
             var o = {};
             var src;
-            for (const v of Object.keys(d).sort()) {
-              if (["_", "["].indexOf(v.charAt(0)) !== -1) continue;
+            Object.keys(d).sort().forEach(function(v) {
+              if (["_", "["].indexOf(v.charAt(0)) !== -1) return;
               if (typeof d[v] === "function") {
                 if (keepFunction) o[v] = "_function";
-                continue;
+                return;
               }
               if (mode === "keepdata") {
                 if (v.substr(v.length - 3) === "src") {
-                  continue;
+                  return;
                 }
               } else if (mode === "keepstream") {
                 src = d[v + "src"];
                 if (typeof src === "string" && src.indexOf(":") > 0) {
                   if (!Lib.isPlainObject(d.stream)) {
-                    continue;
+                    return;
                   }
                 }
               } else if (mode !== "keepall") {
                 src = d[v + "src"];
                 if (typeof src === "string" && src.indexOf(":") > 0) {
-                  continue;
+                  return;
                 }
               }
               o[v] = stripObj(d[v], keepFunction);
-            }
+            });
             return o;
           }
           var dIsArray = Array.isArray(d);
@@ -19170,7 +19268,7 @@ var Plotly = (() => {
                 _frameHash[op.name] = frame;
                 frame.name = op.name;
                 break;*/
-            case "replace": {
+            case "replace":
               frame = op.value;
               var oldName = (_frames[op.index] || {}).name;
               var newName = frame.name;
@@ -19180,19 +19278,16 @@ var Plotly = (() => {
                 _frameHash[newName] = frame;
               }
               break;
-            }
-            case "insert": {
+            case "insert":
               frame = op.value;
               _frameHash[frame.name] = frame;
               _frames.splice(op.index, 0, frame);
               break;
-            }
-            case "delete": {
+            case "delete":
               frame = _frames[op.index];
               delete _frameHash[frame.name];
               _frames.splice(op.index, 1);
               break;
-            }
           }
         }
         return Promise.resolve();
@@ -19210,7 +19305,7 @@ var Plotly = (() => {
         var frameStack = [framePtr];
         var frameNameStack = [framePtr.name];
         while (framePtr.baseframe && (framePtr = frameLookup[framePtr.baseframe.toString()])) {
-          if (frameNameStack.includes(framePtr.name)) break;
+          if (frameNameStack.indexOf(framePtr.name) !== -1) break;
           frameStack.push(framePtr);
           frameNameStack.push(framePtr.name);
         }
@@ -19252,7 +19347,8 @@ var Plotly = (() => {
       plots.recomputeFrameHash = function(gd) {
         var hash = gd._transitionData._frameHash = {};
         var frames = gd._transitionData._frames;
-        for (var frame of frames) {
+        for (var i = 0; i < frames.length; i++) {
+          var frame = frames[i];
           if (frame && frame.name) {
             hash[frame.name] = frame;
           }
@@ -19263,7 +19359,7 @@ var Plotly = (() => {
         var copy = Lib.extendDeepNoArrays({}, src || {});
         var expandedObj = Lib.expandObjectPaths(copy);
         var containerObj = {};
-        if (containerPaths && containerPaths.length > 0) {
+        if (containerPaths && containerPaths.length) {
           for (i = 0; i < containerPaths.length; i++) {
             containerProp = Lib.nestedProperty(expandedObj, containerPaths[i]);
             containerVal = containerProp.get();
@@ -19276,7 +19372,7 @@ var Plotly = (() => {
           }
         }
         dest = Lib.extendDeepNoArrays(dest || {}, expandedObj);
-        if (containerPaths && containerPaths.length > 0) {
+        if (containerPaths && containerPaths.length) {
           for (i = 0; i < containerPaths.length; i++) {
             srcProp = Lib.nestedProperty(containerObj, containerPaths[i]);
             srcContainer = srcProp.get();
@@ -19314,7 +19410,8 @@ var Plotly = (() => {
         opts.prepareFn = function() {
           var dataLength = Array.isArray(data) ? data.length : 0;
           var traceIndices = traces.slice(0, dataLength);
-          for (var [i, traceIdx] of traceIndices.entries()) {
+          for (var i = 0; i < traceIndices.length; i++) {
+            var traceIdx = traceIndices[i];
             var trace = gd._fullData[traceIdx];
             var _module = trace._module;
             if (!_module) continue;
@@ -19323,10 +19420,10 @@ var Plotly = (() => {
               if (!transitionedTraces[n]) transitionedTraces[n] = [];
               transitionedTraces[n].push(traceIdx);
             }
-            gd.data[traceIdx] = plots.extendTrace(gd.data[traceIdx], data[i]);
+            gd.data[traceIndices[i]] = plots.extendTrace(gd.data[traceIndices[i]], data[i]);
           }
           var layoutUpdate = Lib.expandObjectPaths(Lib.extendDeepNoArrays({}, layout));
-          var axisAttrRe = /^[xy]axis\d*$/;
+          var axisAttrRe = /^[xy]axis[0-9]*$/;
           for (var attr in layoutUpdate) {
             if (!axisAttrRe.test(attr)) continue;
             delete layoutUpdate[attr].range;
@@ -19342,21 +19439,21 @@ var Plotly = (() => {
               var plotinfo = subplots[k];
               var xa = plotinfo.xaxis;
               var ya = plotinfo.yaxis;
-              var xr0 = [...xa.range];
-              var yr0 = [...ya.range];
+              var xr0 = xa.range.slice();
+              var yr0 = ya.range.slice();
               var xr1 = null;
               var yr1 = null;
               var editX = null;
               var editY = null;
               if (Array.isArray(newLayout[xa._name + ".range"])) {
-                xr1 = [...newLayout[xa._name + ".range"]];
+                xr1 = newLayout[xa._name + ".range"].slice();
               } else if (Array.isArray((newLayout[xa._name] || {}).range)) {
-                xr1 = [...newLayout[xa._name].range];
+                xr1 = newLayout[xa._name].range.slice();
               }
               if (Array.isArray(newLayout[ya._name + ".range"])) {
-                yr1 = [...newLayout[ya._name + ".range"]];
+                yr1 = newLayout[ya._name + ".range"].slice();
               } else if (Array.isArray((newLayout[ya._name] || {}).range)) {
-                yr1 = [...newLayout[ya._name].range];
+                yr1 = newLayout[ya._name].range.slice();
               }
               if (xr0 && xr1 && (xa.r2l(xr0[0]) !== xa.r2l(xr1[0]) || xa.r2l(xr0[1]) !== xa.r2l(xr1[1]))) {
                 editX = { xr0, xr1 };
@@ -19412,10 +19509,10 @@ var Plotly = (() => {
             var plotinfo = subplots[k];
             var xa = plotinfo.xaxis;
             var ya = plotinfo.yaxis;
-            var xr0 = [...oldFullLayout[xa._name].range];
-            var yr0 = [...oldFullLayout[ya._name].range];
-            var xr1 = [...xa.range];
-            var yr1 = [...ya.range];
+            var xr0 = oldFullLayout[xa._name].range.slice();
+            var yr0 = oldFullLayout[ya._name].range.slice();
+            var xr1 = xa.range.slice();
+            var yr1 = ya.range.slice();
             xa.setScale();
             ya.setScale();
             var editX = null;
@@ -19445,19 +19542,19 @@ var Plotly = (() => {
           }
           function transitionAxes() {
             if (!gd._fullLayout) return;
-            for (const basePlotModule of basePlotModules) {
-              if (basePlotModule.transitionAxes) {
-                basePlotModule.transitionAxes(gd, axEdits, axisTransitionOpts, makeCallback);
+            for (var j = 0; j < basePlotModules.length; j++) {
+              if (basePlotModules[j].transitionAxes) {
+                basePlotModules[j].transitionAxes(gd, axEdits, axisTransitionOpts, makeCallback);
               }
             }
           }
           function transitionTraces() {
             if (!gd._fullLayout) return;
-            for (const basePlotModule of basePlotModules) {
-              basePlotModule.plot(gd, transitionedTraces, traceTransitionOpts, makeCallback);
+            for (var j = 0; j < basePlotModules.length; j++) {
+              basePlotModules[j].plot(gd, transitionedTraces, traceTransitionOpts, makeCallback);
             }
           }
-          if (axEdits.length > 0 && restyleFlags.anim) {
+          if (axEdits.length && restyleFlags.anim) {
             if (transitionOpts.ordering === "traces first") {
               axisTransitionOpts = Lib.extendFlat({}, transitionOpts, { duration: 0 });
               transitionedTraces = allTraceIndices;
@@ -19471,7 +19568,7 @@ var Plotly = (() => {
               setTimeout(transitionTraces, axisTransitionOpts.duration);
               transitionAxes();
             }
-          } else if (axEdits.length > 0) {
+          } else if (axEdits.length) {
             axisTransitionOpts = transitionOpts;
             transitionAxes();
           } else if (restyleFlags.anim) {
@@ -19487,14 +19584,14 @@ var Plotly = (() => {
         function executeCallbacks(list) {
           var p = Promise.resolve();
           if (!list) return p;
-          while (list.length > 0) {
+          while (list.length) {
             p = p.then(list.shift());
           }
           return p;
         }
         function flushCallbacks(list) {
           if (!list) return;
-          while (list.length > 0) {
+          while (list.length) {
             list.shift();
           }
         }
@@ -19570,8 +19667,8 @@ var Plotly = (() => {
         var fullData = gd._fullData;
         var fullLayout = gd._fullLayout;
         var trace, _module, i, j;
-        var calcdata = Array.from({length: fullData.length});
-        var oldCalcdata = [...(gd.calcdata || [])];
+        var calcdata = new Array(fullData.length);
+        var oldCalcdata = (gd.calcdata || []).slice();
         gd.calcdata = calcdata;
         fullLayout._numBoxes = 0;
         fullLayout._numViolins = 0;
@@ -19584,7 +19681,7 @@ var Plotly = (() => {
         fullLayout._iciclecolormap = {};
         fullLayout._funnelareacolormap = {};
         for (i = 0; i < fullData.length; i++) {
-          if (Array.isArray(traces) && !traces.includes(i)) {
+          if (Array.isArray(traces) && traces.indexOf(i) === -1) {
             calcdata[i] = oldCalcdata[i];
             continue;
           }
@@ -19663,7 +19760,7 @@ var Plotly = (() => {
         for (i = 0; i < fullData.length; i++) calci(i, false);
         doCrossTraceCalc(gd);
         var sorted = sortAxisCategoriesByValue(axList, gd);
-        if (sorted.length > 0) {
+        if (sorted.length) {
           fullLayout._numBoxes = 0;
           fullLayout._numViolins = 0;
           for (i = 0; i < sorted.length; i++) calci(sorted[i], true);
@@ -19840,8 +19937,8 @@ var Plotly = (() => {
         }
         Lib.simpleMap(axList, setupOne);
         var matchGroups = fullLayout._axisMatchGroups || [];
-        for (const matchGroup of matchGroups) {
-          for (var axId in matchGroup) {
+        for (var i = 0; i < matchGroups.length; i++) {
+          for (var axId in matchGroups[i]) {
             if (!axLookup[axId]) {
               setupOne(fullLayout[axisIDs.id2name(axId)]);
             }
@@ -20022,7 +20119,7 @@ var Plotly = (() => {
       var strTranslate = Lib.strTranslate;
       var xmlnsNamespaces = require_xmlns_namespaces();
       var LINE_SPACING = require_alignment().LINE_SPACING;
-      var FIND_TEX = /([^$]*)(\$+[^$]*\$+)([^$]*)/;
+      var FIND_TEX = /([^$]*)([$]+[^$]*[$]+)([^$]*)/;
       exports.convertToTspans = function(_context, gd, _callback) {
         var str = _context.text();
         var tex = !_context.attr("data-notex") && gd && gd._context.typesetMath && typeof MathJax !== "undefined" && str.match(FIND_TEX);
@@ -20056,7 +20153,7 @@ var Plotly = (() => {
         if (tex) {
           (gd && gd._promises || []).push(new Promise(function(resolve) {
             _context.style("display", "none");
-            var fontSize = Number.parseInt(_context.node().style.fontSize, 10);
+            var fontSize = parseInt(_context.node().style.fontSize, 10);
             var config = { fontSize };
             texToSVG(tex[2], config, function(_svgEl, _glyphDefs, _svgBBox) {
               parent.selectAll("svg." + svgClass).remove();
@@ -20072,7 +20169,7 @@ var Plotly = (() => {
                 "data-unformatted": str,
                 "data-math": "Y"
               });
-              mathjaxGroup.node().append(newSvg.node());
+              mathjaxGroup.node().appendChild(newSvg.node());
               if (_glyphDefs && _glyphDefs.node()) {
                 newSvg.node().insertBefore(
                   _glyphDefs.node().cloneNode(true),
@@ -20113,7 +20210,7 @@ var Plotly = (() => {
                 y = dy;
               } else {
                 var anchor = _context.attr("text-anchor");
-                x = x - w * (anchor === "middle" ? 0.5 : (anchor === "end" ? 1 : 0));
+                x = x - w * (anchor === "middle" ? 0.5 : anchor === "end" ? 1 : 0);
                 y = y + dy - h / 2;
               }
               newSvg.attr({
@@ -20130,11 +20227,11 @@ var Plotly = (() => {
       var LT_MATCH = /(<|&lt;|&#60;)/g;
       var GT_MATCH = /(>|&gt;|&#62;)/g;
       function cleanEscapesForTex(s) {
-        return s.replaceAll(LT_MATCH, "\\lt ").replaceAll(GT_MATCH, "\\gt ");
+        return s.replace(LT_MATCH, "\\lt ").replace(GT_MATCH, "\\gt ");
       }
       var inlineMath = [["$", "$"], ["\\(", "\\)"]];
       function texToSVG(_texString, _config, _callback) {
-        var MathJaxVersion = Number.parseInt(
+        var MathJaxVersion = parseInt(
           (MathJax.version || "").split(".")[0]
         );
         if (MathJaxVersion !== 2 && MathJaxVersion !== 3) {
@@ -20271,13 +20368,13 @@ var Plotly = (() => {
       var PROTOCOLS = ["http:", "https:", "mailto:", "", void 0, ":"];
       var NEWLINES = exports.NEWLINES = /(\r\n?|\n)/g;
       var SPLIT_TAGS = /(<[^<>]*>)/;
-      var ONE_TAG = /<(\/?)([^ >]*)(\s+(.*))?>/;
-      var BR_TAG = /<br(\s+(?:\S.*)?)?>/i;
-      exports.BR_TAG_ALL = /<br(\s+(?:\S.*)?)?>/gi;
+      var ONE_TAG = /<(\/?)([^ >]*)(\s+(.*))?>/i;
+      var BR_TAG = /<br(\s+.*)?>/i;
+      exports.BR_TAG_ALL = /<br(\s+.*)?>/gi;
       var STYLEMATCH = /(^|[\s"'])style\s*=\s*("([^"]*);?"|'([^']*);?')/i;
       var HREFMATCH = /(^|[\s"'])href\s*=\s*("([^"]*)"|'([^']*)')/i;
-      var TARGETMATCH = /(^|[\s"'])target\s*=\s*("([^\s"]*)"|'([^\s']*)')/i;
-      var POPUPMATCH = /(^|[\s"'])popup\s*=\s*("([\w,=]*)"|'([\w,=]*)')/i;
+      var TARGETMATCH = /(^|[\s"'])target\s*=\s*("([^"\s]*)"|'([^'\s]*)')/i;
+      var POPUPMATCH = /(^|[\s"'])popup\s*=\s*("([\w=,]*)"|'([\w=,]*)')/i;
       function getQuotedMatch(_str, re) {
         if (!_str) return null;
         var match = _str.match(re);
@@ -20287,7 +20384,7 @@ var Plotly = (() => {
       var COLORMATCH = /(^|;)\s*color:/;
       exports.plainText = function(_str, opts) {
         opts = opts || {};
-        var len = opts.len !== void 0 && opts.len !== -1 ? opts.len : Number.POSITIVE_INFINITY;
+        var len = opts.len !== void 0 && opts.len !== -1 ? opts.len : Infinity;
         var allowedTags = opts.allowedTags !== void 0 ? opts.allowedTags : ["br"];
         var ellipsis = "...";
         var eLen = ellipsis.length;
@@ -20295,11 +20392,12 @@ var Plotly = (() => {
         var newParts = [];
         var prevTag = "";
         var l = 0;
-        for (var p of oldParts) {
+        for (var i = 0; i < oldParts.length; i++) {
+          var p = oldParts[i];
           var match = p.match(ONE_TAG);
           var tagType = match && match[2].toLowerCase();
           if (tagType) {
-            if (allowedTags.includes(tagType)) {
+            if (allowedTags.indexOf(tagType) !== -1) {
               newParts.push(p);
               prevTag = tagType;
             }
@@ -20314,9 +20412,9 @@ var Plotly = (() => {
                 newParts.pop();
               }
               if (len > eLen) {
-                newParts.push(p.slice(0, Math.max(0, pLen2 - eLen)) + ellipsis);
+                newParts.push(p.substr(0, pLen2 - eLen) + ellipsis);
               } else {
-                newParts.push(p.slice(0, Math.max(0, pLen2)));
+                newParts.push(p.substr(0, pLen2));
               }
               break;
             }
@@ -20330,18 +20428,18 @@ var Plotly = (() => {
         amp: "&",
         lt: "<",
         gt: ">",
-        nbsp: "\u00A0",
-        times: "\u00D7",
-        plusmn: "\u00B1",
-        deg: "\u00B0"
+        nbsp: "\xA0",
+        times: "\xD7",
+        plusmn: "\xB1",
+        deg: "\xB0"
       };
-      var ENTITY_MATCH = /&(#\d+|#x[\dA-Fa-f]+|[a-z]+);/g;
+      var ENTITY_MATCH = /&(#\d+|#x[\da-fA-F]+|[a-z]+);/g;
       function convertEntities(_str) {
-        return _str.replaceAll(ENTITY_MATCH, function(fullMatch, innerMatch) {
+        return _str.replace(ENTITY_MATCH, function(fullMatch, innerMatch) {
           var outChar;
           if (innerMatch.charAt(0) === "#") {
             outChar = fromCodePoint(
-              innerMatch.charAt(1) === "x" ? Number.parseInt(innerMatch.slice(2), 16) : Number.parseInt(innerMatch.slice(1), 10)
+              innerMatch.charAt(1) === "x" ? parseInt(innerMatch.substr(2), 16) : parseInt(innerMatch.substr(1), 10)
             );
           } else outChar = entityToUnicode[innerMatch];
           return outChar || fullMatch;
@@ -20349,18 +20447,18 @@ var Plotly = (() => {
       }
       exports.convertEntities = convertEntities;
       function fromCodePoint(code) {
-        if (code > 1_114_111) return;
+        if (code > 1114111) return;
         var stringFromCodePoint = String.fromCodePoint;
         if (stringFromCodePoint) return stringFromCodePoint(code);
         var stringFromCharCode = String.fromCharCode;
-        if (code <= 65_535) return stringFromCharCode(code);
+        if (code <= 65535) return stringFromCharCode(code);
         return stringFromCharCode(
-          (code >> 10) + 55_232,
-          code % 1024 + 56_320
+          (code >> 10) + 55232,
+          code % 1024 + 56320
         );
       }
       function buildSVGText(containerNode, str) {
-        str = str.replaceAll(NEWLINES, " ");
+        str = str.replace(NEWLINES, " ");
         var hasLink = false;
         var nodeStack = [];
         var currentNode;
@@ -20372,7 +20470,7 @@ var Plotly = (() => {
             class: "line",
             dy: currentLine * LINE_SPACING + "em"
           });
-          containerNode.append(lineNode);
+          containerNode.appendChild(lineNode);
           currentNode = lineNode;
           var oldNodeStack = nodeStack;
           nodeStack = [{ node: lineNode }];
@@ -20398,7 +20496,7 @@ var Plotly = (() => {
                 "xlink:xlink:href": href2
               };
               if (popup) {
-                nodeAttrs.addEventListener('click', 'window.open(this.href.baseVal,this.target.baseVal,"' + popup + '");return false;');
+                nodeAttrs.onclick = 'window.open(this.href.baseVal,this.target.baseVal,"' + popup + '");return false;';
               }
             }
           } else nodeType = "tspan";
@@ -20406,22 +20504,22 @@ var Plotly = (() => {
           var newNode = document.createElementNS(xmlnsNamespaces.svg, nodeType);
           if (type === "sup" || type === "sub") {
             addTextNode(currentNode, ZERO_WIDTH_SPACE);
-            currentNode.append(newNode);
+            currentNode.appendChild(newNode);
             var resetter = document.createElementNS(xmlnsNamespaces.svg, "tspan");
             addTextNode(resetter, ZERO_WIDTH_SPACE);
             d3.select(resetter).attr("dy", RESET_DY[type]);
             nodeAttrs.dy = SHIFT_DY[type];
-            currentNode.append(newNode);
-            currentNode.append(resetter);
+            currentNode.appendChild(newNode);
+            currentNode.appendChild(resetter);
           } else {
-            currentNode.append(newNode);
+            currentNode.appendChild(newNode);
           }
           d3.select(newNode).attr(nodeAttrs);
           currentNode = nodeSpec2.node = newNode;
           nodeStack.push(nodeSpec2);
         }
         function addTextNode(node, text) {
-          node.append(document.createTextNode(text));
+          node.appendChild(document.createTextNode(text));
         }
         function exitNode(type) {
           if (nodeStack.length === 1) {
@@ -20432,7 +20530,7 @@ var Plotly = (() => {
           if (type !== innerNode.type) {
             Lib.log("Start tag <" + innerNode.type + "> doesnt match end tag <" + type + ">. Pretending it did match.", str);
           }
-          currentNode = nodeStack.at(-1).node;
+          currentNode = nodeStack[nodeStack.length - 1].node;
         }
         var hasLines = BR_TAG.test(str);
         if (hasLines) newLine();
@@ -20441,7 +20539,8 @@ var Plotly = (() => {
           nodeStack = [{ node: containerNode }];
         }
         var parts = str.split(SPLIT_TAGS);
-        for (var parti of parts) {
+        for (var i = 0; i < parts.length; i++) {
+          var parti = parts[i];
           var match = parti.match(ONE_TAG);
           var tagType = match && match[2].toLowerCase();
           var tagStyle = TAG_STYLES[tagType];
@@ -20487,24 +20586,25 @@ var Plotly = (() => {
         dummyAnchor2.href = decodedHref;
         var p1 = dummyAnchor1.protocol;
         var p2 = dummyAnchor2.protocol;
-        if (PROTOCOLS.includes(p1) && PROTOCOLS.includes(p2)) {
+        if (PROTOCOLS.indexOf(p1) !== -1 && PROTOCOLS.indexOf(p2) !== -1) {
           return decodedHref;
         } else {
           return "";
         }
       }
       exports.sanitizeHTML = function sanitizeHTML(str) {
-        str = str.replaceAll(NEWLINES, " ");
+        str = str.replace(NEWLINES, " ");
         var rootNode = document.createElement("p");
         var currentNode = rootNode;
         var nodeStack = [];
         var parts = str.split(SPLIT_TAGS);
-        for (var parti of parts) {
+        for (var i = 0; i < parts.length; i++) {
+          var parti = parts[i];
           var match = parti.match(ONE_TAG);
           var tagType = match && match[2].toLowerCase();
           if (tagType in TAG_STYLES) {
             if (match[1]) {
-              if (nodeStack.length > 0) {
+              if (nodeStack.length) {
                 currentNode = nodeStack.pop();
               }
             } else {
@@ -20525,13 +20625,13 @@ var Plotly = (() => {
                 }
               }
               var newNode = document.createElement(tagType);
-              currentNode.append(newNode);
+              currentNode.appendChild(newNode);
               d3.select(newNode).attr(nodeAttrs);
               currentNode = newNode;
               nodeStack.push(newNode);
             }
           } else {
-            currentNode.append(
+            currentNode.appendChild(
               document.createTextNode(convertEntities(parti))
             );
           }
@@ -20654,7 +20754,7 @@ var Plotly = (() => {
           var container = plotDiv.select(".svg-container");
           var div = container.append("div");
           var cStyle = context.node().style;
-          var fontSize = Number.parseFloat(cStyle.fontSize || 12);
+          var fontSize = parseFloat(cStyle.fontSize || 12);
           var initialText = options.text;
           if (initialText === void 0) initialText = context.attr("data-unformatted");
           div.classed("plugin-editable editable", true).style({
@@ -20728,8 +20828,8 @@ var Plotly = (() => {
         if (color && color._inputArray) color = color._inputArray;
         var isArrayWithOneNumber = false;
         if (Lib.isArrayOrTypedArray(color)) {
-          for (const element of color) {
-            if (isNumeric(element)) {
+          for (var i = 0; i < color.length; i++) {
+            if (isNumeric(color[i])) {
               isArrayWithOneNumber = true;
               break;
             }
@@ -20772,7 +20872,7 @@ var Plotly = (() => {
           cLetter = k2.charAt(0);
         }
         out._sync = function(k3, v) {
-          var k22 = letterAttrs.includes(k3) ? cLetter + k3 : k3;
+          var k22 = letterAttrs.indexOf(k3) !== -1 ? cLetter + k3 : k3;
           cont2[k22] = cont2["_" + k22] = v;
         };
         return out;
@@ -20926,7 +21026,7 @@ var Plotly = (() => {
         impliedEdits: { tick0: void 0, dtick: void 0 }
       };
       var tickmode = extendFlat({}, minorTickmode, {
-        values: [...minorTickmode.values].concat(["sync"])
+        values: minorTickmode.values.slice().concat(["sync"])
       });
       function makeNticks(minor) {
         return {
@@ -21943,7 +22043,7 @@ var Plotly = (() => {
           return dtickDflt;
         }
         var prefix = dtick.charAt(0);
-        var dtickNum = dtick.slice(1);
+        var dtickNum = dtick.substr(1);
         dtickNum = isNumeric(dtickNum) ? Number(dtickNum) : 0;
         if (dtickNum <= 0 || !// "M<n>" gives ticks every (integer) n months
         (isDate && prefix === "M" && dtickNum === Math.round(dtickNum) || // "L<f>" gives ticks linearly spaced in data (not in position) every (float) f
@@ -21990,7 +22090,7 @@ var Plotly = (() => {
         var _tick0 = readInput("tick0");
         var _dtick = readInput("dtick");
         var _tickvals = readInput("tickvals");
-        var tickmodeDefault = isArrayOrTypedArray(_tickvals) ? "array" : (_dtick ? "linear" : "auto");
+        var tickmodeDefault = isArrayOrTypedArray(_tickvals) ? "array" : _dtick ? "linear" : "auto";
         var tickmode = coerce(prefix + "tickmode", tickmodeDefault);
         if (tickmode === "auto" || tickmode === "sync") {
           coerce(prefix + "nticks");
@@ -22129,7 +22229,7 @@ var Plotly = (() => {
           var font = options.font || {};
           var contColor = containerOut.color;
           var position = containerOut.ticklabelposition || "";
-          var dfltFontColor = position.includes("inside") ? contrast(options.bgColor) : (
+          var dfltFontColor = position.indexOf("inside") !== -1 ? contrast(options.bgColor) : (
             // as with title.font.color, inherit axis.color only if one was
             // explicitly provided
             contColor && contColor !== layoutAttributes.color.dflt ? contColor : font.color
@@ -22153,7 +22253,7 @@ var Plotly = (() => {
               inclusionAttr: "enabled",
               handleItemDefaults: tickformatstopDefaults
             });
-            if (containerOut.tickformatstops.length === 0) {
+            if (!containerOut.tickformatstops.length) {
               delete containerOut.tickformatstops;
             }
             if (!options.noExp && !tickFormat && axType !== "date") {
@@ -22225,7 +22325,7 @@ var Plotly = (() => {
         var lenmode = coerce("lenmode");
         coerce(
           "len",
-          lenmode === "fraction" ? 1 : (isVertical ? h : w)
+          lenmode === "fraction" ? 1 : isVertical ? h : w
         );
         var yref = coerce("yref");
         var xref = coerce("xref");
@@ -22291,7 +22391,7 @@ var Plotly = (() => {
             ]
           }
         }, "ticklabelposition");
-        coerce("ticklabeloverflow", ticklabelposition.includes("inside") ? "hide past domain" : "hide past div");
+        coerce("ticklabeloverflow", ticklabelposition.indexOf("inside") !== -1 ? "hide past domain" : "hide past div");
         handleTickValueDefaults(colorbarIn, colorbarOut, coerce, "linear");
         var font = layout.font;
         var opts = {
@@ -22301,7 +22401,7 @@ var Plotly = (() => {
           outerTicks: false,
           font
         };
-        if (ticklabelposition.includes("inside")) {
+        if (ticklabelposition.indexOf("inside") !== -1) {
           opts.bgColor = "black";
         }
         handlePrefixSuffixDefaults(colorbarIn, colorbarOut, coerce, "linear", opts);
@@ -22330,7 +22430,7 @@ var Plotly = (() => {
       var isValidScale = require_scales().isValid;
       var traceIs = require_registry().traceIs;
       function npMaybe(parentCont, prefix) {
-        var containerStr = prefix.slice(0, - 1);
+        var containerStr = prefix.slice(0, prefix.length - 1);
         return prefix ? Lib.nestedProperty(parentCont, containerStr).get() || {} : parentCont;
       }
       module.exports = function colorScaleDefaults(parentContIn, parentContOut, layout, coerce, opts) {
@@ -22471,12 +22571,13 @@ var Plotly = (() => {
             }
           }
         }
-        for (var trace of fullData) {
+        for (var i = 0; i < fullData.length; i++) {
+          var trace = fullData[i];
           var cbOpts = trace._module.colorbar;
           if (cbOpts) {
             if (Array.isArray(cbOpts)) {
-              for (const cbOpt of cbOpts) {
-                relinkColorAttrs(trace, cbOpt);
+              for (var j = 0; j < cbOpts.length; j++) {
+                relinkColorAttrs(trace, cbOpts[j]);
               }
             } else {
               relinkColorAttrs(trace, cbOpts);
@@ -22601,14 +22702,14 @@ var Plotly = (() => {
       var isTypedArraySpec = require_array().isTypedArraySpec;
       module.exports = {
         hasLines: function(trace) {
-          return trace.visible && trace.mode && trace.mode.includes("lines");
+          return trace.visible && trace.mode && trace.mode.indexOf("lines") !== -1;
         },
         hasMarkers: function(trace) {
-          return trace.visible && (trace.mode && trace.mode.includes("markers") || // until splom implements 'mode'
+          return trace.visible && (trace.mode && trace.mode.indexOf("markers") !== -1 || // until splom implements 'mode'
           trace.type === "splom");
         },
         hasText: function(trace) {
-          return trace.visible && trace.mode && trace.mode.includes("text");
+          return trace.visible && trace.mode && trace.mode.indexOf("text") !== -1;
         },
         isBubble: function(trace) {
           var marker = trace.marker;
@@ -22655,28 +22756,28 @@ var Plotly = (() => {
         if (trace.type === "splom") {
           var xaxes = trace.xaxes || [];
           var yaxes = trace.yaxes || [];
-          for (const xax of xaxes) {
+          for (var i = 0; i < xaxes.length; i++) {
             for (var j = 0; j < yaxes.length; j++) {
-              if (subplots.indexOf(xax + yaxes[j]) !== -1) {
+              if (subplots.indexOf(xaxes[i] + yaxes[j]) !== -1) {
                 return true;
               }
             }
           }
           return false;
         }
-        return subplots.includes(exports.getSubplot(trace));
+        return subplots.indexOf(exports.getSubplot(trace)) !== -1;
       };
       exports.flat = function(subplots, v) {
-        var out = Array.from({length: subplots.length});
+        var out = new Array(subplots.length);
         for (var i = 0; i < subplots.length; i++) {
           out[i] = v;
         }
         return out;
       };
       exports.p2c = function(axArray, v) {
-        var out = Array.from({length: axArray.length});
-        for (const [i, element] of axArray.entries()) {
-          out[i] = element.p2c(v);
+        var out = new Array(axArray.length);
+        for (var i = 0; i < axArray.length; i++) {
+          out[i] = axArray[i].p2c(v);
         }
         return out;
       };
@@ -22690,8 +22791,8 @@ var Plotly = (() => {
             pointData.distance = 0;
           } else pointData.index = false;
         } else {
-          for (const [i, element] of cd.entries()) {
-            var newDistance = distfn(element);
+          for (var i = 0; i < cd.length; i++) {
+            var newDistance = distfn(cd[i]);
             if (newDistance <= pointData.distance) {
               pointData.index = i;
               pointData.distance = newDistance;
@@ -22701,13 +22802,13 @@ var Plotly = (() => {
         return pointData;
       };
       exports.inbox = function(v0, v1, passVal) {
-        return v0 * v1 < 0 || v0 === 0 ? passVal : Number.POSITIVE_INFINITY;
+        return v0 * v1 < 0 || v0 === 0 ? passVal : Infinity;
       };
       exports.quadrature = function(dx, dy) {
         return function(di) {
           var x = dx(di);
           var y = dy(di);
-          return Math.hypot(x, y);
+          return Math.sqrt(x * x + y * y);
         };
       };
       exports.makeEventData = function(pt, trace, cd) {
@@ -22747,7 +22848,8 @@ var Plotly = (() => {
         if (!arrayAttrs) {
           return;
         }
-        for (var astr of arrayAttrs) {
+        for (var i = 0; i < arrayAttrs.length; i++) {
+          var astr = arrayAttrs[i];
           var key = getPointKey(astr);
           if (pointData[key] === void 0) {
             var val = Lib.nestedProperty(trace, astr).get();
@@ -22761,13 +22863,14 @@ var Plotly = (() => {
         if (!arrayAttrs) {
           return;
         }
-        for (var astr of arrayAttrs) {
+        for (var i = 0; i < arrayAttrs.length; i++) {
+          var astr = arrayAttrs[i];
           var key = getPointKey(astr);
           if (pointData[key] === void 0) {
             var val = Lib.nestedProperty(trace, astr).get();
-            var keyVal = Array.from({length: pointNumbers.length});
-            for (const [j, pointNumber] of pointNumbers.entries()) {
-              keyVal[j] = getPointData(val, pointNumber);
+            var keyVal = new Array(pointNumbers.length);
+            for (var j = 0; j < pointNumbers.length; j++) {
+              keyVal[j] = getPointData(val, pointNumbers[j]);
             }
             pointData[key] = keyVal;
           }
@@ -22812,15 +22915,15 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/parse-svg-path/index.js
+  // node_modules/.pnpm/parse-svg-path@0.1.2/node_modules/parse-svg-path/index.js
   var require_parse_svg_path = __commonJS({
-    "node_modules/parse-svg-path/index.js"(exports, module) {
+    "node_modules/.pnpm/parse-svg-path@0.1.2/node_modules/parse-svg-path/index.js"(exports, module) {
       module.exports = parse;
       var length = { a: 7, c: 6, h: 1, l: 2, m: 2, q: 4, s: 4, t: 2, v: 1, z: 0 };
-      var segment = /([achlmqstvz])([^achlmqstvz]*)/gi;
+      var segment = /([astvzqmhlc])([^astvzqmhlc]*)/ig;
       function parse(path) {
         var data = [];
-        path.replaceAll(segment, function(_, command, args) {
+        path.replace(segment, function(_, command, args) {
           var type = command.toLowerCase();
           args = parseValues(args);
           if (type == "m" && args.length > 2) {
@@ -22839,7 +22942,7 @@ var Plotly = (() => {
         });
         return data;
       }
-      var number = /-?\d*\.?\d+(?:e[+-]?\d+)?/gi;
+      var number = /-?[0-9]*\.?[0-9]+(?:e[-+]?\d+)?/ig;
       function parseValues(args) {
         var numbers = args.match(number);
         return numbers ? numbers.map(Number) : [];
@@ -23485,7 +23588,8 @@ var Plotly = (() => {
         var y = 0;
         var cmd = parseSvgPath(path);
         var str = "";
-        for (var cmdI of cmd) {
+        for (var i = 0; i < cmd.length; i++) {
+          var cmdI = cmd[i];
           var op = cmdI[0];
           var x0 = x;
           var y0 = y;
@@ -23783,7 +23887,7 @@ var Plotly = (() => {
       drawing.symbolNoDot = {};
       drawing.symbolNoFill = {};
       drawing.symbolList = [];
-      for (const k of Object.keys(SYMBOLDEFS)) {
+      Object.keys(SYMBOLDEFS).forEach(function(k) {
         var symDef = SYMBOLDEFS[k];
         var n = symDef.n;
         drawing.symbolList.push(
@@ -23815,7 +23919,7 @@ var Plotly = (() => {
         if (symDef.noFill) {
           drawing.symbolNoFill[n] = true;
         }
-      }
+      });
       var MAXSYMBOL = drawing.symbolNames.length;
       var DOTPATH = "M0,0.5L0.5,0L0,-0.5L-0.5,0Z";
       drawing.symbolNumber = function(v) {
@@ -23943,7 +24047,7 @@ var Plotly = (() => {
         var fgAlpha = fgC.getAlpha();
         var opacity = fgopacity * fgAlpha;
         switch (shape) {
-          case "/": {
+          case "/":
             width = size * Math.sqrt(2);
             height = size * Math.sqrt(2);
             path = "M-" + width / 4 + "," + height / 4 + "l" + width / 2 + ",-" + height / 2 + "M0," + height + "L" + width + ",0M" + width / 4 * 3 + "," + height / 4 * 5 + "l" + width / 2 + ",-" + height / 2;
@@ -23956,8 +24060,7 @@ var Plotly = (() => {
               "stroke-width": linewidth + "px"
             };
             break;
-          }
-          case "\\": {
+          case "\\":
             width = size * Math.sqrt(2);
             height = size * Math.sqrt(2);
             path = "M" + width / 4 * 3 + ",-" + height / 4 + "l" + width / 2 + "," + height / 2 + "M0,0L" + width + "," + height + "M-" + width / 4 + "," + height / 4 * 3 + "l" + width / 2 + "," + height / 2;
@@ -23970,8 +24073,7 @@ var Plotly = (() => {
               "stroke-width": linewidth + "px"
             };
             break;
-          }
-          case "x": {
+          case "x":
             width = size * Math.sqrt(2);
             height = size * Math.sqrt(2);
             path = "M-" + width / 4 + "," + height / 4 + "l" + width / 2 + ",-" + height / 2 + "M0," + height + "L" + width + ",0M" + width / 4 * 3 + "," + height / 4 * 5 + "l" + width / 2 + ",-" + height / 2 + "M" + width / 4 * 3 + ",-" + height / 4 + "l" + width / 2 + "," + height / 2 + "M0,0L" + width + "," + height + "M-" + width / 4 + "," + height / 4 * 3 + "l" + width / 2 + "," + height / 2;
@@ -23984,8 +24086,7 @@ var Plotly = (() => {
               "stroke-width": linewidth + "px"
             };
             break;
-          }
-          case "|": {
+          case "|":
             width = size;
             height = size;
             patternTag = "path";
@@ -23999,8 +24100,7 @@ var Plotly = (() => {
               "stroke-width": linewidth + "px"
             };
             break;
-          }
-          case "-": {
+          case "-":
             width = size;
             height = size;
             patternTag = "path";
@@ -24014,8 +24114,7 @@ var Plotly = (() => {
               "stroke-width": linewidth + "px"
             };
             break;
-          }
-          case "+": {
+          case "+":
             width = size;
             height = size;
             patternTag = "path";
@@ -24029,8 +24128,7 @@ var Plotly = (() => {
               "stroke-width": linewidth + "px"
             };
             break;
-          }
-          case ".": {
+          case ".":
             width = size;
             height = size;
             if (solidity < Math.PI / 4) {
@@ -24047,7 +24145,6 @@ var Plotly = (() => {
               fill: fgRGB
             };
             break;
-          }
         }
         var str = [
           shape || "noSh",
@@ -24119,7 +24216,7 @@ var Plotly = (() => {
         if (pt && pt.i >= 0 && d.i === void 0) d.i = pt.i;
         sel.style(
           "opacity",
-          fns.selectedOpacityFn ? fns.selectedOpacityFn(d) : (d.mo === void 0 ? marker.opacity : d.mo)
+          fns.selectedOpacityFn ? fns.selectedOpacityFn(d) : d.mo === void 0 ? marker.opacity : d.mo
         );
         if (fns.ms2mrc) {
           var r;
@@ -24343,11 +24440,11 @@ var Plotly = (() => {
             d.mrc2 = mrc2;
           });
         }
-        if (seq.length > 0) {
+        if (seq.length) {
           s.each(function(d) {
             var pt = d3.select(this);
-            for (const element of seq) {
-              element(pt, d);
+            for (var i = 0; i < seq.length; i++) {
+              seq[i](pt, d);
             }
           });
         }
@@ -24371,8 +24468,8 @@ var Plotly = (() => {
       };
       function textPointPosition(s, textPosition, fontSize, markerRadius, dontTouchParent) {
         var group = d3.select(s.node().parentNode);
-        var v = textPosition.includes("top") ? "top" : textPosition.includes("bottom") ? "bottom" : "middle";
-        var h = textPosition.includes("left") ? "end" : textPosition.includes("right") ? "start" : "middle";
+        var v = textPosition.indexOf("top") !== -1 ? "top" : textPosition.indexOf("bottom") !== -1 ? "bottom" : "middle";
+        var h = textPosition.indexOf("left") !== -1 ? "end" : textPosition.indexOf("right") !== -1 ? "start" : "middle";
         var r = markerRadius ? markerRadius / 0.8 + 1 : 0;
         var numLines = (svgTextUtils.lineCount(s) - 1) * LINE_SPACING + 1;
         var dx = TEXTOFFSETSIGN[h] * r;
@@ -24454,7 +24551,7 @@ var Plotly = (() => {
         for (i = 2; i < pts.length - 1; i++) {
           path += "C" + tangents[i - 2][1] + " " + tangents[i - 1][0] + " " + pts[i];
         }
-        path += "Q" + tangents[pts.length - 3][1] + " " + pts.at(-1);
+        path += "Q" + tangents[pts.length - 3][1] + " " + pts[pts.length - 1];
         return path;
       };
       drawing.smoothclosed = function(pts, smoothness) {
@@ -24638,12 +24735,12 @@ var Plotly = (() => {
         } else {
           tester = drawing.tester.node();
           testNode = node.cloneNode(true);
-          tester.append(testNode);
+          tester.appendChild(testNode);
         }
         d3.select(testNode).attr("transform", null).call(svgTextUtils.positionText, 0, 0);
         var testRect = testNode.getBoundingClientRect();
         var refRect = drawing.testref.node().getBoundingClientRect();
-        if (!inTester) testNode.remove();
+        if (!inTester) tester.removeChild(testNode);
         var bb = {
           height: testRect.height,
           width: testRect.width,
@@ -24661,9 +24758,9 @@ var Plotly = (() => {
         return Lib.extendFlat({}, bb);
       };
       function nodeHash(node) {
-        var inputText = node.dataset.unformatted;
+        var inputText = node.getAttribute("data-unformatted");
         if (inputText === null) return;
-        return inputText + node.dataset.math + node.getAttribute("text-anchor") + node.getAttribute("style");
+        return inputText + node.getAttribute("data-math") + node.getAttribute("text-anchor") + node.getAttribute("style");
       }
       drawing.setClipUrl = function(s, localId, gd) {
         s.attr("clip-path", getFullUrl(localId, gd));
@@ -24675,7 +24772,7 @@ var Plotly = (() => {
         return baseUrl ? "url('" + baseUrl + "#" + localId + "')" : "url(#" + localId + ")";
       }
       drawing.getTranslate = function(element) {
-        var re = /.*\btranslate\((-?\d*\.?\d*)[^\d-]*(-?\d*\.?\d*)\D.*/;
+        var re = /.*\btranslate\((-?\d*\.?\d*)[^-\d]*(-?\d*\.?\d*)[^\d].*/;
         var getter = element.attr ? "attr" : "getAttribute";
         var transform = element[getter]("transform") || "";
         var translate = transform.replace(re, function(match, p1, p2) {
@@ -24700,7 +24797,7 @@ var Plotly = (() => {
         return transform;
       };
       drawing.getScale = function(element) {
-        var re = /.*\bscale\((\d*\.?\d*)\D*(\d*\.?\d*)\D.*/;
+        var re = /.*\bscale\((\d*\.?\d*)[^\d]*(\d*\.?\d*)[^\d].*/;
         var getter = element.attr ? "attr" : "getAttribute";
         var transform = element[getter]("transform") || "";
         var translate = transform.replace(re, function(match, p1, p2) {
@@ -24745,8 +24842,8 @@ var Plotly = (() => {
           var el = d3.select(this);
           var text = el.select("text");
           if (!text.node()) return;
-          var x = Number.parseFloat(text.attr("x") || 0);
-          var y = Number.parseFloat(text.attr("y") || 0);
+          var x = parseFloat(text.attr("x") || 0);
+          var y = parseFloat(text.attr("y") || 0);
           var existingTransform = (el.attr("transform") || "").match(TEXT_POINT_LAST_TRANSLATION_RE);
           if (xScale === 1 && yScale === 1) {
             transforms = [];
@@ -24871,7 +24968,7 @@ var Plotly = (() => {
               var dX = x - previousX;
               var dY = y - previousY;
               var shape = trace.line ? trace.line.shape || "" : "";
-              var lastShapeChar = shape.slice(- 1);
+              var lastShapeChar = shape.slice(shape.length - 1);
               if (lastShapeChar === "h") dY = 0;
               if (lastShapeChar === "v") dX = 0;
               angle += atan2(dY, dX) / Math.PI * 180 + 90;
@@ -24905,7 +25002,7 @@ var Plotly = (() => {
       var svgTextUtils = require_svg_text_utils();
       var interactConstants = require_interactions();
       var OPPOSITE_SIDE = require_alignment().OPPOSITE_SIDE;
-      var numStripRE = / [XY]\d* /;
+      var numStripRE = / [XY][0-9]* /;
       var SUBTITLE_PADDING_MATHJAX_EM = 1.6;
       var SUBTITLE_PADDING_EM = 1.6;
       function draw(gd, titleClass, options) {
@@ -24951,7 +25048,7 @@ var Plotly = (() => {
         var subFontShadow = subtitleFont.shadow;
         var editAttr;
         if (prop === "title.text") editAttr = "titleText";
-        else if (prop.includes("axis")) editAttr = "axisTitleText";
+        else if (prop.indexOf("axis") !== -1) editAttr = "axisTitleText";
         else if (prop.indexOf("colorbar" !== -1)) editAttr = "colorbarTitleText";
         var editable = gd._context.edits[editAttr];
         function matchesPlaceholder(text, placeholder2) {
@@ -25211,7 +25308,7 @@ var Plotly = (() => {
         var axId = ax._id || "x";
         var axLetter = axId.charAt(0);
         function toLog(v, clip) {
-          if (v > 0) return Math.log10(v);
+          if (v > 0) return Math.log(v) / Math.LN10;
           else if (v <= 0 && clip && ax.range && ax.range.length === 2) {
             var r0 = ax.range[0];
             var r1 = ax.range[1];
@@ -25336,7 +25433,7 @@ var Plotly = (() => {
         ax.p2c = ax.type === "log" ? function(px) {
           return fromLog(p2l(px));
         } : p2l;
-        if (["linear", "-"].includes(ax.type)) {
+        if (["linear", "-"].indexOf(ax.type) !== -1) {
           ax.d2r = ax.r2d = ax.d2c = ax.r2c = ax.d2l = ax.r2l = cleanNumber;
           ax.c2d = ax.c2r = ax.l2d = ax.l2r = ensureNumber;
           ax.d2p = ax.r2p = function(v) {
@@ -25521,7 +25618,7 @@ var Plotly = (() => {
           else if (axLetter === "y") dflt = constants.DFLTRANGEY;
           else if (ax._name === "realaxis") dflt = [0, 1];
           else dflt = opts.dfltRange || constants.DFLTRANGEX;
-          dflt = [...dflt];
+          dflt = dflt.slice();
           if (ax.rangemode === "tozero" || ax.rangemode === "nonnegative") {
             dflt[0] = 0;
           }
@@ -25603,7 +25700,7 @@ var Plotly = (() => {
               Math.min(rl0, rl1),
               Math.max(rl0, rl1)
             );
-            if (ax._rangebreaks.length > 0) {
+            if (ax._rangebreaks.length) {
               for (i = 0; i < ax._rangebreaks.length; i++) {
                 brk = ax._rangebreaks[i];
                 ax._lBreaks += Math.abs(brk.max - brk.min);
@@ -25617,7 +25714,7 @@ var Plotly = (() => {
               for (i = 0; i < ax._rangebreaks.length; i++) {
                 brk = ax._rangebreaks[i];
                 ax._B.push(
-                  ax._B.at(-1) - sign * ax._m2 * (brk.max - brk.min)
+                  ax._B[ax._B.length - 1] - sign * ax._m2 * (brk.max - brk.min)
                 );
               }
               for (i = 0; i < ax._rangebreaks.length; i++) {
@@ -25658,7 +25755,7 @@ var Plotly = (() => {
                 b0 = bnds[0];
                 b1 = bnds[1];
                 switch (pattern) {
-                  case WEEKDAY_PATTERN: {
+                  case WEEKDAY_PATTERN:
                     vDate = new Date(v);
                     vb = vDate.getUTCDay();
                     if (b0 > b1) {
@@ -25666,8 +25763,7 @@ var Plotly = (() => {
                       if (vb < b0) vb += 7;
                     }
                     break;
-                  }
-                  case HOUR_PATTERN: {
+                  case HOUR_PATTERN:
                     vDate = new Date(v);
                     var hours = vDate.getUTCHours();
                     var minutes = vDate.getUTCMinutes();
@@ -25679,17 +25775,15 @@ var Plotly = (() => {
                       if (vb < b0) vb += 24;
                     }
                     break;
-                  }
-                  case "": {
+                  case "":
                     vb = v;
                     break;
-                  }
                 }
                 if (vb >= b0 && vb < b1) return BADNUM;
               } else {
                 var vals = rangebreaksIn._cachedValues[i];
-                for (const val of vals) {
-                  b0 = val;
+                for (var j = 0; j < vals.length; j++) {
+                  b0 = vals[j];
                   b1 = b0 + brk.dvalue;
                   if (v >= b0 && v < b1) return BADNUM;
                 }
@@ -25702,7 +25796,7 @@ var Plotly = (() => {
           var i, bnds, b0, b1;
           var rangebreaksOut = [];
           if (!ax.rangebreaks) return rangebreaksOut;
-          var rangebreaksIn = [...ax.rangebreaks].sort(function(a, b) {
+          var rangebreaksIn = ax.rangebreaks.slice().sort(function(a, b) {
             if (a.pattern === WEEKDAY_PATTERN && b.pattern === HOUR_PATTERN) return -1;
             if (b.pattern === WEEKDAY_PATTERN && a.pattern === HOUR_PATTERN) return 1;
             return 0;
@@ -25712,7 +25806,8 @@ var Plotly = (() => {
             max = Lib.constrain(max, r0, r1);
             if (min === max) return;
             var isNewBreak = true;
-            for (var brkj of rangebreaksOut) {
+            for (var j2 = 0; j2 < rangebreaksOut.length; j2++) {
+              var brkj = rangebreaksOut[j2];
               if (min < brkj.max && max >= brkj.min) {
                 if (min < brkj.min) {
                   brkj.min = min;
@@ -25743,32 +25838,29 @@ var Plotly = (() => {
                 var bndDelta;
                 var step;
                 switch (brk.pattern) {
-                  case WEEKDAY_PATTERN: {
+                  case WEEKDAY_PATTERN:
                     step = ONEWEEK;
                     bndDelta = ((b1 < b0 ? 7 : 0) + (b1 - b0)) * ONEDAY;
                     t0 += b0 * ONEDAY - (t0Date.getUTCDay() * ONEDAY + t0Date.getUTCHours() * ONEHOUR + t0Date.getUTCMinutes() * ONEMIN + t0Date.getUTCSeconds() * ONESEC + t0Date.getUTCMilliseconds());
                     break;
-                  }
-                  case HOUR_PATTERN: {
+                  case HOUR_PATTERN:
                     step = ONEDAY;
                     bndDelta = ((b1 < b0 ? 24 : 0) + (b1 - b0)) * ONEHOUR;
                     t0 += b0 * ONEHOUR - (t0Date.getUTCHours() * ONEHOUR + t0Date.getUTCMinutes() * ONEMIN + t0Date.getUTCSeconds() * ONESEC + t0Date.getUTCMilliseconds());
                     break;
-                  }
-                  default: {
+                  default:
                     t0 = Math.min(bnds[0], bnds[1]);
                     t1 = Math.max(bnds[0], bnds[1]);
                     step = t1 - t0;
                     bndDelta = step;
-                  }
                 }
                 for (var t = t0; t < t1; t += step) {
                   addBreak(t, t + bndDelta);
                 }
               } else {
                 var vals = Lib.simpleMap(brk.values, ax.d2c);
-                for (const val of vals) {
-                  b0 = val;
+                for (var j = 0; j < vals.length; j++) {
+                  b0 = vals[j];
                   b1 = b0 + brk.dvalue;
                   addBreak(b0, b1);
                 }
@@ -25927,14 +26019,14 @@ var Plotly = (() => {
       module.exports = function autoType(array, calendar, opts) {
         var a = array;
         var noMultiCategory = opts.noMultiCategory;
-        if (isArrayOrTypedArray(a) && a.length === 0) return "-";
+        if (isArrayOrTypedArray(a) && !a.length) return "-";
         if (!noMultiCategory && multiCategory(a)) return "multicategory";
         if (noMultiCategory && Array.isArray(a[0])) {
           var b = [];
-          for (const element of a) {
-            if (isArrayOrTypedArray(element)) {
-              for (var j = 0; j < element.length; j++) {
-                b.push(element[j]);
+          for (var i = 0; i < a.length; i++) {
+            if (isArrayOrTypedArray(a[i])) {
+              for (var j = 0; j < a[i].length; j++) {
+                b.push(a[i][j]);
               }
             }
           }
@@ -26131,7 +26223,8 @@ var Plotly = (() => {
         var lBreaks = 0;
         if (ax.rangebreaks) {
           var rangebreaksOut = ax.locateBreaks(v0, v1);
-          for (var brk of rangebreaksOut) {
+          for (var i = 0; i < rangebreaksOut.length; i++) {
+            var brk = rangebreaksOut[i];
             lBreaks += brk.max - brk.min;
           }
         }
@@ -26140,7 +26233,7 @@ var Plotly = (() => {
       function makePadFn(fullLayout, ax, max) {
         var extrappad = 0.05 * ax._length;
         var anchorAxis = ax._anchorAxis || {};
-        if ((ax.ticklabelposition || "").includes("inside") || (anchorAxis.ticklabelposition || "").includes("inside")) {
+        if ((ax.ticklabelposition || "").indexOf("inside") !== -1 || (anchorAxis.ticklabelposition || "").indexOf("inside") !== -1) {
           var axReverse = ax.isReversed();
           if (!axReverse) {
             var rng = Lib.simpleMap(ax.range, ax.r2l);
@@ -26169,7 +26262,8 @@ var Plotly = (() => {
           var plotinfo = fullLayout._plots[subplot];
           if (ax._id !== plotinfo.xaxis._id && ax._id !== plotinfo.yaxis._id) continue;
           var anchorAxis = (isX ? plotinfo.yaxis : plotinfo.xaxis) || {};
-          if ((anchorAxis.ticklabelposition || "").indexOf("inside") !== -1 && (!max && (anchorAxis.side === "left" || anchorAxis.side === "bottom") || max && (anchorAxis.side === "top" || anchorAxis.side === "right"))) {
+          if ((anchorAxis.ticklabelposition || "").indexOf("inside") !== -1) {
+            if (!max && (anchorAxis.side === "left" || anchorAxis.side === "bottom") || max && (anchorAxis.side === "top" || anchorAxis.side === "right")) {
               if (anchorAxis._vals) {
                 var rad = Lib.deg2rad(anchorAxis._tickAngles[anchorAxis._id + "tick"] || 0);
                 var cosA = Math.abs(Math.cos(rad));
@@ -26202,6 +26296,7 @@ var Plotly = (() => {
                 pad += anchorAxis.ticklen || 0;
               }
             }
+          }
         }
         return pad;
       }
@@ -26253,23 +26348,25 @@ var Plotly = (() => {
       function doAutoRange(gd, ax, presetRange) {
         ax.setScale();
         if (ax.autorange) {
-          ax.range = presetRange ? [...presetRange] : getAutoRange(gd, ax);
-          ax._r = [...ax.range];
+          ax.range = presetRange ? presetRange.slice() : getAutoRange(gd, ax);
+          ax._r = ax.range.slice();
           ax._rl = Lib.simpleMap(ax._r, ax.r2l);
           var axIn = ax._input;
           var edits = {};
           edits[ax._attr + ".range"] = ax.range;
           edits[ax._attr + ".autorange"] = ax.autorange;
           Registry.call("_storeDirectGUIEdit", gd.layout, gd._fullLayout._preGUI, edits);
-          axIn.range = [...ax.range];
+          axIn.range = ax.range.slice();
           axIn.autorange = ax.autorange;
         }
         var anchorAx = ax._anchorAxis;
         if (anchorAx && anchorAx.rangeslider) {
           var axeRangeOpts = anchorAx.rangeslider[ax._name];
-          if (axeRangeOpts && axeRangeOpts.rangemode === "auto") {
+          if (axeRangeOpts) {
+            if (axeRangeOpts.rangemode === "auto") {
               axeRangeOpts.range = getAutoRange(gd, ax);
             }
+          }
           anchorAx._input.rangeslider[ax._name] = Lib.extendFlat({}, axeRangeOpts);
         }
       }
@@ -26303,8 +26400,8 @@ var Plotly = (() => {
         var vpadplus = makePadAccessor(opts.vpadplus || opts.vpad);
         var vpadminus = makePadAccessor(opts.vpadminus || opts.vpad);
         if (!hasArrayOption) {
-          vmin = Number.POSITIVE_INFINITY;
-          vmax = Number.NEGATIVE_INFINITY;
+          vmin = Infinity;
+          vmax = -Infinity;
           if (isLog) {
             for (i = 0; i < len; i++) {
               v = data[i];
@@ -26432,8 +26529,8 @@ var Plotly = (() => {
           var lMin = ax.d2l(min);
           var lMax = ax.d2l(max);
           if (!Lib.isArrayOrTypedArray(include)) include = [include];
-          for (const element of include) {
-            var v = ax.d2l(element);
+          for (var i = 0; i < include.length; i++) {
+            var v = ax.d2l(include[i]);
             if (lMin >= v) {
               lMin = v;
               min = v;
@@ -26542,7 +26639,7 @@ var Plotly = (() => {
         }));
         attrDef[refAttr] = {
           valType: "enumerated",
-          values: axlist.concat(extraOption ? (typeof extraOption === "string" ? [extraOption] : extraOption) : []),
+          values: axlist.concat(extraOption ? typeof extraOption === "string" ? [extraOption] : extraOption : []),
           dflt
         };
         return Lib.coerce(containerIn, containerOut, attrDef, refAttr);
@@ -26587,10 +26684,11 @@ var Plotly = (() => {
         function _redrawOneComp(moduleName, methodName, stashName, shortCircuit) {
           var method = Registry.getComponentMethod(moduleName, methodName);
           var stash = {};
-          for (const axId of axIds) {
-            var ax = fullLayout[axes.id2name(axId)];
+          for (var i = 0; i < axIds.length; i++) {
+            var ax = fullLayout[axes.id2name(axIds[i])];
             var indices = ax[stashName];
-            for (var ind of indices) {
+            for (var j = 0; j < indices.length; j++) {
+              var ind = indices[j];
               if (!stash[ind]) {
                 method(gd, ind);
                 stash[ind] = 1;
@@ -26616,8 +26714,8 @@ var Plotly = (() => {
           };
           axes.setConvert(ax);
           if (ax.type === "category") {
-            for (const element of targetArray) {
-              ax.d2c(element);
+            for (var i = 0; i < targetArray.length; i++) {
+              ax.d2c(targetArray[i]);
             }
           }
         } else {
@@ -26642,7 +26740,7 @@ var Plotly = (() => {
         if (axLetter === "y") return "x";
       };
       axes.minDtick = function(ax, newDiff, newFirst, allow) {
-        if (["log", "category", "multicategory"].includes(ax.type) || !allow) {
+        if (["log", "category", "multicategory"].indexOf(ax.type) !== -1 || !allow) {
           ax._minDtick = 0;
         } else if (ax._minDtick === void 0) {
           ax._minDtick = newDiff;
@@ -26651,13 +26749,13 @@ var Plotly = (() => {
           if ((ax._minDtick / newDiff + 1e-6) % 1 < 2e-6 && // existing minDtick is an integer multiple of newDiff
           // (within rounding err)
           // and forceTick0 can be shifted to newFirst
-          ((newFirst - ax._forceTick0) / newDiff % 1 + 1.000_001) % 1 < 2e-6) {
+          ((newFirst - ax._forceTick0) / newDiff % 1 + 1.000001) % 1 < 2e-6) {
             ax._minDtick = newDiff;
             ax._forceTick0 = newFirst;
           } else if ((newDiff / ax._minDtick + 1e-6) % 1 > 2e-6 || // if the converse is true (newDiff is a multiple of minDtick and
           // newFirst can be shifted to forceTick0) then do nothing - same
           // forcing stands. Otherwise, cancel forced minimum
-          ((newFirst - ax._forceTick0) / ax._minDtick % 1 + 1.000_001) % 1 > 2e-6) {
+          ((newFirst - ax._forceTick0) / ax._minDtick % 1 + 1.000001) % 1 > 2e-6) {
             ax._minDtick = 0;
           }
         }
@@ -26665,7 +26763,8 @@ var Plotly = (() => {
       axes.saveRangeInitial = function(gd, overwrite) {
         var axList = axes.list(gd, "", true);
         var hasOneAxisChanged = false;
-        for (var ax of axList) {
+        for (var i = 0; i < axList.length; i++) {
+          var ax = axList[i];
           var isNew = ax._rangeInitial0 === void 0 && ax._rangeInitial1 === void 0;
           var hasChanged = isNew || (ax.range[0] !== ax._rangeInitial0 || ax.range[1] !== ax._rangeInitial1);
           var autorange2 = ax.autorange;
@@ -26682,7 +26781,8 @@ var Plotly = (() => {
         var axList = axes.list(gd, "", true);
         var hasOneAxisChanged = false;
         var allSpikesEnabled = "on";
-        for (var ax of axList) {
+        for (var i = 0; i < axList.length; i++) {
+          var ax = axList[i];
           var isNew = ax._showSpikeInitial === void 0;
           var hasChanged = isNew || !(ax.showspikes === ax._showspikes);
           if (isNew || overwrite && hasChanged) {
@@ -26732,7 +26832,7 @@ var Plotly = (() => {
           else {
             var distinctData = Lib.distinctVals(data);
             var msexp = Math.pow(10, Math.floor(
-              Math.log10(distinctData.minDiff)
+              Math.log(distinctData.minDiff) / Math.LN10
             ));
             var minSize = msexp * Lib.roundUp(
               distinctData.minDiff / msexp,
@@ -26782,11 +26882,11 @@ var Plotly = (() => {
         function nearEdge(v) {
           return (1 + (v - binStart) * 100 / ax.dtick) % 100 < 2;
         }
-        for (const datum of data) {
-          if (datum % 1 === 0) intcount++;
-          else if (!isNumeric(datum)) blankCount++;
-          if (nearEdge(datum)) edgecount++;
-          if (nearEdge(datum + ax.dtick / 2)) midcount++;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i] % 1 === 0) intcount++;
+          else if (!isNumeric(data[i])) blankCount++;
+          if (nearEdge(data[i])) edgecount++;
+          if (nearEdge(data[i] + ax.dtick / 2)) midcount++;
         }
         var dataCount = data.length - blankCount;
         if (intcount === dataCount && ax.type !== "date") {
@@ -26796,17 +26896,19 @@ var Plotly = (() => {
             binStart -= 0.5;
             if (binStart + ax.dtick < dataMin) binStart += ax.dtick;
           }
-        } else if (midcount < dataCount * 0.1 && (edgecount > dataCount * 0.3 || nearEdge(dataMin) || nearEdge(dataMax))) {
+        } else if (midcount < dataCount * 0.1) {
+          if (edgecount > dataCount * 0.3 || nearEdge(dataMin) || nearEdge(dataMax)) {
             var binshift = ax.dtick / 2;
             binStart += binStart + binshift < dataMin ? binshift : -binshift;
           }
+        }
         return binStart;
       }
       function autoShiftMonthBins(binStart, data, dtick, dataMin, calendar) {
         var stats = Lib.findExactDates(data, calendar);
         var threshold = 0.8;
         if (stats.exactDays > threshold) {
-          var numMonths = Number(dtick.slice(1));
+          var numMonths = Number(dtick.substr(1));
           if (stats.exactYears > threshold && numMonths % 12 === 0) {
             binStart = axes.tickIncrement(binStart, "M6", "reverse") + ONEDAY * 1.5;
           } else if (stats.exactMonths > threshold) {
@@ -26837,8 +26939,8 @@ var Plotly = (() => {
           if (hasMajor) {
             var numericMajor = isNumeric(ax.dtick);
             var numericMinor = isNumeric(mockAx.dtick);
-            var majorNum = numericMajor ? ax.dtick : +ax.dtick.slice(1);
-            var minorNum = numericMinor ? mockAx.dtick : +mockAx.dtick.slice(1);
+            var majorNum = numericMajor ? ax.dtick : +ax.dtick.substring(1);
+            var minorNum = numericMinor ? mockAx.dtick : +mockAx.dtick.substring(1);
             if (numericMajor && numericMinor) {
               if (!isMultiple(majorNum, minorNum)) {
                 if (majorNum === 2 * ONEWEEK && minorNum === 3 * ONEDAY) {
@@ -26902,7 +27004,9 @@ var Plotly = (() => {
             }
             if (ax._name === "radialaxis") nt *= 2;
           }
-          if (!(ax.minor && ax.minor.tickmode !== "array") && ax.tickmode === "array") nt *= 100;
+          if (!(ax.minor && ax.minor.tickmode !== "array")) {
+            if (ax.tickmode === "array") nt *= 100;
+          }
           ax._roughDTick = Math.abs(rng[1] - rng[0]) / nt;
           axes.autoTicks(ax, ax._roughDTick);
           if (ax._minDtick > 0 && ax.dtick < ax._minDtick * 2) {
@@ -26920,7 +27024,7 @@ var Plotly = (() => {
         autoTickRound(ax);
       };
       function nMonths(dtick) {
-        return +dtick.slice(1);
+        return +dtick.substring(1);
       }
       function adjustPeriodDelta(ax) {
         var definedDelta;
@@ -26931,7 +27035,7 @@ var Plotly = (() => {
         var tickformat = axes.getTickFormat(ax);
         if (tickformat) {
           var noDtick = ax._dtickInit !== ax.dtick;
-          if (!/%[LMQSXfs]/.test(tickformat)) {
+          if (!/%[fLQsSMX]/.test(tickformat)) {
             if (/%[HI]/.test(tickformat)) {
               definedDelta = ONEHOUR;
               if (noDtick && !isMDate && ax.dtick < ONEHOUR) ax.dtick = ONEHOUR;
@@ -26941,16 +27045,16 @@ var Plotly = (() => {
             } else if (/%[Aadejuwx]/.test(tickformat)) {
               definedDelta = ONEDAY;
               if (noDtick && !isMDate && ax.dtick < ONEDAY) ax.dtick = ONEDAY;
-            } else if (/%[U-W]/.test(tickformat)) {
+            } else if (/%[UVW]/.test(tickformat)) {
               definedDelta = ONEWEEK;
               if (noDtick && !isMDate && ax.dtick < ONEWEEK) ax.dtick = ONEWEEK;
             } else if (/%[Bbm]/.test(tickformat)) {
               definedDelta = ONEAVGMONTH;
               if (noDtick && (isMDate ? nMonths(ax.dtick) < 1 : ax.dtick < ONEMINMONTH)) ax.dtick = "M1";
-            } else if (/%q/.test(tickformat)) {
+            } else if (/%[q]/.test(tickformat)) {
               definedDelta = ONEAVGQUARTER;
               if (noDtick && (isMDate ? nMonths(ax.dtick) < 3 : ax.dtick < ONEMINQUARTER)) ax.dtick = "M3";
-            } else if (/%[Y]/i.test(tickformat)) {
+            } else if (/%[Yy]/.test(tickformat)) {
               definedDelta = ONEAVGYEAR;
               if (noDtick && (isMDate ? nMonths(ax.dtick) < 12 : ax.dtick < ONEMINYEAR)) ax.dtick = "M12";
             }
@@ -27105,7 +27209,7 @@ var Plotly = (() => {
             } else {
               if (type === "date") {
                 if (typeof ax.dtick === "string" && ax.dtick.charAt(0) === "M") {
-                  _dTick = ONEAVGMONTH * ax.dtick.slice(1);
+                  _dTick = ONEAVGMONTH * ax.dtick.substring(1);
                 }
               } else {
                 _dTick = ax._roughDTick;
@@ -27131,10 +27235,12 @@ var Plotly = (() => {
             calendar
           )) {
             if (major) majorId++;
-            if (mockAx.rangebreaks && !axrev) {
+            if (mockAx.rangebreaks) {
+              if (!axrev) {
                 if (x < startTick) continue;
                 if (mockAx.maskBreaks(x) === BADNUM && moveOutsideBreak(x, mockAx) >= maxRange) break;
               }
+            }
             if (tickVals.length > maxTicks || x === prevX) break;
             prevX = x;
             var obj = { value: x };
@@ -27164,7 +27270,7 @@ var Plotly = (() => {
           allTicklabelVals = tickVals;
         } else {
           var allTickVals = tickVals.concat(minorTickVals);
-          if (isPeriod && tickVals.length > 0) {
+          if (isPeriod && tickVals.length) {
             allTickVals = allTickVals.slice(1);
           }
           allTickVals = allTickVals.sort(function(a, b) {
@@ -27177,14 +27283,14 @@ var Plotly = (() => {
           }).filter(function(index) {
             return index !== null;
           });
-          for (const majorIdx of majorTickIndices) {
+          majorTickIndices.forEach(function(majorIdx) {
             ticklabelIndex.map(function(nextLabelIdx) {
               var minorIdx = majorIdx + nextLabelIdx;
               if (minorIdx >= 0 && minorIdx < allTickVals.length) {
                 Lib.pushUnique(allTicklabelVals, allTickVals[minorIdx]);
               }
             });
-          }
+          });
         }
         if (hasMinor) {
           var canOverlap = ax.minor.ticks === "inside" && ax.ticks === "outside" || ax.minor.ticks === "outside" && ax.ticks === "inside";
@@ -27193,9 +27299,10 @@ var Plotly = (() => {
               return d.value;
             });
             var list = [];
-            for (var T of minorTickVals) {
+            for (var k = 0; k < minorTickVals.length; k++) {
+              var T = minorTickVals[k];
               var v = T.value;
-              if (majorValues.includes(v)) {
+              if (majorValues.indexOf(v) !== -1) {
                 continue;
               }
               var found = false;
@@ -27220,7 +27327,7 @@ var Plotly = (() => {
           if (ax.tickmode === "auto") {
             fontSize = ax.tickfont ? ax.tickfont.size : 12;
           }
-          var prevL = Number.NaN;
+          var prevL = NaN;
           for (i = tickVals.length - 1; i > -1; i--) {
             if (tickVals[i].drop) {
               tickVals.splice(i, 1);
@@ -27238,7 +27345,7 @@ var Plotly = (() => {
         if (isAngular(ax) && Math.abs(rng[1] - rng[0]) === 360) {
           tickVals.pop();
         }
-        ax._tmax = (tickVals.at(-1) || {}).value;
+        ax._tmax = (tickVals[tickVals.length - 1] || {}).value;
         ax._prevDateHead = "";
         ax._inCalcTicks = true;
         var lastVisibleHead;
@@ -27272,7 +27379,7 @@ var Plotly = (() => {
           var _minor = tickVals[i].minor;
           var _value = tickVals[i].value;
           if (_minor) {
-            if (ticklabelIndex && allTicklabelVals.includes(tickVals[i])) {
+            if (ticklabelIndex && allTicklabelVals.indexOf(tickVals[i]) !== -1) {
               t = setTickLabel(ax, tickVals[i]);
             } else {
               t = { x: _value };
@@ -27282,7 +27389,7 @@ var Plotly = (() => {
           } else {
             lastVisibleHead = ax._prevDateHead;
             t = setTickLabel(ax, tickVals[i]);
-            if (tickVals[i].skipLabel || ticklabelIndex && !allTicklabelVals.includes(tickVals[i])) {
+            if (tickVals[i].skipLabel || ticklabelIndex && allTicklabelVals.indexOf(tickVals[i]) === -1) {
               hideLabel(t);
             }
             ticksOut.push(t);
@@ -27290,7 +27397,7 @@ var Plotly = (() => {
         }
         ticksOut = ticksOut.concat(minorTicks);
         ax._inCalcTicks = false;
-        if (isPeriod && ticksOut.length > 0) {
+        if (isPeriod && ticksOut.length) {
           ticksOut[0].noTick = true;
         }
         return ticksOut;
@@ -27341,8 +27448,8 @@ var Plotly = (() => {
           var text = !isMinor ? ax.ticktext : [];
           if (!vals) continue;
           if (!Lib.isArrayOrTypedArray(text)) text = [];
-          for (const [i, val] of vals.entries()) {
-            var vali = tickVal2l(val);
+          for (var i = 0; i < vals.length; i++) {
+            var vali = tickVal2l(vals[i]);
             if (vali > tickMin && vali < tickMax) {
               var obj = axes.tickText(ax, vali, false, String(text[i]));
               if (isMinor) {
@@ -27369,7 +27476,7 @@ var Plotly = (() => {
       axes.autoTicks = function(ax, roughDTick, isMinor) {
         var base;
         function getBase(v) {
-          return Math.pow(v, Math.floor(Math.log10(roughDTick)));
+          return Math.pow(v, Math.floor(Math.log(roughDTick) / Math.LN10));
         }
         if (ax.type === "date") {
           ax.tick0 = Lib.dateTick0(ax.calendar, 0);
@@ -27387,7 +27494,7 @@ var Plotly = (() => {
               var tickformat = axes.getTickFormat(ax);
               var isPeriod = ax.ticklabelmode === "period";
               if (isPeriod) ax._rawTick0 = ax.tick0;
-              if (/%[VWu]/.test(tickformat)) {
+              if (/%[uVW]/.test(tickformat)) {
                 ax.tick0 = Lib.dateTick0(ax.calendar, 2);
               } else {
                 ax.tick0 = Lib.dateTick0(ax.calendar, 1);
@@ -27450,11 +27557,11 @@ var Plotly = (() => {
         }
         if (ax.type === "date") {
           var tick0ms = ax.r2l(ax.tick0);
-          var tick0str = ax.l2r(tick0ms).replaceAll(/(^-|i)/g, "");
+          var tick0str = ax.l2r(tick0ms).replace(/(^-|i)/g, "");
           var tick0len = tick0str.length;
           if (String(dtick).charAt(0) === "M") {
-            if (tick0len > 10 || tick0str.slice(5) !== "01-01") ax._tickround = "d";
-            else ax._tickround = +dtick.slice(1) % 12 === 0 ? "y" : "m";
+            if (tick0len > 10 || tick0str.substr(5) !== "01-01") ax._tickround = "d";
+            else ax._tickround = +dtick.substr(1) % 12 === 0 ? "y" : "m";
           } else if (dtick >= ONEDAY && tick0len <= 10 || dtick >= ONEDAY * 15) ax._tickround = "d";
           else if (dtick >= ONEMIN && tick0len <= 16 || dtick >= ONEHOUR) ax._tickround = "M";
           else if (dtick >= ONESEC && tick0len <= 19 || dtick >= ONEMIN) ax._tickround = "S";
@@ -27465,10 +27572,10 @@ var Plotly = (() => {
           }
         } else if (isNumeric(dtick) || dtick.charAt(0) === "L") {
           var rng = ax.range.map(ax.r2d || Number);
-          if (!isNumeric(dtick)) dtick = Number(dtick.slice(1));
-          ax._tickround = 2 - Math.floor(Math.log10(dtick) + 0.01);
+          if (!isNumeric(dtick)) dtick = Number(dtick.substr(1));
+          ax._tickround = 2 - Math.floor(Math.log(dtick) / Math.LN10 + 0.01);
           var maxend = Math.max(Math.abs(rng[0]), Math.abs(rng[1]));
-          var rangeexp = Math.floor(Math.log10(maxend) + 0.01);
+          var rangeexp = Math.floor(Math.log(maxend) / Math.LN10 + 0.01);
           var minexponent = ax.minexponent === void 0 ? 3 : ax.minexponent;
           if (Math.abs(rangeexp) > minexponent) {
             if (isSIFormat(ax.exponentformat) && !beyondSI(rangeexp)) {
@@ -27483,14 +27590,14 @@ var Plotly = (() => {
         var axSign = axrev ? -1 : 1;
         if (isNumeric(dtick)) return Lib.increment(x, axSign * dtick);
         var tType = dtick.charAt(0);
-        var dtSigned = axSign * Number(dtick.slice(1));
+        var dtSigned = axSign * Number(dtick.substr(1));
         if (tType === "M") return Lib.incrementMonth(x, dtSigned, calendar);
-        if (tType === "L") return Math.log10(Math.pow(10, x) + dtSigned);
+        if (tType === "L") return Math.log(Math.pow(10, x) + dtSigned) / Math.LN10;
         if (tType === "D") {
           var tickset = dtick === "D2" ? roundLog2 : roundLog1;
           var x2 = x + axSign * 0.01;
           var frac = Lib.roundUp(Lib.mod(x2, 1), tickset, axrev);
-          return Math.floor(x2) + Math.log10(d3.round(Math.pow(10, frac), 1));
+          return Math.floor(x2) + Math.log(d3.round(Math.pow(10, frac), 1)) / Math.LN10;
         }
         throw "unrecognized dtick " + String(dtick);
       };
@@ -27510,7 +27617,7 @@ var Plotly = (() => {
           return tmin;
         }
         var tType = dtick.charAt(0);
-        var dtNum = Number(dtick.slice(1));
+        var dtNum = Number(dtick.substr(1));
         if (tType === "M") {
           var cnt = 0;
           var t0 = tick0;
@@ -27529,13 +27636,13 @@ var Plotly = (() => {
           Lib.error("tickFirst did not converge", ax);
           return t0;
         } else if (tType === "L") {
-          return Math.log10(sRound(
+          return Math.log(sRound(
             (Math.pow(10, r0) - tick0) / dtNum
-          ) * dtNum + tick0);
+          ) * dtNum + tick0) / Math.LN10;
         } else if (tType === "D") {
           var tickset = dtick === "D2" ? roundLog2 : roundLog1;
           var frac = Lib.roundUp(Lib.mod(r0, 1), tickset, axrev);
-          return Math.floor(r0) + Math.log10(d3.round(Math.pow(10, frac), 1));
+          return Math.floor(r0) + Math.log(d3.round(Math.pow(10, frac), 1)) / Math.LN10;
         } else throw "unrecognized dtick " + String(dtick);
       };
       axes.tickText = function(ax, x, hover, noSuffixPrefix) {
@@ -27573,7 +27680,7 @@ var Plotly = (() => {
           }[showAttr];
           return showAttr !== "all" && x !== firstOrLast;
         }
-        var hideexp = hover ? "never" : (ax.exponentformat !== "none" && isHidden(ax.showexponent) ? "hide" : "");
+        var hideexp = hover ? "never" : ax.exponentformat !== "none" && isHidden(ax.showexponent) ? "hide" : "";
         if (axType === "date") formatDate(ax, out, hover, extraPrecision);
         else if (axType === "log") formatLog(ax, out, hover, extraPrecision, hideexp);
         else if (axType === "category") formatCategory(ax, out);
@@ -27640,8 +27747,8 @@ var Plotly = (() => {
         var headStr;
         var splitIndex = dateStr.indexOf("\n");
         if (splitIndex !== -1) {
-          headStr = dateStr.slice(splitIndex + 1);
-          dateStr = dateStr.slice(0, Math.max(0, splitIndex));
+          headStr = dateStr.substr(splitIndex + 1);
+          dateStr = dateStr.substr(0, splitIndex);
         }
         if (extraPrecision) {
           if (headStr !== void 0 && (dateStr === "00:00:00" || dateStr === "00:00")) {
@@ -27817,7 +27924,7 @@ var Plotly = (() => {
           var ah = {
             exponentformat: exponentFormat,
             minexponent: ax.minexponent,
-            dtick: ax.showexponent === "none" ? ax.dtick : (isNumeric(v) ? Math.abs(v) || 1 : 1),
+            dtick: ax.showexponent === "none" ? ax.dtick : isNumeric(v) ? Math.abs(v) || 1 : 1,
             // if not showing any exponents, don't change the exponent
             // from what we calculate
             range: ax.showexponent === "none" ? ax.range.map(ax.r2d) : [0, v || 1]
@@ -27827,7 +27934,7 @@ var Plotly = (() => {
           exponent = ah._tickexponent;
           if (ax.hoverformat) tickformat = ax.hoverformat;
         }
-        if (tickformat) return ax._numFormat(tickformat)(v).replaceAll('-', MINUS_SIGN);
+        if (tickformat) return ax._numFormat(tickformat)(v).replace(/-/g, MINUS_SIGN);
         var e = Math.pow(10, -tickRound) / 2;
         if (exponentFormat === "none") exponent = 0;
         v = Math.abs(v);
@@ -27843,12 +27950,12 @@ var Plotly = (() => {
           if (tickRound === 0) v = String(Math.floor(v));
           else if (tickRound < 0) {
             v = String(Math.round(v));
-            v = v.slice(0, Math.max(0, v.length + tickRound));
+            v = v.substr(0, v.length + tickRound);
             for (var i = tickRound; i < 0; i++) v += "0";
           } else {
             v = String(v);
             var dp = v.indexOf(".") + 1;
-            if (dp) v = v.slice(0, Math.max(0, dp + tickRound)).replace(/\.?0+$/, "");
+            if (dp) v = v.substr(0, dp + tickRound).replace(/\.?0+$/, "");
           }
           v = Lib.numSeparate(v, ax._separators, separatethousands);
         }
@@ -27861,7 +27968,7 @@ var Plotly = (() => {
           if (exponentFormat === "e" || exponentFormat === "E") {
             v += exponentFormat + signedExponent;
           } else if (exponentFormat === "power") {
-            v += "\u00D710<sup>" + signedExponent + "</sup>";
+            v += "\xD710<sup>" + signedExponent + "</sup>";
           } else if (exponentFormat === "B" && exponent === 9) {
             v += "B";
           } else if (isSIFormat(exponentFormat)) {
@@ -27885,7 +27992,7 @@ var Plotly = (() => {
               var leftPriority = priority.indexOf(left.charAt(0));
               var rightPriority = priority.indexOf(right.charAt(0));
               if (leftPriority === rightPriority) {
-                return Number(left.replaceAll(/(L|D)/g, "")) - Number(right.replaceAll(/(L|D)/g, ""));
+                return Number(left.replace(/(L|D)/g, "")) - Number(right.replace(/(L|D)/g, ""));
               } else {
                 return leftPriority - rightPriority;
               }
@@ -27943,8 +28050,8 @@ var Plotly = (() => {
         var allSubplots = subplotObj.cartesian.concat(subplotObj.gl2d || []);
         var out = ax ? axes.findSubplotsWithAxis(allSubplots, ax) : allSubplots;
         out.sort(function(a, b) {
-          var aParts = a.slice(1).split("y");
-          var bParts = b.slice(1).split("y");
+          var aParts = a.substr(1).split("y");
+          var bParts = b.substr(1).split("y");
           if (aParts[0] === bParts[0]) return +aParts[1] - +bParts[1];
           return +aParts[0] - +bParts[0];
         });
@@ -27955,7 +28062,8 @@ var Plotly = (() => {
           ax._id.charAt(0) === "x" ? "^" + ax._id + "y" : ax._id + "$"
         );
         var subplotsWithAx = [];
-        for (var sp of subplots) {
+        for (var i = 0; i < subplots.length; i++) {
+          var sp = subplots[i];
           if (axMatch.test(sp)) subplotsWithAx.push(sp);
         }
         return subplotsWithAx;
@@ -28025,7 +28133,9 @@ var Plotly = (() => {
         axList.map(function(axId) {
           var ax = axes.getFromId(gd, axId);
           if (ax.tickmode === "sync" && ax.overlaying) {
-            var overlayingIndex = axList.indexOf(ax.overlaying);
+            var overlayingIndex = axList.findIndex(function(axis) {
+              return axis === ax.overlaying;
+            });
             if (overlayingIndex >= 0) {
               axList.unshift(axList.splice(overlayingIndex, 1).shift());
             }
@@ -28043,7 +28153,7 @@ var Plotly = (() => {
             if (ax._shiftPusher) {
               incrementShift(ax, ax._fullDepth || 0, axShifts, true);
             }
-            ax._r = [...ax.range];
+            ax._r = ax.range.slice();
             ax._rl = Lib.simpleMap(ax._r, ax.r2l);
             return axDone;
           };
@@ -28061,7 +28171,7 @@ var Plotly = (() => {
         var counterLetter = axes.counterLetter(axId);
         var mainPlotinfo = fullLayout._plots[ax._mainSubplot];
         if (!mainPlotinfo) return;
-        ax._shiftPusher = ax.autoshift || overlayingShiftedAx.includes(ax._id) || overlayingShiftedAx.includes(ax.overlaying);
+        ax._shiftPusher = ax.autoshift || overlayingShiftedAx.indexOf(ax._id) !== -1 || overlayingShiftedAx.indexOf(ax.overlaying) !== -1;
         if (ax._shiftPusher & ax.anchor === "free") {
           var selfPush = ax.linewidth / 2 || 0;
           if (ax.ticks === "inside") {
@@ -28227,7 +28337,8 @@ var Plotly = (() => {
               transFn: transTickFn,
               labelFns: axes.makeLabelFns(ax, mainLinePositionShift + standoff * majorTickSigns[4])
             });
-          }, function() {
+          });
+          seq.push(function() {
             ax._depth = majorTickSigns[4] * (getLabelLevelBbox("tick2")[ax.side] - mainLinePositionShift);
             return drawDividers(gd, ax, {
               vals: dividerVals,
@@ -28271,7 +28382,7 @@ var Plotly = (() => {
           if (ax._shiftPusher) {
             axDepth = Math.max(
               outsideTickLen,
-              llbbox.height > 0 ? (s === "l" ? pos - llbbox.left : llbbox.right - pos) : 0
+              llbbox.height > 0 ? s === "l" ? pos - llbbox.left : llbbox.right - pos : 0
             );
             if (ax.title.text !== fullLayout._dfltTitle[axLetter]) {
               titleDepth = (ax._titleStandoff || 0) + (ax._titleScoot || 0);
@@ -28357,19 +28468,19 @@ var Plotly = (() => {
       function filterPush(push, automargin) {
         if (!push) return;
         var keepMargin = Object.keys(MARGIN_MAPPING).reduce(function(data, nextKey) {
-          if (automargin.includes(nextKey)) {
-            for (const key of MARGIN_MAPPING[nextKey]) {
+          if (automargin.indexOf(nextKey) !== -1) {
+            MARGIN_MAPPING[nextKey].forEach(function(key) {
               data[key] = 1;
-            }
+            });
           }
           return data;
         }, {});
-        for (const key of Object.keys(push)) {
+        Object.keys(push).forEach(function(key) {
           if (!keepMargin[key]) {
             if (key.length === 1) push[key] = 0;
             else delete push[key];
           }
-        }
+        });
       }
       function getBoundaryVals(ax, vals) {
         var out = [];
@@ -28380,7 +28491,7 @@ var Plotly = (() => {
             out.push(Lib.extendFlat({}, d, { x: xb }));
           }
         };
-        if (vals.length > 0) {
+        if (vals.length) {
           for (i = 0; i < vals.length; i++) {
             _push(vals[i], 0);
           }
@@ -28391,7 +28502,8 @@ var Plotly = (() => {
       function getSecondaryLabelVals(ax, vals) {
         var out = [];
         var lookup = {};
-        for (var d of vals) {
+        for (var i = 0; i < vals.length; i++) {
+          var d = vals[i];
           if (lookup[d.text2]) {
             lookup[d.text2].push(d.x);
           } else {
@@ -28406,14 +28518,14 @@ var Plotly = (() => {
       function getDividerVals(ax, vals) {
         var out = [];
         var i, current;
-        var reversed = vals.length && vals.at(-1).x < vals[0].x;
+        var reversed = vals.length && vals[vals.length - 1].x < vals[0].x;
         var _push = function(d2, bndIndex) {
           var xb = d2.xbnd[bndIndex];
           if (xb !== null) {
             out.push(Lib.extendFlat({}, d2, { x: xb }));
           }
         };
-        if (ax.showdividers && vals.length > 0) {
+        if (ax.showdividers && vals.length) {
           for (i = 0; i < vals.length; i++) {
             var d = vals[i];
             if (d.text2 !== current) {
@@ -28429,10 +28541,10 @@ var Plotly = (() => {
         var top, bottom;
         var left, right;
         if (ax._selections[cls].size()) {
-          top = Number.POSITIVE_INFINITY;
-          bottom = Number.NEGATIVE_INFINITY;
-          left = Number.POSITIVE_INFINITY;
-          right = Number.NEGATIVE_INFINITY;
+          top = Infinity;
+          bottom = -Infinity;
+          left = Infinity;
+          right = -Infinity;
           ax._selections[cls].each(function() {
             var thisLabel = selectTickLabel(this);
             var bb = Drawing.bBox(thisLabel.node().parentNode);
@@ -28485,7 +28597,7 @@ var Plotly = (() => {
         var u = uv[0];
         var v = uv[1];
         var isReversed = ax.range[0] > ax.range[1];
-        var labelsInside = ax.ticklabelposition && ax.ticklabelposition.includes("inside");
+        var labelsInside = ax.ticklabelposition && ax.ticklabelposition.indexOf("inside") !== -1;
         var labelsOutside = !labelsInside;
         if (shift) {
           var shiftSign = isReversed ? -1 : 1;
@@ -28514,7 +28626,7 @@ var Plotly = (() => {
       function getTickLabelUV(ax) {
         var ticklabelposition = ax.ticklabelposition || "";
         var has = function(str) {
-          return ticklabelposition.includes(str);
+          return ticklabelposition.indexOf(str) !== -1;
         };
         var isTop = has("top");
         var isLeft = has("left");
@@ -28549,7 +28661,7 @@ var Plotly = (() => {
         if (!opts) opts = {};
         var minor = opts.minor;
         if (minor && !ax.minor) return "";
-        var len = opts.len !== void 0 ? opts.len : (minor ? ax.minor.ticklen : ax.ticklen);
+        var len = opts.len !== void 0 ? opts.len : minor ? ax.minor.ticklen : ax.ticklen;
         var axLetter = ax._id.charAt(0);
         var pad = (ax.linewidth || 1) / 2;
         return axLetter === "x" ? "M0," + (shift + pad * sgn) + "v" + len * sgn : "M" + (shift + pad * sgn) + ",0h" + len * sgn;
@@ -28557,7 +28669,7 @@ var Plotly = (() => {
       axes.makeLabelFns = function(ax, shift, angle) {
         var ticklabelposition = ax.ticklabelposition || "";
         var has = function(str) {
-          return ticklabelposition.includes(str);
+          return ticklabelposition.indexOf(str) !== -1;
         };
         var isTop = has("top");
         var isLeft = has("left");
@@ -28634,7 +28746,7 @@ var Plotly = (() => {
             return a * flipIt < 0 !== insideTickLabels ? "end" : "start";
           };
           out.heightFn = function(d, a, h) {
-            return a < -60 || a > 60 ? -0.5 * h : (ax.side === "top" !== insideTickLabels ? -h : 0);
+            return a < -60 || a > 60 ? -0.5 * h : ax.side === "top" !== insideTickLabels ? -h : 0;
           };
         } else if (axLetter === "y") {
           endSide = !insideTickLabels && side === "left" || insideTickLabels && side === "right";
@@ -28672,7 +28784,7 @@ var Plotly = (() => {
           };
           out.heightFn = function(d, a, h) {
             if (ax.side === "right") a *= -1;
-            return a < -30 ? -h : (a < 30 ? -0.5 * h : 0);
+            return a < -30 ? -h : a < 30 ? -0.5 * h : 0;
           };
         }
         return out;
@@ -28683,12 +28795,14 @@ var Plotly = (() => {
       axes.drawTicks = function(gd, ax, opts) {
         opts = opts || {};
         var cls = ax._id + "tick";
-        var vals = [ax.minor && ax.minor.ticks ? (
+        var vals = [].concat(
+          ax.minor && ax.minor.ticks ? (
             // minor vals
             opts.vals.filter(function(d) {
               return d.minor && !d.noTick;
             })
-          ) : []].flat().concat(
+          ) : []
+        ).concat(
           ax.ticks ? (
             // major vals
             opts.vals.filter(function(d) {
@@ -28850,11 +28964,11 @@ var Plotly = (() => {
         ax._adjustTickLabelsOverflow = function() {
           var ticklabeloverflow = ax.ticklabeloverflow;
           if (!ticklabeloverflow || ticklabeloverflow === "allow") return;
-          var hideOverflow = ticklabeloverflow.includes("hide");
+          var hideOverflow = ticklabeloverflow.indexOf("hide") !== -1;
           var isX = ax._id.charAt(0) === "x";
           var p02 = 0;
           var p12 = isX ? gd._fullLayout.width : gd._fullLayout.height;
-          if (ticklabeloverflow.includes("domain")) {
+          if (ticklabeloverflow.indexOf("domain") !== -1) {
             var rl = Lib.simpleMap(ax.range, ax.r2l);
             p02 = ax.l2p(rl[0]) + ax._offset;
             p12 = ax.l2p(rl[1]) + ax._offset;
@@ -28862,8 +28976,8 @@ var Plotly = (() => {
           var min = Math.min(p02, p12);
           var max = Math.max(p02, p12);
           var side = ax.side;
-          var visibleLabelMin = Number.POSITIVE_INFINITY;
-          var visibleLabelMax = Number.NEGATIVE_INFINITY;
+          var visibleLabelMin = Infinity;
+          var visibleLabelMax = -Infinity;
           tickLabels.each(function(d) {
             var thisLabel = d3.select(this);
             var mathjaxGroup = thisLabel.select(".text-math-group");
@@ -28885,12 +28999,12 @@ var Plotly = (() => {
                 if (side === "bottom" || side === "right") {
                   visibleLabelMin = Math.min(visibleLabelMin, isX ? bb.top : bb.left);
                 } else {
-                  visibleLabelMin = Number.NEGATIVE_INFINITY;
+                  visibleLabelMin = -Infinity;
                 }
                 if (side === "top" || side === "left") {
                   visibleLabelMax = Math.max(visibleLabelMax, isX ? bb.bottom : bb.right);
                 } else {
-                  visibleLabelMax = Number.POSITIVE_INFINITY;
+                  visibleLabelMax = Infinity;
                 }
               }
             }
@@ -28913,7 +29027,7 @@ var Plotly = (() => {
             if (ax._id !== plotinfo.xaxis._id && ax._id !== plotinfo.yaxis._id) continue;
             anchoredAxes.push(isX ? plotinfo.yaxis : plotinfo.xaxis);
           }
-          for (const [idx, anchorAx2] of anchoredAxes.entries()) {
+          anchoredAxes.forEach(function(anchorAx2, idx) {
             if (anchorAx2 && insideTicklabelposition(anchorAx2)) {
               (partialOpts || [
                 ZERO_PATH,
@@ -28946,7 +29060,7 @@ var Plotly = (() => {
                 });
               });
             }
-          }
+          });
         };
         positionLabels(tickLabels, prevAngle + 1 ? prevAngle : tickAngle);
         function allLabelsReady() {
@@ -28955,7 +29069,7 @@ var Plotly = (() => {
         var autoangle = null;
         function fixLabelOverlaps() {
           positionLabels(tickLabels, tickAngle);
-          if (vals.length > 0 && ax.autotickangles && (ax.type !== "log" || String(ax.dtick).charAt(0) !== "D")) {
+          if (vals.length && ax.autotickangles && (ax.type !== "log" || String(ax.dtick).charAt(0) !== "D")) {
             autoangle = ax.autotickangles[0];
             var maxFontSize = 0;
             var lbbArray = [];
@@ -29018,7 +29132,7 @@ var Plotly = (() => {
             } else {
               var ticklabelposition = ax.ticklabelposition || "";
               var has = function(str) {
-                return ticklabelposition.includes(str);
+                return ticklabelposition.indexOf(str) !== -1;
               };
               var isTop = has("top");
               var isLeft = has("left");
@@ -29052,7 +29166,7 @@ var Plotly = (() => {
         }
         if (ax._tickAngles) {
           seq.push(function() {
-            ax._tickAngles[cls] = autoangle === null ? (isNumeric(tickAngle) ? tickAngle : 0) : autoangle;
+            ax._tickAngles[cls] = autoangle === null ? isNumeric(tickAngle) ? tickAngle : 0 : autoangle;
           });
         }
         var computeTickLabelBoundingBoxes = function() {
@@ -29290,11 +29404,12 @@ var Plotly = (() => {
           }
         }
         var plotinfo = fullLayout._plots[counterAxis._mainSubplot];
-        if ((plotinfo.mainplotinfo || plotinfo).overlays.length === 0) {
+        if (!(plotinfo.mainplotinfo || plotinfo).overlays.length) {
           return lineNearZero(counterAxis, zeroPosition);
         }
         var counterLetterAxes = axes.list(gd, counterLetter);
-        for (var counterAxis2 of counterLetterAxes) {
+        for (var i = 0; i < counterLetterAxes.length; i++) {
+          var counterAxis2 = counterLetterAxes[i];
           if (counterAxis2._mainAxis === mainCounterAxis && lineNearZero(counterAxis2, zeroPosition)) {
             return true;
           }
@@ -29304,7 +29419,8 @@ var Plotly = (() => {
         var fullData = gd._fullData;
         var subplot = ax._mainSubplot;
         var axLetter = ax._id.charAt(0);
-        for (var trace of fullData) {
+        for (var i = 0; i < fullData.length; i++) {
+          var trace = fullData[i];
           if (trace.visible === true && trace.xaxis + trace.yaxis === subplot) {
             if (Registry.traceIs(trace, "bar-like") && trace.orientation === { x: "h", y: "v" }[axLetter]) return true;
             if (trace.fill && trace.fill.charAt(trace.fill.length - 1) === axLetter) return true;
@@ -29319,7 +29435,8 @@ var Plotly = (() => {
       }
       axes.allowAutoMargin = function(gd) {
         var axList = axes.list(gd, "", true);
-        for (var ax of axList) {
+        for (var i = 0; i < axList.length; i++) {
+          var ax = axList[i];
           if (ax.automargin) {
             Plots.allowAutoMargin(gd, axAutoMarginID(ax));
             if (ax.mirror) {
@@ -29342,8 +29459,8 @@ var Plotly = (() => {
       }
       axes.swap = function(gd, traces) {
         var axGroups = makeAxisGroups(gd, traces);
-        for (const axGroup of axGroups) {
-          swapAxisGroup(gd, axGroup.x, axGroup.y);
+        for (var i = 0; i < axGroups.length; i++) {
+          swapAxisGroup(gd, axGroups[i].x, axGroups[i].y);
         }
       };
       function makeAxisGroups(gd, traces) {
@@ -29355,11 +29472,11 @@ var Plotly = (() => {
           var yi = gd._fullData[traces[i]].yaxis;
           if (!xi || !yi) continue;
           for (j = 0; j < groups.length; j++) {
-            if (groups[j].x.includes(xi) || groups[j].y.includes(yi)) {
+            if (groups[j].x.indexOf(xi) !== -1 || groups[j].y.indexOf(yi) !== -1) {
               groupsi.push(j);
             }
           }
-          if (groupsi.length === 0) {
+          if (!groupsi.length) {
             groups.push({ x: [xi], y: [yi] });
             continue;
           }
@@ -29378,8 +29495,8 @@ var Plotly = (() => {
         return groups;
       }
       function mergeAxisGroups(intoSet, fromSet) {
-        for (const element of fromSet) {
-          if (intoSet.indexOf(element) === -1) intoSet.push(element);
+        for (var i = 0; i < fromSet.length; i++) {
+          if (intoSet.indexOf(fromSet[i]) === -1) intoSet.push(fromSet[i]);
         }
       }
       function swapAxisGroup(gd, xIds, yIds) {
@@ -29407,18 +29524,18 @@ var Plotly = (() => {
           var allEqual = true;
           var coerceLinearX = false;
           var coerceLinearY = false;
-          if (keyi.charAt(0) === "_" || typeof xVal === "function" || noSwapAttrs.includes(keyi)) {
+          if (keyi.charAt(0) === "_" || typeof xVal === "function" || noSwapAttrs.indexOf(keyi) !== -1) {
             continue;
           }
           for (j = 1; j < xFullAxes.length && allEqual; j++) {
             var xVali = xFullAxes[j][keyi];
-            if (keyi === "type" && numericTypes.includes(xVal) && numericTypes.includes(xVali) && xVal !== xVali) {
+            if (keyi === "type" && numericTypes.indexOf(xVal) !== -1 && numericTypes.indexOf(xVali) !== -1 && xVal !== xVali) {
               coerceLinearX = true;
             } else if (xVali !== xVal) allEqual = false;
           }
           for (j = 1; j < yFullAxes.length && allEqual; j++) {
             var yVali = yFullAxes[j][keyi];
-            if (keyi === "type" && numericTypes.includes(yVal) && numericTypes.includes(yVali) && yVal !== yVali) {
+            if (keyi === "type" && numericTypes.indexOf(yVal) !== -1 && numericTypes.indexOf(yVali) !== -1 && yVal !== yVali) {
               coerceLinearY = true;
             } else if (yFullAxes[j][keyi] !== yVal) allEqual = false;
           }
@@ -29430,7 +29547,7 @@ var Plotly = (() => {
         }
         for (i = 0; i < gd._fullLayout.annotations.length; i++) {
           var ann = gd._fullLayout.annotations[i];
-          if (xIds.includes(ann.xref) && yIds.includes(ann.yref)) {
+          if (xIds.indexOf(ann.xref) !== -1 && yIds.indexOf(ann.yref) !== -1) {
             Lib.swapAttrs(layout.annotations[i], ["?"]);
           }
         }
@@ -29469,12 +29586,14 @@ var Plotly = (() => {
         return v;
       }
       function insideTicklabelposition(ax) {
-        return (ax.ticklabelposition || "").includes("inside");
+        return (ax.ticklabelposition || "").indexOf("inside") !== -1;
       }
       function hideCounterAxisInsideTickLabels(ax, opts) {
-        if (insideTicklabelposition(ax._anchorAxis || {}) && ax._hideCounterAxisInsideTickLabels) {
+        if (insideTicklabelposition(ax._anchorAxis || {})) {
+          if (ax._hideCounterAxisInsideTickLabels) {
             ax._hideCounterAxisInsideTickLabels(opts);
           }
+        }
       }
       function incrementShift(ax, shiftVal, axShifts, normalize) {
         var overlay = ax.anchor !== "free" && (ax.overlaying === void 0 || ax.overlaying === false) ? ax._id : ax.overlaying;
@@ -29496,7 +29615,7 @@ var Plotly = (() => {
         return ax.autoshift ? axShifts[ax.overlaying][ax.side] : ax.shift || 0;
       }
       function periodCompatibleWithTickformat(period, tickformat) {
-        return /%f/.test(tickformat) ? period >= ONEMICROSEC : /%L/.test(tickformat) ? period >= ONEMILLI : /%[SX]/.test(tickformat) ? period >= ONESEC : /%M/.test(tickformat) ? period >= ONEMIN : /%[HI]/.test(tickformat) ? period >= ONEHOUR : /%p/.test(tickformat) ? period >= HALFDAY : /%[Aadejuwx]/.test(tickformat) ? period >= ONEDAY : /%[U-W]/.test(tickformat) ? period >= ONEWEEK : /%[Bbm]/.test(tickformat) ? period >= ONEMINMONTH : /%q/.test(tickformat) ? period >= ONEMINQUARTER : /%[Y]/i.test(tickformat) ? period >= ONEMINYEAR : true;
+        return /%f/.test(tickformat) ? period >= ONEMICROSEC : /%L/.test(tickformat) ? period >= ONEMILLI : /%[SX]/.test(tickformat) ? period >= ONESEC : /%M/.test(tickformat) ? period >= ONEMIN : /%[HI]/.test(tickformat) ? period >= ONEHOUR : /%p/.test(tickformat) ? period >= HALFDAY : /%[Aadejuwx]/.test(tickformat) ? period >= ONEDAY : /%[UVW]/.test(tickformat) ? period >= ONEWEEK : /%[Bbm]/.test(tickformat) ? period >= ONEMINMONTH : /%[q]/.test(tickformat) ? period >= ONEMINQUARTER : /%[Yy]/.test(tickformat) ? period >= ONEMINYEAR : true;
       }
     }
   });
@@ -29565,9 +29684,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/mouse-event-offset/index.js
+  // node_modules/.pnpm/mouse-event-offset@3.0.2/node_modules/mouse-event-offset/index.js
   var require_mouse_event_offset = __commonJS({
-    "node_modules/mouse-event-offset/index.js"(exports, module) {
+    "node_modules/.pnpm/mouse-event-offset@3.0.2/node_modules/mouse-event-offset/index.js"(exports, module) {
       var rootPosition = { left: 0, top: 0 };
       module.exports = mouseEventOffset;
       function mouseEventOffset(ev, target, out) {
@@ -29592,9 +29711,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/has-passive-events/index.js
+  // node_modules/.pnpm/has-passive-events@1.0.0/node_modules/has-passive-events/index.js
   var require_has_passive_events = __commonJS({
-    "node_modules/has-passive-events/index.js"(exports, module) {
+    "node_modules/.pnpm/has-passive-events@1.0.0/node_modules/has-passive-events/index.js"(exports, module) {
       "use strict";
       var isBrowser = require_client();
       function detect() {
@@ -29607,7 +29726,7 @@ var Plotly = (() => {
           });
           window.addEventListener("test", null, opts);
           window.removeEventListener("test", null, opts);
-        } catch {
+        } catch (e) {
           supported = false;
         }
         return supported;
@@ -29718,9 +29837,9 @@ var Plotly = (() => {
         var startX, startY, newMouseDownTime, cursor, dragCover, initialEvent, initialTarget, rightClick;
         if (!gd._mouseDownTime) gd._mouseDownTime = 0;
         element.style.pointerEvents = "all";
-        element.addEventListener('mousedown', onStart);
+        element.onmousedown = onStart;
         if (!supportsPassive) {
-          element.addEventListener('touchstart', onStart);
+          element.ontouchstart = onStart;
         } else {
           if (element._ontouchstart) {
             element.removeEventListener("touchstart", element._ontouchstart);
@@ -29743,11 +29862,11 @@ var Plotly = (() => {
           initialTarget = e.target;
           initialEvent = e;
           rightClick = e.buttons === 2 || e.ctrlKey;
-          if (e.clientX === undefined && e.clientY === undefined) {
+          if (typeof e.clientX === "undefined" && typeof e.clientY === "undefined") {
             e.clientX = startX;
             e.clientY = startY;
           }
-          newMouseDownTime = Date.now();
+          newMouseDownTime = (/* @__PURE__ */ new Date()).getTime();
           if (newMouseDownTime - gd._mouseDownTime < doubleClickDelay) {
             numClicks += 1;
           } else {
@@ -29813,7 +29932,7 @@ var Plotly = (() => {
             return;
           }
           gd._dragging = false;
-          if (Date.now() - gd._mouseDownTime > doubleClickDelay) {
+          if ((/* @__PURE__ */ new Date()).getTime() - gd._mouseDownTime > doubleClickDelay) {
             numClicks = Math.max(numClicks - 1, 1);
           }
           if (gd._dragged) {
@@ -29824,7 +29943,7 @@ var Plotly = (() => {
               var e2;
               try {
                 e2 = new MouseEvent("click", e);
-              } catch {
+              } catch (err) {
                 var offset = pointerOffset(e);
                 e2 = document.createEvent("MouseEvents");
                 e2.initMouseEvent(
@@ -29862,9 +29981,9 @@ var Plotly = (() => {
         cStyle.right = 0;
         cStyle.top = 0;
         cStyle.bottom = 0;
-        cStyle.zIndex = 999_999_999;
+        cStyle.zIndex = 999999999;
         cStyle.background = "none";
-        document.body.append(cover);
+        document.body.appendChild(cover);
         return cover;
       }
       dragElement.coverSlip = coverSlip;
@@ -29882,9 +30001,9 @@ var Plotly = (() => {
     "src/lib/setcursor.js"(exports, module) {
       "use strict";
       module.exports = function setCursor(el3, csr) {
-        for (const cls of (el3.attr("class") || "").split(" ")) {
+        (el3.attr("class") || "").split(" ").forEach(function(cls) {
           if (cls.indexOf("cursor-") === 0) el3.classed(cls, false);
-        }
+        });
         if (csr) el3.classed("cursor-" + csr, true);
       };
     }
@@ -29902,9 +30021,10 @@ var Plotly = (() => {
         if (csr) {
           if (!savedCursor) {
             var classes = (el3.attr("class") || "").split(" ");
-            for (var cls of classes) {
+            for (var i = 0; i < classes.length; i++) {
+              var cls = classes[i];
               if (cls.indexOf("cursor-") === 0) {
-                el3.attr(STASHATTR, cls.slice(7)).classed(cls, false);
+                el3.attr(STASHATTR, cls.substr(7)).classed(cls, false);
               }
             }
             if (!el3.attr(STASHATTR)) {
@@ -30090,13 +30210,13 @@ var Plotly = (() => {
     "src/components/legend/helpers.js"(exports) {
       "use strict";
       exports.isGrouped = function isGrouped(legendLayout) {
-        return (legendLayout.traceorder || "").includes("grouped");
+        return (legendLayout.traceorder || "").indexOf("grouped") !== -1;
       };
       exports.isVertical = function isVertical(legendLayout) {
         return legendLayout.orientation !== "h";
       };
       exports.isReversed = function isReversed(legendLayout) {
-        return (legendLayout.traceorder || "").includes("reversed");
+        return (legendLayout.traceorder || "").indexOf("reversed") !== -1;
       };
     }
   });
@@ -30142,8 +30262,8 @@ var Plotly = (() => {
         var allLegendItems = fullData.concat(shapesWithLegend).filter(function(d) {
           return legendId === (d.legend || "legend");
         });
-        for (const allLegendItem of allLegendItems) {
-          trace = allLegendItem;
+        for (var i = 0; i < allLegendItems.length; i++) {
+          trace = allLegendItems[i];
           if (!trace.visible) continue;
           var isShape = trace._isShape;
           if (trace.showlegend || trace._dfltShowLegend && !(trace._module && trace._module.attributes && trace._module.attributes.showlegend && trace._module.attributes.showlegend.dflt === false)) {
@@ -30156,7 +30276,7 @@ var Plotly = (() => {
             }
             Lib.coerceFont(traceCoerce, "legendgrouptitle.font", grouptitlefont);
           }
-          if (!isShape && Registry.traceIs(trace, "bar") && layoutOut.barmode === "stack" || ["tonextx", "tonexty"].includes(trace.fill)) {
+          if (!isShape && Registry.traceIs(trace, "bar") && layoutOut.barmode === "stack" || ["tonextx", "tonexty"].indexOf(trace.fill) !== -1) {
             defaultOrder = helpers.isGrouped({ traceorder: defaultOrder }) ? "grouped+reversed" : "reversed";
           }
           if (trace.legendgroup !== void 0 && trace.legendgroup !== "") {
@@ -30255,7 +30375,7 @@ var Plotly = (() => {
       }
       module.exports = function legendDefaults(layoutIn, layoutOut, fullData) {
         var i;
-        var allLegendsData = [...fullData];
+        var allLegendsData = fullData.slice();
         var shapes = layoutOut.shapes;
         if (shapes) {
           for (i = 0; i < shapes.length; i++) {
@@ -30312,7 +30432,7 @@ var Plotly = (() => {
         else if (numClicks === 2) mode = itemDoubleClick;
         if (!mode) return;
         var toggleGroup = groupClick === "togglegroup";
-        var hiddenSlices = fullLayout.hiddenlabels ? [...fullLayout.hiddenlabels] : [];
+        var hiddenSlices = fullLayout.hiddenlabels ? fullLayout.hiddenlabels.slice() : [];
         var legendItem = g.data()[0][0];
         if (legendItem.groupTitle && legendItem.noClick) return;
         var fullData = gd._fullData;
@@ -30336,7 +30456,7 @@ var Plotly = (() => {
           if (!valueArray) {
             valueArray = dataUpdate.visible = [];
           }
-          if (!dataIndices.includes(traceIndex)) {
+          if (dataIndices.indexOf(traceIndex) === -1) {
             dataIndices.push(traceIndex);
             attrIndex = dataIndices.length - 1;
           }
@@ -30381,16 +30501,18 @@ var Plotly = (() => {
               for (j = 0; j < cdi.length; j++) {
                 var d = cdi[j];
                 var dLabel = d.label;
-                if (thisLegend === cdi[0].trace.legend && thisLabel !== dLabel) {
+                if (thisLegend === cdi[0].trace.legend) {
+                  if (thisLabel !== dLabel) {
                     if (hiddenSlices.indexOf(dLabel) === -1) changed = true;
                     pushUnique(hiddenSlices, dLabel);
                     unhideList.push(dLabel);
                   }
+                }
               }
             }
             if (!changed) {
-              for (const element of unhideList) {
-                var pos = hiddenSlices.indexOf(element);
+              for (var q = 0; q < unhideList.length; q++) {
+                var pos = hiddenSlices.indexOf(unhideList[q]);
                 if (pos !== -1) {
                   hiddenSlices.splice(pos, 1);
                 }
@@ -30414,18 +30536,15 @@ var Plotly = (() => {
           if (mode === "toggle") {
             var nextVisibility;
             switch (fullTrace.visible) {
-              case true: {
+              case true:
                 nextVisibility = "legendonly";
                 break;
-              }
-              case false: {
+              case false:
                 nextVisibility = false;
                 break;
-              }
-              case "legendonly": {
+              case "legendonly":
                 nextVisibility = true;
                 break;
-              }
             }
             if (hasLegendgroup) {
               if (toggleGroup) {
@@ -30462,18 +30581,16 @@ var Plotly = (() => {
                 continue;
               }
               switch (fullTrace.visible) {
-                case "legendonly": {
+                case "legendonly":
                   setVisibility(_item, true);
                   break;
-                }
-                case true: {
+                case true:
                   otherState = isIsolated ? true : "legendonly";
                   isClicked = _item === fullTrace;
                   notInLegend = _item.showlegend !== true && !_item.legendgroup;
                   isInGroup = isClicked || hasLegendgroup && _item.legendgroup === legendgroup;
                   setVisibility(_item, isInGroup || notInLegend ? true : otherState);
                   break;
-                }
               }
             }
           }
@@ -30550,7 +30667,7 @@ var Plotly = (() => {
             lgroups.push(uniqueGroup);
             lgroupToTraces[uniqueGroup] = [legendItem];
             lgroupi++;
-          } else if (!lgroups.includes(legendGroup)) {
+          } else if (lgroups.indexOf(legendGroup) === -1) {
             lgroups.push(legendGroup);
             hasOneNonBlankGroup = true;
             lgroupToTraces[legendGroup] = [legendItem];
@@ -30586,7 +30703,7 @@ var Plotly = (() => {
             maxNameLength = Math.max(maxNameLength, (trace.name || "").length);
           }
         }
-        if (lgroups.length === 0) return [];
+        if (!lgroups.length) return [];
         var shouldCollapse = !hasOneNonBlankGroup || !grouped;
         var legendData = [];
         for (i = 0; i < lgroups.length; i++) {
@@ -30599,7 +30716,7 @@ var Plotly = (() => {
         }
         if (shouldCollapse) legendData = [legendData];
         for (i = 0; i < legendData.length; i++) {
-          var groupMinRank = Number.POSITIVE_INFINITY;
+          var groupMinRank = Infinity;
           for (j = 0; j < legendData[i].length; j++) {
             var rank = legendData[i][j].trace.legendrank;
             if (groupMinRank > rank) groupMinRank = rank;
@@ -30613,14 +30730,14 @@ var Plotly = (() => {
         var orderFn2 = function(a, b) {
           return a.trace.legendrank - b.trace.legendrank || a._preSort - b._preSort;
         };
-        for (const [k, a] of legendData.entries()) {
+        legendData.forEach(function(a, k) {
           a[0]._preGroupSort = k;
-        }
+        });
         legendData.sort(orderFn1);
         for (i = 0; i < legendData.length; i++) {
-          for (const [k, a] of legendData[i].entries()) {
+          legendData[i].forEach(function(a, k) {
             a._preSort = k;
-          }
+          });
           legendData[i].sort(orderFn2);
           var firstItemTrace = legendData[i][0].trace;
           var groupTitle = null;
@@ -30671,7 +30788,7 @@ var Plotly = (() => {
       "use strict";
       var Lib = require_lib();
       function format(vRounded) {
-        return vRounded.includes("e") ? vRounded.replace(/\.?0+e/, "e") : vRounded.includes(".") ? vRounded.replace(/\.?0+$/, "") : vRounded;
+        return vRounded.indexOf("e") !== -1 ? vRounded.replace(/[.]?0+e/, "e") : vRounded.indexOf(".") !== -1 ? vRounded.replace(/[.]?0+$/, "") : vRounded;
       }
       exports.formatPiePercent = function formatPiePercent(v, separators) {
         var vRounded = format((v * 100).toPrecision(3));
@@ -30683,8 +30800,8 @@ var Plotly = (() => {
       };
       exports.getFirstFilled = function getFirstFilled(array, indices) {
         if (!Lib.isArrayOrTypedArray(array)) return;
-        for (const index of indices) {
-          var v = array[index];
+        for (var i = 0; i < indices.length; i++) {
+          var v = array[indices[i]];
           if (v || v === 0 || v === "") return v;
         }
       };
@@ -31108,32 +31225,29 @@ var Plotly = (() => {
           if (trace.visible) {
             switch (trace.type) {
               case "histogram2d":
-              case "heatmap": {
+              case "heatmap":
                 ptsData = [
                   ["M-15,-2V4H15V-2Z"]
                   // similar to contour
                 ];
                 useGradient = true;
                 break;
-              }
               case "choropleth":
               case "choroplethmapbox":
-              case "choroplethmap": {
+              case "choroplethmap":
                 ptsData = [
                   ["M-6,-6V6H6V-6Z"]
                 ];
                 useGradient = true;
                 break;
-              }
               case "densitymapbox":
-              case "densitymap": {
+              case "densitymap":
                 ptsData = [
                   ["M-6,0 a6,6 0 1,0 12,0 a 6,6 0 1,0 -12,0"]
                 ];
                 useGradient = "radial";
                 break;
-              }
-              case "cone": {
+              case "cone":
                 ptsData = [
                   ["M-6,2 A2,2 0 0,0 -6,6 V6L6,4Z"],
                   ["M-6,-6 A2,2 0 0,0 -6,-2 L6,-4Z"],
@@ -31141,8 +31255,7 @@ var Plotly = (() => {
                 ];
                 useGradient = false;
                 break;
-              }
-              case "streamtube": {
+              case "streamtube":
                 ptsData = [
                   ["M-6,2 A2,2 0 0,0 -6,6 H6 A2,2 0 0,1 6,2 Z"],
                   ["M-6,-6 A2,2 0 0,0 -6,-2 H6 A2,2 0 0,1 6,-6 Z"],
@@ -31150,16 +31263,14 @@ var Plotly = (() => {
                 ];
                 useGradient = false;
                 break;
-              }
-              case "surface": {
+              case "surface":
                 ptsData = [
                   ["M-6,-6 A2,3 0 0,0 -6,0 H6 A2,3 0 0,1 6,-6 Z"],
                   ["M-6,1 A2,3 0 0,1 -6,6 H6 A2,3 0 0,0 6,0 Z"]
                 ];
                 useGradient = true;
                 break;
-              }
-              case "mesh3d": {
+              case "mesh3d":
                 ptsData = [
                   ["M-6,6H0L-6,-6Z"],
                   ["M6,6H0L6,-6Z"],
@@ -31167,8 +31278,7 @@ var Plotly = (() => {
                 ];
                 useGradient = false;
                 break;
-              }
-              case "volume": {
+              case "volume":
                 ptsData = [
                   ["M-6,6H0L-6,-6Z"],
                   ["M6,6H0L6,-6Z"],
@@ -31176,8 +31286,7 @@ var Plotly = (() => {
                 ];
                 useGradient = true;
                 break;
-              }
-              case "isosurface": {
+              case "isosurface":
                 ptsData = [
                   ["M-6,6H0L-6,-6Z"],
                   ["M6,6H0L6,-6Z"],
@@ -31185,7 +31294,6 @@ var Plotly = (() => {
                 ];
                 useGradient = false;
                 break;
-              }
             }
           }
           var pts = d3.select(this).select("g.legendpoints").selectAll("path.legend3dandfriends").data(ptsData);
@@ -31300,7 +31408,7 @@ var Plotly = (() => {
       var style = require_style();
       var helpers = require_helpers3();
       var MAIN_TITLE = 1;
-      var LEGEND_PATTERN = /^legend\d*$/;
+      var LEGEND_PATTERN = /^legend[0-9]*$/;
       module.exports = function draw(gd, opts) {
         if (opts) {
           drawOne(gd, opts);
@@ -31312,11 +31420,12 @@ var Plotly = (() => {
             var el = d3.select(this);
             var classes = el.attr("class");
             var cls = classes.split(" ")[0];
-            if (LEGEND_PATTERN.test(cls) && !newLegends.includes(cls)) {
+            if (cls.match(LEGEND_PATTERN) && newLegends.indexOf(cls) === -1) {
               el.remove();
             }
           });
-          for (var legendId of newLegends) {
+          for (var i = 0; i < newLegends.length; i++) {
+            var legendId = newLegends[i];
             var legendObj = gd._fullLayout[legendId];
             drawOne(gd, legendObj);
           }
@@ -31358,9 +31467,10 @@ var Plotly = (() => {
         if (!gd._legendMouseDownTime) gd._legendMouseDownTime = 0;
         var legendData;
         if (!inHover) {
-          var calcdata = [...(gd.calcdata || [])];
+          var calcdata = (gd.calcdata || []).slice();
           var shapes = fullLayout.shapes;
-          for (var shape of shapes) {
+          for (var i = 0; i < shapes.length; i++) {
+            var shape = shapes[i];
             if (!shape.showlegend) continue;
             var shapeLegend = {
               _isShape: true,
@@ -31381,10 +31491,10 @@ var Plotly = (() => {
                 line: shape.line,
                 color: shape.fillcolor,
                 size: 12,
-                symbol: shape.type === "rect" ? "square" : (shape.type === "circle" ? "circle" : (
+                symbol: shape.type === "rect" ? "square" : shape.type === "circle" ? "circle" : (
                   // case of path
                   "hexagon2"
-                ))
+                )
               }
             };
             calcdata.push([{ trace: shapeLegend }]);
@@ -31395,7 +31505,7 @@ var Plotly = (() => {
           legendData = getLegendData(legendObj.entries, legendObj);
         }
         var hiddenSlices = fullLayout.hiddenlabels || [];
-        if (!inHover && (!fullLayout.showlegend || legendData.length === 0)) {
+        if (!inHover && (!fullLayout.showlegend || !legendData.length)) {
           layer.selectAll("." + legendId).remove();
           fullLayout._topdefs.select("#" + clipId).remove();
           return Plots.autoMargin(gd, legendId);
@@ -31434,7 +31544,7 @@ var Plotly = (() => {
         traces.style("opacity", function(d) {
           var trace = d[0].trace;
           if (Registry.traceIs(trace, "pie-like")) {
-            return hiddenSlices.includes(d[0].label) ? 0.5 : 1;
+            return hiddenSlices.indexOf(d[0].label) !== -1 ? 0.5 : 1;
           } else {
             return trace.visible === "legendonly" ? 0.5 : 1;
           }
@@ -31744,7 +31854,7 @@ var Plotly = (() => {
         });
         if (gd._context.staticPlot) return;
         traceToggle.on("mousedown", function() {
-          newMouseDownTime = Date.now();
+          newMouseDownTime = (/* @__PURE__ */ new Date()).getTime();
           if (newMouseDownTime - gd._legendMouseDownTime < doubleClickDelay) {
             numClicks += 1;
           } else {
@@ -31755,7 +31865,7 @@ var Plotly = (() => {
         traceToggle.on("mouseup", function() {
           if (gd._dragged || gd._editing) return;
           var legend = gd._fullLayout[legendId];
-          if (Date.now() - gd._legendMouseDownTime > doubleClickDelay) {
+          if ((/* @__PURE__ */ new Date()).getTime() - gd._legendMouseDownTime > doubleClickDelay) {
             numClicks = Math.max(numClicks - 1, 1);
           }
           clickOrDoubleClick(gd, legend, g, numClicks, d3.event);
@@ -31842,10 +31952,10 @@ var Plotly = (() => {
         var h = 0;
         var side = legendObj.title.side;
         if (side) {
-          if (side.includes("left")) {
+          if (side.indexOf("left") !== -1) {
             w = legendObj._titleWidth;
           }
-          if (side.includes("top")) {
+          if (side.indexOf("top") !== -1) {
             h = legendObj._titleHeight;
           }
         }
@@ -31906,7 +32016,7 @@ var Plotly = (() => {
           var isBeyondPlotAreaY = isAbovePlotArea || isBelowPlotArea;
           var hw = fullLayout.width / 2;
           legendObj._maxWidth = Math.max(
-            isLeftOfPlotArea ? (isBeyondPlotAreaY && xanchor === "left" ? gs.l + gs.w : hw) : isRightOfPlotArea ? isBeyondPlotAreaY && xanchor === "right" ? gs.r + gs.w : hw : gs.w,
+            isLeftOfPlotArea ? isBeyondPlotAreaY && xanchor === "left" ? gs.l + gs.w : hw : isRightOfPlotArea ? isBeyondPlotAreaY && xanchor === "right" ? gs.r + gs.w : hw : gs.w,
             2 * textGap
           );
           var maxItemWidth = 0;
@@ -32062,10 +32172,10 @@ var Plotly = (() => {
         }
       }
       function getXanchor(legendObj) {
-        return Lib.isRightAnchor(legendObj) ? "right" : (Lib.isCenterAnchor(legendObj) ? "center" : "left");
+        return Lib.isRightAnchor(legendObj) ? "right" : Lib.isCenterAnchor(legendObj) ? "center" : "left";
       }
       function getYanchor(legendObj) {
-        return Lib.isBottomAnchor(legendObj) ? "bottom" : (Lib.isMiddleAnchor(legendObj) ? "middle" : "top");
+        return Lib.isBottomAnchor(legendObj) ? "bottom" : Lib.isMiddleAnchor(legendObj) ? "middle" : "top";
       }
       function getId(legendObj) {
         return legendObj._id || "legend";
@@ -32263,9 +32373,9 @@ var Plotly = (() => {
               firstXaxis = Axes.getFromId(gd, spId, "x");
               firstYaxis = Axes.getFromId(gd, spId, "y");
               var subplotsWith = (hovermodeHasX ? firstXaxis : firstYaxis)._subplotsWith;
-              if (subplotsWith && subplotsWith.length > 0) {
-                for (const element of subplotsWith) {
-                  pushUnique(subplots, element);
+              if (subplotsWith && subplotsWith.length) {
+                for (var q = 0; q < subplotsWith.length; q++) {
+                  pushUnique(subplots, subplotsWith[q]);
                 }
               }
             }
@@ -32297,13 +32407,13 @@ var Plotly = (() => {
           }
         }
         if (hovermode && !supportsCompare) hovermode = "closest";
-        if (!["x", "y", "closest", "x unified", "y unified"].includes(hovermode) || !gd.calcdata || gd.querySelector(".zoombox") || gd._dragging) {
+        if (["x", "y", "closest", "x unified", "y unified"].indexOf(hovermode) === -1 || !gd.calcdata || gd.querySelector(".zoombox") || gd._dragging) {
           return dragElement.unhoverRaw(gd, evt);
         }
         var hoverdistance = fullLayout.hoverdistance;
-        if (hoverdistance === -1) hoverdistance = Number.POSITIVE_INFINITY;
+        if (hoverdistance === -1) hoverdistance = Infinity;
         var spikedistance = fullLayout.spikedistance;
-        if (spikedistance === -1) spikedistance = Number.POSITIVE_INFINITY;
+        if (spikedistance === -1) spikedistance = Infinity;
         var hoverData = [];
         var searchData = [];
         var xvalArray, yvalArray;
@@ -32328,7 +32438,7 @@ var Plotly = (() => {
             }
           }
         } else {
-          var zorderedCalcdata = [...gd.calcdata];
+          var zorderedCalcdata = gd.calcdata.slice();
           zorderedCalcdata.sort(function(a, b) {
             var aZorder = a[0].trace.zorder || 0;
             var bZorder = b[0].trace.zorder || 0;
@@ -32377,14 +32487,14 @@ var Plotly = (() => {
             return dragElement.unhoverRaw(gd, evt);
           }
         }
-        var distance = Number.POSITIVE_INFINITY;
+        var distance = Infinity;
         function findHoverPoints(customXVal, customYVal) {
           for (curvenum = 0; curvenum < searchData.length; curvenum++) {
             cd = searchData[curvenum];
             if (!cd || !cd[0] || !cd[0].trace) continue;
             trace = cd[0].trace;
             if (trace.visible !== true || trace._length === 0) continue;
-            if (["carpet", "contourcarpet"].includes(trace._module.name)) continue;
+            if (["carpet", "contourcarpet"].indexOf(trace._module.name) !== -1) continue;
             _mode = hovermode;
             if (helpers.isUnifiedHover(_mode)) {
               _mode = _mode.charAt(0);
@@ -32416,7 +32526,7 @@ var Plotly = (() => {
               // distance/pseudo-distance for spikes. This distance should always be calculated
               // as if in "closest" mode, and should only be set if this point should
               // generate a spike.
-              spikeDistance: Number.POSITIVE_INFINITY,
+              spikeDistance: Infinity,
               // in some cases the spikes have different positioning from the hover label
               // they don't need x0/x1, just one position
               xSpike: void 0,
@@ -32475,8 +32585,8 @@ var Plotly = (() => {
                 });
                 if (newPoints) {
                   var newPoint;
-                  for (const newPoint_ of newPoints) {
-                    newPoint = newPoint_;
+                  for (var newPointNum = 0; newPointNum < newPoints.length; newPointNum++) {
+                    newPoint = newPoints[newPointNum];
                     if (isNumeric(newPoint.x0) && isNumeric(newPoint.y0)) {
                       hoverData.push(cleanPoint(newPoint, hovermode));
                     }
@@ -32490,7 +32600,8 @@ var Plotly = (() => {
               hoverData.splice(0, closedataPreviousLength);
               distance = hoverData[0].distance;
             }
-            if (hasCartesian && spikedistance !== 0 && hoverData.length === 0) {
+            if (hasCartesian && spikedistance !== 0) {
+              if (hoverData.length === 0) {
                 pointData.distance = spikedistance;
                 pointData.index = false;
                 var closestPoints = trace._module.hoverPoints(pointData, xval, yval, "closest", {
@@ -32529,20 +32640,21 @@ var Plotly = (() => {
                   }
                 }
               }
+            }
           }
         }
         findHoverPoints();
         function selectClosestPoint(pointsData, spikedistance2, spikeOnWinning2) {
           var resultPoint = null;
-          var minDistance = Number.POSITIVE_INFINITY;
+          var minDistance = Infinity;
           var thisSpikeDistance;
-          for (const [i2, pointsDatum] of pointsData.entries()) {
-            if (firstXaxis && firstXaxis._id !== pointsDatum.xa._id) continue;
-            if (firstYaxis && firstYaxis._id !== pointsDatum.ya._id) continue;
-            thisSpikeDistance = pointsDatum.spikeDistance;
+          for (var i2 = 0; i2 < pointsData.length; i2++) {
+            if (firstXaxis && firstXaxis._id !== pointsData[i2].xa._id) continue;
+            if (firstYaxis && firstYaxis._id !== pointsData[i2].ya._id) continue;
+            thisSpikeDistance = pointsData[i2].spikeDistance;
             if (spikeOnWinning2 && i2 === 0) thisSpikeDistance = -Infinity;
             if (thisSpikeDistance <= minDistance && thisSpikeDistance <= spikedistance2) {
-              resultPoint = pointsDatum;
+              resultPoint = pointsData[i2];
               minDistance = thisSpikeDistance;
             }
           }
@@ -32588,7 +32700,8 @@ var Plotly = (() => {
         sortHoverData();
         var axLetter = hovermode.charAt(0);
         var spikeOnWinning = (axLetter === "x" || axLetter === "y") && hoverData[0] && cartesianScatterPoints[hoverData[0].trace.type];
-        if (hasCartesian && spikedistance !== 0 && hoverData.length !== 0) {
+        if (hasCartesian && spikedistance !== 0) {
+          if (hoverData.length !== 0) {
             var tmpHPointData = hoverData.filter(function(point) {
               return point.ya.showspikes;
             });
@@ -32600,17 +32713,22 @@ var Plotly = (() => {
             var tmpVPoint = selectClosestPoint(tmpVPointData, spikedistance, spikeOnWinning);
             spikePoints.vLinePoint = fillSpikePoint(tmpVPoint);
           }
+        }
         if (hoverData.length === 0) {
           var result = dragElement.unhoverRaw(gd, evt);
-          if (hasCartesian && (spikePoints.hLinePoint !== null || spikePoints.vLinePoint !== null) && spikesChanged(oldspikepoints)) {
+          if (hasCartesian && (spikePoints.hLinePoint !== null || spikePoints.vLinePoint !== null)) {
+            if (spikesChanged(oldspikepoints)) {
               createSpikelines(gd, spikePoints, spikelineOpts);
             }
+          }
           return result;
         }
-        if (hasCartesian && spikesChanged(oldspikepoints)) {
+        if (hasCartesian) {
+          if (spikesChanged(oldspikepoints)) {
             createSpikelines(gd, spikePoints, spikelineOpts);
           }
-        if (helpers.isXYhover(_mode) && hoverData[0].length > 0 && hoverData[0].trace.type !== "splom") {
+        }
+        if (helpers.isXYhover(_mode) && hoverData[0].length !== 0 && hoverData[0].trace.type !== "splom") {
           var winningPoint = hoverData[0];
           if (multipleHoverPoints[winningPoint.trace.type]) {
             hoverData = hoverData.filter(function(d) {
@@ -32727,7 +32845,7 @@ var Plotly = (() => {
       function hoverDataKey(d) {
         return [d.trace.index, d.index, d.x0, d.y0, d.name, d.attr, d.xa ? d.xa._id : "", d.ya ? d.ya._id : ""].join(",");
       }
-      var EXTRA_STRING_REGEX = /<extra>([\S\s]*)<\/extra>/;
+      var EXTRA_STRING_REGEX = /<extra>([\s\S]*)<\/extra>/;
       function createHoverText(hoverData, opts) {
         var gd = opts.gd;
         var fullLayout = gd._fullLayout;
@@ -32753,8 +32871,8 @@ var Plotly = (() => {
         var axLabel = axLetter + "Label";
         var t0 = c0[axLabel];
         if (t0 === void 0 && xa.type === "multicategory") {
-          for (const hoverDatum of hoverData) {
-            t0 = hoverDatum[axLabel];
+          for (var q = 0; q < hoverData.length; q++) {
+            t0 = hoverData[q][axLabel];
             if (t0 !== void 0) break;
           }
         }
@@ -32771,7 +32889,7 @@ var Plotly = (() => {
             traceHoverinfo = hoverData[i].hoverinfo || hoverData[i].trace.hoverinfo;
             if (traceHoverinfo) {
               var parts = Array.isArray(traceHoverinfo) ? traceHoverinfo : traceHoverinfo.split("+");
-              if (!parts.includes("all") && !parts.includes(hovermode)) {
+              if (parts.indexOf("all") === -1 && parts.indexOf(hovermode) === -1) {
                 showCommonLabel = false;
                 break;
               }
@@ -32927,7 +33045,8 @@ var Plotly = (() => {
           legendSupplyDefaults(mockLayoutIn, mockLayoutOut, gd._fullData);
           var mockLegend = mockLayoutOut.legend;
           mockLegend.entries = [];
-          for (var pt of groupedHoverData) {
+          for (var j = 0; j < groupedHoverData.length; j++) {
+            var pt = groupedHoverData[j];
             if (pt.hoverinfo === "none") continue;
             var texts = getHoverLabelText(pt, true, hovermode, fullLayout, t0);
             var text = texts[0];
@@ -33319,7 +33438,7 @@ var Plotly = (() => {
         var donepositioning, topOverlap, bottomOverlap, i, j, pti, sumdp;
         function constrainGroup(grp2) {
           var minPt = grp2[0];
-          var maxPt = grp2.at(-1);
+          var maxPt = grp2[grp2.length - 1];
           topOverlap = minPt.pmin - minPt.pos - minPt.dp + minPt.size;
           bottomOverlap = maxPt.pos + maxPt.dp + maxPt.size - minPt.pmax;
           if (topOverlap > 0.01) {
@@ -33371,7 +33490,7 @@ var Plotly = (() => {
           while (i < pointgroups.length - 1) {
             var g0 = pointgroups[i];
             var g1 = pointgroups[i + 1];
-            var p0 = g0.at(-1);
+            var p0 = g0[g0.length - 1];
             var p1 = g1[0];
             topOverlap = p0.pos + p0.dp + p0.size - p1.pos - p1.dp + p1.size;
             if (topOverlap > 0.01) {
@@ -33527,24 +33646,24 @@ var Plotly = (() => {
           var xeText = Axes.tickText(d.xa, d.xa.c2l(d.xerr), "hover").text;
           if (d.xerrneg !== void 0) {
             d.xLabel += " +" + xeText + " / -" + Axes.tickText(d.xa, d.xa.c2l(d.xerrneg), "hover").text;
-          } else d.xLabel += " \u00B1 " + xeText;
+          } else d.xLabel += " \xB1 " + xeText;
           if (hovermode === "x") d.distance += 1;
         }
         if (!isNaN(d.yerr) && !(d.ya.type === "log" && d.yerr <= 0)) {
           var yeText = Axes.tickText(d.ya, d.ya.c2l(d.yerr), "hover").text;
           if (d.yerrneg !== void 0) {
             d.yLabel += " +" + yeText + " / -" + Axes.tickText(d.ya, d.ya.c2l(d.yerrneg), "hover").text;
-          } else d.yLabel += " \u00B1 " + yeText;
+          } else d.yLabel += " \xB1 " + yeText;
           if (hovermode === "y") d.distance += 1;
         }
         var infomode = d.hoverinfo || d.trace.hoverinfo;
         if (infomode && infomode !== "all") {
           infomode = Array.isArray(infomode) ? infomode : infomode.split("+");
-          if (!infomode.includes("x")) d.xLabel = void 0;
-          if (!infomode.includes("y")) d.yLabel = void 0;
-          if (!infomode.includes("z")) d.zLabel = void 0;
-          if (!infomode.includes("text")) d.text = void 0;
-          if (!infomode.includes("name")) d.name = void 0;
+          if (infomode.indexOf("x") === -1) d.xLabel = void 0;
+          if (infomode.indexOf("y") === -1) d.yLabel = void 0;
+          if (infomode.indexOf("z") === -1) d.zLabel = void 0;
+          if (infomode.indexOf("text") === -1) d.text = void 0;
+          if (infomode.indexOf("name") === -1) d.name = void 0;
         }
         return d;
       }
@@ -33578,12 +33697,12 @@ var Plotly = (() => {
           var yColor = ya.spikecolor || dfltHLineColor;
           var xEdge = Axes.getPxPosition(gd, ya);
           var xBase, xEndSpike;
-          if (yMode.includes("toaxis") || yMode.includes("across")) {
-            if (yMode.includes("toaxis")) {
+          if (yMode.indexOf("toaxis") !== -1 || yMode.indexOf("across") !== -1) {
+            if (yMode.indexOf("toaxis") !== -1) {
               xBase = xEdge;
               xEndSpike = hLinePointX;
             }
-            if (yMode.includes("across")) {
+            if (yMode.indexOf("across") !== -1) {
               var xAcross0 = ya._counterDomainMin;
               var xAcross1 = ya._counterDomainMax;
               if (ya.anchor === "free") {
@@ -33611,7 +33730,7 @@ var Plotly = (() => {
               stroke: contrastColor
             }).classed("spikeline", true).classed("crisp", true);
           }
-          if (yMode.includes("marker")) {
+          if (yMode.indexOf("marker") !== -1) {
             container.insert("circle", ":first-child").attr({
               cx: xEdge + (ya.side !== "right" ? yThickness : -yThickness),
               cy: hLinePointY,
@@ -33639,12 +33758,12 @@ var Plotly = (() => {
           var xColor = xa.spikecolor || dfltVLineColor;
           var yEdge = Axes.getPxPosition(gd, xa);
           var yBase, yEndSpike;
-          if (xMode.includes("toaxis") || xMode.includes("across")) {
-            if (xMode.includes("toaxis")) {
+          if (xMode.indexOf("toaxis") !== -1 || xMode.indexOf("across") !== -1) {
+            if (xMode.indexOf("toaxis") !== -1) {
               yBase = yEdge;
               yEndSpike = vLinePointY;
             }
-            if (xMode.includes("across")) {
+            if (xMode.indexOf("across") !== -1) {
               var yAcross0 = xa._counterDomainMin;
               var yAcross1 = xa._counterDomainMax;
               if (xa.anchor === "free") {
@@ -33672,7 +33791,7 @@ var Plotly = (() => {
               stroke: contrastColor
             }).classed("spikeline", true).classed("crisp", true);
           }
-          if (xMode.includes("marker")) {
+          if (xMode.indexOf("marker") !== -1) {
             container.insert("circle", ":first-child").attr({
               cx: vLinePointX,
               cy: yEdge - (xa.side !== "top" ? xThickness : -xThickness),
@@ -33709,7 +33828,8 @@ var Plotly = (() => {
         var first = [];
         var second = [];
         var last = [];
-        for (var d of hoverData) {
+        for (var i = 0; i < hoverData.length; i++) {
+          var d = hoverData[i];
           if (Registry.traceIs(d.trace, "bar-like") || Registry.traceIs(d.trace, "box-violin")) {
             last.push(d);
           } else if (d.trace[axLetter + "period"]) {
@@ -33718,7 +33838,7 @@ var Plotly = (() => {
             first.push(d);
           }
         }
-        return [...first, ...second].concat(last);
+        return first.concat(second).concat(last);
       }
       function getCoord(axLetter, winningPoint, fullLayout) {
         var ax = winningPoint[axLetter + "a"];
@@ -33742,9 +33862,11 @@ var Plotly = (() => {
           }
           val = ax.d2c(val);
         }
-        if (cd0 && cd0.t && cd0.t.posLetter === ax._id && (fullLayout.boxmode === "group" || fullLayout.violinmode === "group")) {
+        if (cd0 && cd0.t && cd0.t.posLetter === ax._id) {
+          if (fullLayout.boxmode === "group" || fullLayout.violinmode === "group") {
             val += cd0.t.dPos;
           }
+        }
         return val;
       }
       function getTopOffset(gd) {
@@ -33917,7 +34039,8 @@ var Plotly = (() => {
             return Lib.coerceHoverinfo({ hoverinfo: val }, { _module: trace2._module }, fullLayout);
           };
         }
-        for (var cd of calcdata) {
+        for (var i = 0; i < calcdata.length; i++) {
+          var cd = calcdata[i];
           var trace = cd[0].trace;
           if (Registry.traceIs(trace, "pie-like")) continue;
           var fillFn = Registry.traceIs(trace, "2dMap") ? paste : Lib.fillArray;
@@ -34279,28 +34402,22 @@ var Plotly = (() => {
       var strTranslate = require_lib().strTranslate;
       function p2r(ax, v) {
         switch (ax.type) {
-          case "log": {
+          case "log":
             return ax.p2d(v);
-          }
-          case "date": {
+          case "date":
             return ax.p2r(v, 0, ax.calendar);
-          }
-          default: {
+          default:
             return ax.p2r(v);
-          }
         }
       }
       function r2p(ax, v) {
         switch (ax.type) {
-          case "log": {
+          case "log":
             return ax.d2p(v);
-          }
-          case "date": {
+          case "date":
             return ax.r2p(v, 0, ax.calendar);
-          }
-          default: {
+          default:
             return ax.r2p(v);
-          }
         }
       }
       function axValue(ax) {
@@ -34384,57 +34501,57 @@ var Plotly = (() => {
           initY = y;
         };
         recStart();
-        for (const element of cmd) {
+        for (var i = 0; i < cmd.length; i++) {
           var newPos = [];
           var x1, x2, y1, y2;
-          var c = element[0];
+          var c = cmd[i][0];
           var w = c;
           switch (c) {
             case "M":
               newPoly();
-              x = +element[1];
-              y = +element[2];
+              x = +cmd[i][1];
+              y = +cmd[i][2];
               newPos.push([w, x, y]);
               recStart();
               break;
             case "Q":
             case "S":
-              x1 = +element[1];
-              y1 = +element[2];
-              x = +element[3];
-              y = +element[4];
+              x1 = +cmd[i][1];
+              y1 = +cmd[i][2];
+              x = +cmd[i][3];
+              y = +cmd[i][4];
               newPos.push([w, x, y, x1, y1]);
               break;
             case "C":
-              x1 = +element[1];
-              y1 = +element[2];
-              x2 = +element[3];
-              y2 = +element[4];
-              x = +element[5];
-              y = +element[6];
+              x1 = +cmd[i][1];
+              y1 = +cmd[i][2];
+              x2 = +cmd[i][3];
+              y2 = +cmd[i][4];
+              x = +cmd[i][5];
+              y = +cmd[i][6];
               newPos.push([w, x, y, x1, y1, x2, y2]);
               break;
             case "T":
             case "L":
-              x = +element[1];
-              y = +element[2];
+              x = +cmd[i][1];
+              y = +cmd[i][2];
               newPos.push([w, x, y]);
               break;
             case "H":
               w = "L";
-              x = +element[1];
+              x = +cmd[i][1];
               newPos.push([w, x, y]);
               break;
             case "V":
               w = "L";
-              y = +element[1];
+              y = +cmd[i][1];
               newPos.push([w, x, y]);
               break;
             case "A":
               w = "L";
-              var rx = +element[1];
-              var ry = +element[2];
-              if (!+element[4]) {
+              var rx = +cmd[i][1];
+              var ry = +cmd[i][2];
+              if (!+cmd[i][4]) {
                 rx = -rx;
                 ry = -ry;
               }
@@ -34449,24 +34566,23 @@ var Plotly = (() => {
                 ]);
               }
               break;
-            case "Z": {
+            case "Z":
               if (x !== initX || y !== initY) {
                 x = initX;
                 y = initY;
                 newPos.push([w, x, y]);
               }
               break;
-            }
           }
           var domain = (plotinfo || {}).domain;
           var size = gd._fullLayout._size;
           var xPixelSized = plotinfo && plotinfo.xsizemode === "pixel";
           var yPixelSized = plotinfo && plotinfo.ysizemode === "pixel";
           var noOffset = isActiveShape === false;
-          for (const newPo of newPos) {
+          for (var j = 0; j < newPos.length; j++) {
             for (k = 0; k + 2 < 7; k += 2) {
-              var _x = newPo[k + 1];
-              var _y = newPo[k + 2];
+              var _x = newPos[j][k + 1];
+              var _y = newPos[j][k + 2];
               if (_x === void 0 || _y === void 0) continue;
               x = _x;
               y = _y;
@@ -34496,11 +34612,11 @@ var Plotly = (() => {
                   else _y = 1 - _y / size.h;
                 }
               }
-              newPo[k + 1] = _x;
-              newPo[k + 2] = _y;
+              newPos[j][k + 1] = _x;
+              newPos[j][k + 2] = _y;
             }
             polys[n].push(
-              newPo.slice()
+              newPos[j].slice()
             );
           }
         }
@@ -34512,8 +34628,8 @@ var Plotly = (() => {
       function dist(a, b) {
         var dx = b[1] - a[1];
         var dy = b[2] - a[2];
-        return Math.hypot(
-          dx, dy
+        return Math.sqrt(
+          dx * dx + dy * dy
         );
       }
       exports.pointsOnRectangle = function(cell) {
@@ -34594,11 +34710,11 @@ var Plotly = (() => {
         var xIsDate = xaxis.type === "date";
         var yIsDate = yaxis.type === "date";
         if (!xIsDate && !yIsDate) return polygons;
-        for (const polygon of polygons) {
-          for (var j = 0; j < polygon.length; j++) {
-            for (var k = 0; k + 2 < polygon[j].length; k += 2) {
-              if (xIsDate) polygon[j][k + 1] = polygon[j][k + 1].replace(" ", "_");
-              if (yIsDate) polygon[j][k + 2] = polygon[j][k + 2].replace(" ", "_");
+        for (var i = 0; i < polygons.length; i++) {
+          for (var j = 0; j < polygons[i].length; j++) {
+            for (var k = 0; k + 2 < polygons[i][j].length; k += 2) {
+              if (xIsDate) polygons[i][j][k + 1] = polygons[i][j][k + 1].replace(" ", "_");
+              if (yIsDate) polygons[i][j][k + 2] = polygons[i][j][k + 2].replace(" ", "_");
             }
           }
         }
@@ -34632,7 +34748,7 @@ var Plotly = (() => {
       var ellipseOver = helpers.ellipseOver;
       var fixDatesForPaths = helpers.fixDatesForPaths;
       function newShapes(outlines, dragOptions) {
-        if (outlines.length === 0) return;
+        if (!outlines.length) return;
         var e = outlines[0][0];
         if (!e) return;
         var gd = dragOptions.gd;
@@ -34643,19 +34759,16 @@ var Plotly = (() => {
           var id = gd._fullLayout._activeShapeIndex;
           if (id < shapes.length) {
             switch (gd._fullLayout.shapes[id].type) {
-              case "rect": {
+              case "rect":
                 dragmode = "drawrect";
                 break;
-              }
-              case "circle": {
+              case "circle":
                 dragmode = "drawcircle";
                 break;
-              }
-              case "line": {
+              case "line":
                 dragmode = "drawline";
                 break;
-              }
-              case "path": {
+              case "path":
                 var path = shapes[id].path || "";
                 if (path[path.length - 1] === "Z") {
                   dragmode = "drawclosedpath";
@@ -34663,7 +34776,6 @@ var Plotly = (() => {
                   dragmode = "drawopenpath";
                 }
                 break;
-              }
             }
           }
         }
@@ -34680,17 +34792,15 @@ var Plotly = (() => {
             switch (beforeEdit.type) {
               case "line":
               case "rect":
-              case "circle": {
+              case "circle":
                 modifyItem("x0", afterEdit.x0 - (beforeEdit.x0shift || 0));
                 modifyItem("x1", afterEdit.x1 - (beforeEdit.x1shift || 0));
                 modifyItem("y0", afterEdit.y0 - (beforeEdit.y0shift || 0));
                 modifyItem("y1", afterEdit.y1 - (beforeEdit.y1shift || 0));
                 break;
-              }
-              case "path": {
+              case "path":
                 modifyItem("path", afterEdit.path);
                 break;
-              }
             }
           }
         }
@@ -34830,7 +34940,7 @@ var Plotly = (() => {
       var writePaths = helpers.writePaths;
       var fixDatesForPaths = helpers.fixDatesForPaths;
       module.exports = function newSelections(outlines, dragOptions) {
-        if (outlines.length === 0) return;
+        if (!outlines.length) return;
         var e = outlines[0][0];
         if (!e) return;
         var d = e.getAttribute("d");
@@ -34846,14 +34956,12 @@ var Plotly = (() => {
           var id = gd._fullLayout._activeSelectionIndex;
           if (id < selections.length) {
             switch (gd._fullLayout.selections[id].type) {
-              case "rect": {
+              case "rect":
                 dragmode = "select";
                 break;
-              }
-              case "path": {
+              case "path":
                 dragmode = "lasso";
                 break;
-              }
             }
           }
         }
@@ -34897,17 +35005,15 @@ var Plotly = (() => {
           if (isActiveSelection !== void 0 && q === gd._fullLayout._activeSelectionIndex) {
             var afterEdit = newSelection;
             switch (beforeEdit.type) {
-              case "rect": {
+              case "rect":
                 modifyItem("x0", afterEdit.x0);
                 modifyItem("x1", afterEdit.x1);
                 modifyItem("y0", afterEdit.y0);
                 modifyItem("y1", afterEdit.y1);
                 break;
-              }
-              case "path": {
+              case "path":
                 modifyItem("path", afterEdit.path);
                 break;
-              }
             }
           }
         }
@@ -34925,7 +35031,7 @@ var Plotly = (() => {
     "src/components/shapes/constants.js"(exports, module) {
       "use strict";
       module.exports = {
-        segmentRE: /[CHLMQSTVZ][^CHLMQSTVZ]*/g,
+        segmentRE: /[MLHVQCTSZ][^MLHVQCTSZ]*/g,
         paramRE: /[^\s,]+/g,
         // which numbers in each path segment are x (or y) values
         // drawn is which param is a drawn point, as opposed to a
@@ -35005,15 +35111,15 @@ var Plotly = (() => {
       exports.extractPathCoords = function(path, paramsToUse, isRaw) {
         var extractedCoordinates = [];
         var segments = path.match(constants.segmentRE);
-        for (const segment of segments) {
+        segments.forEach(function(segment) {
           var relevantParamIdx = paramsToUse[segment.charAt(0)].drawn;
-          if (relevantParamIdx === void 0) continue;
+          if (relevantParamIdx === void 0) return;
           var params = segment.substr(1).match(constants.paramRE);
-          if (!params || params.length < relevantParamIdx) continue;
+          if (!params || params.length < relevantParamIdx) return;
           var str = params[relevantParamIdx];
           var pos = isRaw ? str : Lib.cleanNumber(str);
           extractedCoordinates.push(pos);
-        }
+        });
         return extractedCoordinates;
       };
       exports.getDataToPixel = function(gd, axis, shift, isVertical, refType) {
@@ -35199,7 +35305,7 @@ var Plotly = (() => {
           var xParams = constants.paramIsX[segmentType];
           var yParams = constants.paramIsY[segmentType];
           var nParams = constants.numParams[segmentType];
-          var paramString = segment.slice(1).replace(constants.paramRE, function(param) {
+          var paramString = segment.substr(1).replace(constants.paramRE, function(param) {
             if (xParams[paramNumber]) {
               if (xSizemode === "pixel") param = x2p(xAnchor) + Number(param);
               else param = x2p(param);
@@ -35278,13 +35384,13 @@ var Plotly = (() => {
         if (options.path) {
           var d = getPathString(gd, options);
           var polygons = readPaths(d, gd);
-          shapex0 = Number.POSITIVE_INFINITY;
-          shapey0 = Number.POSITIVE_INFINITY;
-          shapex1 = Number.NEGATIVE_INFINITY;
-          shapey1 = Number.NEGATIVE_INFINITY;
-          for (const polygon of polygons) {
-            for (var j = 0; j < polygon.length; j++) {
-              var p = polygon[j];
+          shapex0 = Infinity;
+          shapey0 = Infinity;
+          shapex1 = -Infinity;
+          shapey1 = -Infinity;
+          for (var i = 0; i < polygons.length; i++) {
+            for (var j = 0; j < polygons[i].length; j++) {
+              var p = polygons[i][j];
               for (var k = 1; k < p.length; k += 2) {
                 var _x = p[k];
                 var _y = p[k + 1];
@@ -35419,19 +35525,19 @@ var Plotly = (() => {
           texty = texty + paddingY;
         } else {
           paddingX = textPadding + 3;
-          if (textPosition.includes("right")) {
+          if (textPosition.indexOf("right") !== -1) {
             textx = Math.max(shapex0, shapex1) - paddingX;
             if (xanchor === "auto") xanchor = "right";
-          } else if (textPosition.includes("left")) {
+          } else if (textPosition.indexOf("left") !== -1) {
             textx = Math.min(shapex0, shapex1) + paddingX;
             if (xanchor === "auto") xanchor = "left";
           } else {
             textx = (shapex0 + shapex1) / 2;
             if (xanchor === "auto") xanchor = "center";
           }
-          if (textPosition.includes("top")) {
+          if (textPosition.indexOf("top") !== -1) {
             texty = Math.min(shapey0, shapey1);
-          } else if (textPosition.includes("bottom")) {
+          } else if (textPosition.indexOf("bottom") !== -1) {
             texty = Math.max(shapey0, shapey1);
           } else {
             texty = (shapey0 + shapey1) / 2;
@@ -35500,7 +35606,7 @@ var Plotly = (() => {
             updateObject = newSelections(outlines, dragOptions);
             gd._fullLayout._reselect = true;
           }
-          if (Object.keys(updateObject).length > 0) {
+          if (Object.keys(updateObject).length) {
             Registry.call((opts || {}).redrawing ? "relayout" : "_guiRelayout", gd, updateObject);
           }
         }
@@ -35531,12 +35637,12 @@ var Plotly = (() => {
           drawLabel(gd, "label-temp", shapeOptions, shapeGroup);
         }
         function startDragVertex(evt) {
-          indexI = +evt.srcElement.dataset.i;
-          indexJ = +evt.srcElement.dataset.j;
+          indexI = +evt.srcElement.getAttribute("data-i");
+          indexJ = +evt.srcElement.getAttribute("data-j");
           vertexDragOptions[indexI][indexJ].moveFn = moveVertexController;
         }
         function moveVertexController(dx, dy) {
-          if (polygons.length === 0) return;
+          if (!polygons.length) return;
           var x0 = copyPolygons[indexI][indexJ][1];
           var y0 = copyPolygons[indexI][indexJ][2];
           var cell = polygons[indexI];
@@ -35581,9 +35687,9 @@ var Plotly = (() => {
           update();
         }
         function removeVertex() {
-          if (polygons.length === 0) return;
+          if (!polygons.length) return;
           if (!polygons[indexI]) return;
-          if (polygons[indexI].length === 0) return;
+          if (!polygons[indexI].length) return;
           var newPolygon = [];
           for (var j = 0; j < polygons[indexI].length; j++) {
             if (j !== indexJ) {
@@ -35603,8 +35709,8 @@ var Plotly = (() => {
         }
         function clickVertexController(numClicks, evt) {
           if (numClicks === 2) {
-            indexI = +evt.srcElement.dataset.i;
-            indexJ = +evt.srcElement.dataset.j;
+            indexI = +evt.srcElement.getAttribute("data-i");
+            indexJ = +evt.srcElement.getAttribute("data-j");
             var cell = polygons[indexI];
             if (!pointsOnRectangle(cell) && !pointsOnEllipse(cell)) {
               removeVertex();
@@ -35613,7 +35719,8 @@ var Plotly = (() => {
         }
         function addVertexControllers(g2) {
           vertexDragOptions = [];
-          for (var [i, cell] of polygons.entries()) {
+          for (var i = 0; i < polygons.length; i++) {
+            var cell = polygons[i];
             var onRect = pointsOnRectangle(cell);
             var onEllipse = !onRect && pointsOnEllipse(cell);
             vertexDragOptions[i] = [];
@@ -35655,12 +35762,12 @@ var Plotly = (() => {
           }
         }
         function moveGroup(dx, dy) {
-          if (polygons.length === 0) return;
-          for (const [i, polygon] of polygons.entries()) {
-            for (var j = 0; j < polygon.length; j++) {
-              for (var k = 0; k + 2 < polygon[j].length; k += 2) {
-                polygon[j][k + 1] = copyPolygons[i][j][k + 1] + dx;
-                polygon[j][k + 2] = copyPolygons[i][j][k + 2] + dy;
+          if (!polygons.length) return;
+          for (var i = 0; i < polygons.length; i++) {
+            for (var j = 0; j < polygons[i].length; j++) {
+              for (var k = 0; k + 2 < polygons[i][j].length; k += 2) {
+                polygons[i][j][k + 1] = copyPolygons[i][j][k + 1] + dx;
+                polygons[i][j][k + 2] = copyPolygons[i][j][k + 2] + dy;
               }
             }
           }
@@ -35670,7 +35777,7 @@ var Plotly = (() => {
           redraw();
         }
         function startDragGroupController(evt) {
-          indexI = +evt.srcElement.dataset.i;
+          indexI = +evt.srcElement.getAttribute("data-i");
           if (!indexI) indexI = 0;
           groupDragOptions[indexI].moveFn = moveGroupController;
         }
@@ -35684,7 +35791,7 @@ var Plotly = (() => {
         }
         function addGroupControllers() {
           groupDragOptions = [];
-          if (polygons.length === 0) return;
+          if (!polygons.length) return;
           var i = 0;
           groupDragOptions[i] = {
             element: outlines[0][0],
@@ -35697,12 +35804,13 @@ var Plotly = (() => {
         }
       };
       function recordPositions(polygonsOut, polygonsIn) {
-        for (var [i, cell] of polygonsIn.entries()) {
+        for (var i = 0; i < polygonsIn.length; i++) {
+          var cell = polygonsIn[i];
           polygonsOut[i] = [];
-          for (const [j, element] of cell.entries()) {
+          for (var j = 0; j < cell.length; j++) {
             polygonsOut[i][j] = [];
-            for (var k = 0; k < element.length; k++) {
-              polygonsOut[i][j][k] = element[k];
+            for (var k = 0; k < cell[j].length; k++) {
+              polygonsOut[i][j][k] = cell[j][k];
             }
           }
         }
@@ -35730,9 +35838,9 @@ var Plotly = (() => {
         var selections = (gd.layout || {}).selections || [];
         if (id < selections.length) {
           var list = [];
-          for (const [q, selection] of selections.entries()) {
+          for (var q = 0; q < selections.length; q++) {
             if (q !== id) {
-              list.push(selection);
+              list.push(selections[q]);
             }
           }
           delete gd._fullLayout._activeSelectionIndex;
@@ -35836,7 +35944,7 @@ var Plotly = (() => {
             lineWidth = 5;
             lineDash = "solid";
           }
-          var isOpen = d.at(-1) !== "Z";
+          var isOpen = d[d.length - 1] !== "Z";
           var isActiveShape = couldHaveActiveShape(gd) && options.editable && gd._fullLayout._activeShapeIndex === index;
           if (isActiveShape) {
             fillColor = isOpen ? "rgba(0,0,0,0)" : gd._fullLayout.activeshape.fillcolor;
@@ -35879,7 +35987,7 @@ var Plotly = (() => {
         }
       }
       function setClipPath(shapePath, gd, shapeOptions) {
-        var clipAxes = (shapeOptions.xref + shapeOptions.yref).replaceAll('paper', "").replaceAll(/[x-z][1-9]* *domain/g, "");
+        var clipAxes = (shapeOptions.xref + shapeOptions.yref).replace(/paper/g, "").replace(/[xyz][1-9]* *domain/g, "");
         Drawing.setClipUrl(
           shapePath,
           clipAxes ? "clip" + gd._fullLayout._uid + clipAxes : null,
@@ -35926,7 +36034,7 @@ var Plotly = (() => {
         };
         var dragMode;
         dragElement.init(dragOptions);
-        sensoryElement.node().addEventListener('mousemove', updateDragMode);
+        sensoryElement.node().onmousemove = updateDragMode;
         function obtainSensoryElement() {
           return isLine ? createLineDragHandles() : shapePath;
         }
@@ -36116,7 +36224,7 @@ var Plotly = (() => {
             }
           } else {
             var has = function(str) {
-              return dragMode.includes(str);
+              return dragMode.indexOf(str) !== -1;
             };
             var hasN = has("n");
             var hasS = has("s");
@@ -36206,7 +36314,7 @@ var Plotly = (() => {
           var xParams = constants.paramIsX[segmentType];
           var yParams = constants.paramIsY[segmentType];
           var nParams = constants.numParams[segmentType];
-          var paramString = segment.slice(1).replace(constants.paramRE, function(param) {
+          var paramString = segment.substr(1).replace(constants.paramRE, function(param) {
             if (paramNumber >= nParams) return param;
             if (xParams[paramNumber]) param = moveX(param);
             else if (yParams[paramNumber]) param = moveY(param);
@@ -36219,7 +36327,7 @@ var Plotly = (() => {
       function activateShape(gd, path) {
         if (!couldHaveActiveShape(gd)) return;
         var element = path.node();
-        var id = +element.dataset.index;
+        var id = +element.getAttribute("data-index");
         if (id >= 0) {
           if (id === gd._fullLayout._activeShapeIndex) {
             deactivateShape(gd);
@@ -36246,9 +36354,9 @@ var Plotly = (() => {
         var shapes = (gd.layout || {}).shapes || [];
         if (id < shapes.length) {
           var list = [];
-          for (const [q, shape] of shapes.entries()) {
+          for (var q = 0; q < shapes.length; q++) {
             if (q !== id) {
-              list.push(shape);
+              list.push(shapes[q]);
             }
           }
           delete gd._fullLayout._activeShapeIndex;
@@ -36287,11 +36395,11 @@ var Plotly = (() => {
           var toImageButtonOptions = gd._context.toImageButtonOptions;
           var opts = { format: toImageButtonOptions.format || "png" };
           Lib.notifier(_(gd, "Taking snapshot - this may take a few seconds"), "long");
-          for (const key of ["filename", "width", "height", "scale"]) {
+          ["filename", "width", "height", "scale"].forEach(function(key) {
             if (key in toImageButtonOptions) {
               opts[key] = toImageButtonOptions[key];
             }
-          }
+          });
           Registry.call("downloadImage", gd, opts).then(function(filename) {
             Lib.notifier(_(gd, "Snapshot succeeded") + " - " + filename, "long");
           }).catch(function() {
@@ -36493,8 +36601,8 @@ var Plotly = (() => {
       };
       function handleCartesian(gd, ev) {
         var button = ev.currentTarget;
-        var astr = button.dataset.attr;
-        var val = button.dataset.val || true;
+        var astr = button.getAttribute("data-attr");
+        var val = button.getAttribute("data-val") || true;
         var fullLayout = gd._fullLayout;
         var aobj = {};
         var axList = axisIds.list(gd, null, true);
@@ -36546,7 +36654,7 @@ var Plotly = (() => {
         } else {
           if (astr === "hovermode" && (val === "x" || val === "y")) {
             val = fullLayout._isHoriz ? "y" : "x";
-            button.dataset.val = val;
+            button.setAttribute("data-val", val);
           }
           aobj[astr] = val;
         }
@@ -36597,13 +36705,13 @@ var Plotly = (() => {
       };
       function handleDrag3d(gd, ev) {
         var button = ev.currentTarget;
-        var attr = button.dataset.attr;
-        var val = button.dataset.val || true;
+        var attr = button.getAttribute("data-attr");
+        var val = button.getAttribute("data-val") || true;
         var sceneIds = gd._fullLayout._subplots.gl3d || [];
         var layoutUpdate = {};
         var parts = attr.split(".");
-        for (const sceneId of sceneIds) {
-          layoutUpdate[sceneId + "." + parts[1]] = val;
+        for (var i = 0; i < sceneIds.length; i++) {
+          layoutUpdate[sceneIds[i] + "." + parts[1]] = val;
         }
         var val2d = val === "pan" ? val : "zoom";
         layoutUpdate.dragmode = val2d;
@@ -36631,13 +36739,14 @@ var Plotly = (() => {
       };
       function handleCamera3d(gd, ev) {
         var button = ev.currentTarget;
-        var attr = button.dataset.attr;
+        var attr = button.getAttribute("data-attr");
         var resetLastSave = attr === "resetLastSave";
         var resetDefault = attr === "resetDefault";
         var fullLayout = gd._fullLayout;
         var sceneIds = fullLayout._subplots.gl3d || [];
         var aobj = {};
-        for (var sceneId of sceneIds) {
+        for (var i = 0; i < sceneIds.length; i++) {
+          var sceneId = sceneIds[i];
           var camera = sceneId + ".camera";
           var aspectratio = sceneId + ".aspectratio";
           var aspectmode = sceneId + ".aspectmode";
@@ -36688,7 +36797,8 @@ var Plotly = (() => {
           layoutUpdate = val;
           button._previousVal = null;
         } else {
-          for (var sceneId of sceneIds) {
+          for (var i = 0; i < sceneIds.length; i++) {
+            var sceneId = sceneIds[i];
             var sceneLayout = fullLayout[sceneId];
             var hovermodeAStr = sceneId + ".hovermode";
             currentSpikes[hovermodeAStr] = sceneLayout.hovermode;
@@ -36756,11 +36866,12 @@ var Plotly = (() => {
       };
       function handleGeo(gd, ev) {
         var button = ev.currentTarget;
-        var attr = button.dataset.attr;
-        var val = button.dataset.val || true;
+        var attr = button.getAttribute("data-attr");
+        var val = button.getAttribute("data-val") || true;
         var fullLayout = gd._fullLayout;
         var geoIds = fullLayout._subplots.geo || [];
-        for (var id of geoIds) {
+        for (var i = 0; i < geoIds.length; i++) {
+          var id = geoIds[i];
           var geoLayout = fullLayout[id];
           if (attr === "zoom") {
             var scale = geoLayout.projection.scale;
@@ -36810,9 +36921,9 @@ var Plotly = (() => {
           };
           for (var i = 0; i < gd._fullData.length; i++) {
             var viewInitial = gd._fullData[i]._viewInitial;
-            aObj["node.groups"].push([...viewInitial.node.groups]);
-            aObj["node.x"].push([...viewInitial.node.x]);
-            aObj["node.y"].push([...viewInitial.node.y]);
+            aObj["node.groups"].push(viewInitial.node.groups.slice());
+            aObj["node.x"].push(viewInitial.node.x.slice());
+            aObj["node.y"].push(viewInitial.node.y.slice());
           }
           Registry.call("restyle", gd, aObj);
         }
@@ -36841,10 +36952,10 @@ var Plotly = (() => {
         icon: Icons.home,
         click: function(gd, ev) {
           var button = ev.currentTarget;
-          button.dataset.attr = "zoom";
-          button.dataset.val = "reset";
+          button.setAttribute("data-attr", "zoom");
+          button.setAttribute("data-val", "reset");
           handleCartesian(gd, ev);
-          button.dataset.attr = "resetLastSave";
+          button.setAttribute("data-attr", "resetLastSave");
           handleCamera3d(gd, ev);
           resetView(gd, "geo");
           resetView(gd, "mapbox");
@@ -36871,7 +36982,8 @@ var Plotly = (() => {
         var areSpikesOn = fullLayout._cartesianSpikesEnabled === "on";
         var axList = axisIds.list(gd, null, true);
         var aobj = {};
-        for (var ax of axList) {
+        for (var i = 0; i < axList.length; i++) {
+          var ax = axList[i];
           aobj[ax._name + ".showspikes"] = areSpikesOn ? true : ax._showSpikeInitial;
         }
         return aobj;
@@ -36952,12 +37064,13 @@ var Plotly = (() => {
       }
       function _handleMapZoom(gd, ev, mapType) {
         var button = ev.currentTarget;
-        var val = button.dataset.val;
+        var val = button.getAttribute("data-val");
         var fullLayout = gd._fullLayout;
         var subplotIds = fullLayout._subplots[mapType] || [];
         var scalar = 1.05;
         var aObj = {};
-        for (var id of subplotIds) {
+        for (var i = 0; i < subplotIds.length; i++) {
+          var id = subplotIds[i];
           var current = fullLayout[id].zoom;
           var next = val === "in" ? scalar * current : current / scalar;
           aObj[id + ".zoom"] = next;
@@ -36968,11 +37081,13 @@ var Plotly = (() => {
         var fullLayout = gd._fullLayout;
         var subplotIds = fullLayout._subplots[subplotType] || [];
         var aObj = {};
-        for (var id of subplotIds) {
+        for (var i = 0; i < subplotIds.length; i++) {
+          var id = subplotIds[i];
           var subplotObj = fullLayout[id]._subplot;
           var viewInitial = subplotObj.viewInitial;
           var viewKeys = Object.keys(viewInitial);
-          for (var key of viewKeys) {
+          for (var j = 0; j < viewKeys.length; j++) {
+            var key = viewKeys[j];
             aObj[id + "." + key] = viewInitial[key];
           }
         }
@@ -37001,18 +37116,18 @@ var Plotly = (() => {
         "hovercompare",
         "togglehover",
         "togglespikelines"
-      , ...DRAW_MODES];
+      ].concat(DRAW_MODES);
       var foreButtons = [];
       var addToForeButtons = function(b) {
-        if (backButtons.includes(b._cat || b.name)) return;
+        if (backButtons.indexOf(b._cat || b.name) !== -1) return;
         var name = b.name;
         var _cat = (b._cat || b.name).toLowerCase();
-        if (!foreButtons.includes(name)) foreButtons.push(name);
-        if (!foreButtons.includes(_cat)) foreButtons.push(_cat);
+        if (foreButtons.indexOf(name) === -1) foreButtons.push(name);
+        if (foreButtons.indexOf(_cat) === -1) foreButtons.push(_cat);
       };
-      for (const k of buttonList) {
+      buttonList.forEach(function(k) {
         addToForeButtons(modeBarButtons[k]);
-      }
+      });
       foreButtons.sort();
       module.exports = {
         DRAW_MODES,
@@ -37107,7 +37222,7 @@ var Plotly = (() => {
         this.container = opts.container;
         this.element = document.createElement("div");
         this.update(opts.graphInfo, opts.buttons);
-        this.container.append(this.element);
+        this.container.appendChild(this.element);
       }
       var proto = ModeBar.prototype;
       proto.update = function(graphInfo, buttons) {
@@ -37125,9 +37240,9 @@ var Plotly = (() => {
         }
         var style = fullLayout.modebar;
         var groupSelector = "#" + modeBarId + " .modebar-group";
-        for (const group of document.querySelectorAll(groupSelector)) {
+        document.querySelectorAll(groupSelector).forEach(function(group) {
           group.style.backgroundColor = style.bgcolor;
-        }
+        });
         Lib.setStyleOnHover("#" + modeBarId + " .modebar-btn", ".active", ".icon path", "fill: " + style.activecolor, "fill: " + style.color);
         var needsNewButtons = !this.hasButtons(buttons);
         var needsNewLogo = this.hasLogo !== context.displaylogo;
@@ -37144,7 +37259,7 @@ var Plotly = (() => {
             if (fullLayout.modebar.orientation === "v") {
               this.element.insertBefore(logoGroup, this.element.childNodes[0]);
             } else {
-              this.element.append(logoGroup);
+              this.element.appendChild(logoGroup);
             }
             this.hasLogo = true;
           }
@@ -37156,7 +37271,7 @@ var Plotly = (() => {
         this.buttons = buttons;
         this.buttonElements = [];
         this.buttonsNames = [];
-        for (const buttonGroup of this.buttons) {
+        this.buttons.forEach(function(buttonGroup) {
           var group = _this.createGroup();
           buttonGroup.forEach(function(buttonConfig) {
             var buttonName = buttonConfig.name;
@@ -37172,7 +37287,7 @@ var Plotly = (() => {
             group.appendChild(button);
           });
           _this.element.appendChild(group);
-        }
+        });
       };
       proto.createGroup = function() {
         var group = document.createElement("div");
@@ -37189,31 +37304,31 @@ var Plotly = (() => {
         var title = config.title;
         if (title === void 0) title = config.name;
         else if (typeof title === "function") title = title(this.graphInfo);
-        if (title || title === 0) button.dataset.title = title;
-        if (config.attr !== void 0) button.dataset.attr = config.attr;
+        if (title || title === 0) button.setAttribute("data-title", title);
+        if (config.attr !== void 0) button.setAttribute("data-attr", config.attr);
         var val = config.val;
         if (val !== void 0) {
           if (typeof val === "function") val = val(this.graphInfo);
-          button.dataset.val = val;
+          button.setAttribute("data-val", val);
         }
         var click = config.click;
         if (typeof click !== "function") {
-          throw new TypeError("must provide button 'click' function in button config");
+          throw new Error("must provide button 'click' function in button config");
         } else {
           button.addEventListener("click", function(ev) {
             config.click(_this.graphInfo, ev);
             _this.updateActiveButton(ev.currentTarget);
           });
         }
-        button.dataset.toggle = config.toggle || false;
+        button.setAttribute("data-toggle", config.toggle || false);
         if (config.toggle) d3.select(button).classed("active", true);
         var icon = config.icon;
         if (typeof icon === "function") {
-          button.append(icon());
+          button.appendChild(icon());
         } else {
-          button.append(this.createIcon(icon || Icons.question));
+          button.appendChild(this.createIcon(icon || Icons.question));
         }
-        button.dataset.gravity = config.gravity || "n";
+        button.setAttribute("data-gravity", config.gravity || "n");
         return button;
       };
       proto.createIcon = function(thisIcon) {
@@ -37231,7 +37346,7 @@ var Plotly = (() => {
           } else if (thisIcon.ascent !== void 0) {
             path.setAttribute("transform", "matrix(1 0 0 -1 0 " + thisIcon.ascent + ")");
           }
-          icon.append(path);
+          icon.appendChild(path);
         }
         if (thisIcon.svg) {
           var svgDoc = Parser.parseFromString(thisIcon.svg, "application/xml");
@@ -37243,8 +37358,8 @@ var Plotly = (() => {
       };
       proto.updateActiveButton = function(buttonClicked) {
         var fullLayout = this.graphInfo._fullLayout;
-        var dataAttrClicked = buttonClicked !== void 0 ? buttonClicked.dataset.attr : null;
-        for (const button of this.buttonElements) {
+        var dataAttrClicked = buttonClicked !== void 0 ? buttonClicked.getAttribute("data-attr") : null;
+        this.buttonElements.forEach(function(button) {
           var thisval = button.getAttribute("data-val") || true;
           var dataAttr = button.getAttribute("data-attr");
           var isToggleButton = button.getAttribute("data-toggle") === "true";
@@ -37271,16 +37386,16 @@ var Plotly = (() => {
             button3.classed("active", val === thisval);
             updateButtonStyle(button, val === thisval);
           }
-        }
+        });
       };
       proto.hasButtons = function(buttons) {
         var currentButtons = this.buttons;
         if (!currentButtons) return false;
         if (buttons.length !== currentButtons.length) return false;
-        for (const [i, button] of buttons.entries()) {
-          if (button.length !== currentButtons[i].length) return false;
-          for (var j = 0; j < button.length; j++) {
-            if (button[j].name !== currentButtons[i][j].name) return false;
+        for (var i = 0; i < buttons.length; ++i) {
+          if (buttons[i].length !== currentButtons[i].length) return false;
+          for (var j = 0; j < buttons[i].length; j++) {
+            if (buttons[i][j].name !== currentButtons[i][j].name) return false;
           }
         }
         return true;
@@ -37293,15 +37408,15 @@ var Plotly = (() => {
         var a = document.createElement("a");
         a.href = "https://plotly.com/";
         a.target = "_blank";
-        a.dataset.title = jsVersion(Lib._(this.graphInfo, "Produced with Plotly.js"));
+        a.setAttribute("data-title", jsVersion(Lib._(this.graphInfo, "Produced with Plotly.js")));
         a.className = "modebar-btn plotlyjsicon modebar-btn--logo";
-        a.append(this.createIcon(Icons.newplotlylogo));
-        group.append(a);
+        a.appendChild(this.createIcon(Icons.newplotlylogo));
+        group.appendChild(a);
         return group;
       };
       proto.removeAllButtons = function() {
         while (this.element.firstChild) {
-          this.element.firstChild.remove();
+          this.element.removeChild(this.element.firstChild);
         }
         this.hasLogo = false;
       };
@@ -37348,20 +37463,20 @@ var Plotly = (() => {
           return;
         }
         if (!Array.isArray(context.modeBarButtonsToRemove)) {
-          throw new TypeError([
+          throw new Error([
             "*modeBarButtonsToRemove* configuration options",
             "must be an array."
           ].join(" "));
         }
         if (!Array.isArray(context.modeBarButtonsToAdd)) {
-          throw new TypeError([
+          throw new Error([
             "*modeBarButtonsToAdd* configuration options",
             "must be an array."
           ].join(" "));
         }
         var customButtons = context.modeBarButtons;
         var buttonGroups;
-        if (Array.isArray(customButtons) && customButtons.length > 0) {
+        if (Array.isArray(customButtons) && customButtons.length) {
           buttonGroups = fillCustomButton(customButtons);
         } else if (!context.displayModeBar && context.watermark) {
           buttonGroups = [];
@@ -37420,15 +37535,16 @@ var Plotly = (() => {
         var hasUnifiedHoverLabel = isUnifiedHover(fullLayout.hovermode);
         var groups = [];
         function addGroup(newGroup) {
-          if (newGroup.length === 0) return;
+          if (!newGroup.length) return;
           var out = [];
-          for (var name of newGroup) {
+          for (var i2 = 0; i2 < newGroup.length; i2++) {
+            var name = newGroup[i2];
             var B = modeBarButtons[name];
             var v0 = B.name.toLowerCase();
             var v1 = (B._cat || B.name).toLowerCase();
             var found = false;
-            for (const element of buttonsToRemove) {
-              var t = element.toLowerCase();
+            for (var q = 0; q < buttonsToRemove.length; q++) {
+              var t = buttonsToRemove[q].toLowerCase();
               if (t === v0 || t === v1) {
                 found = true;
                 break;
@@ -37497,17 +37613,18 @@ var Plotly = (() => {
         }
         var enabledHoverGroup = [];
         var enableHover = function(a) {
-          if (enabledHoverGroup.includes(a)) return;
-          if (hoverGroup.includes(a)) {
+          if (enabledHoverGroup.indexOf(a) !== -1) return;
+          if (hoverGroup.indexOf(a) !== -1) {
             enabledHoverGroup.push(a);
           }
         };
         if (Array.isArray(buttonsToAdd)) {
           var newList = [];
-          for (var b of buttonsToAdd) {
+          for (var i = 0; i < buttonsToAdd.length; i++) {
+            var b = buttonsToAdd[i];
             if (typeof b === "string") {
               b = b.toLowerCase();
-              if (DRAW_MODES.includes(b)) {
+              if (DRAW_MODES.indexOf(b) !== -1) {
                 if (fullLayout._has("mapbox") || fullLayout._has("map") || // draw shapes in paper coordinate (could be improved in future to support data coordinate, when there is no pitch)
                 fullLayout._has("cartesian")) {
                   dragModeGroup.push(b);
@@ -37541,8 +37658,8 @@ var Plotly = (() => {
       }
       function areAllAxesFixed(fullLayout) {
         var axList = axisIds.list({ _fullLayout: fullLayout }, null, true);
-        for (const element of axList) {
-          if (!element.fixedrange) {
+        for (var i = 0; i < axList.length; i++) {
+          if (!axList[i].fixedrange) {
             return false;
           }
         }
@@ -37550,8 +37667,9 @@ var Plotly = (() => {
       }
       function isSelectable(fullData) {
         var selectable = false;
-        for (var trace of fullData) {
+        for (var i = 0; i < fullData.length; i++) {
           if (selectable) break;
+          var trace = fullData[i];
           if (!trace._module || !trace._module.selectPoints) continue;
           if (Registry.traceIs(trace, "scatter-like")) {
             if (scatterSubTypes.hasMarkers(trace) || scatterSubTypes.hasText(trace)) {
@@ -37568,16 +37686,16 @@ var Plotly = (() => {
         return selectable;
       }
       function hasNoHover(fullData) {
-        for (const fullDatum of fullData) {
-          if (!Registry.traceIs(fullDatum, "noHover")) return false;
+        for (var i = 0; i < fullData.length; i++) {
+          if (!Registry.traceIs(fullData[i], "noHover")) return false;
         }
         return true;
       }
       function appendButtonsToGroups(groups, buttons) {
-        if (buttons.length > 0) {
+        if (buttons.length) {
           if (Array.isArray(buttons[0])) {
-            for (const button of buttons) {
-              groups.push(button);
+            for (var i = 0; i < buttons.length; i++) {
+              groups.push(buttons[i]);
             }
           } else groups.push(buttons);
         }
@@ -37585,12 +37703,13 @@ var Plotly = (() => {
       }
       function fillCustomButton(originalModeBarButtons) {
         var customButtons = extendDeep([], originalModeBarButtons);
-        for (var buttonGroup of customButtons) {
+        for (var i = 0; i < customButtons.length; i++) {
+          var buttonGroup = customButtons[i];
           for (var j = 0; j < buttonGroup.length; j++) {
             var button = buttonGroup[j];
             if (typeof button === "string") {
               if (modeBarButtons[button] !== void 0) {
-                buttonGroup[j] = modeBarButtons[button];
+                customButtons[i][j] = modeBarButtons[button];
               } else {
                 throw new Error([
                   "*modeBarButtons* configuration options",
@@ -37727,8 +37846,8 @@ var Plotly = (() => {
         }
         for (i = 0; i < matchGroups.length; i++) {
           group = matchGroups[i];
-          for (const matchAttr of matchAttrs) {
-            attr = matchAttr;
+          for (var j = 0; j < matchAttrs.length; j++) {
+            attr = matchAttrs[j];
             val = null;
             var baseAx;
             for (axId in group) {
@@ -37761,7 +37880,7 @@ var Plotly = (() => {
             if (val !== null) {
               for (axId in group) {
                 axOut = layoutOut[id2name(axId)];
-                axOut[attr] = attr === "range" ? [...val] : val;
+                axOut[attr] = attr === "range" ? val.slice() : val;
                 if (attr === "rangebreaks") {
                   axOut._hasDayOfWeekBreaks = hasDayOfWeekBreaks;
                   setConvert(axOut, layoutOut);
@@ -37822,7 +37941,7 @@ var Plotly = (() => {
             matches: {
               valType: "enumerated",
               values: linkableAxes,
-              dflt: linkableAxes.includes(splomStash.matches) ? splomStash.matches : void 0
+              dflt: linkableAxes.indexOf(splomStash.matches) !== -1 ? splomStash.matches : void 0
             }
           }, "matches");
         }
@@ -37831,7 +37950,7 @@ var Plotly = (() => {
           scaleanchor = Lib.coerce(axIn, axOut, {
             scaleanchor: {
               valType: "enumerated",
-              values: [...linkableAxes, false]
+              values: linkableAxes.concat([false])
             }
           }, "scaleanchor", scaleanchorDflt);
         }
@@ -37843,14 +37962,14 @@ var Plotly = (() => {
             matchRatio = (isX ? "x" : "y") + matchRatio;
           }
           updateConstraintGroups(constraintGroups, thisID, matches, matchRatio);
-        } else if (axIn.matches && axIds.includes(axIn.matches)) {
+        } else if (axIn.matches && axIds.indexOf(axIn.matches) !== -1) {
           Lib.warn("ignored " + axOut._name + '.matches: "' + axIn.matches + '" to avoid an infinite loop');
         }
         if (scaleanchor) {
           var scaleratio = coerce("scaleratio");
           if (!scaleratio) scaleratio = axOut.scaleratio = 1;
           updateConstraintGroups(constraintGroups, thisID, scaleanchor, scaleratio);
-        } else if (axIn.scaleanchor && axIds.includes(axIn.scaleanchor)) {
+        } else if (axIn.scaleanchor && axIds.indexOf(axIn.scaleanchor) !== -1) {
           Lib.warn("ignored " + axOut._name + '.scaleanchor: "' + axIn.scaleanchor + '" to avoid either an infinite loop and possibly inconsistent scaleratios, or because this axis declares a *matches* constraint.');
         }
       }
@@ -37862,9 +37981,9 @@ var Plotly = (() => {
         return domain[1] - domain[0];
       }
       function getConstraintGroup(groups, thisID) {
-        for (const group of groups) {
-          if (group[thisID]) {
-            return group;
+        for (var i = 0; i < groups.length; i++) {
+          if (groups[i][thisID]) {
+            return groups[i];
           }
         }
         return null;
@@ -37908,12 +38027,12 @@ var Plotly = (() => {
         if (typeof a === "string") {
           aPrefix = a.match(/^[xy]*/)[0];
           aLen = aPrefix.length;
-          a = +a.slice(aLen);
+          a = +a.substr(aLen);
         }
         if (typeof b === "string") {
           bPrefix = b.match(/^[xy]*/)[0];
           bLen = bPrefix.length;
-          b = +b.slice(bLen);
+          b = +b.substr(bLen);
         }
         var c = a * b;
         if (!aLen && !bLen) {
@@ -37925,19 +38044,20 @@ var Plotly = (() => {
         if (aLen === bLen) {
           return c;
         }
-        return (aLen > bLen ? aPrefix.slice(bLen) : bPrefix.slice(aLen)) + c;
+        return (aLen > bLen ? aPrefix.substr(bLen) : bPrefix.substr(aLen)) + c;
       }
       function finalRatios(group, fullLayout) {
         var size = fullLayout._size;
         var yRatio = size.h / size.w;
         var out = {};
         var keys = Object.keys(group);
-        for (var key of keys) {
+        for (var i = 0; i < keys.length; i++) {
+          var key = keys[i];
           var val = group[key];
           if (typeof val === "string") {
             var prefix = val.match(/^[xy]*/)[0];
             var pLen = prefix.length;
-            val = +val.slice(pLen);
+            val = +val.substr(pLen);
             var mult = prefix.charAt(0) === "y" ? yRatio : 1 / yRatio;
             for (var j = 0; j < pLen; j++) {
               val *= mult;
@@ -37954,18 +38074,18 @@ var Plotly = (() => {
         for (i = 0; i < constraintGroups.length; i++) {
           group = finalRatios(constraintGroups[i], fullLayout);
           var axisIDs = Object.keys(group);
-          var minScale = Number.POSITIVE_INFINITY;
+          var minScale = Infinity;
           var maxScale = 0;
-          var matchScale = Number.POSITIVE_INFINITY;
+          var matchScale = Infinity;
           var normScales = {};
           var axes = {};
           var hasAnyDomainConstraint = false;
           for (j = 0; j < axisIDs.length; j++) {
             axisID = axisIDs[j];
             axes[axisID] = ax = fullLayout[id2name(axisID)];
-            if (ax._inputDomain) ax.domain = [...ax._inputDomain];
-            else ax._inputDomain = [...ax.domain];
-            if (!ax._inputRange) ax._inputRange = [...ax.range];
+            if (ax._inputDomain) ax.domain = ax._inputDomain.slice();
+            else ax._inputDomain = ax.domain.slice();
+            if (!ax._inputRange) ax._inputRange = ax.range.slice();
             ax.setScale();
             normScales[axisID] = normScale = Math.abs(ax._m) / group[axisID];
             minScale = Math.min(minScale, normScale);
@@ -37992,12 +38112,12 @@ var Plotly = (() => {
                 var rangeShrunk = (ax.r2l(ax.range[1]) - ax.r2l(ax.range[0])) / (ax.r2l(ax._inputRange[1]) - ax.r2l(ax._inputRange[0]));
                 factor /= domainShrunk;
                 if (factor * rangeShrunk < 1) {
-                  ax.domain = ax._input.domain = [...inputDomain];
+                  ax.domain = ax._input.domain = inputDomain.slice();
                   scaleZoom(ax, factor);
                   continue;
                 }
                 if (rangeShrunk < 1) {
-                  ax.range = ax._input.range = [...ax._inputRange];
+                  ax.range = ax._input.range = ax._inputRange.slice();
                   factor *= rangeShrunk;
                 }
                 if (ax.autorange) {
@@ -38044,7 +38164,8 @@ var Plotly = (() => {
       };
       exports.getAxisGroup = function getAxisGroup(fullLayout, axId) {
         var matchGroups = fullLayout._axisMatchGroups;
-        for (var [i, group] of matchGroups.entries()) {
+        for (var i = 0; i < matchGroups.length; i++) {
+          var group = matchGroups[i];
           if (group[axId]) return "g" + i;
         }
         return axId;
@@ -38054,8 +38175,8 @@ var Plotly = (() => {
           var isConstrained = false;
           var axId = ax._id;
           var constraintGroups = gd._fullLayout._axisConstraintGroups;
-          for (const constraintGroup of constraintGroups) {
-            if (constraintGroup[axId]) {
+          for (var j = 0; j < constraintGroups.length; j++) {
+            if (constraintGroups[j][axId]) {
               isConstrained = true;
               break;
             }
@@ -38107,9 +38228,9 @@ var Plotly = (() => {
         return Lib.syncOrAsync([Plots.doAutoMargin, lsInner], gd);
       };
       function overlappingDomain(xDomain, yDomain, domains) {
-        for (const domain of domains) {
-          var existingX = domain[0];
-          var existingY = domain[1];
+        for (var i = 0; i < domains.length; i++) {
+          var existingX = domains[i][0];
+          var existingY = domains[i][1];
           if (existingX[0] >= xDomain[1] || existingX[1] <= xDomain[0]) {
             continue;
           }
@@ -38173,7 +38294,7 @@ var Plotly = (() => {
             var xDomain = plotinfo.xaxis.domain;
             var yDomain = plotinfo.yaxis.domain;
             var plotgroup = plotinfo.plotgroup;
-            if (overlappingDomain(xDomain, yDomain, lowerDomains) && !subplot.includes(zindexSeparator)) {
+            if (overlappingDomain(xDomain, yDomain, lowerDomains) && subplot.indexOf(zindexSeparator) === -1) {
               var pgNode = plotgroup.node();
               var plotgroupBg = plotinfo.bg = Lib.ensureSingle(plotgroup, "rect", "bg");
               pgNode.insertBefore(plotgroupBg.node(), pgNode.childNodes[0]);
@@ -38324,7 +38445,8 @@ var Plotly = (() => {
         if (shouldShowLineThisSide(ax, side, counterAx)) {
           return counterAx._lw;
         }
-        for (var axi of axList) {
+        for (var i = 0; i < axList.length; i++) {
+          var axi = axList[i];
           if (axi._mainAxis === counterAx._mainAxis && shouldShowLineThisSide(ax, side, axi)) {
             return axi._lw;
           }
@@ -38463,13 +38585,11 @@ var Plotly = (() => {
           hPadShift = -title.pad.r;
         }
         switch (title.xref) {
-          case "paper": {
+          case "paper":
             return gs.l + gs.w * title.x + hPadShift;
-          }
           case "container":
-          default: {
+          default:
             return fullLayout.width * title.x + hPadShift;
-          }
         }
       }
       function getMainTitleY(fullLayout, dy) {
@@ -38485,13 +38605,11 @@ var Plotly = (() => {
           return gs.t / 2;
         } else {
           switch (title.yref) {
-            case "paper": {
+            case "paper":
               return gs.t + gs.h - gs.h * title.y + vPadShift;
-            }
             case "container":
-            default: {
+            default:
               return fullLayout.height - fullLayout.height * title.y + vPadShift;
-            }
           }
         }
       }
@@ -38538,7 +38656,7 @@ var Plotly = (() => {
           var editStyle = _module.editStyle;
           if (editStyle) editStyleCalls.push({ fn: editStyle, cd0 });
         }
-        if (editStyleCalls.length > 0) {
+        if (editStyleCalls.length) {
           for (i = 0; i < editStyleCalls.length; i++) {
             var edit = editStyleCalls[i];
             edit.fn(gd, edit.cd0);
@@ -38585,8 +38703,8 @@ var Plotly = (() => {
       exports.doCamera = function(gd) {
         var fullLayout = gd._fullLayout;
         var sceneIds = fullLayout._subplots.gl3d;
-        for (const sceneId of sceneIds) {
-          var sceneLayout = fullLayout[sceneId];
+        for (var i = 0; i < sceneIds.length; i++) {
+          var sceneLayout = fullLayout[sceneIds[i]];
           var scene = sceneLayout._scene;
           scene.setViewport(sceneLayout);
         }
@@ -38595,8 +38713,8 @@ var Plotly = (() => {
         var fullLayout = gd._fullLayout;
         clearGlCanvases(gd);
         var basePlotModules = fullLayout._basePlotModules;
-        for (const basePlotModule of basePlotModules) {
-          basePlotModule.plot(gd);
+        for (var i = 0; i < basePlotModules.length; i++) {
+          basePlotModules[i].plot(gd);
         }
         exports.redrawReglTraces(gd);
         Plots.style(gd);
@@ -38643,8 +38761,8 @@ var Plotly = (() => {
         var axList = Axes.list(gd, "", true);
         var ax;
         var autoRangeDone = {};
-        for (const element of axList) {
-          ax = element;
+        for (var i = 0; i < axList.length; i++) {
+          ax = axList[i];
           if (!autoRangeDone[ax._id]) {
             autoRangeDone[ax._id] = 1;
             cleanAxisConstraints(gd, ax);
@@ -38781,7 +38899,7 @@ var Plotly = (() => {
       function activateSelection(gd, path) {
         if (!couldHaveActiveSelection(gd)) return;
         var element = path.node();
-        var id = +element.dataset.index;
+        var id = +element.getAttribute("data-index");
         if (id >= 0) {
           if (id === gd._fullLayout._activeSelectionIndex) {
             deactivateSelection(gd);
@@ -38811,9 +38929,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/build-log.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/build-log.js
   var require_build_log = __commonJS({
-    "node_modules/polybooljs/lib/build-log.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/build-log.js"(exports, module) {
       function BuildLog() {
         var my;
         var nextSegmentId = 0;
@@ -38918,9 +39036,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/epsilon.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/epsilon.js
   var require_epsilon = __commonJS({
-    "node_modules/polybooljs/lib/epsilon.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/epsilon.js"(exports, module) {
       function Epsilon(eps) {
         if (typeof eps !== "number")
           eps = 1e-10;
@@ -38963,7 +39081,7 @@ var Plotly = (() => {
           },
           pointsCompare: function(p1, p2) {
             if (my.pointsSameX(p1, p2))
-              return my.pointsSameY(p1, p2) ? 0 : (p1[1] < p2[1] ? -1 : 1);
+              return my.pointsSameY(p1, p2) ? 0 : p1[1] < p2[1] ? -1 : 1;
             return p1[0] < p2[0] ? -1 : 1;
           },
           pointsCollinear: function(pt1, pt2, pt3) {
@@ -39018,12 +39136,12 @@ var Plotly = (() => {
           pointInsideRegion: function(pt, region) {
             var x = pt[0];
             var y = pt[1];
-            var last_x = region.at(-1)[0];
-            var last_y = region.at(-1)[1];
+            var last_x = region[region.length - 1][0];
+            var last_y = region[region.length - 1][1];
             var inside = false;
-            for (const element of region) {
-              var curr_x = element[0];
-              var curr_y = element[1];
+            for (var i = 0; i < region.length; i++) {
+              var curr_x = region[i][0];
+              var curr_y = region[i][1];
               if (curr_y - y > eps != last_y - y > eps && (last_x - curr_x) * (y - curr_y) / (last_y - curr_y) + curr_x - x > eps)
                 inside = !inside;
               last_x = curr_x;
@@ -39038,9 +39156,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/linked-list.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/linked-list.js
   var require_linked_list = __commonJS({
-    "node_modules/polybooljs/lib/linked-list.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/linked-list.js"(exports, module) {
       var LinkedList = {
         create: function() {
           var my = {
@@ -39116,9 +39234,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/intersecter.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/intersecter.js
   var require_intersecter = __commonJS({
-    "node_modules/polybooljs/lib/intersecter.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/intersecter.js"(exports, module) {
       var LinkedList = require_linked_list();
       function Intersecter(selfIntersection, eps, buildLog) {
         function segmentNew(start, end) {
@@ -39414,12 +39532,12 @@ var Plotly = (() => {
         if (!selfIntersection) {
           return {
             calculate: function(segments1, inverted1, segments2, inverted2) {
-              for (const seg of segments1) {
+              segments1.forEach(function(seg) {
                 eventAddSegment(segmentCopy(seg.start, seg.end, seg), true);
-              }
-              for (const seg of segments2) {
+              });
+              segments2.forEach(function(seg) {
                 eventAddSegment(segmentCopy(seg.start, seg.end, seg), false);
-              }
+              });
               return calculate(inverted1, inverted2);
             }
           };
@@ -39427,10 +39545,10 @@ var Plotly = (() => {
         return {
           addRegion: function(region) {
             var pt1;
-            var pt2 = region.at(-1);
-            for (const element of region) {
+            var pt2 = region[region.length - 1];
+            for (var i = 0; i < region.length; i++) {
               pt1 = pt2;
-              pt2 = element;
+              pt2 = region[i];
               var forward = eps.pointsCompare(pt1, pt2);
               if (forward === 0)
                 continue;
@@ -39452,18 +39570,18 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/segment-chainer.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/segment-chainer.js
   var require_segment_chainer = __commonJS({
-    "node_modules/polybooljs/lib/segment-chainer.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/segment-chainer.js"(exports, module) {
       function SegmentChainer(segments, eps, buildLog) {
         var chains = [];
         var regions = [];
-        for (const seg of segments) {
+        segments.forEach(function(seg) {
           var pt1 = seg.start;
           var pt2 = seg.end;
           if (eps.pointsSame(pt1, pt2)) {
             console.warn("PolyBool: Warning: Zero-length segment detected; your epsilon is probably too small or too large");
-            continue;
+            return;
           }
           if (buildLog)
             buildLog.chainStart(seg);
@@ -39513,7 +39631,7 @@ var Plotly = (() => {
             chains.push([pt1, pt2]);
             if (buildLog)
               buildLog.chainNew(pt1, pt2);
-            continue;
+            return;
           }
           if (next_match === second_match) {
             if (buildLog)
@@ -39554,7 +39672,7 @@ var Plotly = (() => {
               if (buildLog)
                 buildLog.chainClose(first_match.index);
               regions.push(chain);
-              continue;
+              return;
             }
             if (addToHead) {
               if (buildLog)
@@ -39565,7 +39683,7 @@ var Plotly = (() => {
                 buildLog.chainAddTail(first_match.index, pt);
               chain.push(pt);
             }
-            continue;
+            return;
           }
           function reverseChain(index2) {
             if (buildLog)
@@ -39625,19 +39743,19 @@ var Plotly = (() => {
               }
             }
           }
-        }
+        });
         return regions;
       }
       module.exports = SegmentChainer;
     }
   });
 
-  // node_modules/polybooljs/lib/segment-selector.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/segment-selector.js
   var require_segment_selector = __commonJS({
-    "node_modules/polybooljs/lib/segment-selector.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/segment-selector.js"(exports, module) {
       function select(segments, selection, buildLog) {
         var result = [];
-        for (const seg of segments) {
+        segments.forEach(function(seg) {
           var index = (seg.myFill.above ? 8 : 0) + (seg.myFill.below ? 4 : 0) + (seg.otherFill && seg.otherFill.above ? 2 : 0) + (seg.otherFill && seg.otherFill.below ? 1 : 0);
           if (selection[index] !== 0) {
             result.push({
@@ -39653,7 +39771,7 @@ var Plotly = (() => {
               otherFill: null
             });
           }
-        }
+        });
         if (buildLog)
           buildLog.selected(result);
         return result;
@@ -39764,9 +39882,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/geojson.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/geojson.js
   var require_geojson = __commonJS({
-    "node_modules/polybooljs/lib/geojson.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/geojson.js"(exports, module) {
       var GeoJSON = {
         // convert a GeoJSON object to a PolyBool polygon
         toPolygon: function(PolyBool, geojson) {
@@ -39774,7 +39892,7 @@ var Plotly = (() => {
             if (coords.length <= 0)
               return PolyBool.segments({ inverted: false, regions: [] });
             function LineString(ls) {
-              var reg = ls.slice(0, - 1);
+              var reg = ls.slice(0, ls.length - 1);
               return PolyBool.segments({ inverted: false, regions: [reg] });
             }
             var out2 = LineString(coords[0]);
@@ -39835,12 +39953,12 @@ var Plotly = (() => {
           }
           function forceWinding(region2, clockwise) {
             var winding = 0;
-            var last_x = region2.at(-1)[0];
-            var last_y = region2.at(-1)[1];
+            var last_x = region2[region2.length - 1][0];
+            var last_y = region2[region2.length - 1][1];
             var copy = [];
-            for (const element of region2) {
-              var curr_x = element[0];
-              var curr_y = element[1];
+            for (var i2 = 0; i2 < region2.length; i2++) {
+              var curr_x = region2[i2][0];
+              var curr_y = region2[i2][1];
               copy.push([curr_x, curr_y]);
               winding += curr_y * last_x - curr_x * last_y;
               last_x = curr_x;
@@ -39881,9 +39999,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/index.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/index.js
   var require_polybooljs = __commonJS({
-    "node_modules/polybooljs/index.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/index.js"(exports, module) {
       var BuildLog = require_build_log();
       var Epsilon = require_epsilon();
       var Intersecter = require_intersecter();
@@ -40001,9 +40119,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/point-in-polygon/nested.js
+  // node_modules/.pnpm/point-in-polygon@1.1.0/node_modules/point-in-polygon/nested.js
   var require_nested = __commonJS({
-    "node_modules/point-in-polygon/nested.js"(exports, module) {
+    "node_modules/.pnpm/point-in-polygon@1.1.0/node_modules/point-in-polygon/nested.js"(exports, module) {
       module.exports = function pointInPolygonNested(point, vs, start, end) {
         var x = point[0], y = point[1];
         var inside = false;
@@ -40029,13 +40147,13 @@ var Plotly = (() => {
       var BADNUM = require_numerical().BADNUM;
       var polygon = module.exports = {};
       polygon.tester = function tester(ptsIn) {
-        var pts = [...ptsIn];
+        var pts = ptsIn.slice();
         var xmin = pts[0][0];
         var xmax = xmin;
         var ymin = pts[0][1];
         var ymax = ymin;
         var i;
-        if (pts.at(-1)[0] !== pts[0][0] || pts.at(-1)[1] !== pts[0][1]) {
+        if (pts[pts.length - 1][0] !== pts[0][0] || pts[pts.length - 1][1] !== pts[0][1]) {
           pts.push(pts[0]);
         }
         for (i = 1; i < pts.length; i++) {
@@ -40054,12 +40172,14 @@ var Plotly = (() => {
                 return pt[0] === pts[0][0];
               };
             }
-          } else if (pts[0][1] === pts[1][1] && pts[2][1] === pts[3][1] && pts[0][0] === pts[3][0] && pts[1][0] === pts[2][0]) {
+          } else if (pts[0][1] === pts[1][1]) {
+            if (pts[2][1] === pts[3][1] && pts[0][0] === pts[3][0] && pts[1][0] === pts[2][0]) {
               isRect = true;
               rectFirstEdgeTest = function(pt) {
                 return pt[1] === pts[0][1];
               };
             }
+          }
         }
         function rectContains(pt, omitFirstEdge) {
           var x = pt[0];
@@ -40317,10 +40437,10 @@ var Plotly = (() => {
             var selections = (gd.layout || {}).selections || [];
             var list = [];
             var selectionErased = false;
-            for (const [q, selection_] of selections.entries()) {
+            for (var q = 0; q < selections.length; q++) {
               var s = fullLayout.selections[q];
               if (!s || s.xref !== xRef || s.yref !== yRef) {
-                list.push(selection_);
+                list.push(selections[q]);
               } else {
                 selectionErased = true;
               }
@@ -40360,33 +40480,29 @@ var Plotly = (() => {
                 direction = q;
               }
               switch (direction) {
-                case "h": {
+                case "h":
                   start = isEllipse ? ph / 2 : 0;
                   end = ph;
                   break;
-                }
-                case "v": {
+                case "v":
                   start = isEllipse ? pw / 2 : 0;
                   end = pw;
                   break;
-                }
               }
             }
             if (isDrawMode) {
               switch (fullLayout.newshape.drawdirection) {
-                case "vertical": {
+                case "vertical":
                   direction = "h";
                   start = isEllipse ? ph / 2 : 0;
                   end = ph;
                   break;
-                }
-                case "horizontal": {
+                case "horizontal":
                   direction = "v";
                   start = isEllipse ? pw / 2 : 0;
                   end = pw;
                   break;
-                }
-                case "ortho": {
+                case "ortho":
                   if (dx < dy) {
                     direction = "h";
                     start = y0;
@@ -40397,10 +40513,8 @@ var Plotly = (() => {
                     end = x1;
                   }
                   break;
-                }
-                default: {
+                default:
                   direction = "d";
-                }
               }
             }
             if (direction === "h") {
@@ -40435,10 +40549,10 @@ var Plotly = (() => {
             filterPoly.addPt([x1, y1]);
             currentPolygon = filterPoly.filtered;
           }
-          if (dragOptions.selectionDefs && dragOptions.selectionDefs.length > 0) {
+          if (dragOptions.selectionDefs && dragOptions.selectionDefs.length) {
             mergedPolygons = mergePolygons(dragOptions.mergedPolygons, currentPolygon, subtract);
             currentPolygon.subtract = subtract;
-            selectionTesters = multiTester([...dragOptions.selectionDefs, currentPolygon]);
+            selectionTesters = multiTester(dragOptions.selectionDefs.concat([currentPolygon]));
           } else {
             mergedPolygons = [currentPolygon];
             selectionTesters = polygonTester(currentPolygon);
@@ -40446,7 +40560,7 @@ var Plotly = (() => {
           displayOutlines(convertPoly(mergedPolygons, isOpenMode), outlines, dragOptions);
           if (isSelectMode) {
             var _res = reselect(gd, false);
-            var extraPoints = _res.eventData ? [..._res.eventData.points] : [];
+            var extraPoints = _res.eventData ? _res.eventData.points.slice() : [];
             _res = reselect(gd, false, selectionTesters, searchTraces, dragOptions);
             selectionTesters = _res.selectionTesters;
             eventData = _res.eventData;
@@ -40461,18 +40575,19 @@ var Plotly = (() => {
               constants.SELECTDELAY,
               function() {
                 selection = _doSelect(selectionTesters, searchTraces);
-                var newPoints = [...selection];
-                for (var p of extraPoints) {
+                var newPoints = selection.slice();
+                for (var w = 0; w < extraPoints.length; w++) {
+                  var p = extraPoints[w];
                   var found = false;
-                  for (const newPoint of newPoints) {
-                    if (newPoint.curveNumber === p.curveNumber && newPoint.pointNumber === p.pointNumber) {
+                  for (var u = 0; u < newPoints.length; u++) {
+                    if (newPoints[u].curveNumber === p.curveNumber && newPoints[u].pointNumber === p.pointNumber) {
                       found = true;
                       break;
                     }
                   }
                   if (!found) newPoints.push(p);
                 }
-                if (newPoints.length > 0) {
+                if (newPoints.length) {
                   if (!eventData) eventData = {};
                   eventData.points = newPoints;
                 }
@@ -40501,13 +40616,14 @@ var Plotly = (() => {
               updateSelectedState(gd, searchTraces);
               clearSelectionsCache(dragOptions);
               emitDeselect(gd);
-              if (searchTraces.length > 0) {
+              if (searchTraces.length) {
                 var clickedXaxis = searchTraces[0].xaxis;
                 var clickedYaxis = searchTraces[0].yaxis;
                 if (clickedXaxis && clickedYaxis) {
                   var subSelections = [];
                   var allSelections = gd._fullLayout.selections;
-                  for (var s of allSelections) {
+                  for (var k = 0; k < allSelections.length; k++) {
+                    var s = allSelections[k];
                     if (!s) continue;
                     if (s.xref !== clickedXaxis._id || s.yref !== clickedYaxis._id) {
                       subSelections.push(s);
@@ -40522,7 +40638,7 @@ var Plotly = (() => {
                 }
               }
             } else {
-              if (clickmode.includes("select")) {
+              if (clickmode.indexOf("select") > -1) {
                 selectOnClick(
                   evt2,
                   gd,
@@ -40548,7 +40664,7 @@ var Plotly = (() => {
               currentPolygon.subtract = subtract;
               dragOptions.selectionDefs.push(currentPolygon);
               dragOptions.mergedPolygons.length = 0;
-              Array.prototype.push.apply(dragOptions.mergedPolygons, mergedPolygons);
+              [].push.apply(dragOptions.mergedPolygons, mergedPolygons);
             }
             if (immediateSelect || isDrawMode) {
               clearSelectionsCache(dragOptions, immediateSelect);
@@ -40566,7 +40682,7 @@ var Plotly = (() => {
         var hoverData = gd._hoverdata;
         var fullLayout = gd._fullLayout;
         var clickmode = fullLayout.clickmode;
-        var sendEvents = clickmode.includes("event");
+        var sendEvents = clickmode.indexOf("event") > -1;
         var selection = [];
         var searchTraces, searchInfo, currentSelectionDef, selectionTesters, traceSelection;
         var thisTracesSelection, pointOrBinSelected, subtract, eventData, i;
@@ -40589,14 +40705,14 @@ var Plotly = (() => {
           } else {
             subtract = evt.shiftKey && (pointOrBinSelected !== void 0 ? pointOrBinSelected : isPointOrBinSelected(clickedPtInfo));
             currentSelectionDef = newPointSelectionDef(clickedPtInfo.pointNumber, clickedPtInfo.searchInfo, subtract);
-            var allSelectionDefs = [...dragOptions.selectionDefs, currentSelectionDef];
+            var allSelectionDefs = dragOptions.selectionDefs.concat([currentSelectionDef]);
             selectionTesters = multiTester(allSelectionDefs, selectionTesters);
             for (i = 0; i < searchTraces.length; i++) {
               traceSelection = searchTraces[i]._module.selectPoints(searchTraces[i], selectionTesters);
               thisTracesSelection = fillSelectionItem(traceSelection, searchTraces[i]);
-              if (selection.length > 0) {
-                for (const element of thisTracesSelection) {
-                  selection.push(element);
+              if (selection.length) {
+                for (var j = 0; j < thisTracesSelection.length; j++) {
+                  selection.push(thisTracesSelection[j]);
                 }
               } else selection = thisTracesSelection;
             }
@@ -40644,18 +40760,18 @@ var Plotly = (() => {
         };
       }
       function multiTester(list) {
-        if (list.length === 0) return;
+        if (!list.length) return;
         var testers = [];
         var xmin = isPointSelectionDef(list[0]) ? 0 : list[0][0][0];
         var xmax = xmin;
         var ymin = isPointSelectionDef(list[0]) ? 0 : list[0][0][1];
         var ymax = ymin;
-        for (const element of list) {
-          if (isPointSelectionDef(element)) {
-            testers.push(newPointNumTester(element));
+        for (var i = 0; i < list.length; i++) {
+          if (isPointSelectionDef(list[i])) {
+            testers.push(newPointNumTester(list[i]));
           } else {
-            var tester = polygonTester(element);
-            tester.subtract = !!element.subtract;
+            var tester = polygonTester(list[i]);
+            tester.subtract = !!list[i].subtract;
             testers.push(tester);
             xmin = Math.min(xmin, tester.xmin);
             xmax = Math.max(xmax, tester.xmax);
@@ -40665,9 +40781,9 @@ var Plotly = (() => {
         }
         function contains(pt, arg, pointNumber, searchInfo) {
           var contained = false;
-          for (const tester_ of testers) {
-            if (tester_.contains(pt, arg, pointNumber, searchInfo)) {
-              contained = !tester_.subtract;
+          for (var i2 = 0; i2 < testers.length; i2++) {
+            if (testers[i2].contains(pt, arg, pointNumber, searchInfo)) {
+              contained = !testers[i2].subtract;
             }
           }
           return contained;
@@ -40778,8 +40894,8 @@ var Plotly = (() => {
             var sankeyInfo = createSearchInfo(trace._module, cd, xAxes[0], yAxes[0]);
             searchTraces.push(sankeyInfo);
           } else {
-            if (!xAxisIds.includes(trace.xaxis) && (!trace._xA || !trace._xA.overlaying)) continue;
-            if (!yAxisIds.includes(trace.yaxis) && (!trace._yA || !trace._yA.overlaying)) continue;
+            if (xAxisIds.indexOf(trace.xaxis) === -1 && (!trace._xA || !trace._xA.overlaying)) continue;
+            if (yAxisIds.indexOf(trace.yaxis) === -1 && (!trace._yA || !trace._yA.overlaying)) continue;
             searchTraces.push(createSearchInfo(
               trace._module,
               cd,
@@ -40833,7 +40949,7 @@ var Plotly = (() => {
         var ptNums = clickedPtInfo.pointNumbers;
         var ptNumsSet = ptNums.length > 0;
         var ptNumToTest = ptNumsSet ? ptNums[0] : ptNum;
-        return trace.selectedpoints ? trace.selectedpoints.includes(ptNumToTest) : false;
+        return trace.selectedpoints ? trace.selectedpoints.indexOf(ptNumToTest) > -1 : false;
       }
       function isOnlyThisBinSelected(searchTraces, clickedPtInfo) {
         var tracesWithSelectedPts = [];
@@ -40850,7 +40966,7 @@ var Plotly = (() => {
             trace = clickedPtInfo.searchInfo.cd[0].trace;
             if (trace.selectedpoints.length === clickedPtInfo.pointNumbers.length) {
               for (i = 0; i < clickedPtInfo.pointNumbers.length; i++) {
-                if (!trace.selectedpoints.includes(clickedPtInfo.pointNumbers[i])) {
+                if (trace.selectedpoints.indexOf(clickedPtInfo.pointNumbers[i]) < 0) {
                   return false;
                 }
               }
@@ -40891,15 +41007,16 @@ var Plotly = (() => {
             trace._input.selectedpoints = trace._fullInput.selectedpoints = [];
             if (trace._fullInput !== trace) trace.selectedpoints = [];
           }
-          for (var pt of pts) {
+          for (var k = 0; k < pts.length; k++) {
+            var pt = pts[k];
             var data = pt.data;
             var fullData = pt.fullData;
             var pointIndex = pt.pointIndex;
             var pointIndices = pt.pointIndices;
             if (pointIndices) {
-              Array.prototype.push.apply(data.selectedpoints, pointIndices);
+              [].push.apply(data.selectedpoints, pointIndices);
               if (trace._fullInput !== trace) {
-                Array.prototype.push.apply(fullData.selectedpoints, pointIndices);
+                [].push.apply(fullData.selectedpoints, pointIndices);
               }
             } else {
               data.selectedpoints.push(pointIndex);
@@ -40922,7 +41039,8 @@ var Plotly = (() => {
       }
       function updateReglSelectedState(gd, searchTraces) {
         var hasRegl = false;
-        for (var searchInfo of searchTraces) {
+        for (var i = 0; i < searchTraces.length; i++) {
+          var searchInfo = searchTraces[i];
           var cd = searchInfo.cd;
           if (Registry.traceIs(cd[0].trace, "regl")) {
             hasRegl = true;
@@ -40965,14 +41083,14 @@ var Plotly = (() => {
       }
       function convertPoly(polygonsIn, isOpenMode) {
         var polygonsOut = [];
-        for (const [i, element] of polygonsIn.entries()) {
+        for (var i = 0; i < polygonsIn.length; i++) {
           polygonsOut[i] = [];
-          for (var j = 0; j < element.length; j++) {
+          for (var j = 0; j < polygonsIn[i].length; j++) {
             polygonsOut[i][j] = [];
             polygonsOut[i][j][0] = j ? "L" : "M";
-            for (var k = 0; k < element[j].length; k++) {
+            for (var k = 0; k < polygonsIn[i][j].length; k++) {
               polygonsOut[i][j].push(
-                element[j][k]
+                polygonsIn[i][j][k]
               );
             }
           }
@@ -40993,7 +41111,8 @@ var Plotly = (() => {
         var thisSelection;
         var traceSelections = [];
         var traceSelection;
-        for (var searchInfo of searchTraces) {
+        for (var i = 0; i < searchTraces.length; i++) {
+          var searchInfo = searchTraces[i];
           traceSelection = searchInfo._module.selectPoints(searchInfo, selectionTesters);
           traceSelections.push(traceSelection);
           thisSelection = fillSelectionItem(traceSelection, searchInfo);
@@ -41023,7 +41142,8 @@ var Plotly = (() => {
             var yaxis = getFromId(gd, yRef, "y");
             if (xaxis && yaxis) {
               var outlines = zoomLayer.selectAll(".select-outline-" + plotinfo.id);
-              if (outlines && gd._fullLayout._outlining && outlines.length) {
+              if (outlines && gd._fullLayout._outlining) {
+                if (outlines.length) {
                   var e = outlines[0][0];
                   var d = e.getAttribute("d");
                   var outlinePolys = readPaths(d, gd, plotinfo);
@@ -41044,13 +41164,15 @@ var Plotly = (() => {
                   }
                   layoutPolygons = layoutPolygons.concat(draftPolygons);
                 }
+              }
             }
           }
         }
         var subplots = xRef && yRef ? [xRef + yRef] : fullLayout._subplots.cartesian;
         epmtySplomSelectionBatch(gd);
         var seenSplom = {};
-        for (var subplot of subplots) {
+        for (var i = 0; i < subplots.length; i++) {
+          var subplot = subplots[i];
           var yAt = subplot.indexOf("y");
           var _xRef = subplot.slice(0, yAt);
           var _yRef = subplot.slice(yAt);
@@ -41067,7 +41189,8 @@ var Plotly = (() => {
                 [_yA],
                 subplot
               );
-              for (var s of _searchTraces) {
+              for (var w = 0; w < _searchTraces.length; w++) {
+                var s = _searchTraces[w];
                 var cd0 = s.cd[0];
                 var trace = cd0.trace;
                 if (s._module.name === "scattergl" && !cd0.t.xpx) {
@@ -41081,9 +41204,11 @@ var Plotly = (() => {
                     cd0.t.ypx[j] = _yA.c2p(y[j]);
                   }
                 }
-                if (s._module.name === "splom" && !seenSplom[trace.uid]) {
+                if (s._module.name === "splom") {
+                  if (!seenSplom[trace.uid]) {
                     seenSplom[trace.uid] = true;
                   }
+                }
               }
             }
             var selection = _doSelect(_selectionTesters, _searchTraces);
@@ -41094,11 +41219,11 @@ var Plotly = (() => {
         var eventData = { points: allSelections };
         updateSelectedState(gd, allSearchTraces, eventData);
         var clickmode = fullLayout.clickmode;
-        var sendEvents = clickmode.includes("event") && mayEmitSelected;
+        var sendEvents = clickmode.indexOf("event") > -1 && mayEmitSelected;
         if (!plotinfo && // get called from plot_api & plots
         mayEmitSelected) {
           var activePolygons = getLayoutPolygons(gd, true);
-          if (activePolygons.length > 0) {
+          if (activePolygons.length) {
             var xref = activePolygons[0].xref;
             var yref = activePolygons[0].yref;
             if (xref && yref) {
@@ -41126,7 +41251,7 @@ var Plotly = (() => {
             deselectSubplot(gd, xRef, yRef, searchTraces);
           }
           if (sendEvents) {
-            if (eventData.points.length > 0) {
+            if (eventData.points.length) {
               emitSelected(gd, eventData);
             } else {
               emitDeselect(gd);
@@ -41142,8 +41267,8 @@ var Plotly = (() => {
       function epmtySplomSelectionBatch(gd) {
         var cd = gd.calcdata;
         if (!cd) return;
-        for (const element of cd) {
-          var cd0 = element[0];
+        for (var i = 0; i < cd.length; i++) {
+          var cd0 = cd[i][0];
           var trace = cd0.trace;
           var splomScenes = gd._fullLayout._splomScenes;
           if (splomScenes) {
@@ -41155,7 +41280,8 @@ var Plotly = (() => {
         }
       }
       function subplotSelected(xRef, yRef, searchTraces) {
-        for (var s of searchTraces) {
+        for (var i = 0; i < searchTraces.length; i++) {
+          var s = searchTraces[i];
           if (s.xaxis && s.xaxis._id === xRef && (s.yaxis && s.yaxis._id === yRef)) {
             return true;
           }
@@ -41169,14 +41295,16 @@ var Plotly = (() => {
           [getFromId(gd, yRef, "y")],
           xRef + yRef
         );
-        for (var searchInfo of searchTraces) {
+        for (var k = 0; k < searchTraces.length; k++) {
+          var searchInfo = searchTraces[k];
           searchInfo._module.selectPoints(searchInfo, false);
         }
         updateSelectedState(gd, searchTraces);
       }
       function addTester(layoutPolygons, xRef, yRef, selectionTesters) {
         var mergedPolygons;
-        for (var currentPolygon of layoutPolygons) {
+        for (var i = 0; i < layoutPolygons.length; i++) {
+          var currentPolygon = layoutPolygons[i];
           if (xRef !== currentPolygon.xref || yRef !== currentPolygon.yref) continue;
           if (mergedPolygons) {
             var subtract = !!currentPolygon.subtract;
@@ -41227,18 +41355,19 @@ var Plotly = (() => {
           } else if (selection.type === "path") {
             var segments = selection.path.split("Z");
             var multiPolygons = [];
-            for (var path of segments) {
+            for (var j = 0; j < segments.length; j++) {
+              var path = segments[j];
               if (!path) continue;
               path += "Z";
               var allX = shapeHelpers.extractPathCoords(path, shapeConstants.paramIsX, "raw");
               var allY = shapeHelpers.extractPathCoords(path, shapeConstants.paramIsY, "raw");
-              xmin = Number.POSITIVE_INFINITY;
-              xmax = Number.NEGATIVE_INFINITY;
-              ymin = Number.POSITIVE_INFINITY;
-              ymax = Number.NEGATIVE_INFINITY;
+              xmin = Infinity;
+              xmax = -Infinity;
+              ymin = Infinity;
+              ymax = -Infinity;
               polygon = [];
-              for (const [k, element] of allX.entries()) {
-                var x = convert(xaxis, element);
+              for (var k = 0; k < allX.length; k++) {
+                var x = convert(xaxis, allX[k]);
                 var y = convert(yaxis, allY[k]);
                 polygon.push([x, y]);
                 xmin = Math.min(x, xmin);
@@ -41262,9 +41391,10 @@ var Plotly = (() => {
       }
       function getSubtract(polygon, previousPolygons) {
         var subtract = false;
-        for (var previousPolygon of previousPolygons) {
-          for (const element of polygon) {
-            if (pointInPolygon(element, previousPolygon)) {
+        for (var i = 0; i < previousPolygons.length; i++) {
+          var previousPolygon = previousPolygons[i];
+          for (var k = 0; k < polygon.length; k++) {
+            if (pointInPolygon(polygon[k], previousPolygon)) {
               subtract = !subtract;
               break;
             }
@@ -41282,7 +41412,7 @@ var Plotly = (() => {
         for (var i = 0; i < len; i++) {
           var polygon = allPolygons[i];
           p = p.concat(polygon);
-          p = [...p, polygon[0]];
+          p = p.concat([polygon[0]]);
         }
         return computeRectAndRanges(p);
       }
@@ -41300,7 +41430,8 @@ var Plotly = (() => {
         return function(eventData, poly) {
           var range;
           var lassoPoints;
-          for (var ax of allAxes) {
+          for (var i = 0; i < allAxes.length; i++) {
+            var ax = allAxes[i];
             var id = ax._id;
             var axLetter = id.charAt(0);
             if (poly.isRect) {
@@ -42219,11 +42350,14 @@ var Plotly = (() => {
           handleItemDefaults: handleSelectionDefaults
         });
         var selections = layoutOut.selections;
-        for (var [i, selection] of selections.entries()) {
+        for (var i = 0; i < selections.length; i++) {
+          var selection = selections[i];
           if (!selection) continue;
-          if (selection.path === void 0 && (selection.x0 === void 0 || selection.x1 === void 0 || selection.y0 === void 0 || selection.y1 === void 0)) {
+          if (selection.path === void 0) {
+            if (selection.x0 === void 0 || selection.x1 === void 0 || selection.y0 === void 0 || selection.y1 === void 0) {
               layoutOut.selections[i] = null;
             }
+          }
         }
       };
       function handleSelectionDefaults(selectionIn, selectionOut, fullLayout) {
@@ -42312,7 +42446,8 @@ var Plotly = (() => {
           var yaList = subplots.yaxis;
           var cartesianList = subplots.cartesian;
           var hasCartesian = layoutOut._has("cartesian");
-          for (var itemi of array) {
+          for (var i = 0; i < array.length; i++) {
+            var itemi = array[i];
             if (!Lib.isPlainObject(itemi)) continue;
             var xref = axisIds.cleanId(itemi.xref, "x", false);
             var yref = axisIds.cleanId(itemi.yref, "y", false);
@@ -42321,11 +42456,11 @@ var Plotly = (() => {
             if (hasXref || hasYref) {
               if (!hasCartesian) Lib.pushUnique(layoutOut._basePlotModules, Cartesian);
               var newAxis = false;
-              if (hasXref && !xaList.includes(xref)) {
+              if (hasXref && xaList.indexOf(xref) === -1) {
                 xaList.push(xref);
                 newAxis = true;
               }
-              if (hasYref && !yaList.includes(yref)) {
+              if (hasYref && yaList.indexOf(yref) === -1) {
                 yaList.push(yref);
                 newAxis = true;
               }
@@ -42429,10 +42564,10 @@ var Plotly = (() => {
           yaHash[ya0._id] = ya0;
           if (ns && ew) {
             var overlays = plotinfo.overlays;
-            for (const overlay of overlays) {
-              var xa = overlay.xaxis;
+            for (var i = 0; i < overlays.length; i++) {
+              var xa = overlays[i].xaxis;
               xaHash[xa._id] = xa;
-              var ya = overlay.yaxis;
+              var ya = overlays[i].yaxis;
               yaHash[ya._id] = ya;
             }
           }
@@ -42534,10 +42669,10 @@ var Plotly = (() => {
           removeZoombox(gd2);
           if (numClicks === 2 && !singleEnd) doubleClick();
           if (isMainDrag) {
-            if (clickmode.includes("select")) {
+            if (clickmode.indexOf("select") > -1) {
               selectOnClick(evt, gd2, xaxes, yaxes, plotinfo.id, dragOptions);
             }
-            if (clickmode.includes("event")) {
+            if (clickmode.indexOf("event") > -1) {
               Fx.click(gd2, evt, plotinfo.id);
             }
           } else if (numClicks === 1 && singleEnd) {
@@ -42797,7 +42932,8 @@ var Plotly = (() => {
             var otherEnd = 1 - end;
             var movedAx;
             var newLinearizedEnd;
-            for (var axi of axArray) {
+            for (var i2 = 0; i2 < axArray.length; i2++) {
+              var axi = axArray[i2];
               if (axi.fixedrange) continue;
               movedAx = axi;
               newLinearizedEnd = axi._rl[otherEnd] + (axi._rl[end] - axi._rl[otherEnd]) / dZoom(d / axi._length);
@@ -42826,7 +42962,7 @@ var Plotly = (() => {
             var i;
             if (matches.isSubplotConstrained || !xActive && yActive.length === 1) {
               for (i = 0; i < xaxes.length; i++) {
-                xaxes[i].range = [...xaxes[i]._r];
+                xaxes[i].range = xaxes[i]._r.slice();
                 scaleZoom(xaxes[i], 1 - dy / ph);
               }
               dx = dy * pw / ph;
@@ -42834,7 +42970,7 @@ var Plotly = (() => {
             }
             if (matches.isSubplotConstrained || !yActive && xActive.length === 1) {
               for (i = 0; i < yaxes.length; i++) {
-                yaxes[i].range = [...yaxes[i]._r];
+                yaxes[i].range = yaxes[i]._r.slice();
                 scaleZoom(yaxes[i], 1 - dx / pw);
               }
               dy = dx * ph / pw;
@@ -42865,7 +43001,8 @@ var Plotly = (() => {
         function updateMatchedAxRange(axLetter, out) {
           var matchedAxes = matches.isSubplotConstrained ? { x: yaxes, y: xaxes }[axLetter] : matches[axLetter + "axes"];
           var constrainedAxes = matches.isSubplotConstrained ? { x: xaxes, y: yaxes }[axLetter] : [];
-          for (var ax of matchedAxes) {
+          for (var i = 0; i < matchedAxes.length; i++) {
+            var ax = matchedAxes[i];
             var axId = ax._id;
             var axId2 = matches.xLinks[axId] || matches.yLinks[axId];
             var ax2 = constrainedAxes[0] || xaHash[axId2] || yaHash[axId2];
@@ -42874,7 +43011,7 @@ var Plotly = (() => {
                 out[ax._name + ".range[0]"] = out[ax2._name + ".range[0]"];
                 out[ax._name + ".range[1]"] = out[ax2._name + ".range[1]"];
               } else {
-                ax.range = [...ax2.range];
+                ax.range = ax2.range.slice();
               }
             }
           }
@@ -43085,7 +43222,7 @@ var Plotly = (() => {
         }
         function scaleAndGetShift(ax, scaleFactor) {
           if (scaleFactor) {
-            ax.range = [...ax._r];
+            ax.range = ax._r.slice();
             scaleZoom(ax, scaleFactor);
             return getShift(ax, scaleFactor);
           }
@@ -43109,8 +43246,8 @@ var Plotly = (() => {
         return dragger;
       }
       function isDirectionActive(axList, activeVal) {
-        for (const element of axList) {
-          if (!element.fixedrange) return activeVal;
+        for (var i = 0; i < axList.length; i++) {
+          if (!axList[i].fixedrange) return activeVal;
         }
         return "";
       }
@@ -43124,12 +43261,13 @@ var Plotly = (() => {
           dig = Math.ceil(Math.max(0, -Math.log(diff) / Math.LN10)) + 3;
           return numberFormat("." + dig + "g")(Math.pow(10, initialVal));
         } else {
-          dig = Math.floor(Math.log10(Math.abs(initialVal))) - Math.floor(Math.log10(diff)) + 4;
+          dig = Math.floor(Math.log(Math.abs(initialVal)) / Math.LN10) - Math.floor(Math.log(diff) / Math.LN10) + 4;
           return numberFormat("." + String(dig) + "g")(initialVal);
         }
       }
       function zoomAxRanges(axList, r0Fraction, r1Fraction, updates, linkedAxes) {
-        for (var axi of axList) {
+        for (var i = 0; i < axList.length; i++) {
+          var axi = axList[i];
           if (axi.fixedrange) continue;
           if (axi.rangebreaks) {
             var isY = axi._id.charAt(0) === "y";
@@ -43144,13 +43282,14 @@ var Plotly = (() => {
             updates[axi._name + ".range[1]"] = axi.l2r(axRangeLinear0 + axRangeLinearSpan * r1Fraction);
           }
         }
-        if (linkedAxes && linkedAxes.length > 0) {
+        if (linkedAxes && linkedAxes.length) {
           var linkedR0Fraction = (r0Fraction + (1 - r1Fraction)) / 2;
           zoomAxRanges(linkedAxes, linkedR0Fraction, 1 - linkedR0Fraction, updates, []);
         }
       }
       function dragAxList(axList, pix) {
-        for (var axi of axList) {
+        for (var i = 0; i < axList.length; i++) {
+          var axi = axList[i];
           if (!axi.fixedrange) {
             if (axi.rangebreaks) {
               var p0 = 0;
@@ -43237,7 +43376,8 @@ var Plotly = (() => {
         var xID, yID, xLinkID, yLinkID;
         var xExclude = (exclude || {}).xaHash;
         var yExclude = (exclude || {}).yaHash;
-        for (var group of groups) {
+        for (var i = 0; i < groups.length; i++) {
+          var group = groups[i];
           for (xID in xaHash) {
             if (group[xID]) {
               for (xLinkID in group) {
@@ -43292,7 +43432,7 @@ var Plotly = (() => {
       }
       function attachWheelEventHandler(element, handler) {
         if (!supportsPassive) {
-          if (element.onwheel !== void 0) element.addEventListener('wheel', handler);
+          if (element.onwheel !== void 0) element.onwheel = handler;
           else if (element.onmousewheel !== void 0) element.onmousewheel = handler;
           else if (!element.isAddedWheelEvent) {
             element.isAddedWheelEvent = true;
@@ -43353,7 +43493,7 @@ var Plotly = (() => {
           }
           return fullLayout._plots[a].mainplot ? 1 : -1;
         });
-        for (const subplot of subplots) {
+        subplots.forEach(function(subplot) {
           var plotinfo = fullLayout._plots[subplot];
           var xa = plotinfo.xaxis;
           var ya = plotinfo.yaxis;
@@ -43496,19 +43636,19 @@ var Plotly = (() => {
               );
             }
           }
-        }
+        });
         var hoverLayer = fullLayout._hoverlayer.node();
-        hoverLayer.addEventListener('mousemove', function(evt) {
+        hoverLayer.onmousemove = function(evt) {
           evt.target = gd._fullLayout._lasthover;
           Fx.hover(gd, evt, fullLayout._hoversubplot);
-        });
-        hoverLayer.addEventListener('click', function(evt) {
+        };
+        hoverLayer.onclick = function(evt) {
           evt.target = gd._fullLayout._lasthover;
           Fx.click(gd, evt);
-        });
-        hoverLayer.addEventListener('mousedown', function(evt) {
+        };
+        hoverLayer.onmousedown = function(evt) {
           gd._fullLayout._lasthover.onmousedown(evt);
-        });
+        };
         exports.updateFx(gd);
       };
       exports.updateFx = function(gd) {
@@ -43530,8 +43670,8 @@ var Plotly = (() => {
         var rootPart = astr.split("[")[0];
         var arrayStr;
         var match;
-        for (const regexpContainer of regexpContainers) {
-          match = astr.match(regexpContainer);
+        for (var i = 0; i < regexpContainers.length; i++) {
+          match = astr.match(regexpContainers[i]);
           if (match && match.index === 0) {
             arrayStr = match[0];
             break;
@@ -43539,9 +43679,9 @@ var Plotly = (() => {
         }
         if (!arrayStr) arrayStr = rootContainers[rootContainers.indexOf(rootPart)];
         if (!arrayStr) return false;
-        var tail = astr.slice(arrayStr.length);
+        var tail = astr.substr(arrayStr.length);
         if (!tail) return { array: arrayStr, index: "", property: "" };
-        match = tail.match(/^\[(0|[1-9]\d*)](\.(.+))?$/);
+        match = tail.match(/^\[(0|[1-9][0-9]*)\](\.(.+))?$/);
         if (!match) return false;
         return { array: arrayStr, index: Number(match[1]), property: match[3] || "" };
       };
@@ -43648,7 +43788,7 @@ var Plotly = (() => {
           componentArray.splice(deletes[i], 1);
           if (componentArrayFull) componentArrayFull.splice(deletes[i], 1);
         }
-        if (componentArray.length === 0) np.set(null);
+        if (!componentArray.length) np.set(null);
         else if (!componentArrayIn) np.set(componentArray);
         if (replotLater) return false;
         supplyComponentDefaults(layout, fullLayout);
@@ -43794,7 +43934,8 @@ var Plotly = (() => {
         }
       }
       exports.cleanData = function(data) {
-        for (var trace of data) {
+        for (var tracei = 0; tracei < data.length; tracei++) {
+          var trace = data[tracei];
           var i;
           if (trace.type === "histogramy" && "xbins" in trace && !("ybins" in trace)) {
             trace.ybins = trace.xbins;
@@ -43900,17 +44041,17 @@ var Plotly = (() => {
         for (i = 0; i < minLen; i++) {
           if (name1.charAt(i) !== name2.charAt(i)) break;
         }
-        var out = name1.slice(0, Math.max(0, i));
+        var out = name1.substr(0, i);
         return out.trim();
       }
       function cleanTextPosition(textposition) {
         var posY = "middle";
         var posX = "center";
         if (typeof textposition === "string") {
-          if (textposition.includes("top")) posY = "top";
-          else if (textposition.includes("bottom")) posY = "bottom";
-          if (textposition.includes("left")) posX = "left";
-          else if (textposition.includes("right")) posX = "right";
+          if (textposition.indexOf("top") !== -1) posY = "top";
+          else if (textposition.indexOf("bottom") !== -1) posY = "bottom";
+          if (textposition.indexOf("left") !== -1) posX = "left";
+          else if (textposition.indexOf("right") !== -1) posX = "right";
         }
         return posY + " " + posX;
       }
@@ -43944,17 +44085,17 @@ var Plotly = (() => {
       exports.coerceTraceIndices = function(gd, traceIndices) {
         if (isNumeric(traceIndices)) {
           return [traceIndices];
-        } else if (!Array.isArray(traceIndices) || traceIndices.length === 0) {
+        } else if (!Array.isArray(traceIndices) || !traceIndices.length) {
           return gd.data.map(function(_, i2) {
             return i2;
           });
         } else if (Array.isArray(traceIndices)) {
           var traceIndicesOut = [];
-          for (const traceIndex of traceIndices) {
-            if (Lib.isIndex(traceIndex, gd.data.length)) {
-              traceIndicesOut.push(traceIndex);
+          for (var i = 0; i < traceIndices.length; i++) {
+            if (Lib.isIndex(traceIndices[i], gd.data.length)) {
+              traceIndicesOut.push(traceIndices[i]);
             } else {
-              Lib.warn("trace index (", traceIndex, ") is not a number or is out of bounds");
+              Lib.warn("trace index (", traceIndices[i], ") is not a number or is out of bounds");
             }
           }
           return traceIndicesOut;
@@ -43978,10 +44119,10 @@ var Plotly = (() => {
           np.set(newVal);
         }
       };
-      var ATTR_TAIL_RE = /(\.[^.[\]]+|\[[^.[\]]+])$/;
+      var ATTR_TAIL_RE = /(\.[^\[\]\.]+|\[[^\[\]\.]+\])$/;
       function getParent(attr) {
         var tail = attr.search(ATTR_TAIL_RE);
-        if (tail > 0) return attr.slice(0, Math.max(0, tail));
+        if (tail > 0) return attr.substr(0, tail);
       }
       exports.hasParent = function(aobj, attr) {
         var attrParent = getParent(attr);
@@ -43999,8 +44140,8 @@ var Plotly = (() => {
             var ax = getFromTrace(gd, trace, axLetters[j]);
             if (ax && ax.type !== "log") {
               var axAttr = ax._name;
-              var sceneName = ax._id.slice(1);
-              if (sceneName.slice(0, 5) === "scene") {
+              var sceneName = ax._id.substr(1);
+              if (sceneName.substr(0, 5) === "scene") {
                 if (layoutUpdate[sceneName] !== void 0) continue;
                 axAttr = sceneName + "." + axAttr;
               }
@@ -44113,9 +44254,9 @@ var Plotly = (() => {
         var drawFrameworkCalls = 0;
         function drawFramework() {
           var basePlotModules = fullLayout._basePlotModules;
-          for (const basePlotModule of basePlotModules) {
-            if (basePlotModule.drawFramework) {
-              basePlotModule.drawFramework(gd);
+          for (var i2 = 0; i2 < basePlotModules.length; i2++) {
+            if (basePlotModules[i2].drawFramework) {
+              basePlotModules[i2].drawFramework(gd);
             }
           }
           if (!fullLayout._glcanvas && fullLayout._has("gl")) {
@@ -44148,7 +44289,8 @@ var Plotly = (() => {
           if (fullLayout._glcanvas) {
             fullLayout._glcanvas.attr("width", fullLayout.width * plotGlPixelRatio).attr("height", fullLayout.height * plotGlPixelRatio).style("width", fullLayout.width + "px").style("height", fullLayout.height + "px");
             var regl = fullLayout._glcanvas.data()[0].regl;
-            if (regl && (Math.floor(fullLayout.width * plotGlPixelRatio) !== regl._gl.drawingBufferWidth || Math.floor(fullLayout.height * plotGlPixelRatio) !== regl._gl.drawingBufferHeight)) {
+            if (regl) {
+              if (Math.floor(fullLayout.width * plotGlPixelRatio) !== regl._gl.drawingBufferWidth || Math.floor(fullLayout.height * plotGlPixelRatio) !== regl._gl.drawingBufferHeight) {
                 var msg = "WebGL context buffer and canvas dimensions do not match due to browser/WebGL bug.";
                 if (drawFrameworkCalls) {
                   Lib.error(msg);
@@ -44162,6 +44304,7 @@ var Plotly = (() => {
                   return drawFramework();
                 }
               }
+            }
           }
           if (fullLayout.modebar.orientation === "h") {
             fullLayout._modebardiv.style("height", null).style("width", "100%");
@@ -44177,7 +44320,8 @@ var Plotly = (() => {
           if (gd._fullLayout.title.text && gd._fullLayout.title.automargin) Plots.allowAutoMargin(gd, "title.automargin");
           if (fullLayout._has("pie")) {
             var fullData = gd._fullData;
-            for (var trace of fullData) {
+            for (var i2 = 0; i2 < fullData.length; i2++) {
+              var trace = fullData[i2];
               if (trace.type === "pie" && trace.automargin) {
                 Plots.allowAutoMargin(gd, "pie." + trace.uid + ".automargin");
               }
@@ -44272,8 +44416,8 @@ var Plotly = (() => {
       function setBackground(gd, bgColor) {
         try {
           gd._fullLayout._paper.style("background", bgColor);
-        } catch (error) {
-          Lib.error(error);
+        } catch (e) {
+          Lib.error(e);
         }
       }
       function opaqueSetBackground(gd, bgColor) {
@@ -44396,44 +44540,44 @@ var Plotly = (() => {
         var i, index;
         for (i = 0; i < indices.length; i++) {
           index = indices[i];
-          if (index !== Number.parseInt(index, 10)) {
+          if (index !== parseInt(index, 10)) {
             throw new Error("all values in " + arrayName + " must be integers");
           }
           if (index >= gd.data.length || index < -gd.data.length) {
             throw new Error(arrayName + " must be valid indices for gd.data.");
           }
-          if (indices.includes(index, i + 1) || index >= 0 && indices.includes(-gd.data.length + index) || index < 0 && indices.includes(gd.data.length + index)) {
+          if (indices.indexOf(index, i + 1) > -1 || index >= 0 && indices.indexOf(-gd.data.length + index) > -1 || index < 0 && indices.indexOf(gd.data.length + index) > -1) {
             throw new Error("each index in " + arrayName + " must be unique.");
           }
         }
       }
       function checkMoveTracesArgs(gd, currentIndices, newIndices) {
         if (!Array.isArray(gd.data)) {
-          throw new TypeError("gd.data must be an array.");
+          throw new Error("gd.data must be an array.");
         }
-        if (currentIndices === undefined) {
-          throw new TypeError("currentIndices is a required argument.");
+        if (typeof currentIndices === "undefined") {
+          throw new Error("currentIndices is a required argument.");
         } else if (!Array.isArray(currentIndices)) {
           currentIndices = [currentIndices];
         }
         assertIndexArray(gd, currentIndices, "currentIndices");
-        if (newIndices !== undefined && !Array.isArray(newIndices)) {
+        if (typeof newIndices !== "undefined" && !Array.isArray(newIndices)) {
           newIndices = [newIndices];
         }
-        if (newIndices !== undefined) {
+        if (typeof newIndices !== "undefined") {
           assertIndexArray(gd, newIndices, "newIndices");
         }
-        if (newIndices !== undefined && currentIndices.length !== newIndices.length) {
+        if (typeof newIndices !== "undefined" && currentIndices.length !== newIndices.length) {
           throw new Error("current and new indices must be of equal length.");
         }
       }
       function checkAddTracesArgs(gd, traces, newIndices) {
         var i, value;
         if (!Array.isArray(gd.data)) {
-          throw new TypeError("gd.data must be an array.");
+          throw new Error("gd.data must be an array.");
         }
-        if (traces === undefined) {
-          throw new TypeError("traces must be defined.");
+        if (typeof traces === "undefined") {
+          throw new Error("traces must be defined.");
         }
         if (!Array.isArray(traces)) {
           traces = [traces];
@@ -44444,10 +44588,10 @@ var Plotly = (() => {
             throw new Error("all values in traces array must be non-array objects");
           }
         }
-        if (newIndices !== undefined && !Array.isArray(newIndices)) {
+        if (typeof newIndices !== "undefined" && !Array.isArray(newIndices)) {
           newIndices = [newIndices];
         }
-        if (newIndices !== undefined && newIndices.length !== traces.length) {
+        if (typeof newIndices !== "undefined" && newIndices.length !== traces.length) {
           throw new Error(
             "if indices is specified, traces.length must equal indices.length"
           );
@@ -44456,13 +44600,13 @@ var Plotly = (() => {
       function assertExtendTracesArgs(gd, update2, indices, maxPoints) {
         var maxPointsIsObject = Lib.isPlainObject(maxPoints);
         if (!Array.isArray(gd.data)) {
-          throw new TypeError("gd.data must be an array");
+          throw new Error("gd.data must be an array");
         }
         if (!Lib.isPlainObject(update2)) {
-          throw new TypeError("update must be a key:value object");
+          throw new Error("update must be a key:value object");
         }
-        if (indices === undefined) {
-          throw new TypeError("indices must be an integer or array of integers");
+        if (typeof indices === "undefined") {
+          throw new Error("indices must be an integer or array of integers");
         }
         assertIndexArray(gd, indices, "indices");
         for (var key in update2) {
@@ -44481,8 +44625,8 @@ var Plotly = (() => {
         if (!Array.isArray(indices)) indices = [indices];
         indices = positivifyIndices(indices, gd.data.length - 1);
         for (var key in update2) {
-          for (const [j, index] of indices.entries()) {
-            trace = gd.data[index];
+          for (var j = 0; j < indices.length; j++) {
+            trace = gd.data[indices[j]];
             prop = nestedProperty(trace, key);
             target = prop.get();
             insert = update2[key][j];
@@ -44512,15 +44656,15 @@ var Plotly = (() => {
         var updateProps = getExtendProperties(gd, update2, indices, maxPoints);
         var undoUpdate = {};
         var undoPoints = {};
-        for (const updateProp of updateProps) {
-          var prop = updateProp.prop;
-          var maxp = updateProp.maxp;
-          var out = updateArray(updateProp.target, updateProp.insert, maxp);
+        for (var i = 0; i < updateProps.length; i++) {
+          var prop = updateProps[i].prop;
+          var maxp = updateProps[i].maxp;
+          var out = updateArray(updateProps[i].target, updateProps[i].insert, maxp);
           prop.set(out[0]);
           if (!Array.isArray(undoUpdate[prop.astr])) undoUpdate[prop.astr] = [];
           undoUpdate[prop.astr].push(out[1]);
           if (!Array.isArray(undoPoints[prop.astr])) undoPoints[prop.astr] = [];
-          undoPoints[prop.astr].push(updateProp.target.length);
+          undoPoints[prop.astr].push(updateProps[i].target.length);
         }
         return { update: undoUpdate, maxPoints: undoPoints };
       }
@@ -44644,7 +44788,7 @@ var Plotly = (() => {
         for (i = 0; i < traces.length; i++) {
           currentIndices.push(-traces.length + i);
         }
-        if (newIndices === undefined) {
+        if (typeof newIndices === "undefined") {
           promise = exports.redraw(gd);
           Queue.add(gd, undoFunc, undoArgs, redoFunc, redoArgs);
           return promise;
@@ -44673,8 +44817,8 @@ var Plotly = (() => {
         var redoArgs = [gd, indices];
         var i;
         var deletedTrace;
-        if (indices === undefined) {
-          throw new TypeError("indices must be an integer or array of integers.");
+        if (typeof indices === "undefined") {
+          throw new Error("indices must be an integer or array of integers.");
         } else if (!Array.isArray(indices)) {
           indices = [indices];
         }
@@ -44700,7 +44844,7 @@ var Plotly = (() => {
         var i;
         checkMoveTracesArgs(gd, currentIndices, newIndices);
         currentIndices = Array.isArray(currentIndices) ? currentIndices : [currentIndices];
-        if (newIndices === undefined) {
+        if (typeof newIndices === "undefined") {
           newIndices = [];
           for (i = 0; i < currentIndices.length; i++) {
             newIndices.push(-currentIndices.length + i);
@@ -44710,7 +44854,7 @@ var Plotly = (() => {
         currentIndices = positivifyIndices(currentIndices, gd.data.length - 1);
         newIndices = positivifyIndices(newIndices, gd.data.length - 1);
         for (i = 0; i < gd.data.length; i++) {
-          if (!currentIndices.includes(i)) {
+          if (currentIndices.indexOf(i) === -1) {
             newData.push(gd.data[i]);
           }
         }
@@ -44740,7 +44884,7 @@ var Plotly = (() => {
           Lib.warn("Restyle fail.", astr, val, _traces);
           return Promise.reject();
         }
-        if (Object.keys(aobj).length > 0) gd.changed = true;
+        if (Object.keys(aobj).length) gd.changed = true;
         var traces = helpers.coerceTraceIndices(gd, _traces);
         var specs = _restyle(gd, aobj, traces);
         var flags = specs.flags;
@@ -44840,7 +44984,7 @@ var Plotly = (() => {
         }
         function addToAxlist(axid) {
           var axName = Axes.id2name(axid);
-          if (!axlist.includes(axName)) axlist.push(axName);
+          if (axlist.indexOf(axName) === -1) axlist.push(axName);
         }
         function autorangeAttr(axName) {
           return "LAYOUT" + axName + ".autorange";
@@ -44855,14 +44999,14 @@ var Plotly = (() => {
         }
         function doextra(attr, val, i2) {
           if (Array.isArray(attr)) {
-            for (const a of attr) {
+            attr.forEach(function(a) {
               doextra(a, val, i2);
-            }
+            });
             return;
           }
           if (attr in aobj || helpers.hasParent(aobj, attr)) return;
           var extraparam;
-          if (attr.slice(0, 6) === "LAYOUT") {
+          if (attr.substr(0, 6) === "LAYOUT") {
             extraparam = layoutNP(gd.layout, attr.replace("LAYOUT", ""));
           } else {
             var tracei = traces[i2];
@@ -44907,7 +45051,7 @@ var Plotly = (() => {
             else vi = null;
           }
           redoit[ai] = vi;
-          if (ai.slice(0, 6) === "LAYOUT") {
+          if (ai.substr(0, 6) === "LAYOUT") {
             param = layoutNP(gd.layout, ai.replace("LAYOUT", ""));
             undoit[ai] = [undefinedToNull(param.get())];
             param.set(Array.isArray(vi) ? vi[0] : vi);
@@ -44923,8 +45067,8 @@ var Plotly = (() => {
             oldVal = param.get();
             newVal = Array.isArray(vi) ? vi[i % vi.length] : vi;
             if (newVal === void 0) continue;
-            var finalPart = param.parts.at(-1);
-            var prefix = ai.slice(0, Math.max(0, ai.length - finalPart.length - 1));
+            var finalPart = param.parts[param.parts.length - 1];
+            var prefix = ai.substr(0, ai.length - finalPart.length - 1);
             var prefixDot = prefix ? prefix + "." : "";
             var innerContFull = prefix ? nestedProperty(contFull, prefix).get() : contFull;
             valObject = PlotSchema.getTraceValObject(contFull, param.parts);
@@ -44967,7 +45111,7 @@ var Plotly = (() => {
               "orientation",
               "orientationaxes"
             ];
-            if (swapAttrs.includes(ai)) {
+            if (swapAttrs.indexOf(ai) !== -1) {
               if (ai === "orientation") {
                 param.set(newVal);
                 var defaultOrientation = cont.x && !cont.y ? "h" : "v";
@@ -44979,7 +45123,7 @@ var Plotly = (() => {
               }
               helpers.swapXYData(cont);
               flags.calc = flags.clearAxisTypes = true;
-            } else if (Plots.dataArrayContainers.includes(param.parts[0])) {
+            } else if (Plots.dataArrayContainers.indexOf(param.parts[0]) !== -1) {
               helpers.manageArrayContainers(param, newVal, undoit);
               flags.calc = true;
             } else {
@@ -44993,7 +45137,7 @@ var Plotly = (() => {
               param.set(newVal);
             }
           }
-          if (["swapxyaxes", "orientationaxes"].includes(ai)) {
+          if (["swapxyaxes", "orientationaxes"].indexOf(ai) !== -1) {
             Axes.swap(gd, traces);
           }
           if (ai === "orientationaxes") {
@@ -45009,7 +45153,7 @@ var Plotly = (() => {
               hovermode.set("x unified");
             }
           }
-          if (["orientation", "type"].includes(ai)) {
+          if (["orientation", "type"].indexOf(ai) !== -1) {
             axlist = [];
             for (i = 0; i < traces.length; i++) {
               var trace = data[traces[i]];
@@ -45045,14 +45189,14 @@ var Plotly = (() => {
           Lib.warn("Relayout fail.", astr, val);
           return Promise.reject();
         }
-        if (Object.keys(aobj).length > 0) gd.changed = true;
+        if (Object.keys(aobj).length) gd.changed = true;
         var specs = _relayout(gd, aobj);
         var flags = specs.flags;
         if (flags.calc) gd.calcdata = void 0;
         var seq = [Plots.previousPromises];
         if (flags.layoutReplot) {
           seq.push(subroutines.layoutReplot);
-        } else if (Object.keys(aobj).length > 0) {
+        } else if (Object.keys(aobj).length) {
           axRangeSupplyDefaultsByPass(gd, flags, specs) || Plots.supplyDefaults(gd);
           if (flags.legend) seq.push(subroutines.doLegend);
           if (flags.layoutstyle) seq.push(subroutines.layoutStyles);
@@ -45103,8 +45247,8 @@ var Plotly = (() => {
               if (axId2 !== axId) {
                 var ax2 = fullLayout[Axes.id2name(axId2)];
                 ax2.autorange = axOut.autorange;
-                ax2.range = [...axOut.range];
-                ax2._input.range = [...axOut.range];
+                ax2.range = axOut.range.slice();
+                ax2._input.range = axOut.range.slice();
               }
             }
           }
@@ -45118,9 +45262,11 @@ var Plotly = (() => {
           for (var id in rangesAltered) {
             var ax = Axes.getFromId(gd, id);
             axIds.push(id);
-            if ((ax.ticklabelposition || "").indexOf("inside") !== -1 && ax._anchorAxis) {
+            if ((ax.ticklabelposition || "").indexOf("inside") !== -1) {
+              if (ax._anchorAxis) {
                 axIds.push(ax._anchorAxis._id);
               }
+            }
             if (ax._matchGroup) {
               for (var id2 in ax._matchGroup) {
                 if (!rangesAltered[id2]) {
@@ -45141,9 +45287,9 @@ var Plotly = (() => {
           subroutines.finalDraw
         );
       }
-      var AX_RANGE_RE = /^[x-z]axis\d*\.range(\[[01|]])?$/;
-      var AX_AUTORANGE_RE = /^[x-z]axis\d*\.autorange$/;
-      var AX_DOMAIN_RE = /^[x-z]axis\d*\.domain(\[[01|]])?$/;
+      var AX_RANGE_RE = /^[xyz]axis[0-9]*\.range(\[[0|1]\])?$/;
+      var AX_AUTORANGE_RE = /^[xyz]axis[0-9]*\.autorange$/;
+      var AX_DOMAIN_RE = /^[xyz]axis[0-9]*\.domain(\[[0|1]\])?$/;
       function _relayout(gd, aobj) {
         var layout = gd.layout;
         var fullLayout = gd._fullLayout;
@@ -45158,8 +45304,8 @@ var Plotly = (() => {
         for (i = 0; i < keys.length; i++) {
           if (keys[i].indexOf("allaxes") === 0) {
             for (j = 0; j < axes.length; j++) {
-              var scene = axes[j]._id.slice(1);
-              var axisAttr = scene.includes("scene") ? scene + "." : "";
+              var scene = axes[j]._id.substr(1);
+              var axisAttr = scene.indexOf("scene") !== -1 ? scene + "." : "";
               var newkey = keys[i].replace("allaxes", axisAttr + axes[j]._name);
               if (!aobj[newkey]) aobj[newkey] = aobj[keys[i]];
             }
@@ -45171,9 +45317,9 @@ var Plotly = (() => {
         var undoit = {};
         function doextra(attr, val) {
           if (Array.isArray(attr)) {
-            for (const a of attr) {
+            attr.forEach(function(a) {
               doextra(a, val);
-            }
+            });
             return;
           }
           if (attr in aobj || helpers.hasParent(aobj, attr)) return;
@@ -45214,7 +45360,7 @@ var Plotly = (() => {
               doextra(Lib.relativeAttr(ai, impliedKey), valObject.impliedEdits[impliedKey]);
             }
           }
-          if (["width", "height"].includes(ai)) {
+          if (["width", "height"].indexOf(ai) !== -1) {
             if (vi) {
               doextra("autosize", null);
               var oppositeAttr = ai === "height" ? "width" : "height";
@@ -45225,17 +45371,17 @@ var Plotly = (() => {
           } else if (ai === "autosize") {
             doextra("width", vi ? null : fullLayout.width);
             doextra("height", vi ? null : fullLayout.height);
-          } else if (AX_RANGE_RE.test(pleafPlus)) {
+          } else if (pleafPlus.match(AX_RANGE_RE)) {
             recordAlteredAxis(pleafPlus);
             nestedProperty(fullLayout, ptrunk + "._inputRange").set(null);
-          } else if (AX_AUTORANGE_RE.test(pleafPlus)) {
+          } else if (pleafPlus.match(AX_AUTORANGE_RE)) {
             recordAlteredAxis(pleafPlus);
             nestedProperty(fullLayout, ptrunk + "._inputRange").set(null);
             var axFull = nestedProperty(fullLayout, ptrunk).get();
             if (axFull._inputDomain) {
-              axFull._input.domain = [...axFull._inputDomain];
+              axFull._input.domain = axFull._inputDomain.slice();
             }
-          } else if (AX_DOMAIN_RE.test(pleafPlus)) {
+          } else if (pleafPlus.match(AX_DOMAIN_RE)) {
             nestedProperty(fullLayout, ptrunk + "._inputDomain").set(null);
           }
           if (pleaf === "type") {
@@ -45254,8 +45400,8 @@ var Plotly = (() => {
                   }
                   if (r0 <= 0) r0 = r1 / 1e6;
                   else if (r1 <= 0) r1 = r0 / 1e6;
-                  doextra(ptrunk + ".range[0]", Math.log10(r0));
-                  doextra(ptrunk + ".range[1]", Math.log10(r1));
+                  doextra(ptrunk + ".range[0]", Math.log(r0) / Math.LN10);
+                  doextra(ptrunk + ".range[1]", Math.log(r1) / Math.LN10);
                 } else {
                   doextra(ptrunk + ".range[0]", Math.pow(10, r0));
                   doextra(ptrunk + ".range[1]", Math.pow(10, r1));
@@ -45263,7 +45409,7 @@ var Plotly = (() => {
               } else if (toLog) {
                 ax.range = ax.range[1] > ax.range[0] ? [1, 2] : [2, 1];
               }
-              if (Array.isArray(fullLayout._subplots.polar) && fullLayout._subplots.polar.length > 0 && fullLayout[p.parts[0]] && p.parts[1] === "radialaxis") {
+              if (Array.isArray(fullLayout._subplots.polar) && fullLayout._subplots.polar.length && fullLayout[p.parts[0]] && p.parts[1] === "radialaxis") {
                 delete fullLayout[p.parts[0]]._subplot.viewInitial["radialaxis.range"];
               }
               Registry.getComponentMethod("annotations", "convertCoords")(gd, parentFull, vi, doextra);
@@ -45372,8 +45518,8 @@ var Plotly = (() => {
         helpers.clearPromiseQueue(gd);
         if (!Lib.isPlainObject(traceUpdate)) traceUpdate = {};
         if (!Lib.isPlainObject(layoutUpdate)) layoutUpdate = {};
-        if (Object.keys(traceUpdate).length > 0) gd.changed = true;
-        if (Object.keys(layoutUpdate).length > 0) gd.changed = true;
+        if (Object.keys(traceUpdate).length) gd.changed = true;
+        if (Object.keys(layoutUpdate).length) gd.changed = true;
         var traces = helpers.coerceTraceIndices(gd, _traces);
         var restyleSpecs = _restyle(gd, Lib.extendFlat({}, traceUpdate), traces);
         var restyleFlags = restyleSpecs.flags;
@@ -45424,7 +45570,7 @@ var Plotly = (() => {
       function guiEdit(func) {
         return function wrappedEdit(gd) {
           gd._fullLayout._guiEditing = true;
-          var p = Reflect.apply(func, null, arguments);
+          var p = func.apply(null, arguments);
           gd._fullLayout._guiEditing = false;
           return p;
         };
@@ -45437,7 +45583,7 @@ var Plotly = (() => {
         { pattern: /(hover|drag)mode$/, attr: "modebar.uirevision" },
         { pattern: /^(scene\d*)\.camera/ },
         { pattern: /^(geo\d*)\.(projection|center|fitbounds)/ },
-        { pattern: /^(ternary\d*\.[a-c]axis)\.(min|title\.text)$/ },
+        { pattern: /^(ternary\d*\.[abc]axis)\.(min|title\.text)$/ },
         { pattern: /^(polar\d*\.radialaxis)\.((auto)?range|angle|title\.text)/ },
         { pattern: /^(polar\d*\.angularaxis)\.rotation/ },
         { pattern: /^(mapbox\d*)\.(center|zoom|bearing|pitch)/ },
@@ -45450,7 +45596,7 @@ var Plotly = (() => {
         { pattern: /^selectedpoints$/, attr: "selectionrevision" },
         // "visible" includes trace.transforms[i].styles[j].value.visible
         { pattern: /(^|value\.)visible$/, attr: "legend.uirevision" },
-        { pattern: /^dimensions\[\d+]\.constraintrange/ },
+        { pattern: /^dimensions\[\d+\]\.constraintrange/ },
         { pattern: /^node\.(x|y|groups)/ },
         // for Sankey nodes
         { pattern: /^level$/ },
@@ -45466,11 +45612,12 @@ var Plotly = (() => {
         { pattern: /colorbar\.(x|y)$/, attr: "editrevision" }
       ];
       function findUIPattern(key, patternSpecs) {
-        for (var spec of patternSpecs) {
+        for (var i = 0; i < patternSpecs.length; i++) {
+          var spec = patternSpecs[i];
           var match = key.match(spec.pattern);
           if (match) {
             var head = match[1] || "";
-            return { head, tail: key.slice(head.length + 1), attr: spec.attr };
+            return { head, tail: key.substr(head.length + 1), attr: spec.attr };
           }
         }
       }
@@ -45487,14 +45634,14 @@ var Plotly = (() => {
         return container.uirevision;
       }
       function getFullTraceIndexFromUid(uid, fullData) {
-        for (const [i, fullDatum] of fullData.entries()) {
-          if (fullDatum._fullInput.uid === uid) return i;
+        for (var i = 0; i < fullData.length; i++) {
+          if (fullData[i]._fullInput.uid === uid) return i;
         }
         return -1;
       }
       function getTraceIndexFromUid(uid, data, tracei) {
-        for (const [i, datum] of data.entries()) {
-          if (datum.uid === uid) return i;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].uid === uid) return i;
         }
         return !data[tracei] || data[tracei].uid ? -1 : tracei;
       }
@@ -45531,7 +45678,7 @@ var Plotly = (() => {
                 }
                 newNP.set(undefinedToNull(nestedProperty(oldFullLayout, key).get()));
                 continue;
-              } else if (tail === "autorange" || tail.slice(0, 6) === "range[") {
+              } else if (tail === "autorange" || tail.substr(0, 6) === "range[") {
                 var pre0 = layoutPreGUI[head + ".range[0]"];
                 var pre1 = layoutPreGUI[head + ".range[1]"];
                 var preAuto = layoutPreGUI[head + ".autorange"];
@@ -45551,11 +45698,12 @@ var Plotly = (() => {
             Lib.warn("unrecognized GUI edit: " + key);
           }
           delete layoutPreGUI[key];
-          if (match && match.tail.slice(0, 6) === "range[") {
+          if (match && match.tail.substr(0, 6) === "range[") {
             newRangeAccepted[match.head] = 1;
           }
         }
-        for (var axAttr of bothInheritAutorange) {
+        for (var i = 0; i < bothInheritAutorange.length; i++) {
+          var axAttr = bothInheritAutorange[i];
           if (newRangeAccepted[axAttr]) {
             var newAx = nestedProperty(layout, axAttr).get();
             if (newAx) delete newAx.autorange;
@@ -45652,8 +45800,9 @@ var Plotly = (() => {
           if (restyleFlags.calc || relayoutFlags.calc) {
             gd.calcdata = void 0;
             var allNames = Object.getOwnPropertyNames(newFullLayout);
-            for (var name of allNames) {
-              var start = name.slice(0, 5);
+            for (var q = 0; q < allNames.length; q++) {
+              var name = allNames[q];
+              var start = name.substring(0, 5);
               if (start === "xaxis" || start === "yaxis") {
                 var emptyCategories = newFullLayout[name]._emptyCategories;
                 if (emptyCategories) emptyCategories();
@@ -45681,11 +45830,11 @@ var Plotly = (() => {
           } else {
             for (var componentType in relayoutFlags.arrays) {
               var indices = relayoutFlags.arrays[componentType];
-              if (indices.length > 0) {
+              if (indices.length) {
                 var drawOne = Registry.getComponentMethod(componentType, "drawOne");
                 if (drawOne !== Lib.noop) {
-                  for (const index of indices) {
-                    drawOne(gd, index);
+                  for (var i = 0; i < indices.length; i++) {
+                    drawOne(gd, indices[i]);
                   }
                 } else {
                   var draw = Registry.getComponentMethod(componentType, "draw");
@@ -45820,7 +45969,7 @@ var Plotly = (() => {
         var arrayIndex = opts.arrayIndex;
         function changed() {
           var editType = valObject.editType;
-          if (inArray && editType.includes("arraydraw")) {
+          if (inArray && editType.indexOf("arraydraw") !== -1) {
             Lib.pushUnique(flags.arrays[inArray], arrayIndex);
             return;
           }
@@ -45945,10 +46094,10 @@ var Plotly = (() => {
               if (oldVal.length !== newVal.length) {
                 return true;
               }
-              for (const [i, element] of oldVal.entries()) {
-                if (element !== newVal[i]) {
-                  if (Lib.isPlainObject(element) && Lib.isPlainObject(newVal[i])) {
-                    if (diffConfig(element, newVal[i])) {
+              for (var i = 0; i < oldVal.length; i++) {
+                if (oldVal[i] !== newVal[i]) {
+                  if (Lib.isPlainObject(oldVal[i]) && Lib.isPlainObject(newVal[i])) {
+                    if (diffConfig(oldVal[i], newVal[i])) {
                       return true;
                     }
                   } else {
@@ -46014,7 +46163,7 @@ var Plotly = (() => {
             if (trans._frameQueue.length === 0) {
               return;
             }
-            while (trans._frameQueue.length > 0) {
+            while (trans._frameQueue.length) {
               var next = trans._frameQueue.pop();
               if (next.onInterrupt) {
                 next.onInterrupt();
@@ -46047,7 +46196,7 @@ var Plotly = (() => {
               trans._frameQueue.push(nextFrame2);
             }
             if (animationOpts.mode === "immediate") {
-              trans._lastFrameAt = Number.NEGATIVE_INFINITY;
+              trans._lastFrameAt = -Infinity;
             }
             if (!trans._animationRaf) {
               beginAnimationLoop();
@@ -46094,7 +46243,7 @@ var Plotly = (() => {
           }
           function beginAnimationLoop() {
             gd.emit("plotly_animating");
-            trans._lastFrameAt = Number.NEGATIVE_INFINITY;
+            trans._lastFrameAt = -Infinity;
             trans._timeToNext = 0;
             trans._runningTransitions = 0;
             trans._currentFrame = null;
@@ -46130,7 +46279,7 @@ var Plotly = (() => {
               type: "object",
               data: setTransitionConfig(Lib.extendFlat({}, frameOrGroupNameOrFrameList))
             });
-          } else if (allFrames || ["string", "number"].includes(typeof frameOrGroupNameOrFrameList)) {
+          } else if (allFrames || ["string", "number"].indexOf(typeof frameOrGroupNameOrFrameList) !== -1) {
             for (i = 0; i < trans._frames.length; i++) {
               frame = trans._frames[i];
               if (!frame) continue;
@@ -46145,7 +46294,7 @@ var Plotly = (() => {
           } else if (isFrameArray) {
             for (i = 0; i < frameOrGroupNameOrFrameList.length; i++) {
               var frameOrName = frameOrGroupNameOrFrameList[i];
-              if (["number", "string"].includes(typeof frameOrName)) {
+              if (["number", "string"].indexOf(typeof frameOrName) !== -1) {
                 frameOrName = String(frameOrName);
                 frameList.push({
                   type: "byname",
@@ -46168,7 +46317,7 @@ var Plotly = (() => {
               return;
             }
           }
-          if (["next", "immediate"].includes(animationOpts.mode)) {
+          if (["next", "immediate"].indexOf(animationOpts.mode) !== -1) {
             discardExistingFrames();
           }
           if (animationOpts.direction === "reverse") {
@@ -46217,7 +46366,7 @@ var Plotly = (() => {
         var _frames = gd._transitionData._frames;
         var _frameHash = gd._transitionData._frameHash;
         if (!Array.isArray(frameList)) {
-          throw new TypeError("addFrames failure: frameList must be an Array of frame definitions" + frameList);
+          throw new Error("addFrames failure: frameList must be an Array of frame definitions" + frameList);
         }
         var bigIndex = _frames.length + frameList.length * 2;
         var insertions = [];
@@ -46292,7 +46441,7 @@ var Plotly = (() => {
             frameList.push(i);
           }
         }
-        frameList = [...frameList];
+        frameList = frameList.slice();
         frameList.sort();
         for (i = frameList.length - 1; i >= 0; i--) {
           idx = frameList[i];
@@ -46322,8 +46471,8 @@ var Plotly = (() => {
         var newBBox = gd.getBoundingClientRect();
         if (Lib.equalDomRects(newBBox, fullLayout._lastBBox)) return;
         var m = fullLayout._invTransform = Lib.inverseTransformMatrix(Lib.getFullTransformMatrix(gd));
-        fullLayout._invScaleX = Math.hypot(m[0][0], m[0][1], m[0][2]);
-        fullLayout._invScaleY = Math.hypot(m[1][0], m[1][1], m[1][2]);
+        fullLayout._invScaleX = Math.sqrt(m[0][0] * m[0][0] + m[0][1] * m[0][1] + m[0][2] * m[0][2]);
+        fullLayout._invScaleY = Math.sqrt(m[1][0] * m[1][0] + m[1][1] * m[1][1] + m[1][2] * m[1][2]);
         fullLayout._lastBBox = newBBox;
       }
       function makePlotFramework(gd) {
@@ -46475,14 +46624,14 @@ var Plotly = (() => {
       var DUMMY_REGEX = new RegExp('("' + DUMMY_SUB + ")|(" + DUMMY_SUB + '")', "g");
       function htmlEntityDecode(s) {
         var hiddenDiv = d3.select("body").append("div").style({ display: "none" }).html("");
-        var replaced = s.replaceAll(/(&[^;]*;)/g, function(d) {
+        var replaced = s.replace(/(&[^;]*;)/gi, function(d) {
           if (d === "&lt;") {
             return "&#60;";
           }
           if (d === "&rt;") {
             return "&#62;";
           }
-          if (d.includes("<") || d.includes(">")) {
+          if (d.indexOf("<") !== -1 || d.indexOf(">") !== -1) {
             return "";
           }
           return hiddenDiv.html(d).text();
@@ -46491,7 +46640,7 @@ var Plotly = (() => {
         return replaced;
       }
       function xmlEntityEncode(str) {
-        return str.replaceAll(/&(?!\w+;|#\d+;| #x[\dA-F]+;)/g, "&amp;");
+        return str.replace(/&(?!\w+;|\#[0-9]+;| \#x[0-9A-F]+;)/g, "&amp;");
       }
       module.exports = function toSVG(gd, format, scale) {
         var fullLayout = gd._fullLayout;
@@ -46511,7 +46660,7 @@ var Plotly = (() => {
           var topGroups = Array.prototype.slice.call(nodes);
           for (i = 0; i < topGroups.length; i++) {
             var topGroup = topGroups[i];
-            if (topGroup.childNodes.length > 0) svg.node().append(topGroup);
+            if (topGroup.childNodes.length) svg.node().appendChild(topGroup);
           }
         }
         if (fullLayout._draggers) {
@@ -46527,8 +46676,8 @@ var Plotly = (() => {
             txt.style({ visibility: null, display: null });
           }
           var ff = this.style.fontFamily;
-          if (ff && ff.includes('"')) {
-            txt.style("font-family", ff.replaceAll(DOUBLEQUOTE_REGEX, DUMMY_SUB));
+          if (ff && ff.indexOf('"') !== -1) {
+            txt.style("font-family", ff.replace(DOUBLEQUOTE_REGEX, DUMMY_SUB));
           }
           var fw = this.style.fontWeight;
           if (fw && (fw === "normal" || fw === "400")) {
@@ -46546,12 +46695,12 @@ var Plotly = (() => {
         svg.selectAll(".gradient_filled,.pattern_filled").each(function() {
           var pt = d3.select(this);
           var fill = this.style.fill;
-          if (fill && fill.includes("url(")) {
-            pt.style("fill", fill.replaceAll(DOUBLEQUOTE_REGEX, DUMMY_SUB));
+          if (fill && fill.indexOf("url(") !== -1) {
+            pt.style("fill", fill.replace(DOUBLEQUOTE_REGEX, DUMMY_SUB));
           }
           var stroke = this.style.stroke;
-          if (stroke && stroke.includes("url(")) {
-            pt.style("stroke", stroke.replaceAll(DOUBLEQUOTE_REGEX, DUMMY_SUB));
+          if (stroke && stroke.indexOf("url(") !== -1) {
+            pt.style("stroke", stroke.replace(DOUBLEQUOTE_REGEX, DUMMY_SUB));
           }
         });
         if (format === "pdf" || format === "eps") {
@@ -46565,7 +46714,7 @@ var Plotly = (() => {
         var s = new window.XMLSerializer().serializeToString(svg.node());
         s = htmlEntityDecode(s);
         s = xmlEntityEncode(s);
-        s = s.replaceAll(DUMMY_REGEX, "'");
+        s = s.replace(DUMMY_REGEX, "'");
         return s;
       };
     }
@@ -46601,7 +46750,7 @@ var Plotly = (() => {
           }
           canvas.width = w1;
           canvas.height = h1;
-          img.addEventListener('load', function() {
+          img.onload = function() {
             var imgData;
             svgBlob = null;
             helpers.revokeObjectURL(url);
@@ -46632,7 +46781,7 @@ var Plotly = (() => {
             if (!opts.promise) {
               ev.emit("success", imgData);
             }
-          });
+          };
           img.onerror = function(err) {
             svgBlob = null;
             helpers.revokeObjectURL(url);
@@ -46732,7 +46881,7 @@ var Plotly = (() => {
         var clonedGd = document.createElement("div");
         clonedGd.style.position = "absolute";
         clonedGd.style.left = "-5000px";
-        document.body.append(clonedGd);
+        document.body.appendChild(clonedGd);
         var layoutImage = Lib.extendFlat({}, layout);
         if (width) {
           layoutImage.width = width;
@@ -46762,7 +46911,7 @@ var Plotly = (() => {
             var height2 = clonedGd._fullLayout.height;
             function cleanup() {
               plotApi.purge(clonedGd);
-              clonedGd.remove();
+              document.body.removeChild(clonedGd);
             }
             if (format === "full-json") {
               var json = plots.graphJson(clonedGd, false, "keepdata", "object", true, true);
@@ -46810,8 +46959,8 @@ var Plotly = (() => {
         return new Promise(function(resolve, reject) {
           plotApi.newPlot(clonedGd, data, layoutImage, configImage).then(redrawFunc).then(wait).then(convert).then(function(url) {
             resolve(urlToImageData(url));
-          }).catch(function(error) {
-            reject(error);
+          }).catch(function(err) {
+            reject(err);
           });
         });
       }
@@ -46885,8 +47034,9 @@ var Plotly = (() => {
       function crawl(objIn, objOut, schema, list, base, path) {
         path = path || [];
         var keys = Object.keys(objIn);
-        for (var k of keys) {
-          var p = [...path];
+        for (var i = 0; i < keys.length; i++) {
+          var k = keys[i];
+          var p = path.slice();
           p.push(k);
           var valIn = objIn[k];
           var valOut = objOut[k];
@@ -46946,7 +47096,7 @@ var Plotly = (() => {
             var j, _p;
             for (j = 0; j < valOut.length; j++) {
               var _index = valOut[j]._index || j;
-              _p = [...p];
+              _p = p.slice();
               _p.push(_index);
               if (isPlainObject(valIn[_index]) && isPlainObject(valOut[j])) {
                 indexList.push(_index);
@@ -46958,11 +47108,11 @@ var Plotly = (() => {
               }
             }
             for (j = 0; j < valIn.length; j++) {
-              _p = [...p];
+              _p = p.slice();
               _p.push(j);
               if (!isPlainObject(valIn[j])) {
                 list.push(format("object", base, _p, valIn[j]));
-              } else if (!indexList.includes(j)) {
+              } else if (indexList.indexOf(j) === -1) {
                 list.push(format("unused", base, _p));
               }
             }
@@ -46982,7 +47132,8 @@ var Plotly = (() => {
       }
       function fillLayoutSchema(schema, dataOut) {
         var layoutSchema = schema.layout.layoutAttributes;
-        for (var traceOut of dataOut) {
+        for (var i = 0; i < dataOut.length; i++) {
+          var traceOut = dataOut[i];
           var traceSchema = schema.traces[traceOut.type];
           var traceLayoutAttr = traceSchema.layoutAttributes;
           if (traceLayoutAttr) {
@@ -47091,7 +47242,7 @@ var Plotly = (() => {
         for (var i = 0; i < path.length; i++) {
           var p = path[i];
           if (typeof p === "number") {
-            astr = astr.slice(0, Math.max(0, astr.length - 1)) + "[" + p + "]";
+            astr = astr.substr(0, astr.length - 1) + "[" + p + "]";
           } else {
             astr += p;
           }
@@ -47119,9 +47270,9 @@ var Plotly = (() => {
             objectUrl = helpers.createObjectURL(blob);
             saveLink.href = objectUrl;
             saveLink.download = name;
-            document.body.append(saveLink);
+            document.body.appendChild(saveLink);
             saveLink.click();
-            saveLink.remove();
+            document.body.removeChild(saveLink);
             helpers.revokeObjectURL(objectUrl);
             blob = null;
             return resolve(name);
@@ -47168,9 +47319,9 @@ var Plotly = (() => {
             return fileSaver(result, filename, opts.format);
           }).then(function(name) {
             resolve(name);
-          }).catch(function(error) {
+          }).catch(function(err) {
             if (_gd) _gd._snapshotInProgress = false;
-            reject(error);
+            reject(err);
           });
         });
       }
@@ -47201,14 +47352,14 @@ var Plotly = (() => {
           data: {},
           layout: {}
         };
-        for (const trace of data) {
+        data.forEach(function(trace) {
           var traceTemplate = {};
           walkStyleKeys(trace, traceTemplate, getTraceInfo.bind(null, trace));
           var traceType2 = Lib.coerce(trace, {}, plotAttributes, "type");
           var typeTemplates2 = template.data[traceType2];
           if (!typeTemplates2) typeTemplates2 = template.data[traceType2] = [];
           typeTemplates2.push(traceTemplate);
-        }
+        });
         walkStyleKeys(layout, template.layout, getLayoutInfo.bind(null, layout));
         delete template.layout.template;
         var oldTemplate = layout.template;
@@ -47279,7 +47430,7 @@ var Plotly = (() => {
         }
       }
       function getBaseKey(key) {
-        return key.replace(/\d+$/, "");
+        return key.replace(/[0-9]+$/, "");
       }
       function walkStyleKeys(parent, templateOut, getAttributeInfo, path, basePath) {
         var pathAttr = basePath && getAttributeInfo(basePath);
@@ -47401,7 +47552,7 @@ var Plotly = (() => {
         }
         function crawlLayoutTemplateForContainers(obj, path) {
           for (var key in obj) {
-            if (!key.includes("defaults") && isPlainObject(obj[key])) {
+            if (key.indexOf("defaults") === -1 && isPlainObject(obj[key])) {
               var nextPath = getNextPath(obj, key, path);
               if (layoutPaths[nextPath]) {
                 crawlLayoutTemplateForContainers(obj[key], nextPath);
@@ -47422,7 +47573,8 @@ var Plotly = (() => {
         } else {
           var typeCount = {};
           var traceType;
-          for (var fullTrace of fullData) {
+          for (var i = 0; i < fullData.length; i++) {
+            var fullTrace = fullData[i];
             traceType = fullTrace.type;
             typeCount[traceType] = (typeCount[traceType] || 0) + 1;
             if (!fullTrace._fullInput._template) {
@@ -47473,33 +47625,30 @@ var Plotly = (() => {
           }
         }
         crawlForMissingTemplates({ data: fullData, layout: fullLayout }, "");
-        if (errorList.length > 0) return errorList.map(format);
+        if (errorList.length) return errorList.map(format);
       };
       function hasPlainObject(arr) {
-        for (const element of arr) {
-          if (isPlainObject(element)) return true;
+        for (var i = 0; i < arr.length; i++) {
+          if (isPlainObject(arr[i])) return true;
         }
       }
       function format(opts) {
         var msg;
         switch (opts.code) {
-          case "data": {
+          case "data":
             msg = "The template has no key data.";
             break;
-          }
-          case "layout": {
+          case "layout":
             msg = "The template has no key layout.";
             break;
-          }
-          case "missing": {
+          case "missing":
             if (opts.path) {
               msg = "There are no templates for item " + opts.path + " with name " + opts.templateitemname;
             } else {
               msg = "There are no templates for trace " + opts.index + ", of type " + opts.traceType + ".";
             }
             break;
-          }
-          case "unused": {
+          case "unused":
             if (opts.path) {
               msg = "The template item at " + opts.path + " was not used in constructing the plot.";
             } else if (opts.dataCount) {
@@ -47508,11 +47657,9 @@ var Plotly = (() => {
               msg = "The template has " + opts.templateCount + " traces of type " + opts.traceType + " but there are none in the data.";
             }
             break;
-          }
-          case "reused": {
+          case "reused":
             msg = "Some of the templates of type " + opts.traceType + " were used more than once. The template has " + opts.templateCount + " traces, the data has " + opts.dataCount + " of this type.";
             break;
-          }
         }
         opts.msg = msg;
         return opts;
@@ -47667,7 +47814,8 @@ var Plotly = (() => {
           var dflts = {
             orientation: traceOut.x && !traceOut.y ? "h" : "v"
           };
-          for (var attr of perStackAttrs) {
+          for (var i = 0; i < perStackAttrs.length; i++) {
+            var attr = perStackAttrs[i];
             var attrFound = attr + "Found";
             if (!groupOpts[attrFound]) {
               var traceHasAttr = traceIn[attr] !== void 0;
@@ -48059,7 +48207,7 @@ var Plotly = (() => {
           period = +period;
           if (period <= 0) return { vals };
         } else if (typeof period === "string" && period.charAt(0) === "M") {
-          var n = +period.slice(1);
+          var n = +period.substring(1);
           if (n > 0 && Math.round(n) === n) {
             mPeriod = n;
           } else return { vals };
@@ -48097,7 +48245,7 @@ var Plotly = (() => {
             }
             startTime = endTime - period;
           }
-          newVals[i] = isStart ? startTime : (isEnd ? endTime : (startTime + endTime) / 2);
+          newVals[i] = isStart ? startTime : isEnd ? endTime : (startTime + endTime) / 2;
           starts[i] = startTime;
           ends[i] = endTime;
         }
@@ -48432,11 +48580,13 @@ var Plotly = (() => {
         this.traces = traces;
         this.sepNegVal = opts.sepNegVal;
         this.overlapNoMerge = opts.overlapNoMerge;
-        var width1 = Number.POSITIVE_INFINITY;
+        var width1 = Infinity;
         var axLetter = opts.posAxis._id.charAt(0);
         var positions = [];
-        for (var trace of traces) {
-          for (var bar of trace) {
+        for (var i = 0; i < traces.length; i++) {
+          var trace = traces[i];
+          for (var j = 0; j < trace.length; j++) {
+            var bar = trace[j];
             var pos = bar.p;
             if (pos === void 0) {
               pos = bar[axLetter];
@@ -48450,7 +48600,7 @@ var Plotly = (() => {
         this.positions = positions;
         var dv = distinctVals(positions);
         this.distinctPositions = dv.vals;
-        if (dv.vals.length === 1 && width1 !== Number.POSITIVE_INFINITY) this.minDiff = width1;
+        if (dv.vals.length === 1 && width1 !== Infinity) this.minDiff = width1;
         else this.minDiff = Math.min(dv.minDiff, width1);
         var type = (opts.posAxis || {}).type;
         if (type === "category" || type === "multicategory") {
@@ -48496,7 +48646,8 @@ var Plotly = (() => {
         var calcTraces = gd.calcdata;
         var calcTracesHorz = [];
         var calcTracesVert = [];
-        for (var [i, fullTrace] of fullTraces.entries()) {
+        for (var i = 0; i < fullTraces.length; i++) {
+          var fullTrace = fullTraces[i];
           if (fullTrace.visible === true && Registry.traceIs(fullTrace, "bar") && fullTrace.xaxis === xa._id && fullTrace.yaxis === ya._id) {
             if (fullTrace.orientation === "h") {
               calcTracesHorz.push(calcTraces[i]);
@@ -48505,9 +48656,9 @@ var Plotly = (() => {
             }
             if (fullTrace._computePh) {
               var cd = gd.calcdata[i];
-              for (const element of cd) {
-                if (typeof element.ph0 === "function") element.ph0 = element.ph0();
-                if (typeof element.ph1 === "function") element.ph1 = element.ph1();
+              for (var j = 0; j < cd.length; j++) {
+                if (typeof cd[j].ph0 === "function") cd[j].ph0 = cd[j].ph0();
+                if (typeof cd[j].ph1 === "function") cd[j].ph1 = cd[j].ph1();
               }
             }
           }
@@ -48524,17 +48675,16 @@ var Plotly = (() => {
         setGroupPositions(gd, ya, xa, calcTracesHorz, opts);
       }
       function setGroupPositions(gd, pa, sa, calcTraces, opts) {
-        if (calcTraces.length === 0) return;
+        if (!calcTraces.length) return;
         var excluded;
         var included;
         var i, calcTrace, fullTrace;
         initBase(sa, calcTraces);
         switch (opts.mode) {
-          case "overlay": {
+          case "overlay":
             setGroupPositionsInOverlayMode(gd, pa, sa, calcTraces, opts);
             break;
-          }
-          case "group": {
+          case "group":
             excluded = [];
             included = [];
             for (i = 0; i < calcTraces.length; i++) {
@@ -48550,9 +48700,8 @@ var Plotly = (() => {
               setGroupPositionsInOverlayMode(gd, pa, sa, excluded, opts);
             }
             break;
-          }
           case "stack":
-          case "relative": {
+          case "relative":
             excluded = [];
             included = [];
             for (i = 0; i < calcTraces.length; i++) {
@@ -48569,7 +48718,6 @@ var Plotly = (() => {
               setGroupPositionsInOverlayMode(gd, pa, sa, excluded, opts);
             }
             break;
-          }
         }
         setCornerradius(calcTraces);
         collectExtents(calcTraces, pa);
@@ -48646,7 +48794,8 @@ var Plotly = (() => {
         }
       }
       function setGroupPositionsInOverlayMode(gd, pa, sa, calcTraces, opts) {
-        for (var calcTrace of calcTraces) {
+        for (var i = 0; i < calcTraces.length; i++) {
+          var calcTrace = calcTraces[i];
           var sieve = new Sieve([calcTrace], {
             posAxis: pa,
             sepNegVal: false,
@@ -48684,9 +48833,11 @@ var Plotly = (() => {
         });
         setOffsetAndWidth(gd, pa, sieve, opts);
         stackBars(sa, sieve, opts);
-        for (var calcTrace of calcTraces) {
+        for (var i = 0; i < calcTraces.length; i++) {
+          var calcTrace = calcTraces[i];
           var offsetIndex = calcTrace[0].t.offsetindex;
-          for (var bar of calcTrace) {
+          for (var j = 0; j < calcTrace.length; j++) {
+            var bar = calcTrace[j];
             if (bar.s !== BADNUM) {
               var isOutmostBar = bar.b + bar.s === sieve.get(bar.p, offsetIndex, bar.s);
               if (isOutmostBar) bar._outmost = true;
@@ -48806,13 +48957,15 @@ var Plotly = (() => {
       function setBarCenterAndWidth(pa, sieve) {
         var calcTraces = sieve.traces;
         var pLetter = getAxisLetter(pa);
-        for (var calcTrace of calcTraces) {
+        for (var i = 0; i < calcTraces.length; i++) {
+          var calcTrace = calcTraces[i];
           var t = calcTrace[0].t;
           var poffset = t.poffset;
           var poffsetIsArray = isArrayOrTypedArray(poffset);
           var barwidth = t.barwidth;
           var barwidthIsArray = isArrayOrTypedArray(barwidth);
-          for (var [j, calcBar] of calcTrace.entries()) {
+          for (var j = 0; j < calcTrace.length; j++) {
+            var calcBar = calcTrace[j];
             var width = calcBar.w = barwidthIsArray ? barwidth[j] : barwidth;
             if (calcBar.p === void 0) {
               calcBar.p = calcBar[pLetter];
@@ -48828,7 +48981,8 @@ var Plotly = (() => {
         var minDiff = sieve.minDiff;
         var vpad = minDiff / 2;
         Axes.minDtick(pa, sieve.minDiff, sieve.distinctPositions[0], allowMinDtick);
-        for (var calcTrace of calcTraces) {
+        for (var i = 0; i < calcTraces.length; i++) {
+          var calcTrace = calcTraces[i];
           var calcTrace0 = calcTrace[0];
           var fullTrace = calcTrace0.trace;
           var pts = [];
@@ -48860,15 +49014,17 @@ var Plotly = (() => {
       function setBaseAndTop(sa, sieve) {
         var calcTraces = sieve.traces;
         var sLetter = getAxisLetter(sa);
-        for (var calcTrace of calcTraces) {
+        for (var i = 0; i < calcTraces.length; i++) {
+          var calcTrace = calcTraces[i];
           var fullTrace = calcTrace[0].trace;
           var isScatter = fullTrace.type === "scatter";
           var isVertical = fullTrace.orientation === "v";
           var pts = [];
           var tozero = false;
-          for (var bar of calcTrace) {
+          for (var j = 0; j < calcTrace.length; j++) {
+            var bar = calcTrace[j];
             var base = isScatter ? 0 : bar.b;
-            var top = isScatter ? (isVertical ? bar.y : bar.x) : base + bar.s;
+            var top = isScatter ? isVertical ? bar.y : bar.x : base + bar.s;
             bar[sLetter] = top;
             pts.push(top);
             if (bar.hasB) pts.push(base);
@@ -48943,9 +49099,11 @@ var Plotly = (() => {
       }
       function sieveBars(sieve) {
         var calcTraces = sieve.traces;
-        for (var calcTrace of calcTraces) {
+        for (var i = 0; i < calcTraces.length; i++) {
+          var calcTrace = calcTraces[i];
           var offsetIndex = calcTrace[0].t.offsetindex;
-          for (var bar of calcTrace) {
+          for (var j = 0; j < calcTrace.length; j++) {
+            var bar = calcTrace[j];
             if (bar.s !== BADNUM) {
               sieve.put(bar.p, offsetIndex, bar.b + bar.s);
             }
@@ -48954,7 +49112,8 @@ var Plotly = (() => {
       }
       function unhideBarsWithinTrace(sieve, pa) {
         var calcTraces = sieve.traces;
-        for (var calcTrace of calcTraces) {
+        for (var i = 0; i < calcTraces.length; i++) {
+          var calcTrace = calcTraces[i];
           var fullTrace = calcTrace[0].trace;
           var offsetIndex = calcTrace[0].t.offsetindex;
           if (fullTrace.base === void 0) {
@@ -48963,7 +49122,8 @@ var Plotly = (() => {
               sepNegVal: true,
               overlapNoMerge: true
             });
-            for (var bar of calcTrace) {
+            for (var j = 0; j < calcTrace.length; j++) {
+              var bar = calcTrace[j];
               if (bar.p !== BADNUM) {
                 var base = inTraceSieve.put(bar.p, offsetIndex, bar.b + bar.s);
                 if (base) bar.b = base;
@@ -48982,13 +49142,15 @@ var Plotly = (() => {
         function needsPadding(v) {
           return isNumeric(sa.c2l(v)) && (v < sMin - sTiny || v > sMax + sTiny || !isNumeric(sMin));
         }
-        for (var calcTrace of calcTraces) {
+        for (var i = 0; i < calcTraces.length; i++) {
+          var calcTrace = calcTraces[i];
           var offsetIndex = calcTrace[0].t.offsetindex;
           var fullTrace = calcTrace[0].trace;
           var pts = [];
           var tozero = false;
           var padded = false;
-          for (var bar of calcTrace) {
+          for (var j = 0; j < calcTrace.length; j++) {
+            var bar = calcTrace[j];
             if (bar.s !== BADNUM) {
               var scale = Math.abs(sTop / sieve.get(bar.p, offsetIndex, bar.s));
               bar.b *= scale;
@@ -49015,8 +49177,10 @@ var Plotly = (() => {
       }
       function setHelperValuesForRoundedCorners(calcTraces, sMinByPos, sMaxByPos, pa) {
         var pLetter = getAxisLetter(pa);
-        for (var calcTrace of calcTraces) {
-          for (var bar of calcTrace) {
+        for (var i = 0; i < calcTraces.length; i++) {
+          var calcTrace = calcTraces[i];
+          for (var j = 0; j < calcTrace.length; j++) {
+            var bar = calcTrace[j];
             var pos = bar[pLetter];
             bar._sMin = sMinByPos[pos];
             bar._sMax = sMaxByPos[pos];
@@ -49027,8 +49191,8 @@ var Plotly = (() => {
         var pLetter = getAxisLetter(pa);
         var extents = {};
         var i, j, cd;
-        var pMin = Number.POSITIVE_INFINITY;
-        var pMax = Number.NEGATIVE_INFINITY;
+        var pMin = Infinity;
+        var pMax = -Infinity;
         for (i = 0; i < calcTraces.length; i++) {
           cd = calcTraces[i];
           for (j = 0; j < cd.length; j++) {
@@ -49107,7 +49271,8 @@ var Plotly = (() => {
         var calcTraces = gd.calcdata;
         var calcTracesHorz = [];
         var calcTracesVert = [];
-        for (var [i, fullTrace] of fullTraces.entries()) {
+        for (var i = 0; i < fullTraces.length; i++) {
+          var fullTrace = fullTraces[i];
           if (fullTrace.visible === true && fullTrace.type === "scatter" && fullTrace.xaxis === xa._id && fullTrace.yaxis === ya._id) {
             if (fullTrace.orientation === "h") {
               calcTracesHorz.push(calcTraces[i]);
@@ -49139,7 +49304,7 @@ var Plotly = (() => {
         for (var stackGroup in subplotStackOpts) {
           groupOpts = subplotStackOpts[stackGroup];
           var indices = groupOpts.traceIndices;
-          if (indices.length === 0) continue;
+          if (!indices.length) continue;
           interpolate = groupOpts.stackgaps === "interpolate";
           groupnorm = groupOpts.groupnorm;
           if (groupOpts.orientation === "v") {
@@ -49149,12 +49314,12 @@ var Plotly = (() => {
             posAttr = "y";
             valAttr = "x";
           }
-          hasAnyBlanks = Array.from({length: indices.length});
+          hasAnyBlanks = new Array(indices.length);
           for (i = 0; i < hasAnyBlanks.length; i++) {
             hasAnyBlanks[i] = false;
           }
           cd0 = calcTraces[indices[0]];
-          var allPositions = Array.from({length: cd0.length});
+          var allPositions = new Array(cd0.length);
           for (i = 0; i < cd0.length; i++) {
             allPositions[i] = cd0[i][posAttr];
           }
@@ -49207,7 +49372,7 @@ var Plotly = (() => {
               var ppadRaw = ppad;
               ppad = new Array(serieslen);
               for (j = 0; j < serieslen; j++) {
-                ppad[j] = cd[j].gap ? 0 : (arrayPad ? ppadRaw[cd[j].i] : ppadRaw);
+                ppad[j] = cd[j].gap ? 0 : arrayPad ? ppadRaw[cd[j].i] : ppadRaw;
               }
             }
             var x = new Array(serieslen);
@@ -49345,7 +49510,7 @@ var Plotly = (() => {
         function ptDist(pt1, pt2) {
           var dx = pt1[0] - pt2[0];
           var dy = pt1[1] - pt2[1];
-          return Math.hypot(dx, dy);
+          return Math.sqrt(dx * dx + dy * dy);
         }
         var maxScreensAway = constants.maxScreensAway;
         var xEdge0 = -xLen * maxScreensAway;
@@ -49471,8 +49636,8 @@ var Plotly = (() => {
           }
           latestXFrac = pt[0] / xLen;
           latestYFrac = pt[1] / yLen;
-          xEdge = pt[0] < xEdge0 ? xEdge0 : (pt[0] > xEdge1 ? xEdge1 : 0);
-          yEdge = pt[1] < yEdge0 ? yEdge0 : (pt[1] > yEdge1 ? yEdge1 : 0);
+          xEdge = pt[0] < xEdge0 ? xEdge0 : pt[0] > xEdge1 ? xEdge1 : 0;
+          yEdge = pt[1] < yEdge0 ? yEdge0 : pt[1] > yEdge1 ? yEdge1 : 0;
           if (xEdge || yEdge) {
             if (!pti) {
               pts[pti++] = [xEdge || pt[0], yEdge || pt[1]];
@@ -49583,15 +49748,15 @@ var Plotly = (() => {
           if (lastFarPt) updateEdge([lastXEdge || lastFarPt[0], lastYEdge || lastFarPt[1]]);
           segments.push(pts.slice(0, pti));
         }
-        var lastShapeChar = shape.slice(- 1);
+        var lastShapeChar = shape.slice(shape.length - 1);
         if (backoff && lastShapeChar !== "h" && lastShapeChar !== "v") {
           var trimmed = false;
           var n = -1;
           var newSegments = [];
-          for (const segment of segments) {
-            for (var k = 0; k < segment.length - 1; k++) {
-              var start = segment[k];
-              var end = segment[k + 1];
+          for (var j = 0; j < segments.length; j++) {
+            for (var k = 0; k < segments[j].length - 1; k++) {
+              var start = segments[j][k];
+              var end = segments[j][k + 1];
               var xy = Drawing.applyBackoff(end, start);
               if (xy[0] !== end[0] || xy[1] !== end[1]) {
                 trimmed = true;
@@ -49643,7 +49808,7 @@ var Plotly = (() => {
           if (groupIndex < prevGroupIndex) needsSort = true;
           trace._groupIndex = prevGroupIndex = groupIndex;
         }
-        var cdscatterSorted = [...cdscatter];
+        var cdscatterSorted = cdscatter.slice();
         if (needsSort) {
           cdscatterSorted.sort(function(a, b) {
             var traceA = a[0].trace;
@@ -49664,7 +49829,7 @@ var Plotly = (() => {
                 prevtrace._nexttrace = trace;
               }
             }
-            trace._ownfill = trace.fill && (trace.fill.slice(0, 6) === "tozero" || trace.fill === "toself" || trace.fill.slice(0, 2) === "to" && !trace._prevtrace);
+            trace._ownfill = trace.fill && (trace.fill.substr(0, 6) === "tozero" || trace.fill === "toself" || trace.fill.substr(0, 2) === "to" && !trace._prevtrace);
             prevtraces[group] = trace;
           } else {
             trace._prevtrace = trace._nexttrace = trace._ownfill = null;
@@ -49804,14 +49969,14 @@ var Plotly = (() => {
           if (tonext) {
             tonext.datum(cdscatter);
           }
-          if (["hv", "vh", "hvh", "vhv"].includes(line.shape)) {
+          if (["hv", "vh", "hvh", "vhv"].indexOf(line.shape) !== -1) {
             pathfn = Drawing.steps(line.shape);
             revpathbase = Drawing.steps(
               line.shape.split("").reverse().join("")
             );
           } else if (line.shape === "spline") {
             pathfn = revpathbase = function(pts2) {
-              var pLast = pts2.at(-1);
+              var pLast = pts2[pts2.length - 1];
               if (pts2.length > 1 && pts2[0][0] === pLast[0] && pts2[0][1] === pLast[1]) {
                 return Drawing.smoothclosed(pts2.slice(1), line.smoothing);
               } else {
@@ -49837,13 +50002,13 @@ var Plotly = (() => {
             simplify: line.simplify,
             fill: trace.fill
           });
-          fillsegments = Array.from({length: segments.length});
+          fillsegments = new Array(segments.length);
           var fillsegmentCount = 0;
           for (i = 0; i < segments.length; i++) {
             var curpoints;
             var pts = segments[i];
             if (!curpoints || !ownFillDir) {
-              curpoints = [...pts];
+              curpoints = pts.slice();
               fillsegments[fillsegmentCount] = curpoints;
               fillsegmentCount++;
             } else {
@@ -49854,10 +50019,10 @@ var Plotly = (() => {
           trace._fillExclusionElement = prevFillElement;
           trace._fillsegments = fillsegments.slice(0, fillsegmentCount);
           fillsegments = trace._fillsegments;
-          if (segments.length > 0) {
-            pt0 = [...segments[0][0]];
-            lastSegment = segments.at(-1);
-            pt1 = [...lastSegment[lastSegment.length - 1]];
+          if (segments.length) {
+            pt0 = segments[0][0].slice();
+            lastSegment = segments[segments.length - 1];
+            pt1 = lastSegment[lastSegment.length - 1].slice();
           }
           makeUpdate = function(isEnter) {
             return function(pts2) {
@@ -49867,8 +50032,8 @@ var Plotly = (() => {
                 fullpath = thispath;
                 revpath = thisrevpath;
               } else if (ownFillDir) {
-                fullpath += "L" + thispath.slice(1);
-                revpath = thisrevpath + ("L" + revpath.slice(1));
+                fullpath += "L" + thispath.substr(1);
+                revpath = thisrevpath + ("L" + revpath.substr(1));
               } else {
                 fullpath += "Z" + thispath;
                 revpath = thisrevpath + "Z" + revpath;
@@ -49896,7 +50061,7 @@ var Plotly = (() => {
           transition(selection).attr("d", "M0,0Z");
         }
         var makeSelfPolygons = function() {
-          var polygons = Array.from({length: fillsegments.length});
+          var polygons = new Array(fillsegments.length);
           for (i = 0; i < fillsegments.length; i++) {
             polygons[i] = polygonTester(fillsegments[i]);
           }
@@ -49905,21 +50070,21 @@ var Plotly = (() => {
         var makePolygonsToPrevious = function(prevFillsegments2) {
           var polygons, i2;
           if (!prevFillsegments2 || prevFillsegments2.length === 0) {
-            polygons = Array.from({length: fillsegments.length});
+            polygons = new Array(fillsegments.length);
             for (i2 = 0; i2 < fillsegments.length; i2++) {
-              var pt02 = [...fillsegments[i2][0]];
-              var pt12 = [...fillsegments[i2][fillsegments[i2].length - 1]];
+              var pt02 = fillsegments[i2][0].slice();
+              var pt12 = fillsegments[i2][fillsegments[i2].length - 1].slice();
               pt02[fillAxisIndex] = pt12[fillAxisIndex] = fillAxisZero;
               var zeropoints = [pt12, pt02];
               var polypoints = zeropoints.concat(fillsegments[i2]);
               polygons[i2] = polygonTester(polypoints);
             }
           } else {
-            polygons = Array.from({length: prevFillsegments2.length - 1 + fillsegments.length});
+            polygons = new Array(prevFillsegments2.length - 1 + fillsegments.length);
             for (i2 = 0; i2 < prevFillsegments2.length - 1; i2++) {
               polygons[i2] = polygonTester(prevFillsegments2[i2]);
             }
-            var reversedPrevFillsegment = [...prevFillsegments2[prevFillsegments2.length - 1]];
+            var reversedPrevFillsegment = prevFillsegments2[prevFillsegments2.length - 1].slice();
             reversedPrevFillsegment.reverse();
             for (i2 = 0; i2 < fillsegments.length; i2++) {
               polygons[prevFillsegments2.length - 1 + i2] = polygonTester(fillsegments[i2].concat(reversedPrevFillsegment));
@@ -49927,13 +50092,13 @@ var Plotly = (() => {
           }
           return polygons;
         };
-        if (segments.length > 0) {
+        if (segments.length) {
           if (ownFillEl3) {
             ownFillEl3.datum(cdscatter);
             if (pt0 && pt1) {
               if (ownFillDir) {
                 pt0[fillAxisIndex] = pt1[fillAxisIndex] = fillAxisZero;
-                transition(ownFillEl3).attr("d", "M" + pt1 + "L" + pt0 + "L" + fullpath.slice(1)).call(Drawing.singleFillStyle, gd);
+                transition(ownFillEl3).attr("d", "M" + pt1 + "L" + pt0 + "L" + fullpath.substr(1)).call(Drawing.singleFillStyle, gd);
                 thisPolygons = makePolygonsToPrevious(null);
               } else {
                 transition(ownFillEl3).attr("d", fullpath + "Z").call(Drawing.singleFillStyle, gd);
@@ -49943,13 +50108,13 @@ var Plotly = (() => {
             trace._polygons = thisPolygons;
             trace._fillElement = ownFillEl3;
           } else if (tonext) {
-            if (trace.fill.slice(0, 6) === "tonext" && fullpath && prevRevpath) {
+            if (trace.fill.substr(0, 6) === "tonext" && fullpath && prevRevpath) {
               if (trace.fill === "tonext") {
                 transition(tonext).attr("d", fullpath + "Z" + prevRevpath + "Z").call(Drawing.singleFillStyle, gd);
                 thisPolygons = makeSelfPolygons();
                 trace._polygons = thisPolygons.concat(prevPolygons);
               } else {
-                transition(tonext).attr("d", fullpath + "L" + prevRevpath.slice(1) + "Z").call(Drawing.singleFillStyle, gd);
+                transition(tonext).attr("d", fullpath + "L" + prevRevpath.substr(1) + "Z").call(Drawing.singleFillStyle, gd);
                 thisPolygons = makePolygonsToPrevious(prevFillsegments);
                 trace._polygons = thisPolygons;
               }
@@ -50090,19 +50255,19 @@ var Plotly = (() => {
         });
         var inc = Math.ceil(cd.length / mnum);
         var tnum = 0;
-        for (const [j, cdj] of cdscatterAll.entries()) {
+        cdscatterAll.forEach(function(cdj, j) {
           var tracei = cdj[0].trace;
           if (subTypes.hasMarkers(tracei) && tracei.marker.maxdisplayed > 0 && j < idx) {
             tnum++;
           }
-        }
+        });
         var i0 = Math.round(tnum * inc / 3 + Math.floor(tnum / 3) * inc / 7.1);
-        for (const v of cdscatter) {
+        cdscatter.forEach(function(v) {
           delete v.vis;
-        }
-        for (const [i, v] of cd.entries()) {
+        });
+        cd.forEach(function(v, i) {
           if (Math.round((i + i0) % inc) === 0) v.vis = true;
-        }
+        });
       }
     }
   });
@@ -50207,7 +50372,7 @@ var Plotly = (() => {
         } else {
           var mc = di.mcc || (trace.marker || {}).color;
           var mlc = di.mlcc || ((trace.marker || {}).line || {}).color;
-          tc = mc && Color.opacity(mc) ? mc : (mlc && Color.opacity(mlc) && (di.mlw || ((trace.marker || {}).line || {}).width) ? mlc : "");
+          tc = mc && Color.opacity(mc) ? mc : mlc && Color.opacity(mlc) && (di.mlw || ((trace.marker || {}).line || {}).width) ? mlc : "";
           if (tc) {
             if (Color.opacity(tc) < 0.3) {
               return Color.addOpacity(tc, 0.3);
@@ -50240,15 +50405,15 @@ var Plotly = (() => {
         var ypx = ya.c2p(yval);
         var pt = [xpx, ypx];
         var hoveron = trace.hoveron || "";
-        var minRad = trace.mode.includes("markers") ? 3 : 0.5;
+        var minRad = trace.mode.indexOf("markers") !== -1 ? 3 : 0.5;
         var xPeriod = !!trace.xperiodalignment;
         var yPeriod = !!trace.yperiodalignment;
-        if (hoveron.includes("points")) {
+        if (hoveron.indexOf("points") !== -1) {
           var dx = function(di2) {
             if (xPeriod) {
               var x0 = xa.c2p(di2.xStart);
               var x1 = xa.c2p(di2.xEnd);
-              return xpx >= Math.min(x0, x1) && xpx <= Math.max(x0, x1) ? 0 : Number.POSITIVE_INFINITY;
+              return xpx >= Math.min(x0, x1) && xpx <= Math.max(x0, x1) ? 0 : Infinity;
             }
             var rad2 = Math.max(3, di2.mrc || 0);
             var kink = 1 - 1 / rad2;
@@ -50259,7 +50424,7 @@ var Plotly = (() => {
             if (yPeriod) {
               var y0 = ya.c2p(di2.yStart);
               var y1 = ya.c2p(di2.yEnd);
-              return ypx >= Math.min(y0, y1) && ypx <= Math.max(y0, y1) ? 0 : Number.POSITIVE_INFINITY;
+              return ypx >= Math.min(y0, y1) && ypx <= Math.max(y0, y1) ? 0 : Infinity;
             }
             var rad2 = Math.max(3, di2.mrc || 0);
             var kink = 1 - 1 / rad2;
@@ -50270,7 +50435,7 @@ var Plotly = (() => {
             var rad2 = Math.max(minRad, di2.mrc || 0);
             var dx2 = xa.c2p(di2.x) - xpx;
             var dy2 = ya.c2p(di2.y) - ypx;
-            return Math.max(Math.hypot(dx2, dy2) - rad2, 1 - minRad / rad2);
+            return Math.max(Math.sqrt(dx2 * dx2 + dy2 * dy2) - rad2, 1 - minRad / rad2);
           };
           var distfn = Fx.getDistanceFunction(hovermode, dx, dy, dxy);
           Fx.getClosest(cd, distfn, pointData);
@@ -50282,8 +50447,8 @@ var Plotly = (() => {
             pointData.index = di.i;
             var orientation = cd[0].t.orientation;
             var sizeVal = orientation && (di.sNorm || di.s);
-            var xLabelVal = orientation === "h" ? sizeVal : (di.orig_x !== void 0 ? di.orig_x : di.x);
-            var yLabelVal = orientation === "v" ? sizeVal : (di.orig_y !== void 0 ? di.orig_y : di.y);
+            var xLabelVal = orientation === "h" ? sizeVal : di.orig_x !== void 0 ? di.orig_x : di.x;
+            var yLabelVal = orientation === "v" ? sizeVal : di.orig_y !== void 0 ? di.orig_y : di.y;
             Lib.extendFlat(pointData, {
               color: getTraceColor(trace, di),
               x0: xc - rad,
@@ -50308,7 +50473,7 @@ var Plotly = (() => {
           try {
             var domPoint = new DOMPoint(pt[0], pt[1]);
             return svgElement.isPointInFill(domPoint);
-          } catch {
+          } catch (TypeError2) {
             var svgPoint = svgElement.ownerSVGElement.createSVGPoint();
             svgPoint.x = pt[0];
             svgPoint.y = pt[1];
@@ -50318,10 +50483,10 @@ var Plotly = (() => {
         function getHoverLabelPosition(polygons) {
           var i;
           var polygonsIn = [];
-          var xmin = Number.POSITIVE_INFINITY;
-          var xmax = Number.NEGATIVE_INFINITY;
-          var ymin = Number.POSITIVE_INFINITY;
-          var ymax = Number.NEGATIVE_INFINITY;
+          var xmin = Infinity;
+          var xmax = -Infinity;
+          var ymin = Infinity;
+          var ymax = -Infinity;
           var yPos;
           for (i = 0; i < polygons.length; i++) {
             var polygon = polygons[i];
@@ -50363,7 +50528,7 @@ var Plotly = (() => {
             y1: yPos
           };
         }
-        if (hoveron.includes("fills") && trace._fillElement) {
+        if (hoveron.indexOf("fills") !== -1 && trace._fillElement) {
           var inside = isHoverPointInFillElement(trace._fillElement) && !isHoverPointInFillElement(trace._fillExclusionElement);
           if (inside) {
             var hoverLabelCoords = getHoverLabelPosition(trace._polygons);
@@ -50487,7 +50652,7 @@ var Plotly = (() => {
         var id = ax._id;
         var axLetter = id.charAt(0);
         var i;
-        if (id.includes("scene")) id = axLetter;
+        if (id.indexOf("scene") !== -1) id = axLetter;
         var d0 = getFirstNonEmptyTrace(data, id, axLetter);
         if (!d0) return;
         if (d0.type === "histogram" && axLetter === { v: "y", h: "x" }[d0.orientation || "v"]) {
@@ -50522,14 +50687,15 @@ var Plotly = (() => {
         }
       }
       function getFirstNonEmptyTrace(data, id, axLetter) {
-        for (var trace of data) {
+        for (var i = 0; i < data.length; i++) {
+          var trace = data[i];
           if (trace.type === "splom" && trace._length > 0 && (trace["_" + axLetter + "axes"] || {})[id]) {
             return trace;
           }
           if ((trace[axLetter + "axis"] || axLetter) === id) {
             if (isBoxWithoutPositionCoords(trace, axLetter)) {
               return trace;
-            } else if ((trace[axLetter] || []).length > 0 || trace[axLetter + "0"]) {
+            } else if ((trace[axLetter] || []).length || trace[axLetter + "0"]) {
               return trace;
             }
           }
@@ -50596,7 +50762,7 @@ var Plotly = (() => {
         if (order === "trace") {
           containerOut._initialCategories = [];
         } else if (order === "array") {
-          containerOut._initialCategories = [...array];
+          containerOut._initialCategories = array.slice();
         } else {
           array = findCategories(containerOut, opts).sort();
           if (order === "category ascending") {
@@ -50714,7 +50880,7 @@ var Plotly = (() => {
             ticklabelposition: {
               valType: "enumerated",
               dflt: "outside",
-              values: ticklabelmode === "period" ? ["outside", "inside"] : (letter === "x" ? [
+              values: ticklabelmode === "period" ? ["outside", "inside"] : letter === "x" ? [
                 "outside",
                 "inside",
                 "outside left",
@@ -50728,14 +50894,14 @@ var Plotly = (() => {
                 "inside top",
                 "outside bottom",
                 "inside bottom"
-              ])
+              ]
             }
           }, "ticklabelposition");
         }
         if (!options.noTicklabeloverflow) {
           coerce(
             "ticklabeloverflow",
-            ticklabelposition.includes("inside") ? "hide past domain" : (axType === "category" || axType === "multicategory" ? "allow" : "hide past div")
+            ticklabelposition.indexOf("inside") !== -1 ? "hide past domain" : axType === "category" || axType === "multicategory" ? "allow" : "hide past div"
           );
         }
         setConvert(containerOut, layoutOut);
@@ -50799,7 +50965,7 @@ var Plotly = (() => {
             inclusionAttr: "enabled",
             handleItemDefaults: rangebreaksDefaults
           });
-          if (containerOut.rangebreaks.length === 0) {
+          if (!containerOut.rangebreaks.length) {
             delete containerOut.rangebreaks;
           } else {
             for (var k = 0; k < containerOut.rangebreaks.length; k++) {
@@ -50854,7 +51020,7 @@ var Plotly = (() => {
               for (i = 0; i < 2; i++) {
                 q = bnds[i];
                 switch (pattern) {
-                  case DAY_OF_WEEK: {
+                  case DAY_OF_WEEK:
                     if (!isNumeric(q)) {
                       itemOut.enabled = false;
                       return;
@@ -50867,8 +51033,7 @@ var Plotly = (() => {
                     }
                     itemOut.bounds[i] = bnds[i] = q;
                     break;
-                  }
-                  case HOUR: {
+                  case HOUR:
                     if (!isNumeric(q)) {
                       itemOut.enabled = false;
                       return;
@@ -50880,7 +51045,6 @@ var Plotly = (() => {
                     }
                     itemOut.bounds[i] = bnds[i] = q;
                     break;
-                  }
                 }
               }
             }
@@ -50898,7 +51062,7 @@ var Plotly = (() => {
             }
           } else {
             var values = coerce("values");
-            if (values && values.length > 0) {
+            if (values && values.length) {
               coerce("dvalue");
             } else {
               itemOut.enabled = false;
@@ -50918,7 +51082,7 @@ var Plotly = (() => {
       };
       function indexOfDay(v) {
         if (typeof v !== "string") return;
-        return dayStrToNum[v.slice(0, 3).toLowerCase()];
+        return dayStrToNum[v.substr(0, 3).toLowerCase()];
       }
     }
   });
@@ -50978,7 +51142,7 @@ var Plotly = (() => {
         }
         coerce("automargin", dfltAutomargin);
         var overlaying = false;
-        if (overlayableAxes.length > 0) {
+        if (overlayableAxes.length) {
           overlaying = Lib.coerce(containerIn, containerOut, {
             overlaying: {
               valType: "enumerated",
@@ -51076,9 +51240,13 @@ var Plotly = (() => {
               yaMustDisplay[yaName] = true;
               yaMustNotReverse[yaName] = true;
             }
-            if ((!traceIs(trace, "carpet") || trace.type === "carpet" && !trace._cheater) && xaName) xaMustDisplay[xaName] = true;
+            if (!traceIs(trace, "carpet") || trace.type === "carpet" && !trace._cheater) {
+              if (xaName) xaMustDisplay[xaName] = true;
+            }
           }
-          if (trace.type === "carpet" && trace._cheater && xaName) xaMayHide[xaName] = true;
+          if (trace.type === "carpet" && trace._cheater) {
+            if (xaName) xaMayHide[xaName] = true;
+          }
           if (traceIs(trace, "2dMap")) {
             outerTicks[xaName] = true;
             outerTicks[yaName] = true;
@@ -51095,7 +51263,7 @@ var Plotly = (() => {
         var yNames = Lib.simpleMap(yIds, id2name);
         var axNames = xNames.concat(yNames);
         var plotBgColor = Color.background;
-        if (xIds.length > 0 && yIds.length > 0) {
+        if (xIds.length && yIds.length) {
           plotBgColor = Lib.coerce(layoutIn, layoutOut, basePlotLayoutAttributes, "plot_bgcolor");
         }
         var bgColor = Color.combine(plotBgColor, layoutOut.paper_bgcolor);
@@ -51130,7 +51298,8 @@ var Plotly = (() => {
         function getOverlayableAxes(axLetter2, axName2) {
           var list = axLetter2 === "x" ? xNames : yNames;
           var out = [];
-          for (var axName22 of list) {
+          for (var j2 = 0; j2 < list.length; j2++) {
+            var axName22 = list[j2];
             if (axName22 !== axName2 && !(layoutIn[axName22] || {}).overlaying) {
               out.push(name2id(axName22));
             }
@@ -51143,7 +51312,7 @@ var Plotly = (() => {
         var missingMatchedAxisIds = [];
         function addMissingMatchedAxis() {
           var matchesIn = axLayoutIn.matches;
-          if (AX_ID_PATTERN.test(matchesIn) && !allAxisIds.includes(matchesIn)) {
+          if (AX_ID_PATTERN.test(matchesIn) && allAxisIds.indexOf(matchesIn) === -1) {
             missingMatchedAxisIdsLookup[matchesIn] = axLayoutIn.type;
             missingMatchedAxisIds = Object.keys(missingMatchedAxisIdsLookup);
           }
@@ -51368,30 +51537,32 @@ var Plotly = (() => {
         }
         function transitionComplete() {
           var aobj = {};
-          for (var edit of edits) {
+          for (var i = 0; i < edits.length; i++) {
+            var edit = edits[i];
             var xa = edit.plotinfo.xaxis;
             var ya = edit.plotinfo.yaxis;
-            if (edit.xr1) aobj[xa._name + ".range"] = [...edit.xr1];
-            if (edit.yr1) aobj[ya._name + ".range"] = [...edit.yr1];
+            if (edit.xr1) aobj[xa._name + ".range"] = edit.xr1.slice();
+            if (edit.yr1) aobj[ya._name + ".range"] = edit.yr1.slice();
           }
           onComplete && onComplete();
           return Registry.call("relayout", gd, aobj).then(function() {
-            for (const edit_ of edits) {
-              unsetSubplotTransform(edit_.plotinfo);
+            for (var i2 = 0; i2 < edits.length; i2++) {
+              unsetSubplotTransform(edits[i2].plotinfo);
             }
           });
         }
         function transitionInterrupt() {
           var aobj = {};
-          for (var edit of edits) {
+          for (var i = 0; i < edits.length; i++) {
+            var edit = edits[i];
             var xa = edit.plotinfo.xaxis;
             var ya = edit.plotinfo.yaxis;
-            if (edit.xr0) aobj[xa._name + ".range"] = [...edit.xr0];
-            if (edit.yr0) aobj[ya._name + ".range"] = [...edit.yr0];
+            if (edit.xr0) aobj[xa._name + ".range"] = edit.xr0.slice();
+            if (edit.yr0) aobj[ya._name + ".range"] = edit.yr0.slice();
           }
           return Registry.call("relayout", gd, aobj).then(function() {
-            for (const edit_ of edits) {
-              unsetSubplotTransform(edit_.plotinfo);
+            for (var i2 = 0; i2 < edits.length; i2++) {
+              unsetSubplotTransform(edits[i2].plotinfo);
             }
           });
         }
@@ -51406,8 +51577,8 @@ var Plotly = (() => {
           t2 = Date.now();
           var tInterp = Math.min(1, (t2 - t1) / transitionOpts.duration);
           var progress = easeFn(tInterp);
-          for (const edit of edits) {
-            updateSubplot(edit, progress);
+          for (var i = 0; i < edits.length; i++) {
+            updateSubplot(edits[i], progress);
           }
           if (t2 - t1 > transitionOpts.duration) {
             transitionComplete();
@@ -51492,17 +51663,17 @@ var Plotly = (() => {
             }
           }
         }
-        if (spAll.length === 0) {
+        if (!spAll.length) {
           xi = "";
           yi = "";
           for (var ki in layoutIn) {
             if (constants.attrRegex.test(ki)) {
               var axLetter = ki.charAt(0);
               if (axLetter === "x") {
-                if (!xi || +ki.slice(5) < +xi.slice(5)) {
+                if (!xi || +ki.substr(5) < +xi.substr(5)) {
                   xi = ki;
                 }
-              } else if (!yi || +ki.slice(5) < +yi.slice(5)) {
+              } else if (!yi || +ki.substr(5) < +yi.substr(5)) {
                 yi = ki;
               }
             }
@@ -51524,13 +51695,14 @@ var Plotly = (() => {
           for (i = 0; i < calcdata.length; i++) traces.push(i);
         }
         var zindices = fullLayout._zindices;
-        for (var [z, zorder] of zindices.entries()) {
+        for (var z = 0; z < zindices.length; z++) {
+          var zorder = zindices[z];
           for (i = 0; i < subplots.length; i++) {
             var subplot = subplots[i];
             var subplotInfo = fullLayout._plots[subplot];
             if (z > 0) {
               var idWithZ = subplotInfo.id;
-              if (idWithZ.includes(zindexSeparator)) continue;
+              if (idWithZ.indexOf(zindexSeparator) !== -1) continue;
               idWithZ += zindexSeparator + (z + 1);
               subplotInfo = Lib.extendFlat({}, subplotInfo, {
                 id: idWithZ,
@@ -51539,12 +51711,13 @@ var Plotly = (() => {
             }
             var cdSubplot = [];
             var pcd;
-            for (var cd of calcdata) {
+            for (var j = 0; j < calcdata.length; j++) {
+              var cd = calcdata[j];
               var trace = cd[0].trace;
               if (zorder !== (trace.zorder || 0)) continue;
               if (trace.xaxis + trace.yaxis === subplot) {
-                if (traces.includes(trace.index) || trace.carpet) {
-                  if (pcd && pcd[0].trace.xaxis + pcd[0].trace.yaxis === subplot && ["tonextx", "tonexty", "tonext"].includes(trace.fill) && !cdSubplot.includes(pcd)) {
+                if (traces.indexOf(trace.index) !== -1 || trace.carpet) {
+                  if (pcd && pcd[0].trace.xaxis + pcd[0].trace.yaxis === subplot && ["tonextx", "tonexty", "tonext"].indexOf(trace.fill) !== -1 && cdSubplot.indexOf(pcd) === -1) {
                     cdSubplot.push(pcd);
                   }
                   cdSubplot.push(cd);
@@ -51564,9 +51737,10 @@ var Plotly = (() => {
         var _module, cdModuleAndOthers, cdModule;
         var layerData = [];
         var zoomScaleQueryParts = [];
-        for (var [z, zorder] of zindices.entries()) {
-          for (const module_ of modules) {
-            _module = module_;
+        for (var z = 0; z < zindices.length; z++) {
+          var zorder = zindices[z];
+          for (var i = 0; i < modules.length; i++) {
+            _module = modules[i];
             var name = _module.name;
             var categories = Registry.modules[name].categories;
             if (categories.svg) {
@@ -51576,7 +51750,7 @@ var Plotly = (() => {
               cdModuleAndOthers = getModuleCalcData(cdSubplot, plotMethod, zorder);
               cdModule = cdModuleAndOthers[0];
               cdSubplot = cdModuleAndOthers[1];
-              if (cdModule.length > 0) {
+              if (cdModule.length) {
                 layerData.push({
                   i: traceLayerClasses.indexOf(classBaseName),
                   zindex: z,
@@ -51613,7 +51787,7 @@ var Plotly = (() => {
             transitionOpts,
             makeOnCompleteCallback
           );
-          if (!constants.clipOnAxisFalseQuery.includes("." + className2)) {
+          if (constants.clipOnAxisFalseQuery.indexOf("." + className2) === -1) {
             Drawing.setClipUrl(sel, plotinfo.layerClipId, gd);
           }
         });
@@ -51626,7 +51800,7 @@ var Plotly = (() => {
           if (plotinfo._hasClipOnAxisFalse) {
             plotinfo.clipOnAxisFalseTraces = plotinfo.plot.selectAll(constants.clipOnAxisFalseQuery.join(",")).selectAll(".trace");
           }
-          if (zoomScaleQueryParts.length > 0) {
+          if (zoomScaleQueryParts.length) {
             var traces = plotinfo.plot.selectAll(zoomScaleQueryParts.join(",")).selectAll(".trace");
             plotinfo.zoomScalePts = traces.selectAll("path.point");
             plotinfo.zoomScaleTxt = traces.selectAll(".textpoint");
@@ -51672,7 +51846,7 @@ var Plotly = (() => {
         } else if (oldSubplotList.cartesian) {
           for (i = 0; i < oldSubplotList.cartesian.length; i++) {
             var oldSubplotId = oldSubplotList.cartesian[i];
-            if (oldSubplotId.includes(zindexSeparator)) continue;
+            if (oldSubplotId.indexOf(zindexSeparator) !== -1) continue;
             if (!newPlots[oldSubplotId]) {
               var selector = "." + oldSubplotId + ",." + oldSubplotId + "-x,." + oldSubplotId + "-y";
               oldFullLayout._cartesianlayer.selectAll(selector).remove();
@@ -51694,21 +51868,21 @@ var Plotly = (() => {
           traceZorderGroups[zi].push(cdi);
         }
         var zindices = Object.keys(traceZorderGroups).map(Number).sort(Lib.sorterAsc);
-        if (zindices.length === 0) zindices = [0];
+        if (!zindices.length) zindices = [0];
         fullLayout._zindices = zindices;
         var initialSubplotData = makeSubplotData(gd);
         var len = initialSubplotData.length;
         var subplotData = [];
         for (i = 0; i < len; i++) {
-          subplotData[i] = [...initialSubplotData[i]];
+          subplotData[i] = initialSubplotData[i].slice();
         }
         for (var z = 1; z < zindices.length; z++) {
           var newSubplotData = [];
           for (i = 0; i < len; i++) {
-            newSubplotData[i] = [...initialSubplotData[i]];
+            newSubplotData[i] = initialSubplotData[i].slice();
             newSubplotData[i][0] += zindexSeparator + (z + 1);
           }
-          subplotData = [...subplotData, ...newSubplotData];
+          subplotData = subplotData.concat(newSubplotData);
         }
         var subplotLayers = fullLayout._cartesianlayer.selectAll(".subplot").data(subplotData, String);
         subplotLayers.enter().append("g").attr("class", function(d) {
@@ -51777,7 +51951,7 @@ var Plotly = (() => {
           plotinfo = fullLayout._plots[id];
           plotinfo.mainplotinfo.overlays.push(plotinfo);
         }
-        var subplotIds = [...regulars, ...overlays];
+        var subplotIds = regulars.concat(overlays);
         var subplotData = [];
         for (i = 0; i < len; i++) {
           id = subplotIds[i];
@@ -51793,12 +51967,12 @@ var Plotly = (() => {
               d.push(plotinfo.overlays[j].id + zStr);
             }
           }
-          d = [...d, 
+          d = d.concat([
             xa.layer,
             ya.layer,
             xa.overlaying || "",
             ya.overlaying || ""
-          ];
+          ]);
           subplotData.push(d);
         }
         return subplotData;
@@ -51910,7 +52084,8 @@ var Plotly = (() => {
         for (var k in fullLayout._plots) {
           var subplotInfo = fullLayout._plots[k];
           var overlays = subplotInfo.overlays || [];
-          for (var overlayInfo of overlays) {
+          for (var j = 0; j < overlays.length; j++) {
+            var overlayInfo = overlays[j];
             if (overlayIdsToRemove[overlayInfo.id]) {
               overlayInfo.plot.selectAll(".trace").remove();
             }
@@ -52007,8 +52182,8 @@ var Plotly = (() => {
         var startHeadStyle = ARROWPATHS[options.startarrowhead || 0];
         var scale = (options.arrowwidth || 1) * (options.arrowsize || 1);
         var startScale = (options.arrowwidth || 1) * (options.startarrowsize || 1);
-        var doStart = ends.includes("start");
-        var doEnd = ends.includes("end");
+        var doStart = ends.indexOf("start") >= 0;
+        var doEnd = ends.indexOf("end") >= 0;
         var backOff = headStyle.backoff * scale + options.standoff;
         var startBackOff = startHeadStyle.backoff * startScale + options.startstandoff;
         var start, end, startRot, endRot;
@@ -52019,10 +52194,12 @@ var Plotly = (() => {
           var dy = start.y - end.y;
           startRot = Math.atan2(dy, dx);
           endRot = startRot + Math.PI;
-          if (backOff && startBackOff && backOff + startBackOff > Math.sqrt(dx * dx + dy * dy)) {
+          if (backOff && startBackOff) {
+            if (backOff + startBackOff > Math.sqrt(dx * dx + dy * dy)) {
               hideLine();
               return;
             }
+          }
           if (backOff) {
             if (backOff * backOff > dx * dx + dy * dy) {
               hideLine();
@@ -52131,7 +52308,7 @@ var Plotly = (() => {
       function shiftPosition(axa, dAx, axLetter, gs, options) {
         var optAx = options[axLetter];
         var axRef = options[axLetter + "ref"];
-        var vertical = axLetter.includes("y");
+        var vertical = axLetter.indexOf("y") !== -1;
         var axDomainRef = Axes.getRefType(axRef) === "domain";
         var gsDim = vertical ? gs.h : gs.w;
         if (axa) {
@@ -52247,7 +52424,7 @@ var Plotly = (() => {
               "xlink:xlink:href": anchor3.attr("xlink:href"),
               "xlink:xlink:show": anchor3.attr("xlink:show")
             }).style({ cursor: "pointer" });
-            wholeLink.node().append(annTextBG.node());
+            wholeLink.node().appendChild(annTextBG.node());
           }
           var mathjaxGroup = annTextGroupInner.select(".annotation-text-math-group");
           var hasMathjax = !mathjaxGroup.empty();
@@ -52277,7 +52454,8 @@ var Plotly = (() => {
           }
           var annotationIsOffscreen = false;
           var letters = ["x", "y"];
-          for (var axLetter of letters) {
+          for (var i = 0; i < letters.length; i++) {
+            var axLetter = letters[i];
             var axRef = options[axLetter + "ref"] || axLetter;
             var tailRef = options["a" + axLetter + "ref"];
             var ax = { x: xa, y: ya }[axLetter];
@@ -52455,7 +52633,7 @@ var Plotly = (() => {
             }, false)) {
               return;
             }
-            for (const x of edges) {
+            edges.forEach(function(x) {
               var p = Lib.segmentsIntersect(
                 tailX,
                 tailY,
@@ -52470,7 +52648,7 @@ var Plotly = (() => {
                 tailX = p.x;
                 tailY = p.y;
               }
-            }
+            });
             var strokewidth = options.arrowwidth;
             var arrowColor = options.arrowcolor;
             var arrowSide = options.arrowside;
@@ -52657,7 +52835,7 @@ var Plotly = (() => {
         var update = {};
         var annotationsOut = gd._fullLayout.annotations;
         var i, editHelpers;
-        if (!(onSet.length > 0 || offSet.length > 0)) return;
+        if (!(onSet.length || offSet.length)) return;
         for (i = 0; i < onSet.length; i++) {
           editHelpers = arrayEditor(gd.layout, "annotations", annotationsOut[onSet[i]]);
           editHelpers.modifyItem("visible", true);
@@ -52696,7 +52874,9 @@ var Plotly = (() => {
                 break;
               }
             }
-            if (j === hoverLen && anni.visible && showMode === "onout") offSet.push(i);
+            if (j === hoverLen) {
+              if (anni.visible && showMode === "onout") offSet.push(i);
+            }
           }
         }
         return { on: onSet, off: offSet, explicitOff: explicitOffSet };
@@ -52732,11 +52912,11 @@ var Plotly = (() => {
           var arrowside = coerce("arrowside");
           var arrowhead;
           var arrowsize;
-          if (arrowside.includes("end")) {
+          if (arrowside.indexOf("end") !== -1) {
             arrowhead = coerce("arrowhead");
             arrowsize = coerce("arrowsize");
           }
-          if (arrowside.includes("start")) {
+          if (arrowside.indexOf("start") !== -1) {
             coerce("startarrowhead", arrowhead);
             coerce("startarrowsize", arrowsize);
           }
@@ -52845,13 +53025,13 @@ var Plotly = (() => {
       module.exports = function calcAutorange(gd) {
         var fullLayout = gd._fullLayout;
         var annotationList = Lib.filterVisible(fullLayout.annotations);
-        if (annotationList.length > 0 && gd._fullData.length > 0) {
+        if (annotationList.length && gd._fullData.length) {
           return Lib.syncOrAsync([draw, annAutorange], gd);
         }
       };
       function annAutorange(gd) {
         var fullLayout = gd._fullLayout;
-        for (const ann of Lib.filterVisible(fullLayout.annotations)) {
+        Lib.filterVisible(fullLayout.annotations).forEach(function(ann) {
           var xa = Axes.getFromId(gd, ann.xref);
           var ya = Axes.getFromId(gd, ann.yref);
           var xRefType = Axes.getRefType(ann.xref);
@@ -52859,7 +53039,7 @@ var Plotly = (() => {
           ann._extremes = {};
           if (xRefType === "range") calcAxisExpansion(ann, xa);
           if (yRefType === "range") calcAxisExpansion(ann, ya);
-        }
+        });
       }
       function calcAxisExpansion(ann, ax) {
         var axId = ax._id;
@@ -52927,8 +53107,8 @@ var Plotly = (() => {
           if (!isNumeric(newVal)) newVal = null;
           doExtra(attrPrefix + attr, newVal);
         }
-        for (const [i, annotation] of annotations.entries()) {
-          ann = annotation;
+        for (var i = 0; i < annotations.length; i++) {
+          ann = annotations[i];
           attrPrefix = "annotations[" + i + "].";
           if (ann[axLetter + "ref"] === ax._id) convert(axLetter);
           if (ann["a" + axLetter + "ref"] === ax._id) convert("a" + axLetter);
@@ -53087,8 +53267,8 @@ var Plotly = (() => {
       module.exports = function convert(scene) {
         var fullSceneLayout = scene.fullSceneLayout;
         var anns = fullSceneLayout.annotations;
-        for (const ann of anns) {
-          mockAnnAxes(ann, scene);
+        for (var i = 0; i < anns.length; i++) {
+          mockAnnAxes(anns[i], scene);
         }
         scene.fullLayout._infolayer.selectAll(".annotation-" + scene.id).remove();
       };
@@ -53106,7 +53286,7 @@ var Plotly = (() => {
           // set infinite range so that annotation draw routine
           // does not try to remove 'outside-range' annotations,
           // this case is handled in the render loop
-          range: [Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY]
+          range: [-Infinity, Infinity]
         };
         ann._xa = {};
         Lib.extendFlat(ann._xa, base);
@@ -53165,7 +53345,8 @@ var Plotly = (() => {
         var fullSceneLayout = scene.fullSceneLayout;
         var dataScale = scene.dataScale;
         var anns = fullSceneLayout.annotations;
-        for (var [i, ann] of anns.entries()) {
+        for (var i = 0; i < anns.length; i++) {
+          var ann = anns[i];
           var annotationIsOffscreen = false;
           for (var j = 0; j < 3; j++) {
             var axLetter = axLetters[j];
@@ -53217,8 +53398,9 @@ var Plotly = (() => {
         if (!GL3D) return;
         var attrRegex = GL3D.attrRegex;
         var keys = Object.keys(layoutIn);
-        for (var k of keys) {
-          if (attrRegex.test(k) && (layoutIn[k].annotations || []).length > 0) {
+        for (var i = 0; i < keys.length; i++) {
+          var k = keys[i];
+          if (attrRegex.test(k) && (layoutIn[k].annotations || []).length) {
             Lib.pushUnique(layoutOut._basePlotModules, GL3D);
             Lib.pushUnique(layoutOut._subplots.gl3d, k);
           }
@@ -53455,7 +53637,7 @@ var Plotly = (() => {
         });
       };
       function dfltLabelYanchor(isLine, labelTextPosition) {
-        return isLine ? "bottom" : labelTextPosition.includes("top") ? "top" : labelTextPosition.includes("bottom") ? "bottom" : "middle";
+        return isLine ? "bottom" : labelTextPosition.indexOf("top") !== -1 ? "top" : labelTextPosition.indexOf("bottom") !== -1 ? "bottom" : "middle";
       }
       function handleShapeDefaults(shapeIn, shapeOut, fullLayout) {
         function coerce(attr, dflt) {
@@ -53579,7 +53761,7 @@ var Plotly = (() => {
       var Color = require_color();
       var Lib = require_lib();
       function dfltLabelYanchor(isLine, labelTextPosition) {
-        return isLine ? "bottom" : labelTextPosition.includes("top") ? "top" : labelTextPosition.includes("bottom") ? "bottom" : "middle";
+        return isLine ? "bottom" : labelTextPosition.indexOf("top") !== -1 ? "top" : labelTextPosition.indexOf("bottom") !== -1 ? "bottom" : "middle";
       }
       module.exports = function supplyDrawNewShapeDefaults(layoutIn, layoutOut, coerce) {
         coerce("newshape.visible");
@@ -53630,8 +53812,9 @@ var Plotly = (() => {
       module.exports = function calcAutorange(gd) {
         var fullLayout = gd._fullLayout;
         var shapeList = Lib.filterVisible(fullLayout.shapes);
-        if (shapeList.length === 0 || gd._fullData.length === 0) return;
-        for (var shape of shapeList) {
+        if (!shapeList.length || !gd._fullData.length) return;
+        for (var i = 0; i < shapeList.length; i++) {
+          var shape = shapeList[i];
           shape._extremes = {};
           var ax;
           var bounds;
@@ -53699,8 +53882,8 @@ var Plotly = (() => {
         }
         if (v0 !== void 0) return [convertVal(v0) + shiftStart, convertVal(v1) + shiftEnd];
         if (!shape.path) return;
-        var min = Number.POSITIVE_INFINITY;
-        var max = Number.NEGATIVE_INFINITY;
+        var min = Infinity;
+        var max = -Infinity;
         var segments = shape.path.match(constants.segmentRE);
         var i;
         var segment;
@@ -53712,7 +53895,7 @@ var Plotly = (() => {
           segment = segments[i];
           drawnParam = paramsToUse[segment.charAt(0)].drawn;
           if (drawnParam === void 0) continue;
-          params = segments[i].slice(1).match(constants.paramRE);
+          params = segments[i].substr(1).match(constants.paramRE);
           if (!params || params.length < drawnParam) continue;
           val = convertVal(params[drawnParam]);
           if (val < min) min = val;
@@ -53948,7 +54131,7 @@ var Plotly = (() => {
               this.img = img2;
               img2.setAttribute("crossOrigin", "anonymous");
               img2.onerror = errorHandler;
-              img2.addEventListener('load', function() {
+              img2.onload = function() {
                 var canvas = document.createElement("canvas");
                 canvas.width = this.width;
                 canvas.height = this.height;
@@ -53957,7 +54140,7 @@ var Plotly = (() => {
                 var dataURL = canvas.toDataURL("image/png");
                 thisImage.attr("xlink:href", dataURL);
                 resolve();
-              });
+              };
               thisImage.on("error", errorHandler);
               img2.src = d.source;
               this._imgSrc = d.source;
@@ -54008,14 +54191,12 @@ var Plotly = (() => {
           }
           yPos += yOffset;
           switch (d.sizing) {
-            case "fill": {
+            case "fill":
               sizing += " slice";
               break;
-            }
-            case "stretch": {
+            case "stretch":
               sizing = "none";
               break;
-            }
           }
           thisImage.attr({
             x: xPos,
@@ -54103,8 +54284,8 @@ var Plotly = (() => {
         var axLetter = ax._id.charAt(0);
         var image;
         var attrPrefix;
-        for (const [i, image_] of images.entries()) {
-          image = image_;
+        for (var i = 0; i < images.length; i++) {
+          image = images[i];
           attrPrefix = "images[" + i + "].";
           if (image[axLetter + "ref"] === ax._id) {
             var currentPos = image[axLetter];
@@ -54252,7 +54433,7 @@ var Plotly = (() => {
         }
       });
       module.exports = overrideAll(templatedArray("updatemenu", {
-        _arrayAttrRegexps: [/^updatemenus\[(0|[1-9]\d+)]\.buttons/],
+        _arrayAttrRegexps: [/^updatemenus\[(0|[1-9][0-9]+)\]\.buttons/],
         visible: {
           valType: "boolean"
         },
@@ -54706,13 +54887,14 @@ var Plotly = (() => {
         var gButton = Lib.ensureSingle(menus, "g", constants.dropdownButtonGroupClassName, function(s) {
           s.style("pointer-events", "all");
         });
-        for (var menuOpts of menuData) {
+        for (var i = 0; i < menuData.length; i++) {
+          var menuOpts = menuData[i];
           findDimensions(gd, menuOpts);
         }
         var scrollBoxId = "updatemenus" + fullLayout._uid;
         var scrollBox = new ScrollBox(gd, gButton, scrollBoxId);
         if (headerGroups.enter().size()) {
-          gButton.node().parentNode.append(gButton.node());
+          gButton.node().parentNode.appendChild(gButton.node());
           gButton.call(removeAllButtons);
         }
         headerGroups.exit().each(function(menuOpts2) {
@@ -54811,7 +54993,7 @@ var Plotly = (() => {
         var x0 = 0;
         var y0 = 0;
         var dims = menuOpts._dims;
-        var isVertical = ["up", "down"].includes(menuOpts.direction);
+        var isVertical = ["up", "down"].indexOf(menuOpts.direction) !== -1;
         if (menuOpts.type === "dropdown") {
           if (isVertical) {
             y0 = dims.headerHeight + constants.gapButtonHeader;
@@ -54974,7 +55156,7 @@ var Plotly = (() => {
         };
         var fakeButtons = Drawing.tester.selectAll("g." + constants.dropdownButtonClassName).data(Lib.filterVisible(menuOpts.buttons));
         fakeButtons.enter().append("g").classed(constants.dropdownButtonClassName, true);
-        var isVertical = ["up", "down"].includes(menuOpts.direction);
+        var isVertical = ["up", "down"].indexOf(menuOpts.direction) !== -1;
         fakeButtons.each(function(buttonOpts, i) {
           var button = d3.select(this);
           button.call(drawItem, menuOpts, buttonOpts, gd);
@@ -55066,7 +55248,7 @@ var Plotly = (() => {
         var index = posOpts.index;
         var dims = menuOpts._dims;
         Drawing.setTranslate(item, borderWidth + posOpts.x, borderWidth + posOpts.y);
-        var isVertical = ["up", "down"].includes(menuOpts.direction);
+        var isVertical = ["up", "down"].indexOf(menuOpts.direction) !== -1;
         var finalHeight = overrideOpts.height || (isVertical ? dims.heights[index] : dims.height1);
         rect.attr({
           x: 0,
@@ -55366,8 +55548,8 @@ var Plotly = (() => {
           handleItemDefaults: stepDefaults
         });
         var stepCount = 0;
-        for (const step of steps) {
-          if (step.visible) stepCount++;
+        for (var i = 0; i < steps.length; i++) {
+          if (steps[i].visible) stepCount++;
         }
         var visible;
         if (stepCount < 2) visible = sliderOut.visible = false;
@@ -55464,7 +55646,8 @@ var Plotly = (() => {
         var sliderGroups = sliders.selectAll("g." + constants.groupClassName).data(sliderData, keyFunction);
         sliderGroups.enter().append("g").classed(constants.groupClassName, true);
         sliderGroups.exit().each(clearSlider).remove();
-        for (var sliderOpts of sliderData) {
+        for (var i = 0; i < sliderData.length; i++) {
+          var sliderOpts = sliderData[i];
           findDimensions(gd, sliderOpts);
         }
         sliderGroups.each(function(sliderOpts2) {
@@ -55485,7 +55668,8 @@ var Plotly = (() => {
       function makeSliderData(fullLayout, gd) {
         var contOpts = fullLayout[constants.name];
         var sliderData = [];
-        for (var item of contOpts) {
+        for (var i = 0; i < contOpts.length; i++) {
+          var item = contOpts[i];
           if (!item.visible) continue;
           item._gd = gd;
           sliderData.push(item);
@@ -55603,20 +55787,17 @@ var Plotly = (() => {
         var dims = sliderOpts._dims;
         var x0, textAnchor;
         switch (sliderOpts.currentvalue.xanchor) {
-          case "right": {
+          case "right":
             x0 = dims.inputAreaLength - constants.currentValueInset - dims.currentValueMaxWidth;
             textAnchor = "left";
             break;
-          }
-          case "center": {
+          case "center":
             x0 = dims.inputAreaLength * 0.5;
             textAnchor = "middle";
             break;
-          }
-          default: {
+          default:
             x0 = constants.currentValueInset;
             textAnchor = "left";
-          }
         }
         var text = Lib.ensureSingle(sliderGroup, "text", constants.labelClass, function(s) {
           s.attr({
@@ -56006,7 +56187,8 @@ var Plotly = (() => {
         var axes = axisIDs.list({ _fullLayout: fullLayout }, "x", true);
         var margin = fullLayout.margin;
         var rangeSliderData = [];
-        for (var ax of axes) {
+        for (var i = 0; i < axes.length; i++) {
+          var ax = axes[i];
           if (isVisible(ax)) {
             rangeSliderData.push(ax);
             var opts = ax[name];
@@ -56080,12 +56262,13 @@ var Plotly = (() => {
         var subplots = layoutOut._subplots;
         if (subplots) {
           var yIds = subplots.cartesian.filter(function(subplotId) {
-            return subplotId.slice(0, Math.max(0, subplotId.indexOf("y"))) === axisIds.name2id(axName);
+            return subplotId.substr(0, subplotId.indexOf("y")) === axisIds.name2id(axName);
           }).map(function(subplotId) {
             return subplotId.substr(subplotId.indexOf("y"), subplotId.length);
           });
           var yNames = Lib.simpleMap(yIds, axisIds.id2name);
-          for (var yName of yNames) {
+          for (var i = 0; i < yNames.length; i++) {
+            var yName = yNames[i];
             rangeContainerIn = containerIn[yName] || {};
             rangeContainerOut = Template.newContainer(containerOut, yName, "yaxis");
             var yAxOut = layoutOut[yName];
@@ -56095,7 +56278,7 @@ var Plotly = (() => {
             }
             var rangeMode = coerceRange("rangemode", rangemodeDflt);
             if (rangeMode !== "match") {
-              coerceRange("range", [...yAxOut.range]);
+              coerceRange("range", yAxOut.range.slice());
             }
           }
         }
@@ -56113,7 +56296,8 @@ var Plotly = (() => {
       var constants = require_constants11();
       module.exports = function calcAutorange(gd) {
         var axes = listAxes(gd, "x", true);
-        for (var ax of axes) {
+        for (var i = 0; i < axes.length; i++) {
+          var ax = axes[i];
           var opts = ax[constants.name];
           if (opts && opts.visible && opts.autorange) {
             opts._input.autorange = true;
@@ -56144,8 +56328,8 @@ var Plotly = (() => {
       module.exports = function(gd) {
         var fullLayout = gd._fullLayout;
         var rangeSliderData = fullLayout._rangeSliderData;
-        for (const rangeSliderDatum of rangeSliderData) {
-          var opts = rangeSliderDatum[constants.name];
+        for (var i = 0; i < rangeSliderData.length; i++) {
+          var opts = rangeSliderData[i][constants.name];
           opts._clipId = opts._id + "-" + fullLayout._uid;
         }
         function keyFunction(axisOpts) {
@@ -56201,7 +56385,7 @@ var Plotly = (() => {
           };
           if (axisOpts.rangebreaks) {
             var rsBreaks = axisOpts.locateBreaks(rl0, rl1);
-            if (rsBreaks.length > 0) {
+            if (rsBreaks.length) {
               var j, brk;
               var lBreaks = 0;
               for (j = 0; j < rsBreaks.length; j++) {
@@ -56212,11 +56396,12 @@ var Plotly = (() => {
               var _B = [-m2 * rl0];
               for (j = 0; j < rsBreaks.length; j++) {
                 brk = rsBreaks[j];
-                _B.push(_B.at(-1) - m2 * (brk.max - brk.min));
+                _B.push(_B[_B.length - 1] - m2 * (brk.max - brk.min));
               }
               opts2.d2p = function(v) {
                 var b = _B[0];
-                for (var [j2, brk2] of rsBreaks.entries()) {
+                for (var j2 = 0; j2 < rsBreaks.length; j2++) {
+                  var brk2 = rsBreaks[j2];
                   if (v >= brk2.max) b = _B[j2 + 1];
                   else if (v < brk2.min) break;
                 }
@@ -56229,7 +56414,8 @@ var Plotly = (() => {
               }
               opts2.p2d = function(v) {
                 var b = _B[0];
-                for (var [j2, brk2] of rsBreaks.entries()) {
+                for (var j2 = 0; j2 < rsBreaks.length; j2++) {
+                  var brk2 = rsBreaks[j2];
                   if (v >= brk2.pmax) b = _B[j2 + 1];
                   else if (v < brk2.pmin) break;
                 }
@@ -56293,7 +56479,7 @@ var Plotly = (() => {
             var delta = +clientX - startX;
             var pixelMin, pixelMax, cursor;
             switch (target) {
-              case slideBox: {
+              case slideBox:
                 cursor = "ew-resize";
                 if (minVal + delta > axisOpts._length || maxVal + delta < 0) {
                   return;
@@ -56301,8 +56487,7 @@ var Plotly = (() => {
                 pixelMin = minVal + delta;
                 pixelMax = maxVal + delta;
                 break;
-              }
-              case grabAreaMin: {
+              case grabAreaMin:
                 cursor = "col-resize";
                 if (minVal + delta > axisOpts._length) {
                   return;
@@ -56310,8 +56495,7 @@ var Plotly = (() => {
                 pixelMin = minVal + delta;
                 pixelMax = maxVal;
                 break;
-              }
-              case grabAreaMax: {
+              case grabAreaMax:
                 cursor = "col-resize";
                 if (maxVal + delta < 0) {
                   return;
@@ -56319,13 +56503,11 @@ var Plotly = (() => {
                 pixelMin = minVal;
                 pixelMax = maxVal + delta;
                 break;
-              }
-              default: {
+              default:
                 cursor = "ew-resize";
                 pixelMin = offsetX;
                 pixelMax = offsetX + delta;
                 break;
-              }
             }
             if (pixelMax < pixelMin) {
               var tmp = pixelMax;
@@ -56436,7 +56618,7 @@ var Plotly = (() => {
               xaxis: {
                 type: axisOpts.type,
                 domain: [0, 1],
-                range: [...opts.range],
+                range: opts.range.slice(),
                 calendar: axisOpts.calendar
               },
               width: opts._width,
@@ -56451,7 +56633,7 @@ var Plotly = (() => {
           mockFigure.layout[oppAxisName] = {
             type: oppAxisOpts.type,
             domain: [0, 1],
-            range: oppAxisRangeOpts.rangemode !== "match" ? [...oppAxisRangeOpts.range] : [...oppAxisOpts.range],
+            range: oppAxisRangeOpts.rangemode !== "match" ? oppAxisRangeOpts.range.slice() : oppAxisOpts.range.slice(),
             calendar: oppAxisOpts.calendar
           };
           if (oppAxisOpts.rangebreaks) {
@@ -56481,7 +56663,8 @@ var Plotly = (() => {
       }
       function filterRangePlotCalcData(calcData, subplotId) {
         var out = [];
-        for (var calcTrace of calcData) {
+        for (var i = 0; i < calcData.length; i++) {
+          var calcTrace = calcData[i];
           var trace = calcTrace[0].trace;
           if (trace.xaxis + trace.yaxis === subplotId) {
             out.push(calcTrace);
@@ -56784,8 +56967,8 @@ var Plotly = (() => {
           return layout[ax].anchor === containerOut._id;
         });
         var posY = 0;
-        for (const element of anchoredList) {
-          var domain = layout[element].domain;
+        for (var i = 0; i < anchoredList.length; i++) {
+          var domain = layout[anchoredList[i]].domain;
           if (domain) posY = Math.max(domain[1], posY);
         }
         return [containerOut.domain[0], posY + constants.yPad];
@@ -56819,15 +57002,13 @@ var Plotly = (() => {
         var count = buttonLayout.count;
         var range0;
         switch (buttonLayout.stepmode) {
-          case "backward": {
+          case "backward":
             range0 = axisLayout.l2r(+utcStep.offset(base, -count));
             break;
-          }
-          case "todate": {
+          case "todate":
             var base2 = utcStep.offset(base, -count);
             range0 = axisLayout.l2r(+utcStep.ceil(base2));
             break;
-          }
         }
         var range1 = currentRange[1];
         return [range0, range1];
@@ -56895,7 +57076,8 @@ var Plotly = (() => {
       function makeSelectorData(gd) {
         var axes = axisIds.list(gd, "x", true);
         var data = [];
-        for (var axis of axes) {
+        for (var i = 0; i < axes.length; i++) {
+          var axis = axes[i];
           if (axis.rangeselector && axis.rangeselector.visible) {
             data.push(axis);
           }
@@ -57091,8 +57273,8 @@ var Plotly = (() => {
         }
         var x = coerce("domain.x", dfltX);
         var y = coerce("domain.y", dfltY);
-        if (!(x[0] < x[1])) containerOut.domain.x = [...dfltX];
-        if (!(y[0] < y[1])) containerOut.domain.y = [...dfltY];
+        if (!(x[0] < x[1])) containerOut.domain.x = dfltX.slice();
+        if (!(y[0] < y[1])) containerOut.domain.y = dfltY.slice();
       };
     }
   });
@@ -57179,7 +57361,7 @@ var Plotly = (() => {
         var gridVal = grid[axLetter + "axes"];
         var splomVal = Object.keys((layout._splomAxes || {})[axLetter] || {});
         if (Array.isArray(gridVal)) return gridVal;
-        if (splomVal.length > 0) return splomVal;
+        if (splomVal.length) return splomVal;
       }
       function sizeDefaults(layoutIn, layoutOut) {
         var gridIn = layoutIn.grid || {};
@@ -57265,7 +57447,7 @@ var Plotly = (() => {
                 index++;
               } else subplotId = rowIn[j];
               rowOut[j] = "";
-              if (subplots.cartesian.includes(subplotId)) {
+              if (subplots.cartesian.indexOf(subplotId) !== -1) {
                 yPos = subplotId.indexOf("y");
                 xId = subplotId.slice(0, yPos);
                 yId = subplotId.slice(yPos);
@@ -57316,7 +57498,7 @@ var Plotly = (() => {
             } else {
               for (i = i0; i !== iFinal; i += inc) {
                 yId = gridOut.yaxes[i];
-                if (subplots.cartesian.includes(axisId + yId)) {
+                if (subplots.cartesian.indexOf(axisId + yId) !== -1) {
                   anchors[axisId] = yId;
                   break;
                 }
@@ -57346,7 +57528,7 @@ var Plotly = (() => {
             } else {
               for (i = i0; i !== iFinal; i += inc) {
                 xId = gridOut.xaxes[i];
-                if (subplots.cartesian.includes(xId + axisId)) {
+                if (subplots.cartesian.indexOf(xId + axisId) !== -1) {
                   anchors[axisId] = xId;
                   break;
                 }
@@ -57359,7 +57541,7 @@ var Plotly = (() => {
         var out = new Array(len);
         var i;
         function fillOneAxis(i2, axisId) {
-          if (axesAllowed.includes(axisId) && axisMap[axisId] === void 0) {
+          if (axesAllowed.indexOf(axisId) !== -1 && axisMap[axisId] === void 0) {
             out[i2] = axisId;
             axisMap[axisId] = i2;
           } else out[i2] = "";
@@ -57543,7 +57725,7 @@ var Plotly = (() => {
               if (!isNaN(val) || !isNaN(valMinus)) {
                 return [valMinus || 0, val || 0];
               }
-              return [Number.NaN, Number.NaN];
+              return [NaN, NaN];
             };
           }
         } else {
@@ -57595,7 +57777,8 @@ var Plotly = (() => {
       var makeComputeError = require_compute_error();
       module.exports = function calc(gd) {
         var calcdata = gd.calcdata;
-        for (var calcTrace of calcdata) {
+        for (var i = 0; i < calcdata.length; i++) {
+          var calcTrace = calcdata[i];
           var trace = calcTrace[0].trace;
           if (trace.visible === true && Registry.traceIs(trace, "errorBarsOK")) {
             var xa = Axes.getFromId(gd, trace.xaxis);
@@ -57607,11 +57790,12 @@ var Plotly = (() => {
       };
       function calcOneAxis(calcTrace, trace, axis, coord) {
         var opts = trace["error_" + coord] || {};
-        var isVisible = opts.visible && ["linear", "log"].includes(axis.type);
+        var isVisible = opts.visible && ["linear", "log"].indexOf(axis.type) !== -1;
         var vals = [];
         if (!isVisible) return;
         var computeError = makeComputeError(opts);
-        for (var [i, calcPt] of calcTrace.entries()) {
+        for (var i = 0; i < calcTrace.length; i++) {
+          var calcPt = calcTrace[i];
           var iIn = calcPt.i;
           if (iIn === void 0) iIn = i;
           else if (iIn === null) continue;
@@ -57665,7 +57849,7 @@ var Plotly = (() => {
           if (!yObj.visible && !xObj.visible) d = [];
           var errorbars = d3.select(this).selectAll("g.errorbar").data(d, keyFunc);
           errorbars.exit().remove();
-          if (d.length === 0) return;
+          if (!d.length) return;
           if (!xObj.visible) errorbars.selectAll("path.xerror").remove();
           if (!yObj.visible) errorbars.selectAll("path.yerror").remove();
           errorbars.style("opacity", 1);
@@ -57932,15 +58116,16 @@ var Plotly = (() => {
             opts._zrange = [cont[cbOpt.min], cont[cbOpt.max]];
           }
         }
-        for (var cd of calcdata) {
+        for (var i = 0; i < calcdata.length; i++) {
+          var cd = calcdata[i];
           trace = cd[0].trace;
           if (!trace._module) continue;
           var moduleOpts = trace._module.colorbar;
           if (trace.visible === true && moduleOpts) {
             var allowsMultiplotCbs = Array.isArray(moduleOpts);
             var cbOpts = allowsMultiplotCbs ? moduleOpts : [moduleOpts];
-            for (const cbOpt_ of cbOpts) {
-              cbOpt = cbOpt_;
+            for (var j = 0; j < cbOpts.length; j++) {
+              cbOpt = cbOpts[j];
               var contName = cbOpt.container;
               cont = contName ? trace[contName] : trace;
               if (cont && cont.showscale) {
@@ -58008,9 +58193,9 @@ var Plotly = (() => {
         var levelsOut = calcLevels(gd, opts, zrange);
         var fillLevels = levelsOut.fill;
         var lineLevels = levelsOut.line;
-        var thickPx = Math.round(thickness * (thicknessmode === "fraction" ? (isVertical ? gs.w : gs.h) : 1));
+        var thickPx = Math.round(thickness * (thicknessmode === "fraction" ? isVertical ? gs.w : gs.h : 1));
         var thickFrac = thickPx / (isVertical ? gs.w : gs.h);
-        var lenPx = Math.round(len * (lenmode === "fraction" ? (isVertical ? gs.h : gs.w) : 1));
+        var lenPx = Math.round(len * (lenmode === "fraction" ? isVertical ? gs.h : gs.w : 1));
         var lenFrac = lenPx / (isVertical ? gs.h : gs.w);
         var posW = isPaperX ? gs.w : gd._fullLayout.width;
         var posH = isPaperY ? gs.h : gd._fullLayout.height;
@@ -58030,7 +58215,7 @@ var Plotly = (() => {
         opts._vFrac = vFrac;
         var ax = opts._axis = mockColorBarAxis(gd, opts, zrange);
         ax.position = thickFrac + (isVertical ? optsX + xpad / gs.w : optsY + ypad / gs.h);
-        var topOrBottom = ["top", "bottom"].includes(titleSide);
+        var topOrBottom = ["top", "bottom"].indexOf(titleSide) !== -1;
         if (isVertical && topOrBottom) {
           ax.title.side = titleSide;
           ax.titlex = optsX + xpad / gs.w;
@@ -58048,7 +58233,7 @@ var Plotly = (() => {
           var autoNtick = Lib.constrain(lenPx / 50, 4, 15) + 1;
           var dtFactor = (zrange[1] - zrange[0]) / ((opts.nticks || autoNtick) * dtick);
           if (dtFactor > 1) {
-            var dtexp = Math.pow(10, Math.floor(Math.log10(dtFactor)));
+            var dtexp = Math.pow(10, Math.floor(Math.log(dtFactor) / Math.LN10));
             dtick *= dtexp * Lib.roundUp(dtFactor / dtexp, [2, 5, 10]);
             if ((Math.abs(levelsIn.start) / levelsIn.size + 1e-6) % 1 < 2e-6) {
               ax.tick0 = 0;
@@ -58081,7 +58266,7 @@ var Plotly = (() => {
             placeholder: fullLayout._dfltTitle.colorbar,
             containerGroup: g.select("." + cn.cbtitle)
           };
-          var otherClass = titleClass.charAt(0) === "h" ? titleClass.slice(1) : "h" + titleClass;
+          var otherClass = titleClass.charAt(0) === "h" ? titleClass.substr(1) : "h" + titleClass;
           g.selectAll("." + otherClass + ",." + otherClass + "-math-group").remove();
           Titles.draw(gd, titleClass, extendFlat(dfltTitleOpts, titleOpts || {}));
         }
@@ -58116,7 +58301,7 @@ var Plotly = (() => {
             } else {
               x = mid;
               if (titleSide === "bottom") {
-                y = gs.t + posH * pos + 10 + (!ticklabelposition.includes("inside") ? ax.tickfont.size : 0) + (ax.ticks !== "intside" ? opts.ticklen || 0 : 0);
+                y = gs.t + posH * pos + 10 + (ticklabelposition.indexOf("inside") === -1 ? ax.tickfont.size : 0) + (ax.ticks !== "intside" ? opts.ticklen || 0 : 0);
               }
               if (titleSide === "top") {
                 var nlines = title.text.split("<br>").length;
@@ -58149,7 +58334,7 @@ var Plotly = (() => {
             var mathJaxNode = titleGroup.select(".h" + ax._id + "title-math-group").node();
             var lineSize = 15.6;
             if (titleText.node()) {
-              lineSize = Number.parseInt(titleText.node().style.fontSize, 10) * LINE_SPACING;
+              lineSize = parseInt(titleText.node().style.fontSize, 10) * LINE_SPACING;
             }
             var bb;
             if (mathJaxNode) {
@@ -58249,7 +58434,7 @@ var Plotly = (() => {
         function positionCB() {
           var bb;
           var innerThickness = thickPx + outlinewidth / 2;
-          if (!ticklabelposition.includes("inside")) {
+          if (ticklabelposition.indexOf("inside") === -1) {
             bb = Drawing.bBox(axLayer.node());
             innerThickness += isVertical ? bb.width : bb.height;
           }
@@ -58503,7 +58688,7 @@ var Plotly = (() => {
             fillLevels = lineLevels.map(function(v) {
               return v - levelsIn.size / 2;
             });
-            fillLevels.push(fillLevels.at(-1) + levelsIn.size);
+            fillLevels.push(fillLevels[fillLevels.length - 1] + levelsIn.size);
           }
         } else if (opts._fillcolor && typeof opts._fillcolor === "string") {
           fillLevels = [0];
@@ -58697,7 +58882,7 @@ var Plotly = (() => {
       function cloneLayoutOverride(tileClass) {
         var override;
         switch (tileClass) {
-          case "themes__thumb": {
+          case "themes__thumb":
             override = {
               autosize: true,
               width: 150,
@@ -58708,8 +58893,7 @@ var Plotly = (() => {
               annotations: []
             };
             break;
-          }
-          case "thumbnail": {
+          case "thumbnail":
             override = {
               title: { text: "" },
               hidesources: true,
@@ -58720,16 +58904,14 @@ var Plotly = (() => {
               annotations: []
             };
             break;
-          }
-          default: {
+          default:
             override = {};
-          }
         }
         return override;
       }
       function keyIsAxis(keyName) {
         var types = ["xaxis", "yaxis", "zaxis"];
-        return types.includes(keyName.slice(0, 5));
+        return types.indexOf(keyName.slice(0, 5)) > -1;
       }
       module.exports = function clonePlot(graphObj, options) {
         var i;
@@ -58763,7 +58945,7 @@ var Plotly = (() => {
         var sceneIds = Object.keys(newLayout).filter(function(key) {
           return key.match(/^scene\d*$/);
         });
-        if (sceneIds.length > 0) {
+        if (sceneIds.length) {
           var axesImageOverride = {};
           if (options.tileClass === "thumbnail") {
             axesImageOverride = {
@@ -58833,7 +59015,7 @@ var Plotly = (() => {
         var clonedGd = clone.gd;
         clonedGd.style.position = "absolute";
         clonedGd.style.left = "-5000px";
-        document.body.append(clonedGd);
+        document.body.appendChild(clonedGd);
         function wait() {
           var delay = helpers.getDelay(clonedGd._fullLayout);
           setTimeout(function() {
@@ -58849,13 +59031,13 @@ var Plotly = (() => {
               svg
             });
             ev.clean = function() {
-              if (clonedGd) clonedGd.remove();
+              if (clonedGd) document.body.removeChild(clonedGd);
             };
           }, delay);
         }
         var redrawFunc = helpers.getRedrawFunc(clonedGd);
-        Registry.call("_doPlot", clonedGd, clone.data, clone.layout, clone.config).then(redrawFunc).then(wait).catch(function(error) {
-          ev.emit("error", error);
+        Registry.call("_doPlot", clonedGd, clone.data, clone.layout, clone.config).then(redrawFunc).then(wait).catch(function(err) {
+          ev.emit("error", err);
         });
         return ev;
       }
@@ -59255,8 +59437,8 @@ var Plotly = (() => {
         function coerce(attr, dflt) {
           return Lib.coerce(traceOut._input, traceOut, attributes, attr, dflt);
         }
-        for (const fullDatum of fullData) {
-          traceOut = fullDatum;
+        for (var i = 0; i < fullData.length; i++) {
+          traceOut = fullData[i];
           if (traceOut.type === "bar") {
             traceIn = traceOut._input;
             var r = coerce("marker.cornerradius", fullLayout.barcornerradius);
@@ -59316,7 +59498,9 @@ var Plotly = (() => {
           if (moduleHasTextangle) coerce("textangle");
           coerce("texttemplate");
         }
-        if (hasInside && moduleHasInsideanchor) coerce("insidetextanchor");
+        if (hasInside) {
+          if (moduleHasInsideanchor) coerce("insidetextanchor");
+        }
       }
       module.exports = {
         supplyDefaults,
@@ -59346,7 +59530,8 @@ var Plotly = (() => {
         var usedSubplots = {};
         var mode = coerce("barmode");
         var isGroup = mode === "group";
-        for (var trace of fullData) {
+        for (var i = 0; i < fullData.length; i++) {
+          var trace = fullData[i];
           if (Registry.traceIs(trace, "bar") && trace.visible) hasBars = true;
           else continue;
           var subploti = trace.xaxis + trace.yaxis;
@@ -59482,18 +59667,15 @@ var Plotly = (() => {
           switch (traceType) {
             case "funnelarea":
             case "pie":
-            case "sunburst": {
+            case "sunburst":
               selector = "g.slice";
               break;
-            }
             case "treemap":
-            case "icicle": {
+            case "icicle":
               selector = "g.slice, g.pathbar";
               break;
-            }
-            default: {
+            default:
               selector = "g.points > g.point";
-            }
           }
           gTrace.selectAll(selector).each(function(d) {
             var transform = d.transform;
@@ -59511,7 +59693,7 @@ var Plotly = (() => {
           var minSize = fullLayout.uniformtext.minsize;
           var size = transform.scale * transform.fontSize;
           transform.hide = size < minSize;
-          fullLayout[minKey] = fullLayout[minKey] || Number.POSITIVE_INFINITY;
+          fullLayout[minKey] = fullLayout[minKey] || Infinity;
           if (!transform.hide) {
             fullLayout[minKey] = Math.min(
               fullLayout[minKey],
@@ -59545,7 +59727,9 @@ var Plotly = (() => {
       exports.coerceString = function(attributeDefinition, value, defaultValue) {
         if (typeof value === "string") {
           if (value || !attributeDefinition.noBlank) return value;
-        } else if ((typeof value === "number" || value === true) && !attributeDefinition.strict) return String(value);
+        } else if (typeof value === "number" || value === true) {
+          if (!attributeDefinition.strict) return String(value);
+        }
         return defaultValue !== void 0 ? defaultValue : attributeDefinition.dflt;
       };
       exports.coerceNumber = function(attributeDefinition, value, defaultValue) {
@@ -59564,7 +59748,7 @@ var Plotly = (() => {
       };
       exports.coerceEnumerated = function(attributeDefinition, value, defaultValue) {
         if (attributeDefinition.coerceNumber) value = +value;
-        if (attributeDefinition.values.includes(value)) return value;
+        if (attributeDefinition.values.indexOf(value) !== -1) return value;
         return defaultValue !== void 0 ? defaultValue : attributeDefinition.dflt;
       };
       exports.getValue = function(arrayOrScalar, index) {
@@ -59574,7 +59758,7 @@ var Plotly = (() => {
         return value;
       };
       exports.getLineWidth = function(trace, di) {
-        var w = 0 < di.mlw ? di.mlw : (!isArrayOrTypedArray(trace.marker.line.width) ? trace.marker.line.width : 0);
+        var w = 0 < di.mlw ? di.mlw : !isArrayOrTypedArray(trace.marker.line.width) ? trace.marker.line.width : 0;
         return w;
       };
     }
@@ -60086,7 +60270,9 @@ var Plotly = (() => {
         var textWidth;
         var textHeight;
         var font;
-        if (textPosition === "outside" && !isOutmostBar && !calcBar.hasB) textPosition = "inside";
+        if (textPosition === "outside") {
+          if (!isOutmostBar && !calcBar.hasB) textPosition = "inside";
+        }
         if (textPosition === "auto") {
           if (isOutmostBar) {
             textPosition = "inside";
@@ -60264,8 +60450,8 @@ var Plotly = (() => {
         var barHeight = Math.max(0, Math.abs(y1 - y0) - 2 * TEXTPAD);
         var R = r - TEXTPAD;
         var clippedR = overhead ? R - Math.sqrt(R * R - (R - overhead) * (R - overhead)) : R;
-        var rX = hasB ? R * 2 : (isHorizontal ? R - overhead : 2 * clippedR);
-        var rY = hasB ? R * 2 : (isHorizontal ? 2 * clippedR : R - overhead);
+        var rX = hasB ? R * 2 : isHorizontal ? R - overhead : 2 * clippedR;
+        var rY = hasB ? R * 2 : isHorizontal ? 2 * clippedR : R - overhead;
         var a, b, c;
         var scale, pad;
         if (t.y / t.x >= barHeight / (barWidth - rX)) {
@@ -60441,7 +60627,7 @@ var Plotly = (() => {
         var text = [];
         var tx;
         var hasFlag = function(flag) {
-          return parts.includes(flag);
+          return parts.indexOf(flag) !== -1;
         };
         if (hasFlag("label")) {
           text.push(formatLabel(cd[index].p));
@@ -60551,16 +60737,16 @@ var Plotly = (() => {
         function periodLength(di2) {
           return di2[posLetter + "End"] - di2[posLetter + "Start"];
         }
-        var minPos = isClosest ? thisBarMinPos : (period ? function(di2) {
+        var minPos = isClosest ? thisBarMinPos : period ? function(di2) {
           return di2.p - periodLength(di2) / 2;
         } : function(di2) {
           return Math.min(thisBarMinPos(di2), di2.p - t.bardelta / 2);
-        });
-        var maxPos = isClosest ? thisBarMaxPos : (period ? function(di2) {
+        };
+        var maxPos = isClosest ? thisBarMaxPos : period ? function(di2) {
           return di2.p + periodLength(di2) / 2;
         } : function(di2) {
           return Math.max(thisBarMaxPos(di2), di2.p + t.bardelta / 2);
-        });
+        };
         function inbox(_minPos, _maxPos, maxDistance) {
           if (opts.finiteRange) maxDistance = 0;
           return Fx.inbox(
@@ -60962,8 +61148,8 @@ var Plotly = (() => {
         var hasLabels = Lib.isArrayOrTypedArray(labels);
         var hasValues = Lib.isArrayOrTypedArray(values);
         var len = Math.min(
-          hasLabels ? labels.length : Number.POSITIVE_INFINITY,
-          hasValues ? values.length : Number.POSITIVE_INFINITY
+          hasLabels ? labels.length : Infinity,
+          hasValues ? values.length : Infinity
         );
         if (!isFinite(len)) len = 0;
         if (len && hasValues) {
@@ -61146,7 +61332,7 @@ var Plotly = (() => {
           var thisLabelIndex = allThisTraceLabels[label];
           if (thisLabelIndex === void 0) {
             allThisTraceLabels[label] = cd.length;
-            hidden = hiddenLabels.includes(label);
+            hidden = hiddenLabels.indexOf(label) !== -1;
             if (!hidden) vTotal += v;
             cd.push({
               v,
@@ -61198,10 +61384,12 @@ var Plotly = (() => {
           colorWay = generateExtendedColors(colorWay, extendedColorWayList);
         }
         var dfltColorCount = 0;
-        for (var cd of calcdata) {
+        for (var i = 0; i < calcdata.length; i++) {
+          var cd = calcdata[i];
           var traceType = cd[0].trace.type;
           if (traceType !== desiredType) continue;
-          for (var pt of cd) {
+          for (var j = 0; j < cd.length; j++) {
+            var pt = cd[j];
             if (pt.color === false) {
               if (colorMap[pt.label]) {
                 pt.color = colorMap[pt.label];
@@ -61218,7 +61406,7 @@ var Plotly = (() => {
         var colorString = JSON.stringify(colorList);
         var colors = extendedColorWays[colorString];
         if (!colors) {
-          colors = [...colorList];
+          colors = colorList.slice();
           for (i = 0; i < colorList.length; i++) {
             colors.push(tinycolor(colorList[i]).lighten(20).toHexString());
           }
@@ -61532,18 +61720,18 @@ var Plotly = (() => {
             var hoverCenterY = cy + pt.pxmid[1] * (1 - rInscribed);
             var separators = fullLayout2.separators;
             var text = [];
-            if (hoverinfo && hoverinfo.includes("label")) text.push(pt.label);
+            if (hoverinfo && hoverinfo.indexOf("label") !== -1) text.push(pt.label);
             pt.text = helpers.castOption(trace2.hovertext || trace2.text, pt.pts);
-            if (hoverinfo && hoverinfo.includes("text")) {
+            if (hoverinfo && hoverinfo.indexOf("text") !== -1) {
               var tx = pt.text;
               if (Lib.isValidTextValue(tx)) text.push(tx);
             }
             pt.value = pt.v;
             pt.valueLabel = helpers.formatPieValue(pt.v, separators);
-            if (hoverinfo && hoverinfo.includes("value")) text.push(pt.valueLabel);
+            if (hoverinfo && hoverinfo.indexOf("value") !== -1) text.push(pt.valueLabel);
             pt.percent = pt.v / cd0.vTotal;
             pt.percentLabel = helpers.formatPiePercent(pt.percent, separators);
-            if (hoverinfo && hoverinfo.includes("percent")) text.push(pt.percentLabel);
+            if (hoverinfo && hoverinfo.indexOf("percent") !== -1) text.push(pt.percentLabel);
             var hoverLabel = trace2.hoverlabel;
             var hoverFont = hoverLabel.font;
             var bbox = [];
@@ -61557,7 +61745,7 @@ var Plotly = (() => {
               _y0: isFunnelArea ? cy + pt.TL[1] : hoverCenterY - rInscribed * cd0.r,
               _y1: isFunnelArea ? cy + pt.BL[1] : hoverCenterY + rInscribed * cd0.r,
               text: text.join("<br>"),
-              name: trace2.hovertemplate || hoverinfo.includes("name") ? trace2.name : void 0,
+              name: trace2.hovertemplate || hoverinfo.indexOf("name") !== -1 ? trace2.name : void 0,
               idealAlign: pt.pxmid[0] < 0 ? "left" : "right",
               color: helpers.castOption(hoverLabel.bgcolor, pt.pts) || pt.color,
               borderColor: helpers.castOption(hoverLabel.bordercolor, pt.pts),
@@ -61658,8 +61846,8 @@ var Plotly = (() => {
       }
       function prerenderTitles(cdModule, gd) {
         var cd0, trace;
-        for (const element of cdModule) {
-          cd0 = element[0];
+        for (var i = 0; i < cdModule.length; i++) {
+          cd0 = cdModule[i][0];
           trace = cd0.trace;
           if (trace.title.text) {
             var txt = trace.title.text;
@@ -61725,7 +61913,7 @@ var Plotly = (() => {
           }
         }
         if (isCircle || isAuto || isHorizontal) {
-          var textDiameter = Math.hypot(textBB.width, textBB.height);
+          var textDiameter = Math.sqrt(textBB.width * textBB.width + textBB.height * textBB.height);
           newT = {
             scale: rInscribed * r * 2 / textDiameter,
             // and the center position and rotation in this case
@@ -61748,8 +61936,8 @@ var Plotly = (() => {
         }
         var id = 0;
         var maxScale = 0;
-        for (const [k, allTransform] of allTransforms.entries()) {
-          var s = allTransform.scale;
+        for (var k = 0; k < allTransforms.length; k++) {
+          var s = allTransforms[k].scale;
           if (maxScale < s) {
             maxScale = s;
             id = k;
@@ -61819,7 +62007,7 @@ var Plotly = (() => {
         };
       }
       function positionTitleInside(cd0) {
-        var textDiameter = Math.hypot(cd0.titleBox.width, cd0.titleBox.height);
+        var textDiameter = Math.sqrt(cd0.titleBox.width * cd0.titleBox.width + cd0.titleBox.height * cd0.titleBox.height);
         return {
           x: cd0.cx,
           y: cd0.cy,
@@ -61843,21 +62031,21 @@ var Plotly = (() => {
         };
         translate.ty += trace.title.font.size;
         maxPull = getMaxPull(trace);
-        if (trace.title.position.includes("top")) {
+        if (trace.title.position.indexOf("top") !== -1) {
           topMiddle.y -= (1 + maxPull) * cd0.r;
           translate.ty -= cd0.titleBox.height;
-        } else if (trace.title.position.includes("bottom")) {
+        } else if (trace.title.position.indexOf("bottom") !== -1) {
           topMiddle.y += (1 + maxPull) * cd0.r;
         }
         var rx = applyAspectRatio(cd0.r, cd0.trace.aspectratio);
         var maxWidth = plotSize.w * (trace.domain.x[1] - trace.domain.x[0]) / 2;
-        if (trace.title.position.includes("left")) {
+        if (trace.title.position.indexOf("left") !== -1) {
           maxWidth = maxWidth + rx;
           topMiddle.x -= (1 + maxPull) * rx;
           translate.tx += cd0.titleBox.width / 2;
-        } else if (trace.title.position.includes("center")) {
+        } else if (trace.title.position.indexOf("center") !== -1) {
           maxWidth *= 2;
-        } else if (trace.title.position.includes("right")) {
+        } else if (trace.title.position.indexOf("right") !== -1) {
           maxWidth = maxWidth + rx;
           topMiddle.x += (1 + maxPull) * rx;
           translate.tx -= cd0.titleBox.width / 2;
@@ -61959,8 +62147,8 @@ var Plotly = (() => {
       }
       function layoutAreas(cdModule, plotSize) {
         var scaleGroups = [];
-        for (const element of cdModule) {
-          var cd0 = element[0];
+        for (var i = 0; i < cdModule.length; i++) {
+          var cd0 = cdModule[i][0];
           var trace = cd0.trace;
           var domain = trace.domain;
           var width = plotSize.w * (domain.x[1] - domain.x[0]);
@@ -61976,10 +62164,10 @@ var Plotly = (() => {
           cd0.r = Math.min(rx, ry) / (1 + getMaxPull(trace));
           cd0.cx = plotSize.l + plotSize.w * (trace.domain.x[1] + trace.domain.x[0]) / 2;
           cd0.cy = plotSize.t + plotSize.h * (1 - trace.domain.y[0]) - height / 2;
-          if (trace.title.text && trace.title.position.includes("bottom")) {
+          if (trace.title.text && trace.title.position.indexOf("bottom") !== -1) {
             cd0.cy -= getTitleSpace(cd0, plotSize);
           }
-          if (trace.scalegroup && !scaleGroups.includes(trace.scalegroup)) {
+          if (trace.scalegroup && scaleGroups.indexOf(trace.scalegroup) === -1) {
             scaleGroups.push(trace.scalegroup);
           }
         }
@@ -61987,8 +62175,9 @@ var Plotly = (() => {
       }
       function groupScale(cdModule, scaleGroups) {
         var cd0, i, trace;
-        for (var g of scaleGroups) {
+        for (var k = 0; k < scaleGroups.length; k++) {
           var min = Infinity;
+          var g = scaleGroups[k];
           for (i = 0; i < cdModule.length; i++) {
             cd0 = cdModule[i][0];
             trace = cd0.trace;
@@ -62074,7 +62263,7 @@ var Plotly = (() => {
         if (!texttemplate && textinfo && textinfo !== "none") {
           var parts = textinfo.split("+");
           var hasFlag = function(flag) {
-            return parts.includes(flag);
+            return parts.indexOf(flag) !== -1;
           };
           var hasLabel = hasFlag("label");
           var hasText = hasFlag("text");
@@ -62208,9 +62397,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/object-assign/index.js
+  // node_modules/.pnpm/object-assign@4.1.1/node_modules/object-assign/index.js
   var require_object_assign = __commonJS({
-    "node_modules/object-assign/index.js"(exports, module) {
+    "node_modules/.pnpm/object-assign@4.1.1/node_modules/object-assign/index.js"(exports, module) {
       "use strict";
       var getOwnPropertySymbols = Object.getOwnPropertySymbols;
       var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -62219,7 +62408,7 @@ var Plotly = (() => {
         if (val === null || val === void 0) {
           throw new TypeError("Object.assign cannot be called with null or undefined");
         }
-        return new Object(val);
+        return Object(val);
       }
       function shouldUseNative() {
         try {
@@ -62242,14 +62431,14 @@ var Plotly = (() => {
             return false;
           }
           var test3 = {};
-          [..."abcdefghijklmnopqrst"].forEach(function(letter) {
+          "abcdefghijklmnopqrst".split("").forEach(function(letter) {
             test3[letter] = letter;
           });
           if (Object.keys(Object.assign({}, test3)).join("") !== "abcdefghijklmnopqrst") {
             return false;
           }
           return true;
-        } catch {
+        } catch (err) {
           return false;
         }
       }
@@ -62258,7 +62447,7 @@ var Plotly = (() => {
         var to = toObject(target);
         var symbols;
         for (var s = 1; s < arguments.length; s++) {
-          from = new Object(arguments[s]);
+          from = Object(arguments[s]);
           for (var key in from) {
             if (hasOwnProperty.call(from, key)) {
               to[key] = from[key];
@@ -62266,9 +62455,9 @@ var Plotly = (() => {
           }
           if (getOwnPropertySymbols) {
             symbols = getOwnPropertySymbols(from);
-            for (const symbol_ of symbols) {
-              if (propIsEnumerable.call(from, symbol_)) {
-                to[symbol_] = from[symbol_];
+            for (var i = 0; i < symbols.length; i++) {
+              if (propIsEnumerable.call(from, symbols[i])) {
+                to[symbols[i]] = from[symbols[i]];
               }
             }
           }
@@ -62278,9 +62467,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/main.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/main.js
   var require_main = __commonJS({
-    "node_modules/world-calendars/dist/main.js"(exports, module) {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/main.js"(exports, module) {
       var assign = require_object_assign();
       function Calendars() {
         this.regionalOptions = [];
@@ -62296,8 +62485,7 @@ var Plotly = (() => {
         this._localCals = {};
       }
       assign(Calendars.prototype, {
-        /**
-             Obtain a calendar implementation and localisation.
+        /** Obtain a calendar implementation and localisation.
             @memberof Calendars
             @param [name='gregorian'] {string} The name of the calendar, e.g. 'gregorian', 'persian', 'islamic'.
             @param [language=''] {string} The language code to use for localisation (default is English).
@@ -62312,12 +62500,11 @@ var Plotly = (() => {
             this._localCals[name + "-" + language] = cal;
           }
           if (!cal) {
-            throw (this.local.invalidCalendar || this.regionalOptions[""].invalidCalendar).replace(/{0\}/, name);
+            throw (this.local.invalidCalendar || this.regionalOptions[""].invalidCalendar).replace(/\{0\}/, name);
           }
           return cal;
         },
-        /**
-             Create a new date - for today if no other parameters given.
+        /** Create a new date - for today if no other parameters given.
             @memberof Calendars
             @param year {CDate|number} The date to copy or the year for the date.
             @param [month] {number} The month for the date.
@@ -62327,23 +62514,21 @@ var Plotly = (() => {
             @return {CDate} The new date.
             @throws Error if an invalid date. */
         newDate: function(year, month, day, calendar, language) {
-          calendar = (year != null && year.year ? year.calendar() : (typeof calendar === "string" ? this.instance(calendar, language) : calendar)) || this.instance();
+          calendar = (year != null && year.year ? year.calendar() : typeof calendar === "string" ? this.instance(calendar, language) : calendar) || this.instance();
           return calendar.newDate(year, month, day);
         },
-        /**
-             A simple digit substitution function for localising numbers via the Calendar digits option.
+        /** A simple digit substitution function for localising numbers via the Calendar digits option.
             @member Calendars
             @param digits {string[]} The substitute digits, for 0 through 9.
             @return {function} The substitution function. */
         substituteDigits: function(digits) {
           return function(value) {
-            return (value + "").replaceAll(/\d/g, function(digit) {
+            return (value + "").replace(/[0-9]/g, function(digit) {
               return digits[digit];
             });
           };
         },
-        /**
-             Digit substitution function for localising Chinese style numbers via the Calendar digits option.
+        /** Digit substitution function for localising Chinese style numbers via the Calendar digits option.
             @member Calendars
             @param digits {string[]} The substitute digits, for 0 through 9.
             @param powers {string[]} The characters denoting powers of 10, i.e. 1, 10, 100, 1000.
@@ -62359,7 +62544,7 @@ var Plotly = (() => {
               value = Math.floor(value / 10);
             }
             if (localNumber.indexOf(digits[1] + powers[1]) === 0) {
-              localNumber = localNumber.slice(1);
+              localNumber = localNumber.substr(1);
             }
             return localNumber || digits[0];
           };
@@ -62371,16 +62556,15 @@ var Plotly = (() => {
         this._month = month;
         this._day = day;
         if (this._calendar._validateLevel === 0 && !this._calendar.isValid(this._year, this._month, this._day)) {
-          throw (_exports.local.invalidDate || _exports.regionalOptions[""].invalidDate).replace(/{0\}/, this._calendar.local.name);
+          throw (_exports.local.invalidDate || _exports.regionalOptions[""].invalidDate).replace(/\{0\}/, this._calendar.local.name);
         }
       }
       function pad(value, length) {
         value = "" + value;
-        return "000000".slice(0, Math.max(0, length - value.length)) + value;
+        return "000000".substring(0, length - value.length) + value;
       }
       assign(CDate.prototype, {
-        /**
-             Create a new date.
+        /** Create a new date.
             @memberof CDate
             @param [year] {CDate|number} The date to copy or the year for the date (default this date).
             @param [month] {number} The month for the date.
@@ -62390,8 +62574,7 @@ var Plotly = (() => {
         newDate: function(year, month, day) {
           return this._calendar.newDate(year == null ? this : year, month, day);
         },
-        /**
-             Set or retrieve the year for this date.
+        /** Set or retrieve the year for this date.
             @memberof CDate
             @param [year] {number} The year for the date.
             @return {number|CDate} The date's year (if no parameter) or the updated date.
@@ -62399,8 +62582,7 @@ var Plotly = (() => {
         year: function(year) {
           return arguments.length === 0 ? this._year : this.set(year, "y");
         },
-        /**
-             Set or retrieve the month for this date.
+        /** Set or retrieve the month for this date.
             @memberof CDate
             @param [month] {number} The month for the date.
             @return {number|CDate} The date's month (if no parameter) or the updated date.
@@ -62408,8 +62590,7 @@ var Plotly = (() => {
         month: function(month) {
           return arguments.length === 0 ? this._month : this.set(month, "m");
         },
-        /**
-             Set or retrieve the day for this date.
+        /** Set or retrieve the day for this date.
             @memberof CDate
             @param [day] {number} The day for the date.
             @return {number|CData} The date's day (if no parameter) or the updated date.
@@ -62417,8 +62598,7 @@ var Plotly = (() => {
         day: function(day) {
           return arguments.length === 0 ? this._day : this.set(day, "d");
         },
-        /**
-             Set new values for this date.
+        /** Set new values for this date.
             @memberof CDate
             @param year {number} The year for the date.
             @param month {number} The month for the date.
@@ -62427,93 +62607,81 @@ var Plotly = (() => {
             @throws Error if an invalid date. */
         date: function(year, month, day) {
           if (!this._calendar.isValid(year, month, day)) {
-            throw (_exports.local.invalidDate || _exports.regionalOptions[""].invalidDate).replace(/{0\}/, this._calendar.local.name);
+            throw (_exports.local.invalidDate || _exports.regionalOptions[""].invalidDate).replace(/\{0\}/, this._calendar.local.name);
           }
           this._year = year;
           this._month = month;
           this._day = day;
           return this;
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof CDate
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not. */
         leapYear: function() {
           return this._calendar.leapYear(this);
         },
-        /**
-             Retrieve the epoch designator for this date, e.g. BCE or CE.
+        /** Retrieve the epoch designator for this date, e.g. BCE or CE.
             @memberof CDate
             @return {string} The current epoch. */
         epoch: function() {
           return this._calendar.epoch(this);
         },
-        /**
-             Format the year, if not a simple sequential number.
+        /** Format the year, if not a simple sequential number.
             @memberof CDate
             @return {string} The formatted year. */
         formatYear: function() {
           return this._calendar.formatYear(this);
         },
-        /**
-             Retrieve the month of the year for this date,
+        /** Retrieve the month of the year for this date,
             i.e. the month's position within a numbered year.
             @memberof CDate
             @return {number} The month of the year: <code>minMonth</code> to months per year. */
         monthOfYear: function() {
           return this._calendar.monthOfYear(this);
         },
-        /**
-             Retrieve the week of the year for this date.
+        /** Retrieve the week of the year for this date.
             @memberof CDate
             @return {number} The week of the year: 1 to weeks per year. */
         weekOfYear: function() {
           return this._calendar.weekOfYear(this);
         },
-        /**
-             Retrieve the number of days in the year for this date.
+        /** Retrieve the number of days in the year for this date.
             @memberof CDate
             @return {number} The number of days in this year. */
         daysInYear: function() {
           return this._calendar.daysInYear(this);
         },
-        /**
-             Retrieve the day of the year for this date.
+        /** Retrieve the day of the year for this date.
             @memberof CDate
             @return {number} The day of the year: 1 to days per year. */
         dayOfYear: function() {
           return this._calendar.dayOfYear(this);
         },
-        /**
-             Retrieve the number of days in the month for this date.
+        /** Retrieve the number of days in the month for this date.
             @memberof CDate
             @return {number} The number of days. */
         daysInMonth: function() {
           return this._calendar.daysInMonth(this);
         },
-        /**
-             Retrieve the day of the week for this date.
+        /** Retrieve the day of the week for this date.
             @memberof CDate
             @return {number} The day of the week: 0 to number of days - 1. */
         dayOfWeek: function() {
           return this._calendar.dayOfWeek(this);
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof CDate
             @return {boolean} <code>true</code> if a week day, <code>false</code> if not. */
         weekDay: function() {
           return this._calendar.weekDay(this);
         },
-        /**
-             Retrieve additional information about this date.
+        /** Retrieve additional information about this date.
             @memberof CDate
             @return {object} Additional information - contents depends on calendar. */
         extraInfo: function() {
           return this._calendar.extraInfo(this);
         },
-        /**
-             Add period(s) to a date.
+        /** Add period(s) to a date.
             @memberof CDate
             @param offset {number} The number of periods to adjust by.
             @param period {string} One of 'y' for year, 'm' for month, 'w' for week, 'd' for day.
@@ -62521,8 +62689,7 @@ var Plotly = (() => {
         add: function(offset, period) {
           return this._calendar.add(this, offset, period);
         },
-        /**
-             Set a portion of the date.
+        /** Set a portion of the date.
             @memberof CDate
             @param value {number} The new value for the period.
             @param period {string} One of 'y' for year, 'm' for month, 'd' for day.
@@ -62531,59 +62698,52 @@ var Plotly = (() => {
         set: function(value, period) {
           return this._calendar.set(this, value, period);
         },
-        /**
-             Compare this date to another date.
+        /** Compare this date to another date.
             @memberof CDate
             @param date {CDate} The other date.
             @return {number} -1 if this date is before the other date,
                     0 if they are equal, or +1 if this date is after the other date. */
         compareTo: function(date) {
           if (this._calendar.name !== date._calendar.name) {
-            throw (_exports.local.differentCalendars || _exports.regionalOptions[""].differentCalendars).replace(/{0\}/, this._calendar.local.name).replace(/{1\}/, date._calendar.local.name);
+            throw (_exports.local.differentCalendars || _exports.regionalOptions[""].differentCalendars).replace(/\{0\}/, this._calendar.local.name).replace(/\{1\}/, date._calendar.local.name);
           }
-          var c = this._year !== date._year ? this._year - date._year : (this._month !== date._month ? this.monthOfYear() - date.monthOfYear() : this._day - date._day);
-          return c === 0 ? 0 : (c < 0 ? -1 : 1);
+          var c = this._year !== date._year ? this._year - date._year : this._month !== date._month ? this.monthOfYear() - date.monthOfYear() : this._day - date._day;
+          return c === 0 ? 0 : c < 0 ? -1 : 1;
         },
-        /**
-             Retrieve the calendar backing this date.
+        /** Retrieve the calendar backing this date.
             @memberof CDate
             @return {BaseCalendar} The calendar implementation. */
         calendar: function() {
           return this._calendar;
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof CDate
             @return {number} The equivalent Julian date. */
         toJD: function() {
           return this._calendar.toJD(this);
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof CDate
             @param jd {number} The Julian date to convert.
             @return {CDate} The equivalent date. */
         fromJD: function(jd) {
           return this._calendar.fromJD(jd);
         },
-        /**
-             Convert this date to a standard (Gregorian) JavaScript Date.
+        /** Convert this date to a standard (Gregorian) JavaScript Date.
             @memberof CDate
             @return {Date} The equivalent JavaScript date. */
         toJSDate: function() {
           return this._calendar.toJSDate(this);
         },
-        /**
-             Create a new date from a standard (Gregorian) JavaScript Date.
+        /** Create a new date from a standard (Gregorian) JavaScript Date.
             @memberof CDate
             @param jsd {Date} The JavaScript date to convert.
             @return {CDate} The equivalent date. */
         fromJSDate: function(jsd) {
           return this._calendar.fromJSDate(jsd);
         },
-        /**
-             Convert to a string for display.
+        /** Convert to a string for display.
             @memberof CDate
             @return {string} This date as a string. */
         toString: function() {
@@ -62596,8 +62756,7 @@ var Plotly = (() => {
       assign(BaseCalendar.prototype, {
         _validateLevel: 0,
         // "Stack" to turn validation on/off
-        /**
-             Create a new date within this calendar - today if no parameters given.
+        /** Create a new date within this calendar - today if no parameters given.
             @memberof BaseCalendar
             @param year {CDate|number} The date to duplicate or the year for the date.
             @param [month] {number} The month for the date.
@@ -62621,15 +62780,13 @@ var Plotly = (() => {
           }
           return new CDate(this, year, month, day);
         },
-        /**
-             Create a new date for today.
+        /** Create a new date for today.
             @memberof BaseCalendar
             @return {CDate} Today's date. */
         today: function() {
           return this.fromJSDate(/* @__PURE__ */ new Date());
         },
-        /**
-             Retrieve the epoch designator for this date.
+        /** Retrieve the epoch designator for this date.
             @memberof BaseCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {string} The current epoch.
@@ -62643,8 +62800,7 @@ var Plotly = (() => {
           );
           return date.year() < 0 ? this.local.epochs[0] : this.local.epochs[1];
         },
-        /**
-             Format the year, if not a simple sequential number
+        /** Format the year, if not a simple sequential number
             @memberof BaseCalendar
             @param year {CDate|number} The date to format or the year to format.
             @return {string} The formatted year.
@@ -62658,8 +62814,7 @@ var Plotly = (() => {
           );
           return (date.year() < 0 ? "-" : "") + pad(Math.abs(date.year()), 4);
         },
-        /**
-             Retrieve the number of months in a year.
+        /** Retrieve the number of months in a year.
             @memberof BaseCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {number} The number of months.
@@ -62673,8 +62828,7 @@ var Plotly = (() => {
           );
           return 12;
         },
-        /**
-             Calculate the month's ordinal position within the year -
+        /** Calculate the month's ordinal position within the year -
             for those calendars that don't start at month 1!
             @memberof BaseCalendar
             @param year {CDate|number} The date to examine or the year to examine.
@@ -62690,8 +62844,7 @@ var Plotly = (() => {
           );
           return (date.month() + this.monthsInYear(date) - this.firstMonth) % this.monthsInYear(date) + this.minMonth;
         },
-        /**
-             Calculate actual month from ordinal position, starting from minMonth.
+        /** Calculate actual month from ordinal position, starting from minMonth.
             @memberof BaseCalendar
             @param year {number} The year to examine.
             @param ord {number} The month's ordinal position.
@@ -62707,8 +62860,7 @@ var Plotly = (() => {
           );
           return m;
         },
-        /**
-             Retrieve the number of days in a year.
+        /** Retrieve the number of days in a year.
             @memberof BaseCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {number} The number of days.
@@ -62722,8 +62874,7 @@ var Plotly = (() => {
           );
           return this.leapYear(date) ? 366 : 365;
         },
-        /**
-             Retrieve the day of the year for a date.
+        /** Retrieve the day of the year for a date.
             @memberof BaseCalendar
             @param year {CDate|number} The date to convert or the year to convert.
             @param [month] {number} The month to convert.
@@ -62743,15 +62894,13 @@ var Plotly = (() => {
             this.minDay
           ).toJD() + 1;
         },
-        /**
-             Retrieve the number of days in a week.
+        /** Retrieve the number of days in a week.
             @memberof BaseCalendar
             @return {number} The number of days. */
         daysInWeek: function() {
           return 7;
         },
-        /**
-             Retrieve the day of the week for a date.
+        /** Retrieve the day of the week for a date.
             @memberof BaseCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -62767,8 +62916,7 @@ var Plotly = (() => {
           );
           return (Math.floor(this.toJD(date)) + 2) % this.daysInWeek();
         },
-        /**
-             Retrieve additional information about a date.
+        /** Retrieve additional information about a date.
             @memberof BaseCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -62784,8 +62932,7 @@ var Plotly = (() => {
           );
           return {};
         },
-        /**
-             Add period(s) to a date.
+        /** Add period(s) to a date.
             Cater for no year zero.
             @memberof BaseCalendar
             @param date {CDate} The starting date.
@@ -62802,8 +62949,7 @@ var Plotly = (() => {
           );
           return this._correctAdd(date, this._add(date, offset, period), offset, period);
         },
-        /**
-             Add period(s) to a date.
+        /** Add period(s) to a date.
             @memberof BaseCalendar
             @private
             @param date {CDate} The starting date.
@@ -62847,13 +62993,12 @@ var Plotly = (() => {
             var ymd = [y, this.fromMonthOfYear(y, m), d];
             this._validateLevel--;
             return ymd;
-          } catch (error) {
+          } catch (e) {
             this._validateLevel--;
-            throw error;
+            throw e;
           }
         },
-        /**
-             Correct a candidate date after adding period(s) to a date.
+        /** Correct a candidate date after adding period(s) to a date.
             Handle no year zero if necessary.
             @memberof BaseCalendar
             @private
@@ -62863,8 +63008,9 @@ var Plotly = (() => {
             @param period {string} One of 'y' for year, 'm' for month, 'w' for week, 'd' for day.
             @return {CDate} The updated date. */
         _correctAdd: function(date, ymd, offset, period) {
-          if (!this.hasYearZero && (period === "y" || period === "m") && (ymd[0] === 0 || // In year zero
-            date.year() > 0 !== ymd[0] > 0)) {
+          if (!this.hasYearZero && (period === "y" || period === "m")) {
+            if (ymd[0] === 0 || // In year zero
+            date.year() > 0 !== ymd[0] > 0) {
               var adj = {
                 y: [1, 1, "y"],
                 m: [1, this.monthsInYear(-1), "m"],
@@ -62874,10 +63020,10 @@ var Plotly = (() => {
               var dir = offset < 0 ? -1 : 1;
               ymd = this._add(date, offset * adj[0] + dir * adj[1], adj[2]);
             }
+          }
           return date.date(ymd[0], ymd[1], ymd[2]);
         },
-        /**
-             Set a portion of the date.
+        /** Set a portion of the date.
             @memberof BaseCalendar
             @param date {CDate} The starting date.
             @param value {number} The new value for the period.
@@ -62899,8 +63045,7 @@ var Plotly = (() => {
           }
           return date.date(y, m, d);
         },
-        /**
-             Determine whether a date is valid for this calendar.
+        /** Determine whether a date is valid for this calendar.
             @memberof BaseCalendar
             @param year {number} The year to examine.
             @param month {number} The month to examine.
@@ -62916,8 +63061,7 @@ var Plotly = (() => {
           this._validateLevel--;
           return valid;
         },
-        /**
-             Convert the date to a standard (Gregorian) JavaScript Date.
+        /** Convert the date to a standard (Gregorian) JavaScript Date.
             @memberof BaseCalendar
             @param year {CDate|number} The date to convert or the year to convert.
             @param [month] {number} The month to convert.
@@ -62933,16 +63077,14 @@ var Plotly = (() => {
           );
           return _exports.instance().fromJD(this.toJD(date)).toJSDate();
         },
-        /**
-             Convert the date from a standard (Gregorian) JavaScript Date.
+        /** Convert the date from a standard (Gregorian) JavaScript Date.
             @memberof BaseCalendar
             @param jsd {Date} The JavaScript date.
             @return {CDate} The equivalent calendar date. */
         fromJSDate: function(jsd) {
           return this.fromJD(_exports.instance().fromJSDate(jsd).toJD());
         },
-        /**
-             Check that a candidate date is from the same calendar and is valid.
+        /** Check that a candidate date is from the same calendar and is valid.
             @memberof BaseCalendar
             @private
             @param year {CDate|number} The date to validate or the year to validate.
@@ -62953,21 +63095,21 @@ var Plotly = (() => {
         _validate: function(year, month, day, error) {
           if (year.year) {
             if (this._validateLevel === 0 && this.name !== year.calendar().name) {
-              throw (_exports.local.differentCalendars || _exports.regionalOptions[""].differentCalendars).replace(/{0\}/, this.local.name).replace(/{1\}/, year.calendar().local.name);
+              throw (_exports.local.differentCalendars || _exports.regionalOptions[""].differentCalendars).replace(/\{0\}/, this.local.name).replace(/\{1\}/, year.calendar().local.name);
             }
             return year;
           }
           try {
             this._validateLevel++;
             if (this._validateLevel === 1 && !this.isValid(year, month, day)) {
-              throw error.replace(/{0\}/, this.local.name);
+              throw error.replace(/\{0\}/, this.local.name);
             }
             var date = this.newDate(year, month, day);
             this._validateLevel--;
             return date;
-          } catch (error_) {
+          } catch (e) {
             this._validateLevel--;
-            throw error_;
+            throw e;
           }
         }
       });
@@ -62976,36 +63118,28 @@ var Plotly = (() => {
       }
       GregorianCalendar.prototype = new BaseCalendar();
       assign(GregorianCalendar.prototype, {
-        /**
-             The calendar name.
+        /** The calendar name.
             @memberof GregorianCalendar */
         name: "Gregorian",
-        /**
-            Julian date of start of Gregorian epoch: 1 January 0001 CE.
+        /** Julian date of start of Gregorian epoch: 1 January 0001 CE.
            @memberof GregorianCalendar */
-        jdEpoch: 17_214_255e-1,
-        /**
-            Days per month in a common year.
+        jdEpoch: 17214255e-1,
+        /** Days per month in a common year.
            @memberof GregorianCalendar */
         daysPerMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-        /**
-            <code>true</code> if has a year zero, <code>false</code> if not.
+        /** <code>true</code> if has a year zero, <code>false</code> if not.
            @memberof GregorianCalendar */
         hasYearZero: false,
-        /**
-             The minimum month number.
+        /** The minimum month number.
             @memberof GregorianCalendar */
         minMonth: 1,
-        /**
-             The first month in the year.
+        /** The first month in the year.
             @memberof GregorianCalendar */
         firstMonth: 1,
-        /**
-            The minimum day number.
+        /** The minimum day number.
            @memberof GregorianCalendar */
         minDay: 1,
-        /**
-             Localisations for the plugin.
+        /** Localisations for the plugin.
             Entries are objects indexed by the language code ('' being the default US/English).
             Each object has the following attributes.
             @memberof GregorianCalendar
@@ -63049,8 +63183,7 @@ var Plotly = (() => {
             isRTL: false
           }
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof GregorianCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not.
@@ -63065,8 +63198,7 @@ var Plotly = (() => {
           var year = date.year() + (date.year() < 0 ? 1 : 0);
           return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
         },
-        /**
-             Determine the week of the year for a date - ISO 8601.
+        /** Determine the week of the year for a date - ISO 8601.
             @memberof GregorianCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -63078,8 +63210,7 @@ var Plotly = (() => {
           checkDate.add(4 - (checkDate.dayOfWeek() || 7), "d");
           return Math.floor((checkDate.dayOfYear() - 1) / 7) + 1;
         },
-        /**
-             Retrieve the number of days in a month.
+        /** Retrieve the number of days in a month.
             @memberof GregorianCalendar
             @param year {CDate|number} The date to examine or the year of the month.
             @param [month] {number} The month.
@@ -63094,8 +63225,7 @@ var Plotly = (() => {
           );
           return this.daysPerMonth[date.month() - 1] + (date.month() === 2 && this.leapYear(date.year()) ? 1 : 0);
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof GregorianCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -63105,8 +63235,7 @@ var Plotly = (() => {
         weekDay: function(year, month, day) {
           return (this.dayOfWeek(year, month, day) || 7) < 6;
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof GregorianCalendar
             @param year {CDate|number} The date to convert or the year to convert.
@@ -63135,14 +63264,13 @@ var Plotly = (() => {
           var b = 2 - a + Math.floor(a / 4);
           return Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + b - 1524.5;
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof GregorianCalendar
             @param jd {number} The Julian date to convert.
             @return {CDate} The equivalent date. */
         fromJD: function(jd) {
           var z = Math.floor(jd + 0.5);
-          var a = Math.floor((z - 186_721_625e-2) / 36_524.25);
+          var a = Math.floor((z - 186721625e-2) / 36524.25);
           a = z + 1 + a - Math.floor(a / 4);
           var b = a + 1524;
           var c = Math.floor((b - 122.1) / 365.25);
@@ -63156,8 +63284,7 @@ var Plotly = (() => {
           }
           return this.newDate(year, month, day);
         },
-        /**
-             Convert this date to a standard (Gregorian) JavaScript Date.
+        /** Convert this date to a standard (Gregorian) JavaScript Date.
             @memberof GregorianCalendar
             @param year {CDate|number} The date to convert or the year to convert.
             @param [month] {number} The month to convert.
@@ -63179,8 +63306,7 @@ var Plotly = (() => {
           jsd.setHours(jsd.getHours() > 12 ? jsd.getHours() + 2 : 0);
           return jsd;
         },
-        /**
-             Create a new date from a standard (Gregorian) JavaScript Date.
+        /** Create a new date from a standard (Gregorian) JavaScript Date.
             @memberof GregorianCalendar
             @param jsd {Date} The JavaScript date to convert.
             @return {CDate} The equivalent date. */
@@ -63195,9 +63321,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/plus.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/plus.js
   var require_plus = __commonJS({
-    "node_modules/world-calendars/dist/plus.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/plus.js"() {
       var assign = require_object_assign();
       var main = require_main();
       assign(main.regionalOptions[""], {
@@ -63210,8 +63336,7 @@ var Plotly = (() => {
       });
       main.local = main.regionalOptions[""];
       assign(main.cdate.prototype, {
-        /**
-             Format this date.
+        /** Format this date.
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof CDate
             @param [format] {string} The date format to use (see <a href="BaseCalendar.html#formatDate"><code>formatDate</code></a>).
@@ -63231,78 +63356,63 @@ var Plotly = (() => {
         TICKS_EPOCH: main.instance().jdEpoch,
         // 1 January 0001 CE
         TICKS_PER_DAY: 24 * 60 * 60 * 1e7,
-        /**
-             Date form for ATOM (RFC 3339/ISO 8601).
+        /** Date form for ATOM (RFC 3339/ISO 8601).
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof BaseCalendar */
         ATOM: "yyyy-mm-dd",
-        /**
-             Date form for cookies.
+        /** Date form for cookies.
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof BaseCalendar */
         COOKIE: "D, dd M yyyy",
-        /**
-             Date form for full date.
+        /** Date form for full date.
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof BaseCalendar */
         FULL: "DD, MM d, yyyy",
-        /**
-             Date form for ISO 8601.
+        /** Date form for ISO 8601.
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof BaseCalendar */
         ISO_8601: "yyyy-mm-dd",
-        /**
-             Date form for Julian date.
+        /** Date form for Julian date.
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof BaseCalendar */
         JULIAN: "J",
-        /**
-             Date form for RFC 822.
+        /** Date form for RFC 822.
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof BaseCalendar */
         RFC_822: "D, d M yy",
-        /**
-             Date form for RFC 850.
+        /** Date form for RFC 850.
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof BaseCalendar */
         RFC_850: "DD, dd-M-yy",
-        /**
-             Date form for RFC 1036.
+        /** Date form for RFC 1036.
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof BaseCalendar */
         RFC_1036: "D, d M yy",
-        /**
-             Date form for RFC 1123.
+        /** Date form for RFC 1123.
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof BaseCalendar */
         RFC_1123: "D, d M yyyy",
-        /**
-             Date form for RFC 2822.
+        /** Date form for RFC 2822.
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof BaseCalendar */
         RFC_2822: "D, d M yyyy",
-        /**
-             Date form for RSS (RFC 822).
+        /** Date form for RSS (RFC 822).
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof BaseCalendar */
         RSS: "D, d M yy",
-        /**
-             Date form for Windows ticks.
+        /** Date form for Windows ticks.
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof BaseCalendar */
         TICKS: "!",
-        /**
-             Date form for Unix timestamp.
+        /** Date form for Unix timestamp.
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof BaseCalendar */
         TIMESTAMP: "@",
-        /**
-             Date form for W3c (ISO 8601).
+        /** Date form for W3c (ISO 8601).
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof BaseCalendar */
         W3C: "yyyy-mm-dd",
-        /**
-             Format a date object into a string value.
+        /** Format a date object into a string value.
             The format can be combinations of the following:
             <ul>
             <li>d  - day of month (no leading zero)</li>
@@ -63406,11 +63516,10 @@ var Plotly = (() => {
               }
             } else {
               switch (format.charAt(iFormat)) {
-                case "d": {
+                case "d":
                   output += localiseNumbers(formatNumber("d", date.day(), 2));
                   break;
-                }
-                case "D": {
+                case "D":
                   output += formatName(
                     "D",
                     date.dayOfWeek(),
@@ -63418,62 +63527,49 @@ var Plotly = (() => {
                     dayNames
                   );
                   break;
-                }
-                case "o": {
+                case "o":
                   output += formatNumber("o", date.dayOfYear(), 3);
                   break;
-                }
-                case "w": {
+                case "w":
                   output += formatNumber("w", date.weekOfYear(), 2);
                   break;
-                }
-                case "m": {
+                case "m":
                   output += formatMonth(date);
                   break;
-                }
-                case "M": {
+                case "M":
                   output += formatMonthName(date, doubled("M"));
                   break;
-                }
-                case "y": {
+                case "y":
                   output += doubled("y", 2) ? date.year() : (date.year() % 100 < 10 ? "0" : "") + date.year() % 100;
                   break;
-                }
-                case "Y": {
+                case "Y":
                   doubled("Y", 2);
                   output += date.formatYear();
                   break;
-                }
-                case "J": {
+                case "J":
                   output += date.toJD();
                   break;
-                }
-                case "@": {
+                case "@":
                   output += (date.toJD() - this.UNIX_EPOCH) * this.SECS_PER_DAY;
                   break;
-                }
-                case "!": {
+                case "!":
                   output += (date.toJD() - this.TICKS_EPOCH) * this.TICKS_PER_DAY;
                   break;
-                }
-                case "'": {
+                case "'":
                   if (doubled("'")) {
                     output += "'";
                   } else {
                     literal = true;
                   }
                   break;
-                }
-                default: {
+                default:
                   output += format.charAt(iFormat);
-                }
               }
             }
           }
           return output;
         },
-        /**
-             Parse a string value into a date object.
+        /** Parse a string value into a date object.
             See <a href="#formatDate"><code>formatDate</code></a> for the possible formats, plus:
             <ul>
             <li>* - ignore rest of string</li>
@@ -63502,7 +63598,7 @@ var Plotly = (() => {
           format = format || this.local.dateFormat;
           settings = settings || {};
           var shortYearCutoff = settings.shortYearCutoff || this.shortYearCutoff;
-          shortYearCutoff = typeof shortYearCutoff !== "string" ? shortYearCutoff : this.today().year() % 100 + Number.parseInt(shortYearCutoff, 10);
+          shortYearCutoff = typeof shortYearCutoff !== "string" ? shortYearCutoff : this.today().year() % 100 + parseInt(shortYearCutoff, 10);
           var dayNamesShort = settings.dayNamesShort || this.local.dayNamesShort;
           var dayNames = settings.dayNames || this.local.dayNames;
           var parseMonth = settings.parseMonth || this.local.parseMonth;
@@ -63528,18 +63624,18 @@ var Plotly = (() => {
             var isDoubled = doubled(match, step);
             var size = [2, 3, isDoubled ? 4 : 2, isDoubled ? 4 : 2, 10, 11, 20]["oyYJ@!".indexOf(match) + 1];
             var digits = new RegExp("^-?\\d{1," + size + "}");
-            var num = value.slice(Math.max(0, iValue)).match(digits);
+            var num = value.substring(iValue).match(digits);
             if (!num) {
-              throw (main.local.missingNumberAt || main.regionalOptions[""].missingNumberAt).replace(/{0\}/, iValue);
+              throw (main.local.missingNumberAt || main.regionalOptions[""].missingNumberAt).replace(/\{0\}/, iValue);
             }
             iValue += num[0].length;
-            return Number.parseInt(num[0], 10);
+            return parseInt(num[0], 10);
           };
           var calendar = this;
           var getMonthNumber = function() {
             if (typeof monthNumbers === "function") {
               doubled("m");
-              var month2 = monthNumbers.call(calendar, value.slice(Math.max(0, iValue)));
+              var month2 = monthNumbers.call(calendar, value.substring(iValue));
               iValue += month2.length;
               return month2;
             }
@@ -63547,17 +63643,17 @@ var Plotly = (() => {
           };
           var getName = function(match, shortNames, longNames, step) {
             var names = doubled(match, step) ? longNames : shortNames;
-            for (const [i, name] of names.entries()) {
-              if (value.substr(iValue, name.length).toLowerCase() === name.toLowerCase()) {
-                iValue += name.length;
+            for (var i = 0; i < names.length; i++) {
+              if (value.substr(iValue, names[i].length).toLowerCase() === names[i].toLowerCase()) {
+                iValue += names[i].length;
                 return i + calendar.minMonth;
               }
             }
-            throw (main.local.unknownNameAt || main.regionalOptions[""].unknownNameAt).replace(/{0\}/, iValue);
+            throw (main.local.unknownNameAt || main.regionalOptions[""].unknownNameAt).replace(/\{0\}/, iValue);
           };
           var getMonthName = function() {
             if (typeof monthNames === "function") {
-              var month2 = doubled("M") ? monthNames.call(calendar, value.slice(Math.max(0, iValue))) : monthNamesShort.call(calendar, value.slice(Math.max(0, iValue)));
+              var month2 = doubled("M") ? monthNames.call(calendar, value.substring(iValue)) : monthNamesShort.call(calendar, value.substring(iValue));
               iValue += month2.length;
               return month2;
             }
@@ -63565,7 +63661,7 @@ var Plotly = (() => {
           };
           var checkLiteral = function() {
             if (value.charAt(iValue) !== format.charAt(iFormat)) {
-              throw (main.local.unexpectedLiteralAt || main.regionalOptions[""].unexpectedLiteralAt).replace(/{0\}/, iValue);
+              throw (main.local.unexpectedLiteralAt || main.regionalOptions[""].unexpectedLiteralAt).replace(/\{0\}/, iValue);
             }
             iValue++;
           };
@@ -63579,72 +63675,58 @@ var Plotly = (() => {
               }
             } else {
               switch (format.charAt(iFormat)) {
-                case "d": {
+                case "d":
                   day = getNumber("d");
                   break;
-                }
-                case "D": {
+                case "D":
                   getName("D", dayNamesShort, dayNames);
                   break;
-                }
-                case "o": {
+                case "o":
                   doy = getNumber("o");
                   break;
-                }
-                case "w": {
+                case "w":
                   getNumber("w");
                   break;
-                }
-                case "m": {
+                case "m":
                   month = getMonthNumber();
                   break;
-                }
-                case "M": {
+                case "M":
                   month = getMonthName();
                   break;
-                }
-                case "y": {
+                case "y":
                   var iSave = iFormat;
                   shortYear = !doubled("y", 2);
                   iFormat = iSave;
                   year = getNumber("y", 2);
                   break;
-                }
-                case "Y": {
+                case "Y":
                   year = getNumber("Y", 2);
                   break;
-                }
-                case "J": {
+                case "J":
                   jd = getNumber("J") + 0.5;
                   if (value.charAt(iValue) === ".") {
                     iValue++;
                     getNumber("J");
                   }
                   break;
-                }
-                case "@": {
+                case "@":
                   jd = getNumber("@") / this.SECS_PER_DAY + this.UNIX_EPOCH;
                   break;
-                }
-                case "!": {
+                case "!":
                   jd = getNumber("!") / this.TICKS_PER_DAY + this.TICKS_EPOCH;
                   break;
-                }
-                case "*": {
+                case "*":
                   iValue = value.length;
                   break;
-                }
-                case "'": {
+                case "'":
                   if (doubled("'")) {
                     checkLiteral();
                   } else {
                     literal = true;
                   }
                   break;
-                }
-                default: {
+                default:
                   checkLiteral();
-                }
               }
             }
           }
@@ -63669,8 +63751,7 @@ var Plotly = (() => {
           }
           return jd > -1 ? this.fromJD(jd) : this.newDate(year, month, day);
         },
-        /**
-             A date may be specified as an exact value or a relative one.
+        /** A date may be specified as an exact value or a relative one.
             Found in the <code>jquery.calendars.plus.js</code> module.
             @memberof BaseCalendar
             @param dateSpec {CDate|number|string} The date as an object or string in the given format or
@@ -63700,28 +63781,29 @@ var Plotly = (() => {
           var offsetString = function(offset) {
             try {
               return calendar.parseDate(dateFormat, offset, settings);
-            } catch {}
+            } catch (e) {
+            }
             offset = offset.toLowerCase();
-            var date = (/^c/.test(offset) && currentDate ? currentDate.newDate() : null) || calendar.today();
-            var pattern = /([+-]?\d+)\s*([dmwy])?/g;
+            var date = (offset.match(/^c/) && currentDate ? currentDate.newDate() : null) || calendar.today();
+            var pattern = /([+-]?[0-9]+)\s*(d|w|m|y)?/g;
             var matches = pattern.exec(offset);
             while (matches) {
-              date.add(Number.parseInt(matches[1], 10), matches[2] || "d");
+              date.add(parseInt(matches[1], 10), matches[2] || "d");
               matches = pattern.exec(offset);
             }
             return date;
           };
           defaultDate = defaultDate ? defaultDate.newDate() : null;
-          dateSpec = dateSpec == null ? defaultDate : typeof dateSpec === "string" ? offsetString(dateSpec) : typeof dateSpec === "number" ? isNaN(dateSpec) || dateSpec === Number.POSITIVE_INFINITY || dateSpec === Number.NEGATIVE_INFINITY ? defaultDate : calendar.today().add(dateSpec, "d") : calendar.newDate(dateSpec);
+          dateSpec = dateSpec == null ? defaultDate : typeof dateSpec === "string" ? offsetString(dateSpec) : typeof dateSpec === "number" ? isNaN(dateSpec) || dateSpec === Infinity || dateSpec === -Infinity ? defaultDate : calendar.today().add(dateSpec, "d") : calendar.newDate(dateSpec);
           return dateSpec;
         }
       });
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/chinese.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/chinese.js
   var require_chinese = __commonJS({
-    "node_modules/world-calendars/dist/calendars/chinese.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/chinese.js"() {
       var main = require_main();
       var assign = require_object_assign();
       var gregorianCalendar = main.instance();
@@ -63730,34 +63812,27 @@ var Plotly = (() => {
       }
       ChineseCalendar.prototype = new main.baseCalendar();
       assign(ChineseCalendar.prototype, {
-        /**
-             The calendar name.
+        /** The calendar name.
             @memberof ChineseCalendar */
         name: "Chinese",
-        /**
-            Julian date of start of Gregorian epoch: 1 January 0001 CE.
+        /** Julian date of start of Gregorian epoch: 1 January 0001 CE.
            @memberof GregorianCalendar */
-        jdEpoch: 17_214_255e-1,
-        /**
-             <code>true</code> if has a year zero, <code>false</code> if not.
+        jdEpoch: 17214255e-1,
+        /** <code>true</code> if has a year zero, <code>false</code> if not.
             @memberof ChineseCalendar */
         hasYearZero: false,
-        /**
-             The minimum month number.
+        /** The minimum month number.
             This calendar uses month indices to account for intercalary months. 
             @memberof ChineseCalendar */
         minMonth: 0,
-        /**
-             The first month in the year.
+        /** The first month in the year.
             This calendar uses month indices to account for intercalary months. 
             @memberof ChineseCalendar */
         firstMonth: 0,
-        /**
-             The minimum day number.
+        /** The minimum day number.
             @memberof ChineseCalendar */
         minDay: 1,
-        /**
-             Localisations for the plugin.
+        /** Localisations for the plugin.
             Entries are objects indexed by the language code ('' being the default US/English).
             Each object has the following attributes.
             @memberof ChineseCalendar
@@ -63849,18 +63924,18 @@ var Plotly = (() => {
             },
             parseMonth: function(year, monthString) {
               year = this._validateYear(year);
-              var month = Number.parseInt(monthString);
+              var month = parseInt(monthString);
               var isIntercalary;
               if (!isNaN(month)) {
-                var i = monthString.at(-1);
+                var i = monthString[monthString.length - 1];
                 isIntercalary = i === "i" || i === "I";
               } else {
                 if (monthString[0] === "\u95F0") {
                   isIntercalary = true;
-                  monthString = monthString.slice(1);
+                  monthString = monthString.substring(1);
                 }
-                if (monthString.at(-1) === "\u6708") {
-                  monthString = monthString.slice(0, Math.max(0, monthString.length - 1));
+                if (monthString[monthString.length - 1] === "\u6708") {
+                  monthString = monthString.substring(0, monthString.length - 1);
                 }
                 month = 1 + [
                   "\u4E00",
@@ -63889,8 +63964,7 @@ var Plotly = (() => {
             isRTL: false
           }
         },
-        /**
-             Check that a candidate date is from the same calendar and is valid.
+        /** Check that a candidate date is from the same calendar and is valid.
             @memberof BaseCalendar
             @private
             @param year {CDate|number} The date or the year to validate.
@@ -63902,12 +63976,11 @@ var Plotly = (() => {
             year = year.year();
           }
           if (typeof year !== "number" || year < 1888 || year > 2111) {
-            throw error.replace(/{0\}/, this.local.name);
+            throw error.replace(/\{0\}/, this.local.name);
           }
           return year;
         },
-        /**
-             Retrieve the month index (i.e. accounting for intercalary months).
+        /** Retrieve the month index (i.e. accounting for intercalary months).
             @memberof ChineseCalendar
             @param year {number} The year.
             @param month {number} The month (1 for first month).
@@ -63918,7 +63991,7 @@ var Plotly = (() => {
           var intercalaryMonth = this.intercalaryMonth(year);
           var invalidIntercalaryMonth = isIntercalary && month !== intercalaryMonth;
           if (invalidIntercalaryMonth || month < 1 || month > 12) {
-            throw main.local.invalidMonth.replace(/{0\}/, this.local.name);
+            throw main.local.invalidMonth.replace(/\{0\}/, this.local.name);
           }
           var monthIndex;
           if (!intercalaryMonth) {
@@ -63930,8 +64003,7 @@ var Plotly = (() => {
           }
           return monthIndex;
         },
-        /**
-             Retrieve the month (i.e. accounting for intercalary months).
+        /** Retrieve the month (i.e. accounting for intercalary months).
             @memberof ChineseCalendar
             @param year {CDate|number} The date or the year to examine.
             @param monthIndex {number} The month index (0 for first month).
@@ -63945,7 +64017,7 @@ var Plotly = (() => {
           var intercalaryMonth = this.intercalaryMonth(year);
           var maxMonthIndex = intercalaryMonth ? 12 : 11;
           if (monthIndex < 0 || monthIndex > maxMonthIndex) {
-            throw main.local.invalidMonth.replace(/{0\}/, this.local.name);
+            throw main.local.invalidMonth.replace(/\{0\}/, this.local.name);
           }
           var month;
           if (!intercalaryMonth) {
@@ -63957,8 +64029,7 @@ var Plotly = (() => {
           }
           return month;
         },
-        /**
-             Determine the intercalary month of a year (if any).
+        /** Determine the intercalary month of a year (if any).
             @memberof ChineseCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {number} The intercalary month number, or 0 if none.
@@ -63969,8 +64040,7 @@ var Plotly = (() => {
           var intercalaryMonth = monthDaysTable >> 13;
           return intercalaryMonth;
         },
-        /**
-             Determine whether this date is an intercalary month.
+        /** Determine whether this date is an intercalary month.
             @memberof ChineseCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [monthIndex] {number} The month index to examine.
@@ -63984,8 +64054,7 @@ var Plotly = (() => {
           var intercalaryMonth = this.intercalaryMonth(year);
           return !!intercalaryMonth && intercalaryMonth === monthIndex;
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof ChineseCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not.
@@ -63993,8 +64062,7 @@ var Plotly = (() => {
         leapYear: function(year) {
           return this.intercalaryMonth(year) !== 0;
         },
-        /**
-             Determine the week of the year for a date - ISO 8601.
+        /** Determine the week of the year for a date - ISO 8601.
             @memberof ChineseCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [monthIndex] {number} The month index to examine.
@@ -64013,8 +64081,7 @@ var Plotly = (() => {
           var offset = this.toJD(year, monthIndex, day) - firstThursday.toJD();
           return 1 + Math.floor(offset / 7);
         },
-        /**
-             Retrieve the number of months in a year.
+        /** Retrieve the number of months in a year.
             @memberof ChineseCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {number} The number of months.
@@ -64022,8 +64089,7 @@ var Plotly = (() => {
         monthsInYear: function(year) {
           return this.leapYear(year) ? 13 : 12;
         },
-        /**
-             Retrieve the number of days in a month.
+        /** Retrieve the number of days in a month.
             @memberof ChineseCalendar
             @param year {CDate|number} The date to examine or the year of the month.
             @param [monthIndex] {number} The month index.
@@ -64039,13 +64105,12 @@ var Plotly = (() => {
           var intercalaryMonth = monthDaysTable >> 13;
           var maxMonthIndex = intercalaryMonth ? 12 : 11;
           if (monthIndex > maxMonthIndex) {
-            throw main.local.invalidMonth.replace(/{0\}/, this.local.name);
+            throw main.local.invalidMonth.replace(/\{0\}/, this.local.name);
           }
           var daysInMonth = monthDaysTable & 1 << 12 - monthIndex ? 30 : 29;
           return daysInMonth;
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof ChineseCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [monthIndex] {number} The month index to examine.
@@ -64055,8 +64120,7 @@ var Plotly = (() => {
         weekDay: function(year, monthIndex, day) {
           return (this.dayOfWeek(year, monthIndex, day) || 7) < 6;
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof ChineseCalendar
             @param year {CDate|number} The date to convert or the year to convert.
@@ -64074,8 +64138,7 @@ var Plotly = (() => {
           var solar = toSolar(year, month, day, isIntercalary);
           return gregorianCalendar.toJD(solar.year, solar.month, solar.day);
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof ChineseCalendar
             @param jd {number} The Julian date to convert.
             @return {CDate} The equivalent date. */
@@ -64089,8 +64152,7 @@ var Plotly = (() => {
           );
           return this.newDate(lunar.year, monthIndex, lunar.day);
         },
-        /**
-             Create a new date from a string.
+        /** Create a new date from a string.
             @memberof ChineseCalendar
             @param dateString {string} String representing a Chinese date
             @return {CDate} The new date.
@@ -64104,8 +64166,7 @@ var Plotly = (() => {
           var day = +match[4];
           return this.newDate(year, monthIndex, day);
         },
-        /**
-             Add period(s) to a date.
+        /** Add period(s) to a date.
             Cater for no year zero.
             @memberof ChineseCalendar
             @param date {CDate} The starting date.
@@ -64131,464 +64192,464 @@ var Plotly = (() => {
           return cdate;
         }
       });
-      var DATE_REGEXP = /^\s*(-?\d\d\d\d|\d\d)[/-](\d?\d)([Ii]?)[/-](\d?\d)/m;
-      var MONTH_NUMBER_REGEXP = /^\d?\d[Ii]?/m;
-      var MONTH_NAME_REGEXP = /^闰?十?[一七三九二五八六四]?月/m;
-      var MONTH_SHORT_NAME_REGEXP = /^闰?十?[一七三九二五八六四]?/m;
+      var DATE_REGEXP = /^\s*(-?\d\d\d\d|\d\d)[-/](\d?\d)([iI]?)[-/](\d?\d)/m;
+      var MONTH_NUMBER_REGEXP = /^\d?\d[iI]?/m;
+      var MONTH_NAME_REGEXP = /^闰?十?[一二三四五六七八九]?月/m;
+      var MONTH_SHORT_NAME_REGEXP = /^闰?十?[一二三四五六七八九]?/m;
       main.calendars.chinese = ChineseCalendar;
       var LUNAR_MONTH_DAYS = [
         1887,
         5780,
         5802,
-        19_157,
+        19157,
         2742,
-        50_359,
+        50359,
         1198,
         2646,
-        46_378,
+        46378,
         7466,
         3412,
-        30_122,
+        30122,
         5482,
-        67_949,
+        67949,
         2396,
         5294,
-        43_597,
+        43597,
         6732,
         6954,
-        36_181,
+        36181,
         2772,
         4954,
-        18_781,
+        18781,
         2396,
-        54_427,
+        54427,
         5274,
         6730,
-        47_781,
+        47781,
         5800,
         6868,
-        21_210,
+        21210,
         4790,
-        59_703,
+        59703,
         2350,
         5270,
-        46_667,
+        46667,
         3402,
         3496,
-        38_325,
+        38325,
         1388,
         4782,
-        18_735,
+        18735,
         2350,
-        52_374,
+        52374,
         6804,
         7498,
-        44_457,
+        44457,
         2906,
         1388,
-        29_294,
+        29294,
         4700,
-        63_789,
+        63789,
         6442,
         6804,
-        56_138,
+        56138,
         5802,
         2772,
-        38_235,
+        38235,
         1210,
         4698,
-        22_827,
+        22827,
         5418,
-        63_125,
+        63125,
         3476,
         5802,
-        43_701,
+        43701,
         2484,
         5302,
-        27_223,
+        27223,
         2646,
-        70_954,
+        70954,
         7466,
         3412,
-        54_698,
+        54698,
         5482,
         2412,
-        38_062,
+        38062,
         5294,
         2636,
-        32_038,
+        32038,
         6954,
-        60_245,
+        60245,
         2772,
         4826,
-        43_357,
+        43357,
         2394,
         5274,
-        39_501,
+        39501,
         6730,
-        72_357,
+        72357,
         5800,
         5844,
-        53_978,
+        53978,
         4790,
         2358,
-        38_039,
+        38039,
         5270,
-        87_627,
+        87627,
         3402,
         3496,
-        54_708,
+        54708,
         5484,
         4782,
-        43_311,
+        43311,
         2350,
         3222,
-        27_978,
+        27978,
         7498,
-        68_965,
+        68965,
         2904,
         5484,
-        45_677,
+        45677,
         4700,
         6444,
-        39_573,
+        39573,
         6804,
         6986,
-        19_285,
+        19285,
         2772,
-        62_811,
+        62811,
         1210,
         4698,
-        47_403,
+        47403,
         5418,
         5780,
-        38_570,
+        38570,
         5546,
-        76_469,
+        76469,
         2420,
         5302,
-        51_799,
+        51799,
         2646,
         5414,
-        36_501,
+        36501,
         3412,
         5546,
-        18_869,
+        18869,
         2412,
-        54_446,
+        54446,
         5276,
         6732,
-        48_422,
+        48422,
         6822,
         2900,
-        28_010,
+        28010,
         4826,
-        92_509,
+        92509,
         2394,
         5274,
-        55_883,
+        55883,
         6730,
         6820,
-        47_956,
+        47956,
         5812,
         2778,
-        18_779,
+        18779,
         2358,
-        62_615,
+        62615,
         5270,
         5450,
-        46_757,
+        46757,
         3492,
         5556,
-        27_318,
+        27318,
         4718,
-        67_887,
+        67887,
         2350,
         3222,
-        52_554,
+        52554,
         7498,
         3428,
-        38_252,
+        38252,
         5468,
         4700,
-        31_022,
+        31022,
         6444,
-        64_149,
+        64149,
         6804,
         6986,
-        43_861,
+        43861,
         2772,
         5338,
-        35_421,
+        35421,
         2650,
-        70_955,
+        70955,
         5418,
         5780,
-        54_954,
+        54954,
         5546,
         2740,
-        38_074,
+        38074,
         5302,
         2646,
-        29_991,
+        29991,
         3366,
-        61_011,
+        61011,
         3412,
         5546,
-        43_445,
+        43445,
         2412,
         5294,
-        35_406,
+        35406,
         6732,
-        72_998,
+        72998,
         6820,
         6996,
-        52_586,
+        52586,
         2778,
         2396,
-        38_045,
+        38045,
         5274,
         6698,
-        23_333,
+        23333,
         6820,
-        64_338,
+        64338,
         5812,
         2746,
-        43_355,
+        43355,
         2358,
         5270,
-        39_499,
+        39499,
         5450,
-        79_525,
+        79525,
         3492,
         5548
       ];
       var CHINESE_NEW_YEAR = [
         1887,
-        966_732,
-        967_231,
-        967_733,
-        968_265,
-        968_766,
-        969_297,
-        969_798,
-        970_298,
-        970_829,
-        971_330,
-        971_830,
-        972_362,
-        972_863,
-        973_395,
-        973_896,
-        974_397,
-        974_928,
-        975_428,
-        975_929,
-        976_461,
-        976_962,
-        977_462,
-        977_994,
-        978_494,
-        979_026,
-        979_526,
-        980_026,
-        980_558,
-        981_059,
-        981_559,
-        982_091,
-        982_593,
-        983_124,
-        983_624,
-        984_124,
-        984_656,
-        985_157,
-        985_656,
-        986_189,
-        986_690,
-        987_191,
-        987_722,
-        988_222,
-        988_753,
-        989_254,
-        989_754,
-        990_286,
-        990_788,
-        991_288,
-        991_819,
-        992_319,
-        992_851,
-        993_352,
-        993_851,
-        994_383,
-        994_885,
-        995_385,
-        995_917,
-        996_418,
-        996_918,
-        997_450,
-        997_949,
-        998_481,
-        998_982,
-        999_483,
-        1_000_014,
-        1_000_515,
-        1_001_016,
-        1_001_548,
-        1_002_047,
-        1_002_578,
-        1_003_080,
-        1_003_580,
-        1_004_111,
-        1_004_613,
-        1_005_113,
-        1_005_645,
-        1_006_146,
-        1_006_645,
-        1_007_177,
-        1_007_678,
-        1_008_209,
-        1_008_710,
-        1_009_211,
-        1_009_743,
-        1_010_243,
-        1_010_743,
-        1_011_275,
-        1_011_775,
-        1_012_306,
-        1_012_807,
-        1_013_308,
-        1_013_840,
-        1_014_341,
-        1_014_841,
-        1_015_373,
-        1_015_874,
-        1_016_404,
-        1_016_905,
-        1_017_405,
-        1_017_937,
-        1_018_438,
-        1_018_939,
-        1_019_471,
-        1_019_972,
-        1_020_471,
-        1_021_002,
-        1_021_503,
-        1_022_035,
-        1_022_535,
-        1_023_036,
-        1_023_568,
-        1_024_069,
-        1_024_568,
-        1_025_100,
-        1_025_601,
-        1_026_102,
-        1_026_633,
-        1_027_133,
-        1_027_666,
-        1_028_167,
-        1_028_666,
-        1_029_198,
-        1_029_699,
-        1_030_199,
-        1_030_730,
-        1_031_231,
-        1_031_763,
-        1_032_264,
-        1_032_764,
-        1_033_296,
-        1_033_797,
-        1_034_297,
-        1_034_828,
-        1_035_329,
-        1_035_830,
-        1_036_362,
-        1_036_861,
-        1_037_393,
-        1_037_894,
-        1_038_394,
-        1_038_925,
-        1_039_427,
-        1_039_927,
-        1_040_459,
-        1_040_959,
-        1_041_491,
-        1_041_992,
-        1_042_492,
-        1_043_023,
-        1_043_524,
-        1_044_024,
-        1_044_556,
-        1_045_057,
-        1_045_558,
-        1_046_090,
-        1_046_590,
-        1_047_121,
-        1_047_622,
-        1_048_122,
-        1_048_654,
-        1_049_154,
-        1_049_655,
-        1_050_187,
-        1_050_689,
-        1_051_219,
-        1_051_720,
-        1_052_220,
-        1_052_751,
-        1_053_252,
-        1_053_752,
-        1_054_284,
-        1_054_786,
-        1_055_285,
-        1_055_817,
-        1_056_317,
-        1_056_849,
-        1_057_349,
-        1_057_850,
-        1_058_382,
-        1_058_883,
-        1_059_383,
-        1_059_915,
-        1_060_415,
-        1_060_947,
-        1_061_447,
-        1_061_947,
-        1_062_479,
-        1_062_981,
-        1_063_480,
-        1_064_012,
-        1_064_514,
-        1_065_014,
-        1_065_545,
-        1_066_045,
-        1_066_577,
-        1_067_078,
-        1_067_578,
-        1_068_110,
-        1_068_611,
-        1_069_112,
-        1_069_642,
-        1_070_142,
-        1_070_674,
-        1_071_175,
-        1_071_675,
-        1_072_207,
-        1_072_709,
-        1_073_209,
-        1_073_740,
-        1_074_241,
-        1_074_741,
-        1_075_273,
-        1_075_773,
-        1_076_305,
-        1_076_807,
-        1_077_308,
-        1_077_839,
-        1_078_340,
-        1_078_840,
-        1_079_372,
-        1_079_871,
-        1_080_403,
-        1_080_904
+        966732,
+        967231,
+        967733,
+        968265,
+        968766,
+        969297,
+        969798,
+        970298,
+        970829,
+        971330,
+        971830,
+        972362,
+        972863,
+        973395,
+        973896,
+        974397,
+        974928,
+        975428,
+        975929,
+        976461,
+        976962,
+        977462,
+        977994,
+        978494,
+        979026,
+        979526,
+        980026,
+        980558,
+        981059,
+        981559,
+        982091,
+        982593,
+        983124,
+        983624,
+        984124,
+        984656,
+        985157,
+        985656,
+        986189,
+        986690,
+        987191,
+        987722,
+        988222,
+        988753,
+        989254,
+        989754,
+        990286,
+        990788,
+        991288,
+        991819,
+        992319,
+        992851,
+        993352,
+        993851,
+        994383,
+        994885,
+        995385,
+        995917,
+        996418,
+        996918,
+        997450,
+        997949,
+        998481,
+        998982,
+        999483,
+        1000014,
+        1000515,
+        1001016,
+        1001548,
+        1002047,
+        1002578,
+        1003080,
+        1003580,
+        1004111,
+        1004613,
+        1005113,
+        1005645,
+        1006146,
+        1006645,
+        1007177,
+        1007678,
+        1008209,
+        1008710,
+        1009211,
+        1009743,
+        1010243,
+        1010743,
+        1011275,
+        1011775,
+        1012306,
+        1012807,
+        1013308,
+        1013840,
+        1014341,
+        1014841,
+        1015373,
+        1015874,
+        1016404,
+        1016905,
+        1017405,
+        1017937,
+        1018438,
+        1018939,
+        1019471,
+        1019972,
+        1020471,
+        1021002,
+        1021503,
+        1022035,
+        1022535,
+        1023036,
+        1023568,
+        1024069,
+        1024568,
+        1025100,
+        1025601,
+        1026102,
+        1026633,
+        1027133,
+        1027666,
+        1028167,
+        1028666,
+        1029198,
+        1029699,
+        1030199,
+        1030730,
+        1031231,
+        1031763,
+        1032264,
+        1032764,
+        1033296,
+        1033797,
+        1034297,
+        1034828,
+        1035329,
+        1035830,
+        1036362,
+        1036861,
+        1037393,
+        1037894,
+        1038394,
+        1038925,
+        1039427,
+        1039927,
+        1040459,
+        1040959,
+        1041491,
+        1041992,
+        1042492,
+        1043023,
+        1043524,
+        1044024,
+        1044556,
+        1045057,
+        1045558,
+        1046090,
+        1046590,
+        1047121,
+        1047622,
+        1048122,
+        1048654,
+        1049154,
+        1049655,
+        1050187,
+        1050689,
+        1051219,
+        1051720,
+        1052220,
+        1052751,
+        1053252,
+        1053752,
+        1054284,
+        1054786,
+        1055285,
+        1055817,
+        1056317,
+        1056849,
+        1057349,
+        1057850,
+        1058382,
+        1058883,
+        1059383,
+        1059915,
+        1060415,
+        1060947,
+        1061447,
+        1061947,
+        1062479,
+        1062981,
+        1063480,
+        1064012,
+        1064514,
+        1065014,
+        1065545,
+        1066045,
+        1066577,
+        1067078,
+        1067578,
+        1068110,
+        1068611,
+        1069112,
+        1069642,
+        1070142,
+        1070674,
+        1071175,
+        1071675,
+        1072207,
+        1072709,
+        1073209,
+        1073740,
+        1074241,
+        1074741,
+        1075273,
+        1075773,
+        1076305,
+        1076807,
+        1077308,
+        1077839,
+        1078340,
+        1078840,
+        1079372,
+        1079871,
+        1080403,
+        1080904
       ];
       function toLunar(yearOrDate, monthOrResult, day, result) {
         var solarDate;
@@ -64711,9 +64772,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/coptic.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/coptic.js
   var require_coptic = __commonJS({
-    "node_modules/world-calendars/dist/calendars/coptic.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/coptic.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function CopticCalendar(language) {
@@ -64721,36 +64782,28 @@ var Plotly = (() => {
       }
       CopticCalendar.prototype = new main.baseCalendar();
       assign(CopticCalendar.prototype, {
-        /**
-             The calendar name.
+        /** The calendar name.
             @memberof CopticCalendar */
         name: "Coptic",
-        /**
-             Julian date of start of Coptic epoch: 29 August 284 CE (Gregorian).
+        /** Julian date of start of Coptic epoch: 29 August 284 CE (Gregorian).
             @memberof CopticCalendar */
-        jdEpoch: 18_250_295e-1,
-        /**
-             Days per month in a common year.
+        jdEpoch: 18250295e-1,
+        /** Days per month in a common year.
             @memberof CopticCalendar */
         daysPerMonth: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 5],
-        /**
-             <code>true</code> if has a year zero, <code>false</code> if not.
+        /** <code>true</code> if has a year zero, <code>false</code> if not.
             @memberof CopticCalendar */
         hasYearZero: false,
-        /**
-             The minimum month number.
+        /** The minimum month number.
             @memberof CopticCalendar */
         minMonth: 1,
-        /**
-             The first month in the year.
+        /** The first month in the year.
             @memberof CopticCalendar */
         firstMonth: 1,
-        /**
-             The minimum day number.
+        /** The minimum day number.
             @memberof CopticCalendar */
         minDay: 1,
-        /**
-             Localisations for the plugin.
+        /** Localisations for the plugin.
             Entries are objects indexed by the language code ('' being the default US/English).
             Each object has the following attributes.
             @memberof CopticCalendar
@@ -64809,8 +64862,7 @@ var Plotly = (() => {
             isRTL: false
           }
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof CopticCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not.
@@ -64820,8 +64872,7 @@ var Plotly = (() => {
           var year = date.year() + (date.year() < 0 ? 1 : 0);
           return year % 4 === 3 || year % 4 === -1;
         },
-        /**
-             Retrieve the number of months in a year.
+        /** Retrieve the number of months in a year.
             @memberof CopticCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {number} The number of months.
@@ -64835,8 +64886,7 @@ var Plotly = (() => {
           );
           return 13;
         },
-        /**
-             Determine the week of the year for a date.
+        /** Determine the week of the year for a date.
             @memberof CopticCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number) the month to examine.
@@ -64848,8 +64898,7 @@ var Plotly = (() => {
           checkDate.add(-checkDate.dayOfWeek(), "d");
           return Math.floor((checkDate.dayOfYear() - 1) / 7) + 1;
         },
-        /**
-             Retrieve the number of days in a month.
+        /** Retrieve the number of days in a month.
             @memberof CopticCalendar
             @param year {CDate|number} The date to examine or the year of the month.
             @param [month] {number} The month.
@@ -64859,8 +64908,7 @@ var Plotly = (() => {
           var date = this._validate(year, month, this.minDay, main.local.invalidMonth);
           return this.daysPerMonth[date.month() - 1] + (date.month() === 13 && this.leapYear(date.year()) ? 1 : 0);
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof CopticCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param month {number} The month to examine.
@@ -64870,8 +64918,7 @@ var Plotly = (() => {
         weekDay: function(year, month, day) {
           return (this.dayOfWeek(year, month, day) || 7) < 6;
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof CopticCalendar
             @param year {CDate|number} The date to convert or the year to convert.
@@ -64887,8 +64934,7 @@ var Plotly = (() => {
           }
           return date.day() + (date.month() - 1) * 30 + (year - 1) * 365 + Math.floor(year / 4) + this.jdEpoch - 1;
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof CopticCalendar
             @param jd {number} The Julian date to convert.
             @return {CDate} The equivalent date. */
@@ -64908,9 +64954,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/discworld.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/discworld.js
   var require_discworld = __commonJS({
-    "node_modules/world-calendars/dist/calendars/discworld.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/discworld.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function DiscworldCalendar(language) {
@@ -64918,36 +64964,28 @@ var Plotly = (() => {
       }
       DiscworldCalendar.prototype = new main.baseCalendar();
       assign(DiscworldCalendar.prototype, {
-        /**
-             The calendar name.
+        /** The calendar name.
             @memberof DiscworldCalendar */
         name: "Discworld",
-        /**
-             Julian date of start of Discworld epoch: 1 January 0001 CE.
+        /** Julian date of start of Discworld epoch: 1 January 0001 CE.
             @memberof DiscworldCalendar */
-        jdEpoch: 17_214_255e-1,
-        /**
-             Days per month in a common year.
+        jdEpoch: 17214255e-1,
+        /** Days per month in a common year.
             @memberof DiscworldCalendar */
         daysPerMonth: [16, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32],
-        /**
-             <code>true</code> if has a year zero, <code>false</code> if not.
+        /** <code>true</code> if has a year zero, <code>false</code> if not.
             @memberof DiscworldCalendar */
         hasYearZero: false,
-        /**
-             The minimum month number.
+        /** The minimum month number.
             @memberof DiscworldCalendar */
         minMonth: 1,
-        /**
-             The first month in the year.
+        /** The first month in the year.
             @memberof DiscworldCalendar */
         firstMonth: 1,
-        /**
-             The minimum day number.
+        /** The minimum day number.
             @memberof DiscworldCalendar */
         minDay: 1,
-        /**
-             Localisations for the plugin.
+        /** Localisations for the plugin.
             Entries are objects indexed by the language code ('' being the default US/English).
             Each object has the following attributes.
             @memberof DiscworldCalendar
@@ -64992,8 +65030,7 @@ var Plotly = (() => {
             isRTL: false
           }
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof DiscworldCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not.
@@ -65002,8 +65039,7 @@ var Plotly = (() => {
           this._validate(year, this.minMonth, this.minDay, main.local.invalidYear);
           return false;
         },
-        /**
-             Retrieve the number of months in a year.
+        /** Retrieve the number of months in a year.
             @memberof DiscworldCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {number} The number of months.
@@ -65012,8 +65048,7 @@ var Plotly = (() => {
           this._validate(year, this.minMonth, this.minDay, main.local.invalidYear);
           return 13;
         },
-        /**
-             Retrieve the number of days in a year.
+        /** Retrieve the number of days in a year.
             @memberof DiscworldCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {number} The number of days.
@@ -65022,8 +65057,7 @@ var Plotly = (() => {
           this._validate(year, this.minMonth, this.minDay, main.local.invalidYear);
           return 400;
         },
-        /**
-             Determine the week of the year for a date.
+        /** Determine the week of the year for a date.
             @memberof DiscworldCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -65035,8 +65069,7 @@ var Plotly = (() => {
           checkDate.add(-checkDate.dayOfWeek(), "d");
           return Math.floor((checkDate.dayOfYear() - 1) / 8) + 1;
         },
-        /**
-             Retrieve the number of days in a month.
+        /** Retrieve the number of days in a month.
             @memberof DiscworldCalendar
             @param year {CDate|number} The date to examine or the year of the month.
             @param [month] {number} The month.
@@ -65046,15 +65079,13 @@ var Plotly = (() => {
           var date = this._validate(year, month, this.minDay, main.local.invalidMonth);
           return this.daysPerMonth[date.month() - 1];
         },
-        /**
-             Retrieve the number of days in a week.
+        /** Retrieve the number of days in a week.
             @memberof DiscworldCalendar
             @return {number} The number of days. */
         daysInWeek: function() {
           return 8;
         },
-        /**
-             Retrieve the day of the week for a date.
+        /** Retrieve the day of the week for a date.
             @memberof DiscworldCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -65065,8 +65096,7 @@ var Plotly = (() => {
           var date = this._validate(year, month, day, main.local.invalidDate);
           return (date.day() + 1) % 8;
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof DiscworldCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -65077,8 +65107,7 @@ var Plotly = (() => {
           var dow = this.dayOfWeek(year, month, day);
           return dow >= 2 && dow <= 6;
         },
-        /**
-             Retrieve additional information about a date.
+        /** Retrieve additional information about a date.
             @memberof DiscworldCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -65089,8 +65118,7 @@ var Plotly = (() => {
           var date = this._validate(year, month, day, main.local.invalidDate);
           return { century: centuries[Math.floor((date.year() - 1) / 100) + 1] || "" };
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof DiscworldCalendar
             @param year {CDate|number} The date to convert or the year to convert.
@@ -65105,8 +65133,7 @@ var Plotly = (() => {
           day = date.day();
           return day + (month > 1 ? 16 : 0) + (month > 2 ? (month - 2) * 32 : 0) + (year - 1) * 400 + this.jdEpoch - 1;
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof DiscworldCalendar
             @param jd {number} The Julian date to convert.
             @return {CDate} The equivalent date. */
@@ -65128,9 +65155,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/ethiopian.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/ethiopian.js
   var require_ethiopian = __commonJS({
-    "node_modules/world-calendars/dist/calendars/ethiopian.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/ethiopian.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function EthiopianCalendar(language) {
@@ -65138,36 +65165,28 @@ var Plotly = (() => {
       }
       EthiopianCalendar.prototype = new main.baseCalendar();
       assign(EthiopianCalendar.prototype, {
-        /**
-             The calendar name.
+        /** The calendar name.
             @memberof EthiopianCalendar */
         name: "Ethiopian",
-        /**
-             Julian date of start of Ethiopian epoch: 27 August 8 CE (Gregorian).
+        /** Julian date of start of Ethiopian epoch: 27 August 8 CE (Gregorian).
             @memberof EthiopianCalendar */
-        jdEpoch: 17_242_205e-1,
-        /**
-             Days per month in a common year.
+        jdEpoch: 17242205e-1,
+        /** Days per month in a common year.
             @memberof EthiopianCalendar */
         daysPerMonth: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 5],
-        /**
-             <code>true</code> if has a year zero, <code>false</code> if not.
+        /** <code>true</code> if has a year zero, <code>false</code> if not.
             @memberof EthiopianCalendar */
         hasYearZero: false,
-        /**
-             The minimum month number.
+        /** The minimum month number.
             @memberof EthiopianCalendar */
         minMonth: 1,
-        /**
-             The first month in the year.
+        /** The first month in the year.
             @memberof EthiopianCalendar */
         firstMonth: 1,
-        /**
-             The minimum day number.
+        /** The minimum day number.
             @memberof EthiopianCalendar */
         minDay: 1,
-        /**
-             Localisations for the plugin.
+        /** Localisations for the plugin.
             Entries are objects indexed by the language code ('' being the default US/English).
             Each object has the following attributes.
             @memberof EthiopianCalendar
@@ -65226,8 +65245,7 @@ var Plotly = (() => {
             isRTL: false
           }
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof EthiopianCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not.
@@ -65237,8 +65255,7 @@ var Plotly = (() => {
           var year = date.year() + (date.year() < 0 ? 1 : 0);
           return year % 4 === 3 || year % 4 === -1;
         },
-        /**
-             Retrieve the number of months in a year.
+        /** Retrieve the number of months in a year.
             @memberof EthiopianCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {number} The number of months.
@@ -65252,8 +65269,7 @@ var Plotly = (() => {
           );
           return 13;
         },
-        /**
-             Determine the week of the year for a date.
+        /** Determine the week of the year for a date.
             @memberof EthiopianCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -65265,8 +65281,7 @@ var Plotly = (() => {
           checkDate.add(-checkDate.dayOfWeek(), "d");
           return Math.floor((checkDate.dayOfYear() - 1) / 7) + 1;
         },
-        /**
-             Retrieve the number of days in a month.
+        /** Retrieve the number of days in a month.
             @memberof EthiopianCalendar
             @param year {CDate|number} The date to examine or the year of the month.
             @param [month] {number} The month.
@@ -65276,8 +65291,7 @@ var Plotly = (() => {
           var date = this._validate(year, month, this.minDay, main.local.invalidMonth);
           return this.daysPerMonth[date.month() - 1] + (date.month() === 13 && this.leapYear(date.year()) ? 1 : 0);
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof EthiopianCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -65287,8 +65301,7 @@ var Plotly = (() => {
         weekDay: function(year, month, day) {
           return (this.dayOfWeek(year, month, day) || 7) < 6;
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof EthiopianCalendar
             @param year {CDate|number} The date to convert or the year to convert.
@@ -65304,8 +65317,7 @@ var Plotly = (() => {
           }
           return date.day() + (date.month() - 1) * 30 + (year - 1) * 365 + Math.floor(year / 4) + this.jdEpoch - 1;
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof EthiopianCalendar
             @param jd {number} the Julian date to convert.
             @return {CDate} the equivalent date. */
@@ -65325,9 +65337,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/hebrew.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/hebrew.js
   var require_hebrew = __commonJS({
-    "node_modules/world-calendars/dist/calendars/hebrew.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/hebrew.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function HebrewCalendar(language) {
@@ -65335,36 +65347,28 @@ var Plotly = (() => {
       }
       HebrewCalendar.prototype = new main.baseCalendar();
       assign(HebrewCalendar.prototype, {
-        /**
-             The calendar name.
+        /** The calendar name.
             @memberof HebrewCalendar */
         name: "Hebrew",
-        /**
-             Julian date of start of Hebrew epoch: 7 October 3761 BCE.
+        /** Julian date of start of Hebrew epoch: 7 October 3761 BCE.
             @memberof HebrewCalendar */
-        jdEpoch: 347_995.5,
-        /**
-             Days per month in a common year.
+        jdEpoch: 347995.5,
+        /** Days per month in a common year.
             @memberof HebrewCalendar */
         daysPerMonth: [30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 29],
-        /**
-             <code>true</code> if has a year zero, <code>false</code> if not.
+        /** <code>true</code> if has a year zero, <code>false</code> if not.
             @memberof HebrewCalendar */
         hasYearZero: false,
-        /**
-             The minimum month number.
+        /** The minimum month number.
             @memberof HebrewCalendar */
         minMonth: 1,
-        /**
-             The first month in the year.
+        /** The first month in the year.
             @memberof HebrewCalendar */
         firstMonth: 7,
-        /**
-             The minimum day number.
+        /** The minimum day number.
             @memberof HebrewCalendar */
         minDay: 1,
-        /**
-             Localisations for the plugin.
+        /** Localisations for the plugin.
             Entries are objects indexed by the language code ('' being the default US/English).
             Each object has the following attributes.
             @memberof HebrewCalendar
@@ -65409,8 +65413,7 @@ var Plotly = (() => {
             isRTL: false
           }
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof HebrewCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not.
@@ -65419,8 +65422,7 @@ var Plotly = (() => {
           var date = this._validate(year, this.minMonth, this.minDay, main.local.invalidYear);
           return this._leapYear(date.year());
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof HebrewCalendar
             @private
             @param year {number} The year to examine.
@@ -65430,8 +65432,7 @@ var Plotly = (() => {
           year = year < 0 ? year + 1 : year;
           return mod(year * 7 + 1, 19) < 7;
         },
-        /**
-             Retrieve the number of months in a year.
+        /** Retrieve the number of months in a year.
             @memberof HebrewCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {number} The number of months.
@@ -65440,8 +65441,7 @@ var Plotly = (() => {
           this._validate(year, this.minMonth, this.minDay, main.local.invalidYear);
           return this._leapYear(year.year ? year.year() : year) ? 13 : 12;
         },
-        /**
-             Determine the week of the year for a date.
+        /** Determine the week of the year for a date.
             @memberof HebrewCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -65453,8 +65453,7 @@ var Plotly = (() => {
           checkDate.add(-checkDate.dayOfWeek(), "d");
           return Math.floor((checkDate.dayOfYear() - 1) / 7) + 1;
         },
-        /**
-             Retrieve the number of days in a year.
+        /** Retrieve the number of days in a year.
             @memberof HebrewCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {number} The number of days.
@@ -65464,8 +65463,7 @@ var Plotly = (() => {
           year = date.year();
           return this.toJD(year === -1 ? 1 : year + 1, 7, 1) - this.toJD(year, 7, 1);
         },
-        /**
-             Retrieve the number of days in a month.
+        /** Retrieve the number of days in a month.
             @memberof HebrewCalendar
             @param year {CDate|number} The date to examine or the year of the month.
             @param [month] {number} The month.
@@ -65488,8 +65486,7 @@ var Plotly = (() => {
             )
           );
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof HebrewCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -65499,8 +65496,7 @@ var Plotly = (() => {
         weekDay: function(year, month, day) {
           return this.dayOfWeek(year, month, day) !== 6;
         },
-        /**
-             Retrieve additional information about a date - year type.
+        /** Retrieve additional information about a date - year type.
             @memberof HebrewCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -65511,8 +65507,7 @@ var Plotly = (() => {
           var date = this._validate(year, month, day, main.local.invalidDate);
           return { yearType: (this.leapYear(date) ? "embolismic" : "common") + " " + ["deficient", "regular", "complete"][this.daysInYear(date) % 10 - 3] };
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof HebrewCalendar
             @param year {CDate)|number} The date to convert or the year to convert.
@@ -65541,8 +65536,7 @@ var Plotly = (() => {
           }
           return jd;
         },
-        /**
-             Test for delay of start of new year and to avoid
+        /** Test for delay of start of new year and to avoid
             Sunday, Wednesday, or Friday as start of the new year.
             @memberof HebrewCalendar
             @private
@@ -65550,15 +65544,14 @@ var Plotly = (() => {
             @return {number} The days to offset by. */
         _delay1: function(year) {
           var months = Math.floor((235 * year - 234) / 19);
-          var parts = 12_084 + 13_753 * months;
-          var day = months * 29 + Math.floor(parts / 25_920);
+          var parts = 12084 + 13753 * months;
+          var day = months * 29 + Math.floor(parts / 25920);
           if (mod(3 * (day + 1), 7) < 3) {
             day++;
           }
           return day;
         },
-        /**
-             Check for delay in start of new year due to length of adjacent years.
+        /** Check for delay in start of new year due to length of adjacent years.
             @memberof HebrewCalendar
             @private
             @param year {number} The year to examine.
@@ -65567,16 +65560,15 @@ var Plotly = (() => {
           var last = this._delay1(year - 1);
           var present = this._delay1(year);
           var next = this._delay1(year + 1);
-          return next - present === 356 ? 2 : (present - last === 382 ? 1 : 0);
+          return next - present === 356 ? 2 : present - last === 382 ? 1 : 0;
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof HebrewCalendar
             @param jd {number} The Julian date to convert.
             @return {CDate} The equivalent date. */
         fromJD: function(jd) {
           jd = Math.floor(jd) + 0.5;
-          var year = Math.floor((jd - this.jdEpoch) * 98_496 / 35_975_351) - 1;
+          var year = Math.floor((jd - this.jdEpoch) * 98496 / 35975351) - 1;
           while (jd >= this.toJD(year === -1 ? 1 : year + 1, 7, 1)) {
             year++;
           }
@@ -65595,9 +65587,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/islamic.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/islamic.js
   var require_islamic = __commonJS({
-    "node_modules/world-calendars/dist/calendars/islamic.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/islamic.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function IslamicCalendar(language) {
@@ -65605,36 +65597,28 @@ var Plotly = (() => {
       }
       IslamicCalendar.prototype = new main.baseCalendar();
       assign(IslamicCalendar.prototype, {
-        /**
-             The calendar name.
+        /** The calendar name.
             @memberof IslamicCalendar */
         name: "Islamic",
-        /**
-             Julian date of start of Islamic epoch: 16 July 622 CE.
+        /** Julian date of start of Islamic epoch: 16 July 622 CE.
             @memberof IslamicCalendar */
-        jdEpoch: 19_484_395e-1,
-        /**
-             Days per month in a common year.
+        jdEpoch: 19484395e-1,
+        /** Days per month in a common year.
             @memberof IslamicCalendar */
         daysPerMonth: [30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29],
-        /**
-             <code>true</code> if has a year zero, <code>false</code> if not.
+        /** <code>true</code> if has a year zero, <code>false</code> if not.
             @memberof IslamicCalendar */
         hasYearZero: false,
-        /**
-             The minimum month number.
+        /** The minimum month number.
             @memberof IslamicCalendar */
         minMonth: 1,
-        /**
-             The first month in the year.
+        /** The first month in the year.
             @memberof IslamicCalendar */
         firstMonth: 1,
-        /**
-             The minimum day number.
+        /** The minimum day number.
             @memberof IslamicCalendar */
         minDay: 1,
-        /**
-             Localisations for the plugin.
+        /** Localisations for the plugin.
             Entries are objects indexed by the language code ('' being the default US/English).
             Each object has the following attributes.
             @memberof IslamicCalendar
@@ -65686,8 +65670,7 @@ var Plotly = (() => {
             isRTL: false
           }
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof IslamicCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not.
@@ -65696,8 +65679,7 @@ var Plotly = (() => {
           var date = this._validate(year, this.minMonth, this.minDay, main.local.invalidYear);
           return (date.year() * 11 + 14) % 30 < 11;
         },
-        /**
-             Determine the week of the year for a date.
+        /** Determine the week of the year for a date.
             @memberof IslamicCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -65709,8 +65691,7 @@ var Plotly = (() => {
           checkDate.add(-checkDate.dayOfWeek(), "d");
           return Math.floor((checkDate.dayOfYear() - 1) / 7) + 1;
         },
-        /**
-             Retrieve the number of days in a year.
+        /** Retrieve the number of days in a year.
             @memberof IslamicCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {number} The number of days.
@@ -65718,8 +65699,7 @@ var Plotly = (() => {
         daysInYear: function(year) {
           return this.leapYear(year) ? 355 : 354;
         },
-        /**
-             Retrieve the number of days in a month.
+        /** Retrieve the number of days in a month.
             @memberof IslamicCalendar
             @param year {CDate|number} The date to examine or the year of the month.
             @param [month] {number} The month.
@@ -65729,8 +65709,7 @@ var Plotly = (() => {
           var date = this._validate(year, month, this.minDay, main.local.invalidMonth);
           return this.daysPerMonth[date.month() - 1] + (date.month() === 12 && this.leapYear(date.year()) ? 1 : 0);
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof IslamicCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -65740,8 +65719,7 @@ var Plotly = (() => {
         weekDay: function(year, month, day) {
           return this.dayOfWeek(year, month, day) !== 5;
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof IslamicCalendar
             @param year {CDate|number} The date to convert or the year to convert.
@@ -65757,14 +65735,13 @@ var Plotly = (() => {
           year = year <= 0 ? year + 1 : year;
           return day + Math.ceil(29.5 * (month - 1)) + (year - 1) * 354 + Math.floor((3 + 11 * year) / 30) + this.jdEpoch - 1;
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof IslamicCalendar
             @param jd {number} The Julian date to convert.
             @return {CDate} The equivalent date. */
         fromJD: function(jd) {
           jd = Math.floor(jd) + 0.5;
-          var year = Math.floor((30 * (jd - this.jdEpoch) + 10_646) / 10_631);
+          var year = Math.floor((30 * (jd - this.jdEpoch) + 10646) / 10631);
           year = year <= 0 ? year - 1 : year;
           var month = Math.min(12, Math.ceil((jd - 29 - this.toJD(year, 1, 1)) / 29.5) + 1);
           var day = jd - this.toJD(year, month, 1) + 1;
@@ -65775,9 +65752,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/julian.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/julian.js
   var require_julian = __commonJS({
-    "node_modules/world-calendars/dist/calendars/julian.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/julian.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function JulianCalendar(language) {
@@ -65785,36 +65762,28 @@ var Plotly = (() => {
       }
       JulianCalendar.prototype = new main.baseCalendar();
       assign(JulianCalendar.prototype, {
-        /**
-             The calendar name.
+        /** The calendar name.
             @memberof JulianCalendar */
         name: "Julian",
-        /**
-             Julian date of start of Julian epoch: 1 January 0001 AD = 30 December 0001 BCE.
+        /** Julian date of start of Julian epoch: 1 January 0001 AD = 30 December 0001 BCE.
             @memberof JulianCalendar */
-        jdEpoch: 17_214_235e-1,
-        /**
-             Days per month in a common year.
+        jdEpoch: 17214235e-1,
+        /** Days per month in a common year.
             @memberof JulianCalendar */
         daysPerMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-        /**
-             <code>true</code> if has a year zero, <code>false</code> if not.
+        /** <code>true</code> if has a year zero, <code>false</code> if not.
             @memberof JulianCalendar */
         hasYearZero: false,
-        /**
-             The minimum month number.
+        /** The minimum month number.
             @memberof JulianCalendar */
         minMonth: 1,
-        /**
-             The first month in the year.
+        /** The first month in the year.
             @memberof JulianCalendar */
         firstMonth: 1,
-        /**
-             The minimum day number.
+        /** The minimum day number.
             @memberof JulianCalendar */
         minDay: 1,
-        /**
-             Localisations for the plugin.
+        /** Localisations for the plugin.
             Entries are objects indexed by the language code ('' being the default US/English).
             Each object has the following attributes.
             @memberof JulianCalendar
@@ -65858,8 +65827,7 @@ var Plotly = (() => {
             isRTL: false
           }
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof JulianCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not.
@@ -65869,8 +65837,7 @@ var Plotly = (() => {
           var year = date.year() < 0 ? date.year() + 1 : date.year();
           return year % 4 === 0;
         },
-        /**
-             Determine the week of the year for a date - ISO 8601.
+        /** Determine the week of the year for a date - ISO 8601.
             @memberof JulianCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -65882,8 +65849,7 @@ var Plotly = (() => {
           checkDate.add(4 - (checkDate.dayOfWeek() || 7), "d");
           return Math.floor((checkDate.dayOfYear() - 1) / 7) + 1;
         },
-        /**
-             Retrieve the number of days in a month.
+        /** Retrieve the number of days in a month.
             @memberof JulianCalendar
             @param year {CDate|number} The date to examine or the year of the month.
             @param [month] {number} The month.
@@ -65893,8 +65859,7 @@ var Plotly = (() => {
           var date = this._validate(year, month, this.minDay, main.local.invalidMonth);
           return this.daysPerMonth[date.month() - 1] + (date.month() === 2 && this.leapYear(date.year()) ? 1 : 0);
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof JulianCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -65904,8 +65869,7 @@ var Plotly = (() => {
         weekDay: function(year, month, day) {
           return (this.dayOfWeek(year, month, day) || 7) < 6;
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof JulianCalendar
             @param year {CDate|number} The date to convert or the year to convert.
@@ -65927,8 +65891,7 @@ var Plotly = (() => {
           }
           return Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day - 1524.5;
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof JulianCalendar
             @param jd {number} The Julian date to convert.
             @return {CDate} The equivalent date. */
@@ -65951,9 +65914,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/mayan.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/mayan.js
   var require_mayan = __commonJS({
-    "node_modules/world-calendars/dist/calendars/mayan.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/mayan.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function MayanCalendar(language) {
@@ -65961,32 +65924,25 @@ var Plotly = (() => {
       }
       MayanCalendar.prototype = new main.baseCalendar();
       assign(MayanCalendar.prototype, {
-        /**
-             The calendar name.
+        /** The calendar name.
             @memberof MayanCalendar */
         name: "Mayan",
-        /**
-             Julian date of start of Mayan epoch: 11 August 3114 BCE.
+        /** Julian date of start of Mayan epoch: 11 August 3114 BCE.
             @memberof MayanCalendar */
-        jdEpoch: 584_282.5,
-        /**
-             <code>true</code> if has a year zero, <code>false</code> if not.
+        jdEpoch: 584282.5,
+        /** <code>true</code> if has a year zero, <code>false</code> if not.
             @memberof MayanCalendar */
         hasYearZero: true,
-        /**
-             The minimum month number.
+        /** The minimum month number.
             @memberof MayanCalendar */
         minMonth: 0,
-        /**
-             The first month in the year.
+        /** The first month in the year.
             @memberof MayanCalendar */
         firstMonth: 0,
-        /**
-             The minimum day number.
+        /** The minimum day number.
             @memberof MayanCalendar */
         minDay: 0,
-        /**
-             Localisations for the plugin.
+        /** Localisations for the plugin.
             Entries are objects indexed by the language code ('' being the default US/English).
             Each object has the following attributes.
             @memberof MayanCalendar
@@ -66163,8 +66119,7 @@ var Plotly = (() => {
             ]
           }
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof MayanCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not.
@@ -66173,8 +66128,7 @@ var Plotly = (() => {
           this._validate(year, this.minMonth, this.minDay, main.local.invalidYear);
           return false;
         },
-        /**
-             Format the year, if not a simple sequential number.
+        /** Format the year, if not a simple sequential number.
             @memberof MayanCalendar
             @param year {CDate|number} The date to format or the year to format.
             @return {string} The formatted year.
@@ -66188,8 +66142,7 @@ var Plotly = (() => {
           var katun = Math.floor(year / 20);
           return baktun + "." + katun + "." + year % 20;
         },
-        /**
-             Convert from the formatted year back to a single number.
+        /** Convert from the formatted year back to a single number.
             @memberof MayanCalendar
             @param years {string} The year as n.n.n.
             @return {number} The sequential year.
@@ -66200,8 +66153,8 @@ var Plotly = (() => {
             throw "Invalid Mayan year";
           }
           var year = 0;
-          for (const [i, year_] of years.entries()) {
-            var y = parseInt(year_, 10);
+          for (var i = 0; i < years.length; i++) {
+            var y = parseInt(years[i], 10);
             if (Math.abs(y) > 19 || i > 0 && y < 0) {
               throw "Invalid Mayan year";
             }
@@ -66209,8 +66162,7 @@ var Plotly = (() => {
           }
           return year;
         },
-        /**
-             Retrieve the number of months in a year.
+        /** Retrieve the number of months in a year.
             @memberof MayanCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {number} The number of months.
@@ -66219,8 +66171,7 @@ var Plotly = (() => {
           this._validate(year, this.minMonth, this.minDay, main.local.invalidYear);
           return 18;
         },
-        /**
-             Determine the week of the year for a date.
+        /** Determine the week of the year for a date.
             @memberof MayanCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -66231,8 +66182,7 @@ var Plotly = (() => {
           this._validate(year, month, day, main.local.invalidDate);
           return 0;
         },
-        /**
-             Retrieve the number of days in a year.
+        /** Retrieve the number of days in a year.
             @memberof MayanCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {number} The number of days.
@@ -66241,8 +66191,7 @@ var Plotly = (() => {
           this._validate(year, this.minMonth, this.minDay, main.local.invalidYear);
           return 360;
         },
-        /**
-             Retrieve the number of days in a month.
+        /** Retrieve the number of days in a month.
             @memberof MayanCalendar
             @param year {CDate|number} The date to examine or the year of the month.
             @param [month] {number} The month.
@@ -66252,15 +66201,13 @@ var Plotly = (() => {
           this._validate(year, month, this.minDay, main.local.invalidMonth);
           return 20;
         },
-        /**
-             Retrieve the number of days in a week.
+        /** Retrieve the number of days in a week.
             @memberof MayanCalendar
             @return {number} The number of days. */
         daysInWeek: function() {
           return 5;
         },
-        /**
-             Retrieve the day of the week for a date.
+        /** Retrieve the day of the week for a date.
             @memberof MayanCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -66271,8 +66218,7 @@ var Plotly = (() => {
           var date = this._validate(year, month, day, main.local.invalidDate);
           return date.day();
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof MayanCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -66283,8 +66229,7 @@ var Plotly = (() => {
           this._validate(year, month, day, main.local.invalidDate);
           return true;
         },
-        /**
-             Retrieve additional information about a date - Haab and Tzolkin equivalents.
+        /** Retrieve additional information about a date - Haab and Tzolkin equivalents.
             @memberof MayanCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -66305,8 +66250,7 @@ var Plotly = (() => {
             tzolkinTrecena: tzolkin[1]
           };
         },
-        /**
-             Retrieve Haab date from a Julian date.
+        /** Retrieve Haab date from a Julian date.
             @memberof MayanCalendar
             @private
             @param jd  {number} The Julian date.
@@ -66316,8 +66260,7 @@ var Plotly = (() => {
           var day = mod(jd + 8 + (18 - 1) * 20, 365);
           return [Math.floor(day / 20) + 1, mod(day, 20)];
         },
-        /**
-             Retrieve Tzolkin date from a Julian date.
+        /** Retrieve Tzolkin date from a Julian date.
             @memberof MayanCalendar
             @private
             @param jd {number} The Julian date.
@@ -66326,8 +66269,7 @@ var Plotly = (() => {
           jd -= this.jdEpoch;
           return [amod(jd + 20, 20), amod(jd + 4, 13)];
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof MayanCalendar
             @param year {CDate|number} The date to convert or the year to convert.
@@ -66339,8 +66281,7 @@ var Plotly = (() => {
           var date = this._validate(year, month, day, main.local.invalidDate);
           return date.day() + date.month() * 20 + date.year() * 360 + this.jdEpoch;
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof MayanCalendar
             @param jd {number} The Julian date to convert.
             @return {CDate} The equivalent date. */
@@ -66364,9 +66305,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/nanakshahi.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/nanakshahi.js
   var require_nanakshahi = __commonJS({
-    "node_modules/world-calendars/dist/calendars/nanakshahi.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/nanakshahi.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function NanakshahiCalendar(language) {
@@ -66375,36 +66316,28 @@ var Plotly = (() => {
       NanakshahiCalendar.prototype = new main.baseCalendar();
       var gregorian = main.instance("gregorian");
       assign(NanakshahiCalendar.prototype, {
-        /**
-             The calendar name.
+        /** The calendar name.
             @memberof NanakshahiCalendar */
         name: "Nanakshahi",
-        /**
-             Julian date of start of Nanakshahi epoch: 14 March 1469 CE.
+        /** Julian date of start of Nanakshahi epoch: 14 March 1469 CE.
             @memberof NanakshahiCalendar */
-        jdEpoch: 22_576_735e-1,
-        /**
-             Days per month in a common year.
+        jdEpoch: 22576735e-1,
+        /** Days per month in a common year.
             @memberof NanakshahiCalendar */
         daysPerMonth: [31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 30, 30],
-        /**
-             <code>true</code> if has a year zero, <code>false</code> if not.
+        /** <code>true</code> if has a year zero, <code>false</code> if not.
             @memberof NanakshahiCalendar */
         hasYearZero: false,
-        /**
-             The minimum month number.
+        /** The minimum month number.
             @memberof NanakshahiCalendar */
         minMonth: 1,
-        /**
-             The first month in the year.
+        /** The first month in the year.
             @memberof NanakshahiCalendar */
         firstMonth: 1,
-        /**
-             The minimum day number.
+        /** The minimum day number.
             @memberof NanakshahiCalendar */
         minDay: 1,
-        /**
-             Localisations for the plugin.
+        /** Localisations for the plugin.
             Entries are objects indexed by the language code ('' being the default US/English).
             Each object has the following attributes.
             @memberof NanakshahiCalendar
@@ -66448,8 +66381,7 @@ var Plotly = (() => {
             isRTL: false
           }
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof NanakshahiCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not.
@@ -66463,8 +66395,7 @@ var Plotly = (() => {
           );
           return gregorian.leapYear(date.year() + (date.year() < 1 ? 1 : 0) + 1469);
         },
-        /**
-             Determine the week of the year for a date.
+        /** Determine the week of the year for a date.
             @memberof NanakshahiCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -66476,8 +66407,7 @@ var Plotly = (() => {
           checkDate.add(1 - (checkDate.dayOfWeek() || 7), "d");
           return Math.floor((checkDate.dayOfYear() - 1) / 7) + 1;
         },
-        /**
-             Retrieve the number of days in a month.
+        /** Retrieve the number of days in a month.
             @memberof NanakshahiCalendar
             @param year {CDate|number} The date to examine or the year of the month.
             @param [month] {number} The month.
@@ -66487,8 +66417,7 @@ var Plotly = (() => {
           var date = this._validate(year, month, this.minDay, main.local.invalidMonth);
           return this.daysPerMonth[date.month() - 1] + (date.month() === 12 && this.leapYear(date.year()) ? 1 : 0);
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof NanakshahiCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -66498,8 +66427,7 @@ var Plotly = (() => {
         weekDay: function(year, month, day) {
           return (this.dayOfWeek(year, month, day) || 7) < 6;
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof NanakshahiCalendar
             @param year {CDate|number} The date to convert or the year to convert.
@@ -66519,8 +66447,7 @@ var Plotly = (() => {
           }
           return doy + gregorian.toJD(year + 1468, 3, 13);
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof NanakshahiCalendar
             @param jd {number} The Julian date to convert.
             @return {CDate} The equivalent date. */
@@ -66543,9 +66470,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/nepali.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/nepali.js
   var require_nepali = __commonJS({
-    "node_modules/world-calendars/dist/calendars/nepali.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/nepali.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function NepaliCalendar(language) {
@@ -66553,40 +66480,31 @@ var Plotly = (() => {
       }
       NepaliCalendar.prototype = new main.baseCalendar();
       assign(NepaliCalendar.prototype, {
-        /**
-             The calendar name.
+        /** The calendar name.
             @memberof NepaliCalendar */
         name: "Nepali",
-        /**
-             Julian date of start of Nepali epoch: 14 April 57 BCE.
+        /** Julian date of start of Nepali epoch: 14 April 57 BCE.
             @memberof NepaliCalendar */
-        jdEpoch: 17_007_095e-1,
-        /**
-             Days per month in a common year.
+        jdEpoch: 17007095e-1,
+        /** Days per month in a common year.
             @memberof NepaliCalendar */
         daysPerMonth: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
-        /**
-             <code>true</code> if has a year zero, <code>false</code> if not.
+        /** <code>true</code> if has a year zero, <code>false</code> if not.
             @memberof NepaliCalendar */
         hasYearZero: false,
-        /**
-             The minimum month number.
+        /** The minimum month number.
             @memberof NepaliCalendar */
         minMonth: 1,
-        /**
-             The first month in the year.
+        /** The first month in the year.
             @memberof NepaliCalendar */
         firstMonth: 1,
-        /**
-             The minimum day number.
+        /** The minimum day number.
             @memberof NepaliCalendar */
         minDay: 1,
-        /**
-             The number of days in the year.
+        /** The number of days in the year.
             @memberof NepaliCalendar */
         daysPerYear: 365,
-        /**
-             Localisations for the plugin.
+        /** Localisations for the plugin.
             Entries are objects indexed by the language code ('' being the default US/English).
             Each object has the following attributes.
             @memberof NepaliCalendar
@@ -66630,8 +66548,7 @@ var Plotly = (() => {
             isRTL: false
           }
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof NepaliCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not.
@@ -66639,8 +66556,7 @@ var Plotly = (() => {
         leapYear: function(year) {
           return this.daysInYear(year) !== this.daysPerYear;
         },
-        /**
-             Determine the week of the year for a date.
+        /** Determine the week of the year for a date.
             @memberof NepaliCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -66652,8 +66568,7 @@ var Plotly = (() => {
           checkDate.add(-checkDate.dayOfWeek(), "d");
           return Math.floor((checkDate.dayOfYear() - 1) / 7) + 1;
         },
-        /**
-             Retrieve the number of days in a year.
+        /** Retrieve the number of days in a year.
             @memberof NepaliCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {number} The number of days.
@@ -66661,7 +66576,7 @@ var Plotly = (() => {
         daysInYear: function(year) {
           var date = this._validate(year, this.minMonth, this.minDay, main.local.invalidYear);
           year = date.year();
-          if (this.NEPALI_CALENDAR_DATA[year] === undefined) {
+          if (typeof this.NEPALI_CALENDAR_DATA[year] === "undefined") {
             return this.daysPerYear;
           }
           var daysPerYear = 0;
@@ -66670,8 +66585,7 @@ var Plotly = (() => {
           }
           return daysPerYear;
         },
-        /**
-             Retrieve the number of days in a month.
+        /** Retrieve the number of days in a month.
             @memberof NepaliCalendar
             @param year {CDate|number| The date to examine or the year of the month.
             @param [month] {number} The month.
@@ -66683,10 +66597,9 @@ var Plotly = (() => {
             year = year.year();
           }
           this._validate(year, month, this.minDay, main.local.invalidMonth);
-          return this.NEPALI_CALENDAR_DATA[year] === undefined ? this.daysPerMonth[month - 1] : this.NEPALI_CALENDAR_DATA[year][month];
+          return typeof this.NEPALI_CALENDAR_DATA[year] === "undefined" ? this.daysPerMonth[month - 1] : this.NEPALI_CALENDAR_DATA[year][month];
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof NepaliCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -66696,8 +66609,7 @@ var Plotly = (() => {
         weekDay: function(year, month, day) {
           return this.dayOfWeek(year, month, day) !== 6;
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof NepaliCalendar
             @param year {CDate|number} The date to convert or the year to convert.
@@ -66738,8 +66650,7 @@ var Plotly = (() => {
           }
           return gregorianCalendar.newDate(gregorianYear, 1, 1).add(gregorianDayOfYear, "d").toJD();
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof NepaliCalendar
             @param jd {number} The Julian date to convert.
             @return {CDate} The equivalent date. */
@@ -66764,16 +66675,15 @@ var Plotly = (() => {
           var nepaliDayOfMonth = this.NEPALI_CALENDAR_DATA[nepaliYear][nepaliMonth] - (daysSinceJanFirstToEndOfNepaliMonth - gregorianDayOfYear);
           return this.newDate(nepaliYear, nepaliMonth, nepaliDayOfMonth);
         },
-        /**
-             Creates missing data in the NEPALI_CALENDAR_DATA table.
+        /** Creates missing data in the NEPALI_CALENDAR_DATA table.
             This data will not be correct but just give an estimated result. Mostly -/+ 1 day
             @private
             @param nepaliYear {number} The missing year number. */
         _createMissingCalendarData: function(nepaliYear) {
-          var tmp_calendar_data = [...this.daysPerMonth];
+          var tmp_calendar_data = this.daysPerMonth.slice(0);
           tmp_calendar_data.unshift(17);
           for (var nepaliYearToCreate = nepaliYear - 1; nepaliYearToCreate < nepaliYear + 2; nepaliYearToCreate++) {
-            if (this.NEPALI_CALENDAR_DATA[nepaliYearToCreate] === undefined) {
+            if (typeof this.NEPALI_CALENDAR_DATA[nepaliYearToCreate] === "undefined") {
               this.NEPALI_CALENDAR_DATA[nepaliYearToCreate] = tmp_calendar_data;
             }
           }
@@ -66919,9 +66829,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/persian.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/persian.js
   var require_persian = __commonJS({
-    "node_modules/world-calendars/dist/calendars/persian.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/persian.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function PersianCalendar(language) {
@@ -66929,36 +66839,28 @@ var Plotly = (() => {
       }
       PersianCalendar.prototype = new main.baseCalendar();
       assign(PersianCalendar.prototype, {
-        /**
-             The calendar name.
+        /** The calendar name.
             @memberof PersianCalendar */
         name: "Persian",
-        /**
-             Julian date of start of Persian epoch: 19 March 622 CE.
+        /** Julian date of start of Persian epoch: 19 March 622 CE.
             @memberof PersianCalendar */
-        jdEpoch: 19_483_205e-1,
-        /**
-             Days per month in a common year.
+        jdEpoch: 19483205e-1,
+        /** Days per month in a common year.
             @memberof PersianCalendar */
         daysPerMonth: [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29],
-        /**
-             <code>true</code> if has a year zero, <code>false</code> if not.
+        /** <code>true</code> if has a year zero, <code>false</code> if not.
             @memberof PersianCalendar */
         hasYearZero: false,
-        /**
-             The minimum month number.
+        /** The minimum month number.
             @memberof PersianCalendar */
         minMonth: 1,
-        /**
-             The first month in the year.
+        /** The first month in the year.
             @memberof PersianCalendar */
         firstMonth: 1,
-        /**
-             The minimum day number.
+        /** The minimum day number.
             @memberof PersianCalendar */
         minDay: 1,
-        /**
-             Localisations for the plugin.
+        /** Localisations for the plugin.
             Entries are objects indexed by the language code ('' being the default US/English).
             Each object has the following attributes.
             @memberof PersianCalendar
@@ -66993,8 +66895,8 @@ var Plotly = (() => {
               "Esfand"
             ],
             monthNamesShort: ["Far", "Ord", "Kho", "Tir", "Mor", "Sha", "Meh", "Aba", "Aza", "Day", "Bah", "Esf"],
-            dayNames: ["Yekshambe", "Doshambe", "Seshambe", "Ch\u00E6harshambe", "Panjshambe", "Jom'e", "Shambe"],
-            dayNamesShort: ["Yek", "Do", "Se", "Ch\u00E6", "Panj", "Jom", "Sha"],
+            dayNames: ["Yekshambe", "Doshambe", "Seshambe", "Ch\xE6harshambe", "Panjshambe", "Jom'e", "Shambe"],
+            dayNamesShort: ["Yek", "Do", "Se", "Ch\xE6", "Panj", "Jom", "Sha"],
             dayNamesMin: ["Ye", "Do", "Se", "Ch", "Pa", "Jo", "Sh"],
             digits: null,
             dateFormat: "yyyy/mm/dd",
@@ -67002,8 +66904,7 @@ var Plotly = (() => {
             isRTL: false
           }
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof PersianCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not.
@@ -67012,8 +66913,7 @@ var Plotly = (() => {
           var date = this._validate(year, this.minMonth, this.minDay, main.local.invalidYear);
           return ((date.year() - (date.year() > 0 ? 474 : 473)) % 2820 + 474 + 38) * 682 % 2816 < 682;
         },
-        /**
-             Determine the week of the year for a date.
+        /** Determine the week of the year for a date.
             @memberof PersianCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -67025,8 +66925,7 @@ var Plotly = (() => {
           checkDate.add(-((checkDate.dayOfWeek() + 1) % 7), "d");
           return Math.floor((checkDate.dayOfYear() - 1) / 7) + 1;
         },
-        /**
-             Retrieve the number of days in a month.
+        /** Retrieve the number of days in a month.
             @memberof PersianCalendar
             @param year {CDate|number} The date to examine or the year of the month.
             @param [month] {number} The month.
@@ -67036,8 +66935,7 @@ var Plotly = (() => {
           var date = this._validate(year, month, this.minDay, main.local.invalidMonth);
           return this.daysPerMonth[date.month() - 1] + (date.month() === 12 && this.leapYear(date.year()) ? 1 : 0);
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof PersianCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -67047,8 +66945,7 @@ var Plotly = (() => {
         weekDay: function(year, month, day) {
           return this.dayOfWeek(year, month, day) !== 5;
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof PersianCalendar
             @param year {CDate|number} The date to convert or the year to convert.
@@ -67063,23 +66960,22 @@ var Plotly = (() => {
           day = date.day();
           var epBase = year - (year >= 0 ? 474 : 473);
           var epYear = 474 + mod(epBase, 2820);
-          return day + (month <= 7 ? (month - 1) * 31 : (month - 1) * 30 + 6) + Math.floor((epYear * 682 - 110) / 2816) + (epYear - 1) * 365 + Math.floor(epBase / 2820) * 1_029_983 + this.jdEpoch - 1;
+          return day + (month <= 7 ? (month - 1) * 31 : (month - 1) * 30 + 6) + Math.floor((epYear * 682 - 110) / 2816) + (epYear - 1) * 365 + Math.floor(epBase / 2820) * 1029983 + this.jdEpoch - 1;
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof PersianCalendar
             @param jd {number} The Julian date to convert.
             @return {CDate} The equivalent date. */
         fromJD: function(jd) {
           jd = Math.floor(jd) + 0.5;
           var depoch = jd - this.toJD(475, 1, 1);
-          var cycle = Math.floor(depoch / 1_029_983);
-          var cyear = mod(depoch, 1_029_983);
+          var cycle = Math.floor(depoch / 1029983);
+          var cyear = mod(depoch, 1029983);
           var ycycle = 2820;
-          if (cyear !== 1_029_982) {
+          if (cyear !== 1029982) {
             var aux1 = Math.floor(cyear / 366);
             var aux2 = mod(cyear, 366);
-            ycycle = Math.floor((2134 * aux1 + 2816 * aux2 + 2815) / 1_028_522) + aux1 + 1;
+            ycycle = Math.floor((2134 * aux1 + 2816 * aux2 + 2815) / 1028522) + aux1 + 1;
           }
           var year = ycycle + 2820 * cycle + 474;
           year = year <= 0 ? year - 1 : year;
@@ -67097,9 +66993,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/taiwan.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/taiwan.js
   var require_taiwan = __commonJS({
-    "node_modules/world-calendars/dist/calendars/taiwan.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/taiwan.js"() {
       var main = require_main();
       var assign = require_object_assign();
       var gregorianCalendar = main.instance();
@@ -67108,40 +67004,31 @@ var Plotly = (() => {
       }
       TaiwanCalendar.prototype = new main.baseCalendar();
       assign(TaiwanCalendar.prototype, {
-        /**
-             The calendar name.
+        /** The calendar name.
             @memberof TaiwanCalendar */
         name: "Taiwan",
-        /**
-             Julian date of start of Taiwan epoch: 1 January 1912 CE (Gregorian).
+        /** Julian date of start of Taiwan epoch: 1 January 1912 CE (Gregorian).
             @memberof TaiwanCalendar */
-        jdEpoch: 24_194_025e-1,
-        /**
-             Difference in years between Taiwan and Gregorian calendars.
+        jdEpoch: 24194025e-1,
+        /** Difference in years between Taiwan and Gregorian calendars.
             @memberof TaiwanCalendar */
         yearsOffset: 1911,
-        /**
-             Days per month in a common year.
+        /** Days per month in a common year.
             @memberof TaiwanCalendar */
         daysPerMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-        /**
-             <code>true</code> if has a year zero, <code>false</code> if not.
+        /** <code>true</code> if has a year zero, <code>false</code> if not.
             @memberof TaiwanCalendar */
         hasYearZero: false,
-        /**
-             The minimum month number.
+        /** The minimum month number.
             @memberof TaiwanCalendar */
         minMonth: 1,
-        /**
-             The first month in the year.
+        /** The first month in the year.
             @memberof TaiwanCalendar */
         firstMonth: 1,
-        /**
-             The minimum day number.
+        /** The minimum day number.
             @memberof TaiwanCalendar */
         minDay: 1,
-        /**
-             Localisations for the plugin.
+        /** Localisations for the plugin.
             Entries are objects indexed by the language code ('' being the default US/English).
             Each object has the following attributes.
             @memberof TaiwanCalendar
@@ -67185,8 +67072,7 @@ var Plotly = (() => {
             isRTL: false
           }
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof TaiwanCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not.
@@ -67196,8 +67082,7 @@ var Plotly = (() => {
           var year = this._t2gYear(date.year());
           return gregorianCalendar.leapYear(year);
         },
-        /**
-             Determine the week of the year for a date - ISO 8601.
+        /** Determine the week of the year for a date - ISO 8601.
             @memberof TaiwanCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -67209,8 +67094,7 @@ var Plotly = (() => {
           var year = this._t2gYear(date.year());
           return gregorianCalendar.weekOfYear(year, date.month(), date.day());
         },
-        /**
-             Retrieve the number of days in a month.
+        /** Retrieve the number of days in a month.
             @memberof TaiwanCalendar
             @param year {CDate|number} The date to examine or the year of the month.
             @param [month] {number} The month.
@@ -67220,8 +67104,7 @@ var Plotly = (() => {
           var date = this._validate(year, month, this.minDay, main.local.invalidMonth);
           return this.daysPerMonth[date.month() - 1] + (date.month() === 2 && this.leapYear(date.year()) ? 1 : 0);
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof TaiwanCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -67231,8 +67114,7 @@ var Plotly = (() => {
         weekDay: function(year, month, day) {
           return (this.dayOfWeek(year, month, day) || 7) < 6;
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof TaiwanCalendar
             @param year {CDate|number} The date to convert or the year to convert.
@@ -67245,8 +67127,7 @@ var Plotly = (() => {
           var year = this._t2gYear(date.year());
           return gregorianCalendar.toJD(year, date.month(), date.day());
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof TaiwanCalendar
             @param jd {number} The Julian date to convert.
             @return {CDate} The equivalent date. */
@@ -67255,8 +67136,7 @@ var Plotly = (() => {
           var year = this._g2tYear(date.year());
           return this.newDate(year, date.month(), date.day());
         },
-        /**
-             Convert Taiwanese to Gregorian year.
+        /** Convert Taiwanese to Gregorian year.
             @memberof TaiwanCalendar
             @private
             @param year {number} The Taiwanese year.
@@ -67264,8 +67144,7 @@ var Plotly = (() => {
         _t2gYear: function(year) {
           return year + this.yearsOffset + (year >= -this.yearsOffset && year <= -1 ? 1 : 0);
         },
-        /**
-             Convert Gregorian to Taiwanese year.
+        /** Convert Gregorian to Taiwanese year.
             @memberof TaiwanCalendar
             @private
             @param year {number} The Gregorian year.
@@ -67278,9 +67157,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/thai.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/thai.js
   var require_thai = __commonJS({
-    "node_modules/world-calendars/dist/calendars/thai.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/thai.js"() {
       var main = require_main();
       var assign = require_object_assign();
       var gregorianCalendar = main.instance();
@@ -67289,40 +67168,31 @@ var Plotly = (() => {
       }
       ThaiCalendar.prototype = new main.baseCalendar();
       assign(ThaiCalendar.prototype, {
-        /**
-             The calendar name.
+        /** The calendar name.
             @memberof ThaiCalendar */
         name: "Thai",
-        /**
-             Julian date of start of Thai epoch: 1 January 543 BCE (Gregorian).
+        /** Julian date of start of Thai epoch: 1 January 543 BCE (Gregorian).
             @memberof ThaiCalendar */
-        jdEpoch: 15_230_985e-1,
-        /**
-             Difference in years between Thai and Gregorian calendars.
+        jdEpoch: 15230985e-1,
+        /** Difference in years between Thai and Gregorian calendars.
             @memberof ThaiCalendar */
         yearsOffset: 543,
-        /**
-             Days per month in a common year.
+        /** Days per month in a common year.
             @memberof ThaiCalendar */
         daysPerMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-        /**
-             <code>true</code> if has a year zero, <code>false</code> if not.
+        /** <code>true</code> if has a year zero, <code>false</code> if not.
             @memberof ThaiCalendar */
         hasYearZero: false,
-        /**
-             The minimum month number.
+        /** The minimum month number.
             @memberof ThaiCalendar */
         minMonth: 1,
-        /**
-             The first month in the year.
+        /** The first month in the year.
             @memberof ThaiCalendar */
         firstMonth: 1,
-        /**
-             The minimum day number.
+        /** The minimum day number.
             @memberof ThaiCalendar */
         minDay: 1,
-        /**
-             Localisations for the plugin.
+        /** Localisations for the plugin.
             Entries are objects indexed by the language code ('' being the default US/English).
             Each object has the following attributes.
             @memberof ThaiCalendar
@@ -67366,8 +67236,7 @@ var Plotly = (() => {
             isRTL: false
           }
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof ThaiCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not.
@@ -67377,8 +67246,7 @@ var Plotly = (() => {
           var year = this._t2gYear(date.year());
           return gregorianCalendar.leapYear(year);
         },
-        /**
-             Determine the week of the year for a date - ISO 8601.
+        /** Determine the week of the year for a date - ISO 8601.
             @memberof ThaiCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -67390,8 +67258,7 @@ var Plotly = (() => {
           var year = this._t2gYear(date.year());
           return gregorianCalendar.weekOfYear(year, date.month(), date.day());
         },
-        /**
-             Retrieve the number of days in a month.
+        /** Retrieve the number of days in a month.
             @memberof ThaiCalendar
             @param year {CDate|number} The date to examine or the year of the month.
             @param [month] {number} The month.
@@ -67401,8 +67268,7 @@ var Plotly = (() => {
           var date = this._validate(year, month, this.minDay, main.local.invalidMonth);
           return this.daysPerMonth[date.month() - 1] + (date.month() === 2 && this.leapYear(date.year()) ? 1 : 0);
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof ThaiCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -67412,8 +67278,7 @@ var Plotly = (() => {
         weekDay: function(year, month, day) {
           return (this.dayOfWeek(year, month, day) || 7) < 6;
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof ThaiCalendar
             @param year {CDate|number} The date to convert or the year to convert.
@@ -67426,8 +67291,7 @@ var Plotly = (() => {
           var year = this._t2gYear(date.year());
           return gregorianCalendar.toJD(year, date.month(), date.day());
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof ThaiCalendar
             @param jd {number} The Julian date to convert.
             @return {CDate} The equivalent date. */
@@ -67436,8 +67300,7 @@ var Plotly = (() => {
           var year = this._g2tYear(date.year());
           return this.newDate(year, date.month(), date.day());
         },
-        /**
-             Convert Thai to Gregorian year.
+        /** Convert Thai to Gregorian year.
             @memberof ThaiCalendar
             @private
             @param year {number} The Thai year.
@@ -67445,8 +67308,7 @@ var Plotly = (() => {
         _t2gYear: function(year) {
           return year - this.yearsOffset - (year >= 1 && year <= this.yearsOffset ? 1 : 0);
         },
-        /**
-             Convert Gregorian to Thai year.
+        /** Convert Gregorian to Thai year.
             @memberof ThaiCalendar
             @private
             @param year {number} The Gregorian year.
@@ -67459,9 +67321,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/ummalqura.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/ummalqura.js
   var require_ummalqura = __commonJS({
-    "node_modules/world-calendars/dist/calendars/ummalqura.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/ummalqura.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function UmmAlQuraCalendar(language) {
@@ -67469,30 +67331,24 @@ var Plotly = (() => {
       }
       UmmAlQuraCalendar.prototype = new main.baseCalendar();
       assign(UmmAlQuraCalendar.prototype, {
-        /**
-             The calendar name.
+        /** The calendar name.
             @memberof UmmAlQuraCalendar */
         name: "UmmAlQura",
         //jdEpoch: 1948440, // Julian date of start of UmmAlQura epoch: 14 March 1937 CE
         //daysPerMonth: // Days per month in a common year, replaced by a method.
-        /**
-             <code>true</code> if has a year zero, <code>false</code> if not.
+        /** <code>true</code> if has a year zero, <code>false</code> if not.
             @memberof UmmAlQuraCalendar */
         hasYearZero: false,
-        /**
-             The minimum month number.
+        /** The minimum month number.
             @memberof UmmAlQuraCalendar */
         minMonth: 1,
-        /**
-             The first month in the year.
+        /** The first month in the year.
             @memberof UmmAlQuraCalendar */
         firstMonth: 1,
-        /**
-             The minimum day number.
+        /** The minimum day number.
             @memberof UmmAlQuraCalendar */
         minDay: 1,
-        /**
-             Localisations for the plugin.
+        /** Localisations for the plugin.
             Entries are objects indexed by the language code ('' being the default US/English).
             Each object has the following attributes.
             @memberof UmmAlQuraCalendar
@@ -67535,8 +67391,7 @@ var Plotly = (() => {
             isRTL: true
           }
         },
-        /**
-             Determine whether this date is in a leap year.
+        /** Determine whether this date is in a leap year.
             @memberof UmmAlQuraCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {boolean} <code>true</code> if this is a leap year, <code>false</code> if not.
@@ -67545,8 +67400,7 @@ var Plotly = (() => {
           var date = this._validate(year, this.minMonth, this.minDay, main.local.invalidYear);
           return this.daysInYear(date.year()) === 355;
         },
-        /**
-             Determine the week of the year for a date.
+        /** Determine the week of the year for a date.
             @memberof UmmAlQuraCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -67558,8 +67412,7 @@ var Plotly = (() => {
           checkDate.add(-checkDate.dayOfWeek(), "d");
           return Math.floor((checkDate.dayOfYear() - 1) / 7) + 1;
         },
-        /**
-             Retrieve the number of days in a year.
+        /** Retrieve the number of days in a year.
             @memberof UmmAlQuraCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @return {number} The number of days.
@@ -67571,8 +67424,7 @@ var Plotly = (() => {
           }
           return daysCount;
         },
-        /**
-             Retrieve the number of days in a month.
+        /** Retrieve the number of days in a month.
             @memberof UmmAlQuraCalendar
             @param year {CDate|number} The date to examine or the year of the month.
             @param [month] {number} The month.
@@ -67590,8 +67442,7 @@ var Plotly = (() => {
           }
           return 30;
         },
-        /**
-             Determine whether this date is a week day.
+        /** Determine whether this date is a week day.
             @memberof UmmAlQuraCalendar
             @param year {CDate|number} The date to examine or the year to examine.
             @param [month] {number} The month to examine.
@@ -67601,8 +67452,7 @@ var Plotly = (() => {
         weekDay: function(year, month, day) {
           return this.dayOfWeek(year, month, day) !== 5;
         },
-        /**
-             Retrieve the Julian date equivalent for this date,
+        /** Retrieve the Julian date equivalent for this date,
             i.e. days since January 1, 4713 BCE Greenwich noon.
             @memberof UmmAlQuraCalendar
             @param year {CDate|number} The date to convert or the year to convert.
@@ -67612,46 +67462,43 @@ var Plotly = (() => {
             @throws Error if an invalid date or a different calendar used. */
         toJD: function(year, month, day) {
           var date = this._validate(year, month, day, main.local.invalidDate);
-          var index = 12 * (date.year() - 1) + date.month() - 15_292;
+          var index = 12 * (date.year() - 1) + date.month() - 15292;
           var mcjdn = date.day() + ummalqura_dat[index - 1] - 1;
           return mcjdn + 24e5 - 0.5;
         },
-        /**
-             Create a new date from a Julian date.
+        /** Create a new date from a Julian date.
             @memberof UmmAlQuraCalendar
             @param jd {number} The Julian date to convert.
             @return {CDate} The equivalent date. */
         fromJD: function(jd) {
           var mcjdn = jd - 24e5 + 0.5;
           var index = 0;
-          for (const element of ummalqura_dat) {
-            if (element > mcjdn) break;
+          for (var i = 0; i < ummalqura_dat.length; i++) {
+            if (ummalqura_dat[i] > mcjdn) break;
             index++;
           }
-          var lunation = index + 15_292;
+          var lunation = index + 15292;
           var ii = Math.floor((lunation - 1) / 12);
           var year = ii + 1;
           var month = lunation - 12 * ii;
           var day = mcjdn - ummalqura_dat[index - 1] + 1;
           return this.newDate(year, month, day);
         },
-        /**
-             Determine whether a date is valid for this calendar.
+        /** Determine whether a date is valid for this calendar.
             @memberof UmmAlQuraCalendar
             @param year {number} The year to examine.
             @param month {number} The month to examine.
             @param day {number} The day to examine.
             @return {boolean} <code>true</code> if a valid date, <code>false</code> if not. */
         isValid: function(year, month, day) {
-          var valid = Reflect.apply(main.baseCalendar.prototype.isValid, this, arguments);
+          var valid = main.baseCalendar.prototype.isValid.apply(this, arguments);
           if (valid) {
             year = year.year != null ? year.year : year;
             valid = year >= 1276 && year <= 1500;
           }
           return valid;
         },
-        /**
-             Check that a candidate date is from the same calendar and is valid.
+        /** Check that a candidate date is from the same calendar and is valid.
             @memberof UmmAlQuraCalendar
             @private
             @param year {CDate|number} The date to validate or the year to validate.
@@ -67660,9 +67507,9 @@ var Plotly = (() => {
             @param error {string} Error message if invalid.
             @throws Error if different calendars used or invalid date. */
         _validate: function(year, month, day, error) {
-          var date = Reflect.apply(main.baseCalendar.prototype._validate, this, arguments);
+          var date = main.baseCalendar.prototype._validate.apply(this, arguments);
           if (date.year < 1276 || date.year > 1500) {
-            throw error.replace(/{0\}/, this.local.name);
+            throw error.replace(/\{0\}/, this.local.name);
           }
           return date;
         }
@@ -68007,2378 +67854,2378 @@ var Plotly = (() => {
         9913,
         9943,
         9972,
-        10_002,
-        10_032,
-        10_061,
-        10_090,
-        10_120,
-        10_149,
-        10_178,
-        10_208,
-        10_237,
-        10_267,
-        10_297,
-        10_326,
-        10_356,
-        10_386,
-        10_415,
-        10_445,
-        10_474,
-        10_504,
-        10_533,
-        10_562,
-        10_592,
-        10_621,
-        10_651,
-        10_680,
-        10_710,
-        10_740,
-        10_770,
-        10_799,
-        10_829,
-        10_858,
-        10_888,
-        10_917,
-        10_947,
-        10_976,
-        11_005,
-        11_035,
-        11_064,
-        11_094,
-        11_124,
-        11_153,
-        11_183,
-        11_213,
-        11_242,
-        11_272,
-        11_301,
-        11_331,
-        11_360,
-        11_389,
-        11_419,
-        11_448,
-        11_478,
-        11_507,
-        11_537,
-        11_567,
-        11_596,
-        11_626,
-        11_655,
-        11_685,
-        11_715,
-        11_744,
-        11_774,
-        11_803,
-        11_832,
-        11_862,
-        11_891,
-        11_921,
-        11_950,
-        11_980,
-        12_010,
-        12_039,
-        12_069,
-        12_099,
-        12_128,
-        12_158,
-        12_187,
-        12_216,
-        12_246,
-        12_275,
-        12_304,
-        12_334,
-        12_364,
-        12_393,
-        12_423,
-        12_453,
-        12_483,
-        12_512,
-        12_542,
-        12_571,
-        12_600,
-        12_630,
-        12_659,
-        12_688,
-        12_718,
-        12_747,
-        12_777,
-        12_807,
-        12_837,
-        12_866,
-        12_896,
-        12_926,
-        12_955,
-        12_984,
-        13_014,
-        13_043,
-        13_072,
-        13_102,
-        13_131,
-        13_161,
-        13_191,
-        13_220,
-        13_250,
-        13_280,
-        13_310,
-        13_339,
-        13_368,
-        13_398,
-        13_427,
-        13_456,
-        13_486,
-        13_515,
-        13_545,
-        13_574,
-        13_604,
-        13_634,
-        13_664,
-        13_693,
-        13_723,
-        13_752,
-        13_782,
-        13_811,
-        13_840,
-        13_870,
-        13_899,
-        13_929,
-        13_958,
-        13_988,
-        14_018,
-        14_047,
-        14_077,
-        14_107,
-        14_136,
-        14_166,
-        14_195,
-        14_224,
-        14_254,
-        14_283,
-        14_313,
-        14_342,
-        14_372,
-        14_401,
-        14_431,
-        14_461,
-        14_490,
-        14_520,
-        14_550,
-        14_579,
-        14_609,
-        14_638,
-        14_667,
-        14_697,
-        14_726,
-        14_756,
-        14_785,
-        14_815,
-        14_844,
-        14_874,
-        14_904,
-        14_933,
-        14_963,
-        14_993,
-        15_021,
-        15_051,
-        15_081,
-        15_110,
-        15_140,
-        15_169,
-        15_199,
-        15_228,
-        15_258,
-        15_287,
-        15_317,
-        15_347,
-        15_377,
-        15_406,
-        15_436,
-        15_465,
-        15_494,
-        15_524,
-        15_553,
-        15_582,
-        15_612,
-        15_641,
-        15_671,
-        15_701,
-        15_731,
-        15_760,
-        15_790,
-        15_820,
-        15_849,
-        15_878,
-        15_908,
-        15_937,
-        15_966,
-        15_996,
-        16_025,
-        16_055,
-        16_085,
-        16_114,
-        16_144,
-        16_174,
-        16_204,
-        16_233,
-        16_262,
-        16_292,
-        16_321,
-        16_350,
-        16_380,
-        16_409,
-        16_439,
-        16_468,
-        16_498,
-        16_528,
-        16_558,
-        16_587,
-        16_617,
-        16_646,
-        16_676,
-        16_705,
-        16_734,
-        16_764,
-        16_793,
-        16_823,
-        16_852,
-        16_882,
-        16_912,
-        16_941,
-        16_971,
-        17_001,
-        17_030,
-        17_060,
-        17_089,
-        17_118,
-        17_148,
-        17_177,
-        17_207,
-        17_236,
-        17_266,
-        17_295,
-        17_325,
-        17_355,
-        17_384,
-        17_414,
-        17_444,
-        17_473,
-        17_502,
-        17_532,
-        17_561,
-        17_591,
-        17_620,
-        17_650,
-        17_679,
-        17_709,
-        17_738,
-        17_768,
-        17_798,
-        17_827,
-        17_857,
-        17_886,
-        17_916,
-        17_945,
-        17_975,
-        18_004,
-        18_034,
-        18_063,
-        18_093,
-        18_122,
-        18_152,
-        18_181,
-        18_211,
-        18_241,
-        18_270,
-        18_300,
-        18_330,
-        18_359,
-        18_388,
-        18_418,
-        18_447,
-        18_476,
-        18_506,
-        18_535,
-        18_565,
-        18_595,
-        18_625,
-        18_654,
-        18_684,
-        18_714,
-        18_743,
-        18_772,
-        18_802,
-        18_831,
-        18_860,
-        18_890,
-        18_919,
-        18_949,
-        18_979,
-        19_008,
-        19_038,
-        19_068,
-        19_098,
-        19_127,
-        19_156,
-        19_186,
-        19_215,
-        19_244,
-        19_274,
-        19_303,
-        19_333,
-        19_362,
-        19_392,
-        19_422,
-        19_452,
-        19_481,
-        19_511,
-        19_540,
-        19_570,
-        19_599,
-        19_628,
-        19_658,
-        19_687,
-        19_717,
-        19_746,
-        19_776,
-        19_806,
-        19_836,
-        19_865,
-        19_895,
-        19_924,
-        19_954,
-        19_983,
-        20_012,
-        20_042,
-        20_071,
-        20_101,
-        20_130,
-        20_160,
-        20_190,
-        20_219,
-        20_249,
-        20_279,
-        20_308,
-        20_338,
-        20_367,
-        20_396,
-        20_426,
-        20_455,
-        20_485,
-        20_514,
-        20_544,
-        20_573,
-        20_603,
-        20_633,
-        20_662,
-        20_692,
-        20_721,
-        20_751,
-        20_780,
-        20_810,
-        20_839,
-        20_869,
-        20_898,
-        20_928,
-        20_957,
-        20_987,
-        21_016,
-        21_046,
-        21_076,
-        21_105,
-        21_135,
-        21_164,
-        21_194,
-        21_223,
-        21_253,
-        21_282,
-        21_312,
-        21_341,
-        21_371,
-        21_400,
-        21_430,
-        21_459,
-        21_489,
-        21_519,
-        21_548,
-        21_578,
-        21_607,
-        21_637,
-        21_666,
-        21_696,
-        21_725,
-        21_754,
-        21_784,
-        21_813,
-        21_843,
-        21_873,
-        21_902,
-        21_932,
-        21_962,
-        21_991,
-        22_021,
-        22_050,
-        22_080,
-        22_109,
-        22_138,
-        22_168,
-        22_197,
-        22_227,
-        22_256,
-        22_286,
-        22_316,
-        22_346,
-        22_375,
-        22_405,
-        22_434,
-        22_464,
-        22_493,
-        22_522,
-        22_552,
-        22_581,
-        22_611,
-        22_640,
-        22_670,
-        22_700,
-        22_730,
-        22_759,
-        22_789,
-        22_818,
-        22_848,
-        22_877,
-        22_906,
-        22_936,
-        22_965,
-        22_994,
-        23_024,
-        23_054,
-        23_083,
-        23_113,
-        23_143,
-        23_173,
-        23_202,
-        23_232,
-        23_261,
-        23_290,
-        23_320,
-        23_349,
-        23_379,
-        23_408,
-        23_438,
-        23_467,
-        23_497,
-        23_527,
-        23_556,
-        23_586,
-        23_616,
-        23_645,
-        23_674,
-        23_704,
-        23_733,
-        23_763,
-        23_792,
-        23_822,
-        23_851,
-        23_881,
-        23_910,
-        23_940,
-        23_970,
-        23_999,
-        24_029,
-        24_058,
-        24_088,
-        24_117,
-        24_147,
-        24_176,
-        24_206,
-        24_235,
-        24_265,
-        24_294,
-        24_324,
-        24_353,
-        24_383,
-        24_413,
-        24_442,
-        24_472,
-        24_501,
-        24_531,
-        24_560,
-        24_590,
-        24_619,
-        24_648,
-        24_678,
-        24_707,
-        24_737,
-        24_767,
-        24_796,
-        24_826,
-        24_856,
-        24_885,
-        24_915,
-        24_944,
-        24_974,
-        25_003,
-        25_032,
-        25_062,
-        25_091,
-        25_121,
-        25_150,
-        25_180,
-        25_210,
-        25_240,
-        25_269,
-        25_299,
-        25_328,
-        25_358,
-        25_387,
-        25_416,
-        25_446,
-        25_475,
-        25_505,
-        25_534,
-        25_564,
-        25_594,
-        25_624,
-        25_653,
-        25_683,
-        25_712,
-        25_742,
-        25_771,
-        25_800,
-        25_830,
-        25_859,
-        25_888,
-        25_918,
-        25_948,
-        25_977,
-        26_007,
-        26_037,
-        26_067,
-        26_096,
-        26_126,
-        26_155,
-        26_184,
-        26_214,
-        26_243,
-        26_272,
-        26_302,
-        26_332,
-        26_361,
-        26_391,
-        26_421,
-        26_451,
-        26_480,
-        26_510,
-        26_539,
-        26_568,
-        26_598,
-        26_627,
-        26_656,
-        26_686,
-        26_715,
-        26_745,
-        26_775,
-        26_805,
-        26_834,
-        26_864,
-        26_893,
-        26_923,
-        26_952,
-        26_982,
-        27_011,
-        27_041,
-        27_070,
-        27_099,
-        27_129,
-        27_159,
-        27_188,
-        27_218,
-        27_248,
-        27_277,
-        27_307,
-        27_336,
-        27_366,
-        27_395,
-        27_425,
-        27_454,
-        27_484,
-        27_513,
-        27_542,
-        27_572,
-        27_602,
-        27_631,
-        27_661,
-        27_691,
-        27_720,
-        27_750,
-        27_779,
-        27_809,
-        27_838,
-        27_868,
-        27_897,
-        27_926,
-        27_956,
-        27_985,
-        28_015,
-        28_045,
-        28_074,
-        28_104,
-        28_134,
-        28_163,
-        28_193,
-        28_222,
-        28_252,
-        28_281,
-        28_310,
-        28_340,
-        28_369,
-        28_399,
-        28_428,
-        28_458,
-        28_488,
-        28_517,
-        28_547,
-        28_577,
+        10002,
+        10032,
+        10061,
+        10090,
+        10120,
+        10149,
+        10178,
+        10208,
+        10237,
+        10267,
+        10297,
+        10326,
+        10356,
+        10386,
+        10415,
+        10445,
+        10474,
+        10504,
+        10533,
+        10562,
+        10592,
+        10621,
+        10651,
+        10680,
+        10710,
+        10740,
+        10770,
+        10799,
+        10829,
+        10858,
+        10888,
+        10917,
+        10947,
+        10976,
+        11005,
+        11035,
+        11064,
+        11094,
+        11124,
+        11153,
+        11183,
+        11213,
+        11242,
+        11272,
+        11301,
+        11331,
+        11360,
+        11389,
+        11419,
+        11448,
+        11478,
+        11507,
+        11537,
+        11567,
+        11596,
+        11626,
+        11655,
+        11685,
+        11715,
+        11744,
+        11774,
+        11803,
+        11832,
+        11862,
+        11891,
+        11921,
+        11950,
+        11980,
+        12010,
+        12039,
+        12069,
+        12099,
+        12128,
+        12158,
+        12187,
+        12216,
+        12246,
+        12275,
+        12304,
+        12334,
+        12364,
+        12393,
+        12423,
+        12453,
+        12483,
+        12512,
+        12542,
+        12571,
+        12600,
+        12630,
+        12659,
+        12688,
+        12718,
+        12747,
+        12777,
+        12807,
+        12837,
+        12866,
+        12896,
+        12926,
+        12955,
+        12984,
+        13014,
+        13043,
+        13072,
+        13102,
+        13131,
+        13161,
+        13191,
+        13220,
+        13250,
+        13280,
+        13310,
+        13339,
+        13368,
+        13398,
+        13427,
+        13456,
+        13486,
+        13515,
+        13545,
+        13574,
+        13604,
+        13634,
+        13664,
+        13693,
+        13723,
+        13752,
+        13782,
+        13811,
+        13840,
+        13870,
+        13899,
+        13929,
+        13958,
+        13988,
+        14018,
+        14047,
+        14077,
+        14107,
+        14136,
+        14166,
+        14195,
+        14224,
+        14254,
+        14283,
+        14313,
+        14342,
+        14372,
+        14401,
+        14431,
+        14461,
+        14490,
+        14520,
+        14550,
+        14579,
+        14609,
+        14638,
+        14667,
+        14697,
+        14726,
+        14756,
+        14785,
+        14815,
+        14844,
+        14874,
+        14904,
+        14933,
+        14963,
+        14993,
+        15021,
+        15051,
+        15081,
+        15110,
+        15140,
+        15169,
+        15199,
+        15228,
+        15258,
+        15287,
+        15317,
+        15347,
+        15377,
+        15406,
+        15436,
+        15465,
+        15494,
+        15524,
+        15553,
+        15582,
+        15612,
+        15641,
+        15671,
+        15701,
+        15731,
+        15760,
+        15790,
+        15820,
+        15849,
+        15878,
+        15908,
+        15937,
+        15966,
+        15996,
+        16025,
+        16055,
+        16085,
+        16114,
+        16144,
+        16174,
+        16204,
+        16233,
+        16262,
+        16292,
+        16321,
+        16350,
+        16380,
+        16409,
+        16439,
+        16468,
+        16498,
+        16528,
+        16558,
+        16587,
+        16617,
+        16646,
+        16676,
+        16705,
+        16734,
+        16764,
+        16793,
+        16823,
+        16852,
+        16882,
+        16912,
+        16941,
+        16971,
+        17001,
+        17030,
+        17060,
+        17089,
+        17118,
+        17148,
+        17177,
+        17207,
+        17236,
+        17266,
+        17295,
+        17325,
+        17355,
+        17384,
+        17414,
+        17444,
+        17473,
+        17502,
+        17532,
+        17561,
+        17591,
+        17620,
+        17650,
+        17679,
+        17709,
+        17738,
+        17768,
+        17798,
+        17827,
+        17857,
+        17886,
+        17916,
+        17945,
+        17975,
+        18004,
+        18034,
+        18063,
+        18093,
+        18122,
+        18152,
+        18181,
+        18211,
+        18241,
+        18270,
+        18300,
+        18330,
+        18359,
+        18388,
+        18418,
+        18447,
+        18476,
+        18506,
+        18535,
+        18565,
+        18595,
+        18625,
+        18654,
+        18684,
+        18714,
+        18743,
+        18772,
+        18802,
+        18831,
+        18860,
+        18890,
+        18919,
+        18949,
+        18979,
+        19008,
+        19038,
+        19068,
+        19098,
+        19127,
+        19156,
+        19186,
+        19215,
+        19244,
+        19274,
+        19303,
+        19333,
+        19362,
+        19392,
+        19422,
+        19452,
+        19481,
+        19511,
+        19540,
+        19570,
+        19599,
+        19628,
+        19658,
+        19687,
+        19717,
+        19746,
+        19776,
+        19806,
+        19836,
+        19865,
+        19895,
+        19924,
+        19954,
+        19983,
+        20012,
+        20042,
+        20071,
+        20101,
+        20130,
+        20160,
+        20190,
+        20219,
+        20249,
+        20279,
+        20308,
+        20338,
+        20367,
+        20396,
+        20426,
+        20455,
+        20485,
+        20514,
+        20544,
+        20573,
+        20603,
+        20633,
+        20662,
+        20692,
+        20721,
+        20751,
+        20780,
+        20810,
+        20839,
+        20869,
+        20898,
+        20928,
+        20957,
+        20987,
+        21016,
+        21046,
+        21076,
+        21105,
+        21135,
+        21164,
+        21194,
+        21223,
+        21253,
+        21282,
+        21312,
+        21341,
+        21371,
+        21400,
+        21430,
+        21459,
+        21489,
+        21519,
+        21548,
+        21578,
+        21607,
+        21637,
+        21666,
+        21696,
+        21725,
+        21754,
+        21784,
+        21813,
+        21843,
+        21873,
+        21902,
+        21932,
+        21962,
+        21991,
+        22021,
+        22050,
+        22080,
+        22109,
+        22138,
+        22168,
+        22197,
+        22227,
+        22256,
+        22286,
+        22316,
+        22346,
+        22375,
+        22405,
+        22434,
+        22464,
+        22493,
+        22522,
+        22552,
+        22581,
+        22611,
+        22640,
+        22670,
+        22700,
+        22730,
+        22759,
+        22789,
+        22818,
+        22848,
+        22877,
+        22906,
+        22936,
+        22965,
+        22994,
+        23024,
+        23054,
+        23083,
+        23113,
+        23143,
+        23173,
+        23202,
+        23232,
+        23261,
+        23290,
+        23320,
+        23349,
+        23379,
+        23408,
+        23438,
+        23467,
+        23497,
+        23527,
+        23556,
+        23586,
+        23616,
+        23645,
+        23674,
+        23704,
+        23733,
+        23763,
+        23792,
+        23822,
+        23851,
+        23881,
+        23910,
+        23940,
+        23970,
+        23999,
+        24029,
+        24058,
+        24088,
+        24117,
+        24147,
+        24176,
+        24206,
+        24235,
+        24265,
+        24294,
+        24324,
+        24353,
+        24383,
+        24413,
+        24442,
+        24472,
+        24501,
+        24531,
+        24560,
+        24590,
+        24619,
+        24648,
+        24678,
+        24707,
+        24737,
+        24767,
+        24796,
+        24826,
+        24856,
+        24885,
+        24915,
+        24944,
+        24974,
+        25003,
+        25032,
+        25062,
+        25091,
+        25121,
+        25150,
+        25180,
+        25210,
+        25240,
+        25269,
+        25299,
+        25328,
+        25358,
+        25387,
+        25416,
+        25446,
+        25475,
+        25505,
+        25534,
+        25564,
+        25594,
+        25624,
+        25653,
+        25683,
+        25712,
+        25742,
+        25771,
+        25800,
+        25830,
+        25859,
+        25888,
+        25918,
+        25948,
+        25977,
+        26007,
+        26037,
+        26067,
+        26096,
+        26126,
+        26155,
+        26184,
+        26214,
+        26243,
+        26272,
+        26302,
+        26332,
+        26361,
+        26391,
+        26421,
+        26451,
+        26480,
+        26510,
+        26539,
+        26568,
+        26598,
+        26627,
+        26656,
+        26686,
+        26715,
+        26745,
+        26775,
+        26805,
+        26834,
+        26864,
+        26893,
+        26923,
+        26952,
+        26982,
+        27011,
+        27041,
+        27070,
+        27099,
+        27129,
+        27159,
+        27188,
+        27218,
+        27248,
+        27277,
+        27307,
+        27336,
+        27366,
+        27395,
+        27425,
+        27454,
+        27484,
+        27513,
+        27542,
+        27572,
+        27602,
+        27631,
+        27661,
+        27691,
+        27720,
+        27750,
+        27779,
+        27809,
+        27838,
+        27868,
+        27897,
+        27926,
+        27956,
+        27985,
+        28015,
+        28045,
+        28074,
+        28104,
+        28134,
+        28163,
+        28193,
+        28222,
+        28252,
+        28281,
+        28310,
+        28340,
+        28369,
+        28399,
+        28428,
+        28458,
+        28488,
+        28517,
+        28547,
+        28577,
         // From 1356
-        28_607,
-        28_636,
-        28_665,
-        28_695,
-        28_724,
-        28_754,
-        28_783,
-        28_813,
-        28_843,
-        28_872,
-        28_901,
-        28_931,
-        28_960,
-        28_990,
-        29_019,
-        29_049,
-        29_078,
-        29_108,
-        29_137,
-        29_167,
-        29_196,
-        29_226,
-        29_255,
-        29_285,
-        29_315,
-        29_345,
-        29_375,
-        29_404,
-        29_434,
-        29_463,
-        29_492,
-        29_522,
-        29_551,
-        29_580,
-        29_610,
-        29_640,
-        29_669,
-        29_699,
-        29_729,
-        29_759,
-        29_788,
-        29_818,
-        29_847,
-        29_876,
-        29_906,
-        29_935,
-        29_964,
-        29_994,
-        30_023,
-        30_053,
-        30_082,
-        30_112,
-        30_141,
-        30_171,
-        30_200,
-        30_230,
-        30_259,
-        30_289,
-        30_318,
-        30_348,
-        30_378,
-        30_408,
-        30_437,
-        30_467,
-        30_496,
-        30_526,
-        30_555,
-        30_585,
-        30_614,
-        30_644,
-        30_673,
-        30_703,
-        30_732,
-        30_762,
-        30_791,
-        30_821,
-        30_850,
-        30_880,
-        30_909,
-        30_939,
-        30_968,
-        30_998,
-        31_027,
-        31_057,
-        31_086,
-        31_116,
-        31_145,
-        31_175,
-        31_204,
-        31_234,
-        31_263,
-        31_293,
-        31_322,
-        31_352,
-        31_381,
-        31_411,
-        31_441,
-        31_471,
-        31_500,
-        31_530,
-        31_559,
-        31_589,
-        31_618,
-        31_648,
-        31_676,
-        31_706,
-        31_736,
-        31_766,
-        31_795,
-        31_825,
-        31_854,
-        31_884,
-        31_913,
-        31_943,
-        31_972,
-        32_002,
-        32_031,
-        32_061,
-        32_090,
-        32_120,
-        32_150,
-        32_180,
-        32_209,
-        32_239,
-        32_268,
-        32_298,
-        32_327,
-        32_357,
-        32_386,
-        32_416,
-        32_445,
-        32_475,
-        32_504,
-        32_534,
-        32_563,
-        32_593,
-        32_622,
-        32_652,
-        32_681,
-        32_711,
-        32_740,
-        32_770,
-        32_799,
-        32_829,
-        32_858,
-        32_888,
-        32_917,
-        32_947,
-        32_976,
-        33_006,
-        33_035,
-        33_065,
-        33_094,
-        33_124,
-        33_153,
-        33_183,
-        33_213,
-        33_243,
-        33_272,
-        33_302,
-        33_331,
-        33_361,
-        33_390,
-        33_420,
-        33_450,
-        33_479,
-        33_509,
-        33_539,
-        33_568,
-        33_598,
-        33_627,
-        33_657,
-        33_686,
-        33_716,
-        33_745,
-        33_775,
-        33_804,
-        33_834,
-        33_863,
-        33_893,
-        33_922,
-        33_952,
-        33_981,
-        34_011,
-        34_040,
-        34_069,
-        34_099,
-        34_128,
-        34_158,
-        34_187,
-        34_217,
-        34_247,
-        34_277,
-        34_306,
-        34_336,
-        34_365,
-        34_395,
-        34_424,
-        34_454,
-        34_483,
-        34_512,
-        34_542,
-        34_571,
-        34_601,
-        34_631,
-        34_660,
-        34_690,
-        34_719,
-        34_749,
-        34_778,
-        34_808,
-        34_837,
-        34_867,
-        34_896,
-        34_926,
-        34_955,
-        34_985,
-        35_015,
-        35_044,
-        35_074,
-        35_103,
-        35_133,
-        35_162,
-        35_192,
-        35_222,
-        35_251,
-        35_280,
-        35_310,
-        35_340,
-        35_370,
-        35_399,
-        35_429,
-        35_458,
-        35_488,
-        35_517,
-        35_547,
-        35_576,
-        35_605,
-        35_635,
-        35_665,
-        35_694,
-        35_723,
-        35_753,
-        35_782,
-        35_811,
-        35_841,
-        35_871,
-        35_901,
-        35_930,
-        35_960,
-        35_989,
-        36_019,
-        36_048,
-        36_078,
-        36_107,
-        36_136,
-        36_166,
-        36_195,
-        36_225,
-        36_254,
-        36_284,
-        36_314,
-        36_343,
-        36_373,
-        36_403,
-        36_433,
-        36_462,
-        36_492,
-        36_521,
-        36_551,
-        36_580,
-        36_610,
-        36_639,
-        36_669,
-        36_698,
-        36_728,
-        36_757,
-        36_786,
-        36_816,
-        36_845,
-        36_875,
-        36_904,
-        36_934,
-        36_963,
-        36_993,
-        37_022,
-        37_052,
-        37_081,
-        37_111,
-        37_141,
-        37_170,
-        37_200,
-        37_229,
-        37_259,
-        37_288,
-        37_318,
-        37_347,
-        37_377,
-        37_406,
-        37_436,
-        37_465,
-        37_495,
-        37_524,
-        37_554,
-        37_584,
-        37_613,
-        37_643,
-        37_672,
-        37_701,
-        37_731,
-        37_760,
-        37_790,
-        37_819,
-        37_849,
-        37_878,
-        37_908,
-        37_938,
-        37_967,
-        37_997,
-        38_027,
-        38_056,
-        38_085,
-        38_115,
-        38_144,
-        38_174,
-        38_203,
-        38_233,
-        38_262,
-        38_292,
-        38_322,
-        38_351,
-        38_381,
-        38_410,
-        38_440,
-        38_469,
-        38_499,
-        38_528,
-        38_558,
-        38_587,
-        38_617,
-        38_646,
-        38_676,
-        38_705,
-        38_735,
-        38_764,
-        38_794,
-        38_823,
-        38_853,
-        38_882,
-        38_912,
-        38_941,
-        38_971,
-        39_001,
-        39_030,
-        39_059,
-        39_089,
-        39_118,
-        39_148,
-        39_178,
-        39_208,
-        39_237,
-        39_267,
-        39_297,
-        39_326,
-        39_355,
-        39_385,
-        39_414,
-        39_444,
-        39_473,
-        39_503,
-        39_532,
-        39_562,
-        39_592,
-        39_621,
-        39_650,
-        39_680,
-        39_709,
-        39_739,
-        39_768,
-        39_798,
-        39_827,
-        39_857,
-        39_886,
-        39_916,
-        39_946,
-        39_975,
-        40_005,
-        40_035,
-        40_064,
-        40_094,
-        40_123,
-        40_153,
-        40_182,
-        40_212,
-        40_241,
-        40_271,
-        40_300,
-        40_330,
-        40_359,
-        40_389,
-        40_418,
-        40_448,
-        40_477,
-        40_507,
-        40_536,
-        40_566,
-        40_595,
-        40_625,
-        40_655,
-        40_685,
-        40_714,
-        40_744,
-        40_773,
-        40_803,
-        40_832,
-        40_862,
-        40_892,
-        40_921,
-        40_951,
-        40_980,
-        41_009,
-        41_039,
-        41_068,
-        41_098,
-        41_127,
-        41_157,
-        41_186,
-        41_216,
-        41_245,
-        41_275,
-        41_304,
-        41_334,
-        41_364,
-        41_393,
-        41_422,
-        41_452,
-        41_481,
-        41_511,
-        41_540,
-        41_570,
-        41_599,
-        41_629,
-        41_658,
-        41_688,
-        41_718,
-        41_748,
-        41_777,
-        41_807,
-        41_836,
-        41_865,
-        41_894,
-        41_924,
-        41_953,
-        41_983,
-        42_012,
-        42_042,
-        42_072,
-        42_102,
-        42_131,
-        42_161,
-        42_190,
-        42_220,
-        42_249,
-        42_279,
-        42_308,
-        42_337,
-        42_367,
-        42_397,
-        42_426,
-        42_456,
-        42_485,
-        42_515,
-        42_545,
-        42_574,
-        42_604,
-        42_633,
-        42_662,
-        42_692,
-        42_721,
-        42_751,
-        42_780,
-        42_810,
-        42_839,
-        42_869,
-        42_899,
-        42_929,
-        42_958,
-        42_988,
-        43_017,
-        43_046,
-        43_076,
-        43_105,
-        43_135,
-        43_164,
-        43_194,
-        43_223,
-        43_253,
-        43_283,
-        43_312,
-        43_342,
-        43_371,
-        43_401,
-        43_430,
-        43_460,
-        43_489,
-        43_519,
-        43_548,
-        43_578,
-        43_607,
-        43_637,
-        43_666,
-        43_696,
-        43_726,
-        43_755,
-        43_785,
-        43_814,
-        43_844,
-        43_873,
-        43_903,
-        43_932,
-        43_962,
-        43_991,
-        44_021,
-        44_050,
-        44_080,
-        44_109,
-        44_139,
-        44_169,
-        44_198,
-        44_228,
-        44_258,
-        44_287,
-        44_317,
-        44_346,
-        44_375,
-        44_405,
-        44_434,
-        44_464,
-        44_493,
-        44_523,
-        44_553,
-        44_582,
-        44_612,
-        44_641,
-        44_671,
-        44_700,
-        44_730,
-        44_759,
-        44_788,
-        44_818,
-        44_847,
-        44_877,
-        44_906,
-        44_936,
-        44_966,
-        44_996,
-        45_025,
-        45_055,
-        45_084,
-        45_114,
-        45_143,
-        45_172,
-        45_202,
-        45_231,
-        45_261,
-        45_290,
-        45_320,
-        45_350,
-        45_380,
-        45_409,
-        45_439,
-        45_468,
-        45_498,
-        45_527,
-        45_556,
-        45_586,
-        45_615,
-        45_644,
-        45_674,
-        45_704,
-        45_733,
-        45_763,
-        45_793,
-        45_823,
-        45_852,
-        45_882,
-        45_911,
-        45_940,
-        45_970,
-        45_999,
-        46_028,
-        46_058,
-        46_088,
-        46_117,
-        46_147,
-        46_177,
-        46_206,
-        46_236,
-        46_265,
-        46_295,
-        46_324,
-        46_354,
-        46_383,
-        46_413,
-        46_442,
-        46_472,
-        46_501,
-        46_531,
-        46_560,
-        46_590,
-        46_620,
-        46_649,
-        46_679,
-        46_708,
-        46_738,
-        46_767,
-        46_797,
-        46_826,
-        46_856,
-        46_885,
-        46_915,
-        46_944,
-        46_974,
-        47_003,
-        47_033,
-        47_063,
-        47_092,
-        47_122,
-        47_151,
-        47_181,
-        47_210,
-        47_240,
-        47_269,
-        47_298,
-        47_328,
-        47_357,
-        47_387,
-        47_417,
-        47_446,
-        47_476,
-        47_506,
-        47_535,
-        47_565,
-        47_594,
-        47_624,
-        47_653,
-        47_682,
-        47_712,
-        47_741,
-        47_771,
-        47_800,
-        47_830,
-        47_860,
-        47_890,
-        47_919,
-        47_949,
-        47_978,
-        48_008,
-        48_037,
-        48_066,
-        48_096,
-        48_125,
-        48_155,
-        48_184,
-        48_214,
-        48_244,
-        48_273,
-        48_303,
-        48_333,
-        48_362,
-        48_392,
-        48_421,
-        48_450,
-        48_480,
-        48_509,
-        48_538,
-        48_568,
-        48_598,
-        48_627,
-        48_657,
-        48_687,
-        48_717,
-        48_746,
-        48_776,
-        48_805,
-        48_834,
-        48_864,
-        48_893,
-        48_922,
-        48_952,
-        48_982,
-        49_011,
-        49_041,
-        49_071,
-        49_100,
-        49_130,
-        49_160,
-        49_189,
-        49_218,
-        49_248,
-        49_277,
-        49_306,
-        49_336,
-        49_365,
-        49_395,
-        49_425,
-        49_455,
-        49_484,
-        49_514,
-        49_543,
-        49_573,
-        49_602,
-        49_632,
-        49_661,
-        49_690,
-        49_720,
-        49_749,
-        49_779,
-        49_809,
-        49_838,
-        49_868,
-        49_898,
-        49_927,
-        49_957,
-        49_986,
-        50_016,
-        50_045,
-        50_075,
-        50_104,
-        50_133,
-        50_163,
-        50_192,
-        50_222,
-        50_252,
-        50_281,
-        50_311,
-        50_340,
-        50_370,
-        50_400,
-        50_429,
-        50_459,
-        50_488,
-        50_518,
-        50_547,
-        50_576,
-        50_606,
-        50_635,
-        50_665,
-        50_694,
-        50_724,
-        50_754,
-        50_784,
-        50_813,
-        50_843,
-        50_872,
-        50_902,
-        50_931,
-        50_960,
-        50_990,
-        51_019,
-        51_049,
-        51_078,
-        51_108,
-        51_138,
-        51_167,
-        51_197,
-        51_227,
-        51_256,
-        51_286,
-        51_315,
-        51_345,
-        51_374,
-        51_403,
-        51_433,
-        51_462,
-        51_492,
-        51_522,
-        51_552,
-        51_582,
-        51_611,
-        51_641,
-        51_670,
-        51_699,
-        51_729,
-        51_758,
-        51_787,
-        51_816,
-        51_846,
-        51_876,
-        51_906,
-        51_936,
-        51_965,
-        51_995,
-        52_025,
-        52_054,
-        52_083,
-        52_113,
-        52_142,
-        52_171,
-        52_200,
-        52_230,
-        52_260,
-        52_290,
-        52_319,
-        52_349,
-        52_379,
-        52_408,
-        52_438,
-        52_467,
-        52_497,
-        52_526,
-        52_555,
-        52_585,
-        52_614,
-        52_644,
-        52_673,
-        52_703,
-        52_733,
-        52_762,
-        52_792,
-        52_822,
-        52_851,
-        52_881,
-        52_910,
-        52_939,
-        52_969,
-        52_998,
-        53_028,
-        53_057,
-        53_087,
-        53_116,
-        53_146,
-        53_176,
-        53_205,
-        53_235,
-        53_264,
-        53_294,
-        53_324,
-        53_353,
-        53_383,
-        53_412,
-        53_441,
-        53_471,
-        53_500,
-        53_530,
-        53_559,
-        53_589,
-        53_619,
-        53_648,
-        53_678,
-        53_708,
-        53_737,
-        53_767,
-        53_796,
-        53_825,
-        53_855,
-        53_884,
-        53_913,
-        53_943,
-        53_973,
-        54_003,
-        54_032,
-        54_062,
-        54_092,
-        54_121,
-        54_151,
-        54_180,
-        54_209,
-        54_239,
-        54_268,
-        54_297,
-        54_327,
-        54_357,
-        54_387,
-        54_416,
-        54_446,
-        54_476,
-        54_505,
-        54_535,
-        54_564,
-        54_593,
-        54_623,
-        54_652,
-        54_681,
-        54_711,
-        54_741,
-        54_770,
-        54_800,
-        54_830,
-        54_859,
-        54_889,
-        54_919,
-        54_948,
-        54_977,
-        55_007,
-        55_036,
-        55_066,
-        55_095,
-        55_125,
-        55_154,
-        55_184,
-        55_213,
-        55_243,
-        55_273,
-        55_302,
-        55_332,
-        55_361,
-        55_391,
-        55_420,
-        55_450,
-        55_479,
-        55_508,
-        55_538,
-        55_567,
-        55_597,
-        55_627,
-        55_657,
-        55_686,
-        55_716,
-        55_745,
-        55_775,
-        55_804,
-        55_834,
-        55_863,
-        55_892,
-        55_922,
-        55_951,
-        55_981,
-        56_011,
-        56_040,
-        56_070,
-        56_100,
-        56_129,
-        56_159,
-        56_188,
-        56_218,
-        56_247,
-        56_276,
-        56_306,
-        56_335,
-        56_365,
-        56_394,
-        56_424,
-        56_454,
-        56_483,
-        56_513,
-        56_543,
-        56_572,
-        56_601,
-        56_631,
-        56_660,
-        56_690,
-        56_719,
-        56_749,
-        56_778,
-        56_808,
-        56_837,
-        56_867,
-        56_897,
-        56_926,
-        56_956,
-        56_985,
-        57_015,
-        57_044,
-        57_074,
-        57_103,
-        57_133,
-        57_162,
-        57_192,
-        57_221,
-        57_251,
-        57_280,
-        57_310,
-        57_340,
-        57_369,
-        57_399,
-        57_429,
-        57_458,
-        57_487,
-        57_517,
-        57_546,
-        57_576,
-        57_605,
-        57_634,
-        57_664,
-        57_694,
-        57_723,
-        57_753,
-        57_783,
-        57_813,
-        57_842,
-        57_871,
-        57_901,
-        57_930,
-        57_959,
-        57_989,
-        58_018,
-        58_048,
-        58_077,
-        58_107,
-        58_137,
-        58_167,
-        58_196,
-        58_226,
-        58_255,
-        58_285,
-        58_314,
-        58_343,
-        58_373,
-        58_402,
-        58_432,
-        58_461,
-        58_491,
-        58_521,
-        58_551,
-        58_580,
-        58_610,
-        58_639,
-        58_669,
-        58_698,
-        58_727,
-        58_757,
-        58_786,
-        58_816,
-        58_845,
-        58_875,
-        58_905,
-        58_934,
-        58_964,
-        58_994,
-        59_023,
-        59_053,
-        59_082,
-        59_111,
-        59_141,
-        59_170,
-        59_200,
-        59_229,
-        59_259,
-        59_288,
-        59_318,
-        59_348,
-        59_377,
-        59_407,
-        59_436,
-        59_466,
-        59_495,
-        59_525,
-        59_554,
-        59_584,
-        59_613,
-        59_643,
-        59_672,
-        59_702,
-        59_731,
-        59_761,
-        59_791,
-        59_820,
-        59_850,
-        59_879,
-        59_909,
-        59_939,
-        59_968,
-        59_997,
-        60_027,
-        60_056,
-        60_086,
-        60_115,
-        60_145,
-        60_174,
-        60_204,
-        60_234,
-        60_264,
-        60_293,
-        60_323,
-        60_352,
-        60_381,
-        60_411,
-        60_440,
-        60_469,
-        60_499,
-        60_528,
-        60_558,
-        60_588,
-        60_618,
-        60_648,
-        60_677,
-        60_707,
-        60_736,
-        60_765,
-        60_795,
-        60_824,
-        60_853,
-        60_883,
-        60_912,
-        60_942,
-        60_972,
-        61_002,
-        61_031,
-        61_061,
-        61_090,
-        61_120,
-        61_149,
-        61_179,
-        61_208,
-        61_237,
-        61_267,
-        61_296,
-        61_326,
-        61_356,
-        61_385,
-        61_415,
-        61_445,
-        61_474,
-        61_504,
-        61_533,
-        61_563,
-        61_592,
-        61_621,
-        61_651,
-        61_680,
-        61_710,
-        61_739,
-        61_769,
-        61_799,
-        61_828,
-        61_858,
-        61_888,
-        61_917,
-        61_947,
-        61_976,
-        62_006,
-        62_035,
-        62_064,
-        62_094,
-        62_123,
-        62_153,
-        62_182,
-        62_212,
-        62_242,
-        62_271,
-        62_301,
-        62_331,
-        62_360,
-        62_390,
-        62_419,
-        62_448,
-        62_478,
-        62_507,
-        62_537,
-        62_566,
-        62_596,
-        62_625,
-        62_655,
-        62_685,
-        62_715,
-        62_744,
-        62_774,
-        62_803,
-        62_832,
-        62_862,
-        62_891,
-        62_921,
-        62_950,
-        62_980,
-        63_009,
-        63_039,
-        63_069,
-        63_099,
-        63_128,
-        63_157,
-        63_187,
-        63_216,
-        63_246,
-        63_275,
-        63_305,
-        63_334,
-        63_363,
-        63_393,
-        63_423,
-        63_453,
-        63_482,
-        63_512,
-        63_541,
-        63_571,
-        63_600,
-        63_630,
-        63_659,
-        63_689,
-        63_718,
-        63_747,
-        63_777,
-        63_807,
-        63_836,
-        63_866,
-        63_895,
-        63_925,
-        63_955,
-        63_984,
-        64_014,
-        64_043,
-        64_073,
-        64_102,
-        64_131,
-        64_161,
-        64_190,
-        64_220,
-        64_249,
-        64_279,
-        64_309,
-        64_339,
-        64_368,
-        64_398,
-        64_427,
-        64_457,
-        64_486,
-        64_515,
-        64_545,
-        64_574,
-        64_603,
-        64_633,
-        64_663,
-        64_692,
-        64_722,
-        64_752,
-        64_782,
-        64_811,
-        64_841,
-        64_870,
-        64_899,
-        64_929,
-        64_958,
-        64_987,
-        65_017,
-        65_047,
-        65_076,
-        65_106,
-        65_136,
-        65_166,
-        65_195,
-        65_225,
-        65_254,
-        65_283,
-        65_313,
-        65_342,
-        65_371,
-        65_401,
-        65_431,
-        65_460,
-        65_490,
-        65_520,
-        65_549,
-        65_579,
-        65_608,
-        65_638,
-        65_667,
-        65_697,
-        65_726,
-        65_755,
-        65_785,
-        65_815,
-        65_844,
-        65_874,
-        65_903,
-        65_933,
-        65_963,
-        65_992,
-        66_022,
-        66_051,
-        66_081,
-        66_110,
-        66_140,
-        66_169,
-        66_199,
-        66_228,
-        66_258,
-        66_287,
-        66_317,
-        66_346,
-        66_376,
-        66_405,
-        66_435,
-        66_465,
-        66_494,
-        66_524,
-        66_553,
-        66_583,
-        66_612,
-        66_641,
-        66_671,
-        66_700,
-        66_730,
-        66_760,
-        66_789,
-        66_819,
-        66_849,
-        66_878,
-        66_908,
-        66_937,
-        66_967,
-        66_996,
-        67_025,
-        67_055,
-        67_084,
-        67_114,
-        67_143,
-        67_173,
-        67_203,
-        67_233,
-        67_262,
-        67_292,
-        67_321,
-        67_351,
-        67_380,
-        67_409,
-        67_439,
-        67_468,
-        67_497,
-        67_527,
-        67_557,
-        67_587,
-        67_617,
-        67_646,
-        67_676,
-        67_705,
-        67_735,
-        67_764,
-        67_793,
-        67_823,
-        67_852,
-        67_882,
-        67_911,
-        67_941,
-        67_971,
+        28607,
+        28636,
+        28665,
+        28695,
+        28724,
+        28754,
+        28783,
+        28813,
+        28843,
+        28872,
+        28901,
+        28931,
+        28960,
+        28990,
+        29019,
+        29049,
+        29078,
+        29108,
+        29137,
+        29167,
+        29196,
+        29226,
+        29255,
+        29285,
+        29315,
+        29345,
+        29375,
+        29404,
+        29434,
+        29463,
+        29492,
+        29522,
+        29551,
+        29580,
+        29610,
+        29640,
+        29669,
+        29699,
+        29729,
+        29759,
+        29788,
+        29818,
+        29847,
+        29876,
+        29906,
+        29935,
+        29964,
+        29994,
+        30023,
+        30053,
+        30082,
+        30112,
+        30141,
+        30171,
+        30200,
+        30230,
+        30259,
+        30289,
+        30318,
+        30348,
+        30378,
+        30408,
+        30437,
+        30467,
+        30496,
+        30526,
+        30555,
+        30585,
+        30614,
+        30644,
+        30673,
+        30703,
+        30732,
+        30762,
+        30791,
+        30821,
+        30850,
+        30880,
+        30909,
+        30939,
+        30968,
+        30998,
+        31027,
+        31057,
+        31086,
+        31116,
+        31145,
+        31175,
+        31204,
+        31234,
+        31263,
+        31293,
+        31322,
+        31352,
+        31381,
+        31411,
+        31441,
+        31471,
+        31500,
+        31530,
+        31559,
+        31589,
+        31618,
+        31648,
+        31676,
+        31706,
+        31736,
+        31766,
+        31795,
+        31825,
+        31854,
+        31884,
+        31913,
+        31943,
+        31972,
+        32002,
+        32031,
+        32061,
+        32090,
+        32120,
+        32150,
+        32180,
+        32209,
+        32239,
+        32268,
+        32298,
+        32327,
+        32357,
+        32386,
+        32416,
+        32445,
+        32475,
+        32504,
+        32534,
+        32563,
+        32593,
+        32622,
+        32652,
+        32681,
+        32711,
+        32740,
+        32770,
+        32799,
+        32829,
+        32858,
+        32888,
+        32917,
+        32947,
+        32976,
+        33006,
+        33035,
+        33065,
+        33094,
+        33124,
+        33153,
+        33183,
+        33213,
+        33243,
+        33272,
+        33302,
+        33331,
+        33361,
+        33390,
+        33420,
+        33450,
+        33479,
+        33509,
+        33539,
+        33568,
+        33598,
+        33627,
+        33657,
+        33686,
+        33716,
+        33745,
+        33775,
+        33804,
+        33834,
+        33863,
+        33893,
+        33922,
+        33952,
+        33981,
+        34011,
+        34040,
+        34069,
+        34099,
+        34128,
+        34158,
+        34187,
+        34217,
+        34247,
+        34277,
+        34306,
+        34336,
+        34365,
+        34395,
+        34424,
+        34454,
+        34483,
+        34512,
+        34542,
+        34571,
+        34601,
+        34631,
+        34660,
+        34690,
+        34719,
+        34749,
+        34778,
+        34808,
+        34837,
+        34867,
+        34896,
+        34926,
+        34955,
+        34985,
+        35015,
+        35044,
+        35074,
+        35103,
+        35133,
+        35162,
+        35192,
+        35222,
+        35251,
+        35280,
+        35310,
+        35340,
+        35370,
+        35399,
+        35429,
+        35458,
+        35488,
+        35517,
+        35547,
+        35576,
+        35605,
+        35635,
+        35665,
+        35694,
+        35723,
+        35753,
+        35782,
+        35811,
+        35841,
+        35871,
+        35901,
+        35930,
+        35960,
+        35989,
+        36019,
+        36048,
+        36078,
+        36107,
+        36136,
+        36166,
+        36195,
+        36225,
+        36254,
+        36284,
+        36314,
+        36343,
+        36373,
+        36403,
+        36433,
+        36462,
+        36492,
+        36521,
+        36551,
+        36580,
+        36610,
+        36639,
+        36669,
+        36698,
+        36728,
+        36757,
+        36786,
+        36816,
+        36845,
+        36875,
+        36904,
+        36934,
+        36963,
+        36993,
+        37022,
+        37052,
+        37081,
+        37111,
+        37141,
+        37170,
+        37200,
+        37229,
+        37259,
+        37288,
+        37318,
+        37347,
+        37377,
+        37406,
+        37436,
+        37465,
+        37495,
+        37524,
+        37554,
+        37584,
+        37613,
+        37643,
+        37672,
+        37701,
+        37731,
+        37760,
+        37790,
+        37819,
+        37849,
+        37878,
+        37908,
+        37938,
+        37967,
+        37997,
+        38027,
+        38056,
+        38085,
+        38115,
+        38144,
+        38174,
+        38203,
+        38233,
+        38262,
+        38292,
+        38322,
+        38351,
+        38381,
+        38410,
+        38440,
+        38469,
+        38499,
+        38528,
+        38558,
+        38587,
+        38617,
+        38646,
+        38676,
+        38705,
+        38735,
+        38764,
+        38794,
+        38823,
+        38853,
+        38882,
+        38912,
+        38941,
+        38971,
+        39001,
+        39030,
+        39059,
+        39089,
+        39118,
+        39148,
+        39178,
+        39208,
+        39237,
+        39267,
+        39297,
+        39326,
+        39355,
+        39385,
+        39414,
+        39444,
+        39473,
+        39503,
+        39532,
+        39562,
+        39592,
+        39621,
+        39650,
+        39680,
+        39709,
+        39739,
+        39768,
+        39798,
+        39827,
+        39857,
+        39886,
+        39916,
+        39946,
+        39975,
+        40005,
+        40035,
+        40064,
+        40094,
+        40123,
+        40153,
+        40182,
+        40212,
+        40241,
+        40271,
+        40300,
+        40330,
+        40359,
+        40389,
+        40418,
+        40448,
+        40477,
+        40507,
+        40536,
+        40566,
+        40595,
+        40625,
+        40655,
+        40685,
+        40714,
+        40744,
+        40773,
+        40803,
+        40832,
+        40862,
+        40892,
+        40921,
+        40951,
+        40980,
+        41009,
+        41039,
+        41068,
+        41098,
+        41127,
+        41157,
+        41186,
+        41216,
+        41245,
+        41275,
+        41304,
+        41334,
+        41364,
+        41393,
+        41422,
+        41452,
+        41481,
+        41511,
+        41540,
+        41570,
+        41599,
+        41629,
+        41658,
+        41688,
+        41718,
+        41748,
+        41777,
+        41807,
+        41836,
+        41865,
+        41894,
+        41924,
+        41953,
+        41983,
+        42012,
+        42042,
+        42072,
+        42102,
+        42131,
+        42161,
+        42190,
+        42220,
+        42249,
+        42279,
+        42308,
+        42337,
+        42367,
+        42397,
+        42426,
+        42456,
+        42485,
+        42515,
+        42545,
+        42574,
+        42604,
+        42633,
+        42662,
+        42692,
+        42721,
+        42751,
+        42780,
+        42810,
+        42839,
+        42869,
+        42899,
+        42929,
+        42958,
+        42988,
+        43017,
+        43046,
+        43076,
+        43105,
+        43135,
+        43164,
+        43194,
+        43223,
+        43253,
+        43283,
+        43312,
+        43342,
+        43371,
+        43401,
+        43430,
+        43460,
+        43489,
+        43519,
+        43548,
+        43578,
+        43607,
+        43637,
+        43666,
+        43696,
+        43726,
+        43755,
+        43785,
+        43814,
+        43844,
+        43873,
+        43903,
+        43932,
+        43962,
+        43991,
+        44021,
+        44050,
+        44080,
+        44109,
+        44139,
+        44169,
+        44198,
+        44228,
+        44258,
+        44287,
+        44317,
+        44346,
+        44375,
+        44405,
+        44434,
+        44464,
+        44493,
+        44523,
+        44553,
+        44582,
+        44612,
+        44641,
+        44671,
+        44700,
+        44730,
+        44759,
+        44788,
+        44818,
+        44847,
+        44877,
+        44906,
+        44936,
+        44966,
+        44996,
+        45025,
+        45055,
+        45084,
+        45114,
+        45143,
+        45172,
+        45202,
+        45231,
+        45261,
+        45290,
+        45320,
+        45350,
+        45380,
+        45409,
+        45439,
+        45468,
+        45498,
+        45527,
+        45556,
+        45586,
+        45615,
+        45644,
+        45674,
+        45704,
+        45733,
+        45763,
+        45793,
+        45823,
+        45852,
+        45882,
+        45911,
+        45940,
+        45970,
+        45999,
+        46028,
+        46058,
+        46088,
+        46117,
+        46147,
+        46177,
+        46206,
+        46236,
+        46265,
+        46295,
+        46324,
+        46354,
+        46383,
+        46413,
+        46442,
+        46472,
+        46501,
+        46531,
+        46560,
+        46590,
+        46620,
+        46649,
+        46679,
+        46708,
+        46738,
+        46767,
+        46797,
+        46826,
+        46856,
+        46885,
+        46915,
+        46944,
+        46974,
+        47003,
+        47033,
+        47063,
+        47092,
+        47122,
+        47151,
+        47181,
+        47210,
+        47240,
+        47269,
+        47298,
+        47328,
+        47357,
+        47387,
+        47417,
+        47446,
+        47476,
+        47506,
+        47535,
+        47565,
+        47594,
+        47624,
+        47653,
+        47682,
+        47712,
+        47741,
+        47771,
+        47800,
+        47830,
+        47860,
+        47890,
+        47919,
+        47949,
+        47978,
+        48008,
+        48037,
+        48066,
+        48096,
+        48125,
+        48155,
+        48184,
+        48214,
+        48244,
+        48273,
+        48303,
+        48333,
+        48362,
+        48392,
+        48421,
+        48450,
+        48480,
+        48509,
+        48538,
+        48568,
+        48598,
+        48627,
+        48657,
+        48687,
+        48717,
+        48746,
+        48776,
+        48805,
+        48834,
+        48864,
+        48893,
+        48922,
+        48952,
+        48982,
+        49011,
+        49041,
+        49071,
+        49100,
+        49130,
+        49160,
+        49189,
+        49218,
+        49248,
+        49277,
+        49306,
+        49336,
+        49365,
+        49395,
+        49425,
+        49455,
+        49484,
+        49514,
+        49543,
+        49573,
+        49602,
+        49632,
+        49661,
+        49690,
+        49720,
+        49749,
+        49779,
+        49809,
+        49838,
+        49868,
+        49898,
+        49927,
+        49957,
+        49986,
+        50016,
+        50045,
+        50075,
+        50104,
+        50133,
+        50163,
+        50192,
+        50222,
+        50252,
+        50281,
+        50311,
+        50340,
+        50370,
+        50400,
+        50429,
+        50459,
+        50488,
+        50518,
+        50547,
+        50576,
+        50606,
+        50635,
+        50665,
+        50694,
+        50724,
+        50754,
+        50784,
+        50813,
+        50843,
+        50872,
+        50902,
+        50931,
+        50960,
+        50990,
+        51019,
+        51049,
+        51078,
+        51108,
+        51138,
+        51167,
+        51197,
+        51227,
+        51256,
+        51286,
+        51315,
+        51345,
+        51374,
+        51403,
+        51433,
+        51462,
+        51492,
+        51522,
+        51552,
+        51582,
+        51611,
+        51641,
+        51670,
+        51699,
+        51729,
+        51758,
+        51787,
+        51816,
+        51846,
+        51876,
+        51906,
+        51936,
+        51965,
+        51995,
+        52025,
+        52054,
+        52083,
+        52113,
+        52142,
+        52171,
+        52200,
+        52230,
+        52260,
+        52290,
+        52319,
+        52349,
+        52379,
+        52408,
+        52438,
+        52467,
+        52497,
+        52526,
+        52555,
+        52585,
+        52614,
+        52644,
+        52673,
+        52703,
+        52733,
+        52762,
+        52792,
+        52822,
+        52851,
+        52881,
+        52910,
+        52939,
+        52969,
+        52998,
+        53028,
+        53057,
+        53087,
+        53116,
+        53146,
+        53176,
+        53205,
+        53235,
+        53264,
+        53294,
+        53324,
+        53353,
+        53383,
+        53412,
+        53441,
+        53471,
+        53500,
+        53530,
+        53559,
+        53589,
+        53619,
+        53648,
+        53678,
+        53708,
+        53737,
+        53767,
+        53796,
+        53825,
+        53855,
+        53884,
+        53913,
+        53943,
+        53973,
+        54003,
+        54032,
+        54062,
+        54092,
+        54121,
+        54151,
+        54180,
+        54209,
+        54239,
+        54268,
+        54297,
+        54327,
+        54357,
+        54387,
+        54416,
+        54446,
+        54476,
+        54505,
+        54535,
+        54564,
+        54593,
+        54623,
+        54652,
+        54681,
+        54711,
+        54741,
+        54770,
+        54800,
+        54830,
+        54859,
+        54889,
+        54919,
+        54948,
+        54977,
+        55007,
+        55036,
+        55066,
+        55095,
+        55125,
+        55154,
+        55184,
+        55213,
+        55243,
+        55273,
+        55302,
+        55332,
+        55361,
+        55391,
+        55420,
+        55450,
+        55479,
+        55508,
+        55538,
+        55567,
+        55597,
+        55627,
+        55657,
+        55686,
+        55716,
+        55745,
+        55775,
+        55804,
+        55834,
+        55863,
+        55892,
+        55922,
+        55951,
+        55981,
+        56011,
+        56040,
+        56070,
+        56100,
+        56129,
+        56159,
+        56188,
+        56218,
+        56247,
+        56276,
+        56306,
+        56335,
+        56365,
+        56394,
+        56424,
+        56454,
+        56483,
+        56513,
+        56543,
+        56572,
+        56601,
+        56631,
+        56660,
+        56690,
+        56719,
+        56749,
+        56778,
+        56808,
+        56837,
+        56867,
+        56897,
+        56926,
+        56956,
+        56985,
+        57015,
+        57044,
+        57074,
+        57103,
+        57133,
+        57162,
+        57192,
+        57221,
+        57251,
+        57280,
+        57310,
+        57340,
+        57369,
+        57399,
+        57429,
+        57458,
+        57487,
+        57517,
+        57546,
+        57576,
+        57605,
+        57634,
+        57664,
+        57694,
+        57723,
+        57753,
+        57783,
+        57813,
+        57842,
+        57871,
+        57901,
+        57930,
+        57959,
+        57989,
+        58018,
+        58048,
+        58077,
+        58107,
+        58137,
+        58167,
+        58196,
+        58226,
+        58255,
+        58285,
+        58314,
+        58343,
+        58373,
+        58402,
+        58432,
+        58461,
+        58491,
+        58521,
+        58551,
+        58580,
+        58610,
+        58639,
+        58669,
+        58698,
+        58727,
+        58757,
+        58786,
+        58816,
+        58845,
+        58875,
+        58905,
+        58934,
+        58964,
+        58994,
+        59023,
+        59053,
+        59082,
+        59111,
+        59141,
+        59170,
+        59200,
+        59229,
+        59259,
+        59288,
+        59318,
+        59348,
+        59377,
+        59407,
+        59436,
+        59466,
+        59495,
+        59525,
+        59554,
+        59584,
+        59613,
+        59643,
+        59672,
+        59702,
+        59731,
+        59761,
+        59791,
+        59820,
+        59850,
+        59879,
+        59909,
+        59939,
+        59968,
+        59997,
+        60027,
+        60056,
+        60086,
+        60115,
+        60145,
+        60174,
+        60204,
+        60234,
+        60264,
+        60293,
+        60323,
+        60352,
+        60381,
+        60411,
+        60440,
+        60469,
+        60499,
+        60528,
+        60558,
+        60588,
+        60618,
+        60648,
+        60677,
+        60707,
+        60736,
+        60765,
+        60795,
+        60824,
+        60853,
+        60883,
+        60912,
+        60942,
+        60972,
+        61002,
+        61031,
+        61061,
+        61090,
+        61120,
+        61149,
+        61179,
+        61208,
+        61237,
+        61267,
+        61296,
+        61326,
+        61356,
+        61385,
+        61415,
+        61445,
+        61474,
+        61504,
+        61533,
+        61563,
+        61592,
+        61621,
+        61651,
+        61680,
+        61710,
+        61739,
+        61769,
+        61799,
+        61828,
+        61858,
+        61888,
+        61917,
+        61947,
+        61976,
+        62006,
+        62035,
+        62064,
+        62094,
+        62123,
+        62153,
+        62182,
+        62212,
+        62242,
+        62271,
+        62301,
+        62331,
+        62360,
+        62390,
+        62419,
+        62448,
+        62478,
+        62507,
+        62537,
+        62566,
+        62596,
+        62625,
+        62655,
+        62685,
+        62715,
+        62744,
+        62774,
+        62803,
+        62832,
+        62862,
+        62891,
+        62921,
+        62950,
+        62980,
+        63009,
+        63039,
+        63069,
+        63099,
+        63128,
+        63157,
+        63187,
+        63216,
+        63246,
+        63275,
+        63305,
+        63334,
+        63363,
+        63393,
+        63423,
+        63453,
+        63482,
+        63512,
+        63541,
+        63571,
+        63600,
+        63630,
+        63659,
+        63689,
+        63718,
+        63747,
+        63777,
+        63807,
+        63836,
+        63866,
+        63895,
+        63925,
+        63955,
+        63984,
+        64014,
+        64043,
+        64073,
+        64102,
+        64131,
+        64161,
+        64190,
+        64220,
+        64249,
+        64279,
+        64309,
+        64339,
+        64368,
+        64398,
+        64427,
+        64457,
+        64486,
+        64515,
+        64545,
+        64574,
+        64603,
+        64633,
+        64663,
+        64692,
+        64722,
+        64752,
+        64782,
+        64811,
+        64841,
+        64870,
+        64899,
+        64929,
+        64958,
+        64987,
+        65017,
+        65047,
+        65076,
+        65106,
+        65136,
+        65166,
+        65195,
+        65225,
+        65254,
+        65283,
+        65313,
+        65342,
+        65371,
+        65401,
+        65431,
+        65460,
+        65490,
+        65520,
+        65549,
+        65579,
+        65608,
+        65638,
+        65667,
+        65697,
+        65726,
+        65755,
+        65785,
+        65815,
+        65844,
+        65874,
+        65903,
+        65933,
+        65963,
+        65992,
+        66022,
+        66051,
+        66081,
+        66110,
+        66140,
+        66169,
+        66199,
+        66228,
+        66258,
+        66287,
+        66317,
+        66346,
+        66376,
+        66405,
+        66435,
+        66465,
+        66494,
+        66524,
+        66553,
+        66583,
+        66612,
+        66641,
+        66671,
+        66700,
+        66730,
+        66760,
+        66789,
+        66819,
+        66849,
+        66878,
+        66908,
+        66937,
+        66967,
+        66996,
+        67025,
+        67055,
+        67084,
+        67114,
+        67143,
+        67173,
+        67203,
+        67233,
+        67262,
+        67292,
+        67321,
+        67351,
+        67380,
+        67409,
+        67439,
+        67468,
+        67497,
+        67527,
+        67557,
+        67587,
+        67617,
+        67646,
+        67676,
+        67705,
+        67735,
+        67764,
+        67793,
+        67823,
+        67852,
+        67882,
+        67911,
+        67941,
+        67971,
         68e3,
-        68_030,
-        68_060,
-        68_089,
-        68_119,
-        68_148,
-        68_177,
-        68_207,
-        68_236,
-        68_266,
-        68_295,
-        68_325,
-        68_354,
-        68_384,
-        68_414,
-        68_443,
-        68_473,
-        68_502,
-        68_532,
-        68_561,
-        68_591,
-        68_620,
-        68_650,
-        68_679,
-        68_708,
-        68_738,
-        68_768,
-        68_797,
-        68_827,
-        68_857,
-        68_886,
-        68_916,
-        68_946,
-        68_975,
-        69_004,
-        69_034,
-        69_063,
-        69_092,
-        69_122,
-        69_152,
-        69_181,
-        69_211,
-        69_240,
-        69_270,
-        69_300,
-        69_330,
-        69_359,
-        69_388,
-        69_418,
-        69_447,
-        69_476,
-        69_506,
-        69_535,
-        69_565,
-        69_595,
-        69_624,
-        69_654,
-        69_684,
-        69_713,
-        69_743,
-        69_772,
-        69_802,
-        69_831,
-        69_861,
-        69_890,
-        69_919,
-        69_949,
-        69_978,
-        70_008,
-        70_038,
-        70_067,
-        70_097,
-        70_126,
-        70_156,
-        70_186,
-        70_215,
-        70_245,
-        70_274,
-        70_303,
-        70_333,
-        70_362,
-        70_392,
-        70_421,
-        70_451,
-        70_481,
-        70_510,
-        70_540,
-        70_570,
-        70_599,
-        70_629,
-        70_658,
-        70_687,
-        70_717,
-        70_746,
-        70_776,
-        70_805,
-        70_835,
-        70_864,
-        70_894,
-        70_924,
-        70_954,
-        70_983,
-        71_013,
-        71_042,
-        71_071,
-        71_101,
-        71_130,
-        71_159,
-        71_189,
-        71_218,
-        71_248,
-        71_278,
-        71_308,
-        71_337,
-        71_367,
-        71_397,
-        71_426,
-        71_455,
-        71_485,
-        71_514,
-        71_543,
-        71_573,
-        71_602,
-        71_632,
-        71_662,
-        71_691,
-        71_721,
-        71_751,
-        71_781,
-        71_810,
-        71_839,
-        71_869,
-        71_898,
-        71_927,
-        71_957,
-        71_986,
-        72_016,
-        72_046,
-        72_075,
-        72_105,
-        72_135,
-        72_164,
-        72_194,
-        72_223,
-        72_253,
-        72_282,
-        72_311,
-        72_341,
-        72_370,
-        72_400,
-        72_429,
-        72_459,
-        72_489,
-        72_518,
-        72_548,
-        72_577,
-        72_607,
-        72_637,
-        72_666,
-        72_695,
-        72_725,
-        72_754,
-        72_784,
-        72_813,
-        72_843,
-        72_872,
-        72_902,
-        72_931,
-        72_961,
-        72_991,
-        73_020,
-        73_050,
-        73_080,
-        73_109,
-        73_139,
-        73_168,
-        73_197,
-        73_227,
-        73_256,
-        73_286,
-        73_315,
-        73_345,
-        73_375,
-        73_404,
-        73_434,
-        73_464,
-        73_493,
-        73_523,
-        73_552,
-        73_581,
-        73_611,
-        73_640,
-        73_669,
-        73_699,
-        73_729,
-        73_758,
-        73_788,
-        73_818,
-        73_848,
-        73_877,
-        73_907,
-        73_936,
-        73_965,
-        73_995,
-        74_024,
-        74_053,
-        74_083,
-        74_113,
-        74_142,
-        74_172,
-        74_202,
-        74_231,
-        74_261,
-        74_291,
-        74_320,
-        74_349,
-        74_379,
-        74_408,
-        74_437,
-        74_467,
-        74_497,
-        74_526,
-        74_556,
-        74_586,
-        74_615,
-        74_645,
-        74_675,
-        74_704,
-        74_733,
-        74_763,
-        74_792,
-        74_822,
-        74_851,
-        74_881,
-        74_910,
-        74_940,
-        74_969,
-        74_999,
-        75_029,
-        75_058,
-        75_088,
-        75_117,
-        75_147,
-        75_176,
-        75_206,
-        75_235,
-        75_264,
-        75_294,
-        75_323,
-        75_353,
-        75_383,
-        75_412,
-        75_442,
-        75_472,
-        75_501,
-        75_531,
-        75_560,
-        75_590,
-        75_619,
-        75_648,
-        75_678,
-        75_707,
-        75_737,
-        75_766,
-        75_796,
-        75_826,
-        75_856,
-        75_885,
-        75_915,
-        75_944,
-        75_974,
-        76_003,
-        76_032,
-        76_062,
-        76_091,
-        76_121,
-        76_150,
-        76_180,
-        76_210,
-        76_239,
-        76_269,
-        76_299,
-        76_328,
-        76_358,
-        76_387,
-        76_416,
-        76_446,
-        76_475,
-        76_505,
-        76_534,
-        76_564,
-        76_593,
-        76_623,
-        76_653,
-        76_682,
-        76_712,
-        76_741,
-        76_771,
-        76_801,
-        76_830,
-        76_859,
-        76_889,
-        76_918,
-        76_948,
-        76_977,
-        77_007,
-        77_036,
-        77_066,
-        77_096,
-        77_125,
-        77_155,
-        77_185,
-        77_214,
-        77_243,
-        77_273,
-        77_302,
-        77_332,
-        77_361,
-        77_390,
-        77_420,
-        77_450,
-        77_479,
-        77_509,
-        77_539,
-        77_569,
-        77_598,
-        77_627,
-        77_657,
-        77_686,
-        77_715,
-        77_745,
-        77_774,
-        77_804,
-        77_833,
-        77_863,
-        77_893,
-        77_923,
-        77_952,
-        77_982,
-        78_011,
-        78_041,
-        78_070,
-        78_099,
-        78_129,
-        78_158,
-        78_188,
-        78_217,
-        78_247,
-        78_277,
-        78_307,
-        78_336,
-        78_366,
-        78_395,
-        78_425,
-        78_454,
-        78_483,
-        78_513,
-        78_542,
-        78_572,
-        78_601,
-        78_631,
-        78_661,
-        78_690,
-        78_720,
-        78_750,
-        78_779,
-        78_808,
-        78_838,
-        78_867,
-        78_897,
-        78_926,
-        78_956,
-        78_985,
-        79_015,
-        79_044,
-        79_074,
-        79_104,
-        79_133,
-        79_163,
-        79_192,
-        79_222,
-        79_251,
-        79_281,
-        79_310,
-        79_340,
-        79_369,
-        79_399,
-        79_428,
-        79_458,
-        79_487,
-        79_517,
-        79_546,
-        79_576,
-        79_606,
-        79_635,
-        79_665,
-        79_695,
-        79_724,
-        79_753,
-        79_783,
-        79_812,
-        79_841,
-        79_871,
-        79_900,
-        79_930,
-        79_960,
-        79_990
+        68030,
+        68060,
+        68089,
+        68119,
+        68148,
+        68177,
+        68207,
+        68236,
+        68266,
+        68295,
+        68325,
+        68354,
+        68384,
+        68414,
+        68443,
+        68473,
+        68502,
+        68532,
+        68561,
+        68591,
+        68620,
+        68650,
+        68679,
+        68708,
+        68738,
+        68768,
+        68797,
+        68827,
+        68857,
+        68886,
+        68916,
+        68946,
+        68975,
+        69004,
+        69034,
+        69063,
+        69092,
+        69122,
+        69152,
+        69181,
+        69211,
+        69240,
+        69270,
+        69300,
+        69330,
+        69359,
+        69388,
+        69418,
+        69447,
+        69476,
+        69506,
+        69535,
+        69565,
+        69595,
+        69624,
+        69654,
+        69684,
+        69713,
+        69743,
+        69772,
+        69802,
+        69831,
+        69861,
+        69890,
+        69919,
+        69949,
+        69978,
+        70008,
+        70038,
+        70067,
+        70097,
+        70126,
+        70156,
+        70186,
+        70215,
+        70245,
+        70274,
+        70303,
+        70333,
+        70362,
+        70392,
+        70421,
+        70451,
+        70481,
+        70510,
+        70540,
+        70570,
+        70599,
+        70629,
+        70658,
+        70687,
+        70717,
+        70746,
+        70776,
+        70805,
+        70835,
+        70864,
+        70894,
+        70924,
+        70954,
+        70983,
+        71013,
+        71042,
+        71071,
+        71101,
+        71130,
+        71159,
+        71189,
+        71218,
+        71248,
+        71278,
+        71308,
+        71337,
+        71367,
+        71397,
+        71426,
+        71455,
+        71485,
+        71514,
+        71543,
+        71573,
+        71602,
+        71632,
+        71662,
+        71691,
+        71721,
+        71751,
+        71781,
+        71810,
+        71839,
+        71869,
+        71898,
+        71927,
+        71957,
+        71986,
+        72016,
+        72046,
+        72075,
+        72105,
+        72135,
+        72164,
+        72194,
+        72223,
+        72253,
+        72282,
+        72311,
+        72341,
+        72370,
+        72400,
+        72429,
+        72459,
+        72489,
+        72518,
+        72548,
+        72577,
+        72607,
+        72637,
+        72666,
+        72695,
+        72725,
+        72754,
+        72784,
+        72813,
+        72843,
+        72872,
+        72902,
+        72931,
+        72961,
+        72991,
+        73020,
+        73050,
+        73080,
+        73109,
+        73139,
+        73168,
+        73197,
+        73227,
+        73256,
+        73286,
+        73315,
+        73345,
+        73375,
+        73404,
+        73434,
+        73464,
+        73493,
+        73523,
+        73552,
+        73581,
+        73611,
+        73640,
+        73669,
+        73699,
+        73729,
+        73758,
+        73788,
+        73818,
+        73848,
+        73877,
+        73907,
+        73936,
+        73965,
+        73995,
+        74024,
+        74053,
+        74083,
+        74113,
+        74142,
+        74172,
+        74202,
+        74231,
+        74261,
+        74291,
+        74320,
+        74349,
+        74379,
+        74408,
+        74437,
+        74467,
+        74497,
+        74526,
+        74556,
+        74586,
+        74615,
+        74645,
+        74675,
+        74704,
+        74733,
+        74763,
+        74792,
+        74822,
+        74851,
+        74881,
+        74910,
+        74940,
+        74969,
+        74999,
+        75029,
+        75058,
+        75088,
+        75117,
+        75147,
+        75176,
+        75206,
+        75235,
+        75264,
+        75294,
+        75323,
+        75353,
+        75383,
+        75412,
+        75442,
+        75472,
+        75501,
+        75531,
+        75560,
+        75590,
+        75619,
+        75648,
+        75678,
+        75707,
+        75737,
+        75766,
+        75796,
+        75826,
+        75856,
+        75885,
+        75915,
+        75944,
+        75974,
+        76003,
+        76032,
+        76062,
+        76091,
+        76121,
+        76150,
+        76180,
+        76210,
+        76239,
+        76269,
+        76299,
+        76328,
+        76358,
+        76387,
+        76416,
+        76446,
+        76475,
+        76505,
+        76534,
+        76564,
+        76593,
+        76623,
+        76653,
+        76682,
+        76712,
+        76741,
+        76771,
+        76801,
+        76830,
+        76859,
+        76889,
+        76918,
+        76948,
+        76977,
+        77007,
+        77036,
+        77066,
+        77096,
+        77125,
+        77155,
+        77185,
+        77214,
+        77243,
+        77273,
+        77302,
+        77332,
+        77361,
+        77390,
+        77420,
+        77450,
+        77479,
+        77509,
+        77539,
+        77569,
+        77598,
+        77627,
+        77657,
+        77686,
+        77715,
+        77745,
+        77774,
+        77804,
+        77833,
+        77863,
+        77893,
+        77923,
+        77952,
+        77982,
+        78011,
+        78041,
+        78070,
+        78099,
+        78129,
+        78158,
+        78188,
+        78217,
+        78247,
+        78277,
+        78307,
+        78336,
+        78366,
+        78395,
+        78425,
+        78454,
+        78483,
+        78513,
+        78542,
+        78572,
+        78601,
+        78631,
+        78661,
+        78690,
+        78720,
+        78750,
+        78779,
+        78808,
+        78838,
+        78867,
+        78897,
+        78926,
+        78956,
+        78985,
+        79015,
+        79044,
+        79074,
+        79104,
+        79133,
+        79163,
+        79192,
+        79222,
+        79251,
+        79281,
+        79310,
+        79340,
+        79369,
+        79399,
+        79428,
+        79458,
+        79487,
+        79517,
+        79546,
+        79576,
+        79606,
+        79635,
+        79665,
+        79695,
+        79724,
+        79753,
+        79783,
+        79812,
+        79841,
+        79871,
+        79900,
+        79930,
+        79960,
+        79990
       ];
     }
   });
@@ -70427,8 +70274,8 @@ var Plotly = (() => {
         return Lib.coerce(contIn, contOut, attrs, attr, dflt);
       };
       var handleTraceDefaults = function(traceIn, traceOut, coords, layout) {
-        for (const coord of coords) {
-          handleDefaults(traceIn, traceOut, coord + "calendar", layout.calendar);
+        for (var i = 0; i < coords.length; i++) {
+          handleDefaults(traceIn, traceOut, coords[i] + "calendar", layout.calendar);
         }
       };
       var CANONICAL_TICK = {
@@ -70537,7 +70384,7 @@ var Plotly = (() => {
           } else {
             if (directiveObj === UNKNOWN) replacementPart = UNKNOWN;
             else replacementPart = cDate.formatDate(directiveObj[modifier]);
-            fmt = fmt.slice(0, Math.max(0, i)) + replacementPart + fmt.slice(i + directiveLen);
+            fmt = fmt.substr(0, i) + replacementPart + fmt.substr(i + directiveLen);
             i += replacementPart.length;
           }
         }
