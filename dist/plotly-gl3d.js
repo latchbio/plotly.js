@@ -42,9 +42,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/native-promise-only/lib/npo.src.js
+  // node_modules/.pnpm/native-promise-only@0.8.1/node_modules/native-promise-only/lib/npo.src.js
   var require_npo_src = __commonJS({
-    "node_modules/native-promise-only/lib/npo.src.js"(exports, module) {
+    "node_modules/.pnpm/native-promise-only@0.8.1/node_modules/native-promise-only/lib/npo.src.js"(exports, module) {
       (function UMD(name2, context, definition) {
         context[name2] = context[name2] || definition();
         if (typeof module != "undefined" && module.exports) {
@@ -343,9 +343,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/@plotly/d3/d3.js
+  // node_modules/.pnpm/@plotly+d3@3.8.2/node_modules/@plotly/d3/d3.js
   var require_d3 = __commonJS({
-    "node_modules/@plotly/d3/d3.js"(exports, module) {
+    "node_modules/.pnpm/@plotly+d3@3.8.2/node_modules/@plotly/d3/d3.js"(exports, module) {
       !function() {
         var d3 = {
           version: "3.8.2"
@@ -7231,9 +7231,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/d3-time/dist/d3-time.js
+  // node_modules/.pnpm/d3-time@1.1.0/node_modules/d3-time/dist/d3-time.js
   var require_d3_time = __commonJS({
-    "node_modules/d3-time/dist/d3-time.js"(exports, module) {
+    "node_modules/.pnpm/d3-time@1.1.0/node_modules/d3-time/dist/d3-time.js"(exports, module) {
       (function(global2, factory) {
         typeof exports === "object" && typeof module !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
       })(exports, function(exports2) {
@@ -7569,9 +7569,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/d3-time-format/dist/d3-time-format.js
+  // node_modules/.pnpm/d3-time-format@2.3.0/node_modules/d3-time-format/dist/d3-time-format.js
   var require_d3_time_format = __commonJS({
-    "node_modules/d3-time-format/dist/d3-time-format.js"(exports, module) {
+    "node_modules/.pnpm/d3-time-format@2.3.0/node_modules/d3-time-format/dist/d3-time-format.js"(exports, module) {
       (function(global2, factory) {
         typeof exports === "object" && typeof module !== "undefined" ? factory(exports, require_d3_time()) : typeof define === "function" && define.amd ? define(["exports", "d3-time"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
       })(exports, function(exports2, d3Time) {
@@ -7607,6 +7607,8 @@ var Plotly = (() => {
             "d": formatDayOfMonth,
             "e": formatDayOfMonth,
             "f": formatMicroseconds,
+            "g": formatYearISO,
+            "G": formatFullYearISO,
             "H": formatHour24,
             "I": formatHour12,
             "j": formatDayOfYear,
@@ -7639,6 +7641,8 @@ var Plotly = (() => {
             "d": formatUTCDayOfMonth,
             "e": formatUTCDayOfMonth,
             "f": formatUTCMicroseconds,
+            "g": formatUTCYearISO,
+            "G": formatUTCFullYearISO,
             "H": formatUTCHour24,
             "I": formatUTCHour12,
             "j": formatUTCDayOfYear,
@@ -7671,6 +7675,8 @@ var Plotly = (() => {
             "d": parseDayOfMonth,
             "e": parseDayOfMonth,
             "f": parseMicroseconds,
+            "g": parseYear,
+            "G": parseFullYear,
             "H": parseHour24,
             "I": parseHour24,
             "j": parseDayOfYear,
@@ -8000,9 +8006,12 @@ var Plotly = (() => {
         function formatWeekNumberSunday(d, p) {
           return pad(d3Time.timeSunday.count(d3Time.timeYear(d) - 1, d), p, 2);
         }
-        function formatWeekNumberISO(d, p) {
+        function dISO(d) {
           var day = d.getDay();
-          d = day >= 4 || day === 0 ? d3Time.timeThursday(d) : d3Time.timeThursday.ceil(d);
+          return day >= 4 || day === 0 ? d3Time.timeThursday(d) : d3Time.timeThursday.ceil(d);
+        }
+        function formatWeekNumberISO(d, p) {
+          d = dISO(d);
           return pad(d3Time.timeThursday.count(d3Time.timeYear(d), d) + (d3Time.timeYear(d).getDay() === 4), p, 2);
         }
         function formatWeekdayNumberSunday(d) {
@@ -8014,7 +8023,16 @@ var Plotly = (() => {
         function formatYear(d, p) {
           return pad(d.getFullYear() % 100, p, 2);
         }
+        function formatYearISO(d, p) {
+          d = dISO(d);
+          return pad(d.getFullYear() % 100, p, 2);
+        }
         function formatFullYear(d, p) {
+          return pad(d.getFullYear() % 1e4, p, 4);
+        }
+        function formatFullYearISO(d, p) {
+          var day = d.getDay();
+          d = day >= 4 || day === 0 ? d3Time.timeThursday(d) : d3Time.timeThursday.ceil(d);
           return pad(d.getFullYear() % 1e4, p, 4);
         }
         function formatZone(d) {
@@ -8055,9 +8073,12 @@ var Plotly = (() => {
         function formatUTCWeekNumberSunday(d, p) {
           return pad(d3Time.utcSunday.count(d3Time.utcYear(d) - 1, d), p, 2);
         }
-        function formatUTCWeekNumberISO(d, p) {
+        function UTCdISO(d) {
           var day = d.getUTCDay();
-          d = day >= 4 || day === 0 ? d3Time.utcThursday(d) : d3Time.utcThursday.ceil(d);
+          return day >= 4 || day === 0 ? d3Time.utcThursday(d) : d3Time.utcThursday.ceil(d);
+        }
+        function formatUTCWeekNumberISO(d, p) {
+          d = UTCdISO(d);
           return pad(d3Time.utcThursday.count(d3Time.utcYear(d), d) + (d3Time.utcYear(d).getUTCDay() === 4), p, 2);
         }
         function formatUTCWeekdayNumberSunday(d) {
@@ -8069,7 +8090,16 @@ var Plotly = (() => {
         function formatUTCYear(d, p) {
           return pad(d.getUTCFullYear() % 100, p, 2);
         }
+        function formatUTCYearISO(d, p) {
+          d = UTCdISO(d);
+          return pad(d.getUTCFullYear() % 100, p, 2);
+        }
         function formatUTCFullYear(d, p) {
+          return pad(d.getUTCFullYear() % 1e4, p, 4);
+        }
+        function formatUTCFullYearISO(d, p) {
+          var day = d.getUTCDay();
+          d = day >= 4 || day === 0 ? d3Time.utcThursday(d) : d3Time.utcThursday.ceil(d);
           return pad(d.getUTCFullYear() % 1e4, p, 4);
         }
         function formatUTCZone() {
@@ -8122,9 +8152,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/d3-format/dist/d3-format.js
+  // node_modules/.pnpm/d3-format@1.4.5/node_modules/d3-format/dist/d3-format.js
   var require_d3_format = __commonJS({
-    "node_modules/d3-format/dist/d3-format.js"(exports, module) {
+    "node_modules/.pnpm/d3-format@1.4.5/node_modules/d3-format/dist/d3-format.js"(exports, module) {
       (function(global2, factory) {
         typeof exports === "object" && typeof module !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}));
       })(exports, function(exports2) {
@@ -8371,9 +8401,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/is-string-blank/index.js
+  // node_modules/.pnpm/is-string-blank@1.0.1/node_modules/is-string-blank/index.js
   var require_is_string_blank = __commonJS({
-    "node_modules/is-string-blank/index.js"(exports, module) {
+    "node_modules/.pnpm/is-string-blank@1.0.1/node_modules/is-string-blank/index.js"(exports, module) {
       "use strict";
       module.exports = function(str) {
         var l = str.length, a;
@@ -8388,9 +8418,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/fast-isnumeric/index.js
+  // node_modules/.pnpm/fast-isnumeric@1.1.4/node_modules/fast-isnumeric/index.js
   var require_fast_isnumeric = __commonJS({
-    "node_modules/fast-isnumeric/index.js"(exports, module) {
+    "node_modules/.pnpm/fast-isnumeric@1.1.4/node_modules/fast-isnumeric/index.js"(exports, module) {
       "use strict";
       var allBlankCharCodes = require_is_string_blank();
       module.exports = function(n) {
@@ -8479,9 +8509,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/base64-arraybuffer/dist/base64-arraybuffer.umd.js
+  // node_modules/.pnpm/base64-arraybuffer@1.0.2/node_modules/base64-arraybuffer/dist/base64-arraybuffer.umd.js
   var require_base64_arraybuffer_umd = __commonJS({
-    "node_modules/base64-arraybuffer/dist/base64-arraybuffer.umd.js"(exports, module) {
+    "node_modules/.pnpm/base64-arraybuffer@1.0.2/node_modules/base64-arraybuffer/dist/base64-arraybuffer.umd.js"(exports, module) {
       (function(global2, factory) {
         typeof exports === "object" && typeof module !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2["base64-arraybuffer"] = {}));
       })(exports, function(exports2) {
@@ -9131,11 +9161,23 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/tinycolor2/tinycolor.js
+  // node_modules/.pnpm/tinycolor2@1.6.0/node_modules/tinycolor2/cjs/tinycolor.js
   var require_tinycolor = __commonJS({
-    "node_modules/tinycolor2/tinycolor.js"(exports, module) {
-      (function(Math2) {
-        var trimLeft = /^\s+/, trimRight = /\s+$/, tinyCounter = 0, mathRound = Math2.round, mathMin = Math2.min, mathMax = Math2.max, mathRandom = Math2.random;
+    "node_modules/.pnpm/tinycolor2@1.6.0/node_modules/tinycolor2/cjs/tinycolor.js"(exports, module) {
+      (function(global2, factory) {
+        typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, global2.tinycolor = factory());
+      })(exports, function() {
+        "use strict";
+        function _typeof(obj) {
+          "@babel/helpers - typeof";
+          return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj2) {
+            return typeof obj2;
+          } : function(obj2) {
+            return obj2 && "function" == typeof Symbol && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
+          }, _typeof(obj);
+        }
+        var trimLeft = /^\s+/;
+        var trimRight = /\s+$/;
         function tinycolor(color, opts) {
           color = color ? color : "";
           opts = opts || {};
@@ -9146,114 +9188,118 @@ var Plotly = (() => {
             return new tinycolor(color, opts);
           }
           var rgb = inputToRGB(color);
-          this._originalInput = color, this._r = rgb.r, this._g = rgb.g, this._b = rgb.b, this._a = rgb.a, this._roundA = mathRound(100 * this._a) / 100, this._format = opts.format || rgb.format;
+          this._originalInput = color, this._r = rgb.r, this._g = rgb.g, this._b = rgb.b, this._a = rgb.a, this._roundA = Math.round(100 * this._a) / 100, this._format = opts.format || rgb.format;
           this._gradientType = opts.gradientType;
-          if (this._r < 1) {
-            this._r = mathRound(this._r);
-          }
-          if (this._g < 1) {
-            this._g = mathRound(this._g);
-          }
-          if (this._b < 1) {
-            this._b = mathRound(this._b);
-          }
+          if (this._r < 1) this._r = Math.round(this._r);
+          if (this._g < 1) this._g = Math.round(this._g);
+          if (this._b < 1) this._b = Math.round(this._b);
           this._ok = rgb.ok;
-          this._tc_id = tinyCounter++;
         }
         tinycolor.prototype = {
-          isDark: function() {
+          isDark: function isDark() {
             return this.getBrightness() < 128;
           },
-          isLight: function() {
+          isLight: function isLight() {
             return !this.isDark();
           },
-          isValid: function() {
+          isValid: function isValid() {
             return this._ok;
           },
-          getOriginalInput: function() {
+          getOriginalInput: function getOriginalInput() {
             return this._originalInput;
           },
-          getFormat: function() {
+          getFormat: function getFormat() {
             return this._format;
           },
-          getAlpha: function() {
+          getAlpha: function getAlpha() {
             return this._a;
           },
-          getBrightness: function() {
+          getBrightness: function getBrightness() {
             var rgb = this.toRgb();
             return (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1e3;
           },
-          getLuminance: function() {
+          getLuminance: function getLuminance() {
             var rgb = this.toRgb();
             var RsRGB, GsRGB, BsRGB, R, G, B;
             RsRGB = rgb.r / 255;
             GsRGB = rgb.g / 255;
             BsRGB = rgb.b / 255;
-            if (RsRGB <= 0.03928) {
-              R = RsRGB / 12.92;
-            } else {
-              R = Math2.pow((RsRGB + 0.055) / 1.055, 2.4);
-            }
-            if (GsRGB <= 0.03928) {
-              G = GsRGB / 12.92;
-            } else {
-              G = Math2.pow((GsRGB + 0.055) / 1.055, 2.4);
-            }
-            if (BsRGB <= 0.03928) {
-              B = BsRGB / 12.92;
-            } else {
-              B = Math2.pow((BsRGB + 0.055) / 1.055, 2.4);
-            }
+            if (RsRGB <= 0.03928) R = RsRGB / 12.92;
+            else R = Math.pow((RsRGB + 0.055) / 1.055, 2.4);
+            if (GsRGB <= 0.03928) G = GsRGB / 12.92;
+            else G = Math.pow((GsRGB + 0.055) / 1.055, 2.4);
+            if (BsRGB <= 0.03928) B = BsRGB / 12.92;
+            else B = Math.pow((BsRGB + 0.055) / 1.055, 2.4);
             return 0.2126 * R + 0.7152 * G + 0.0722 * B;
           },
-          setAlpha: function(value) {
+          setAlpha: function setAlpha(value) {
             this._a = boundAlpha(value);
-            this._roundA = mathRound(100 * this._a) / 100;
+            this._roundA = Math.round(100 * this._a) / 100;
             return this;
           },
-          toHsv: function() {
+          toHsv: function toHsv() {
             var hsv = rgbToHsv(this._r, this._g, this._b);
-            return { h: hsv.h * 360, s: hsv.s, v: hsv.v, a: this._a };
+            return {
+              h: hsv.h * 360,
+              s: hsv.s,
+              v: hsv.v,
+              a: this._a
+            };
           },
-          toHsvString: function() {
+          toHsvString: function toHsvString() {
             var hsv = rgbToHsv(this._r, this._g, this._b);
-            var h = mathRound(hsv.h * 360), s = mathRound(hsv.s * 100), v = mathRound(hsv.v * 100);
+            var h = Math.round(hsv.h * 360), s = Math.round(hsv.s * 100), v = Math.round(hsv.v * 100);
             return this._a == 1 ? "hsv(" + h + ", " + s + "%, " + v + "%)" : "hsva(" + h + ", " + s + "%, " + v + "%, " + this._roundA + ")";
           },
-          toHsl: function() {
+          toHsl: function toHsl() {
             var hsl = rgbToHsl(this._r, this._g, this._b);
-            return { h: hsl.h * 360, s: hsl.s, l: hsl.l, a: this._a };
+            return {
+              h: hsl.h * 360,
+              s: hsl.s,
+              l: hsl.l,
+              a: this._a
+            };
           },
-          toHslString: function() {
+          toHslString: function toHslString() {
             var hsl = rgbToHsl(this._r, this._g, this._b);
-            var h = mathRound(hsl.h * 360), s = mathRound(hsl.s * 100), l = mathRound(hsl.l * 100);
+            var h = Math.round(hsl.h * 360), s = Math.round(hsl.s * 100), l = Math.round(hsl.l * 100);
             return this._a == 1 ? "hsl(" + h + ", " + s + "%, " + l + "%)" : "hsla(" + h + ", " + s + "%, " + l + "%, " + this._roundA + ")";
           },
-          toHex: function(allow3Char) {
+          toHex: function toHex(allow3Char) {
             return rgbToHex(this._r, this._g, this._b, allow3Char);
           },
-          toHexString: function(allow3Char) {
+          toHexString: function toHexString(allow3Char) {
             return "#" + this.toHex(allow3Char);
           },
-          toHex8: function(allow4Char) {
+          toHex8: function toHex8(allow4Char) {
             return rgbaToHex(this._r, this._g, this._b, this._a, allow4Char);
           },
-          toHex8String: function(allow4Char) {
+          toHex8String: function toHex8String(allow4Char) {
             return "#" + this.toHex8(allow4Char);
           },
-          toRgb: function() {
-            return { r: mathRound(this._r), g: mathRound(this._g), b: mathRound(this._b), a: this._a };
+          toRgb: function toRgb() {
+            return {
+              r: Math.round(this._r),
+              g: Math.round(this._g),
+              b: Math.round(this._b),
+              a: this._a
+            };
           },
-          toRgbString: function() {
-            return this._a == 1 ? "rgb(" + mathRound(this._r) + ", " + mathRound(this._g) + ", " + mathRound(this._b) + ")" : "rgba(" + mathRound(this._r) + ", " + mathRound(this._g) + ", " + mathRound(this._b) + ", " + this._roundA + ")";
+          toRgbString: function toRgbString() {
+            return this._a == 1 ? "rgb(" + Math.round(this._r) + ", " + Math.round(this._g) + ", " + Math.round(this._b) + ")" : "rgba(" + Math.round(this._r) + ", " + Math.round(this._g) + ", " + Math.round(this._b) + ", " + this._roundA + ")";
           },
-          toPercentageRgb: function() {
-            return { r: mathRound(bound01(this._r, 255) * 100) + "%", g: mathRound(bound01(this._g, 255) * 100) + "%", b: mathRound(bound01(this._b, 255) * 100) + "%", a: this._a };
+          toPercentageRgb: function toPercentageRgb() {
+            return {
+              r: Math.round(bound01(this._r, 255) * 100) + "%",
+              g: Math.round(bound01(this._g, 255) * 100) + "%",
+              b: Math.round(bound01(this._b, 255) * 100) + "%",
+              a: this._a
+            };
           },
-          toPercentageRgbString: function() {
-            return this._a == 1 ? "rgb(" + mathRound(bound01(this._r, 255) * 100) + "%, " + mathRound(bound01(this._g, 255) * 100) + "%, " + mathRound(bound01(this._b, 255) * 100) + "%)" : "rgba(" + mathRound(bound01(this._r, 255) * 100) + "%, " + mathRound(bound01(this._g, 255) * 100) + "%, " + mathRound(bound01(this._b, 255) * 100) + "%, " + this._roundA + ")";
+          toPercentageRgbString: function toPercentageRgbString() {
+            return this._a == 1 ? "rgb(" + Math.round(bound01(this._r, 255) * 100) + "%, " + Math.round(bound01(this._g, 255) * 100) + "%, " + Math.round(bound01(this._b, 255) * 100) + "%)" : "rgba(" + Math.round(bound01(this._r, 255) * 100) + "%, " + Math.round(bound01(this._g, 255) * 100) + "%, " + Math.round(bound01(this._b, 255) * 100) + "%, " + this._roundA + ")";
           },
-          toName: function() {
+          toName: function toName() {
             if (this._a === 0) {
               return "transparent";
             }
@@ -9262,7 +9308,7 @@ var Plotly = (() => {
             }
             return hexNames[rgbToHex(this._r, this._g, this._b, true)] || false;
           },
-          toFilter: function(secondColor) {
+          toFilter: function toFilter(secondColor) {
             var hex8String = "#" + rgbaToArgbHex(this._r, this._g, this._b, this._a);
             var secondHex8String = hex8String;
             var gradientType = this._gradientType ? "GradientType = 1, " : "";
@@ -9272,7 +9318,7 @@ var Plotly = (() => {
             }
             return "progid:DXImageTransform.Microsoft.gradient(" + gradientType + "startColorstr=" + hex8String + ",endColorstr=" + secondHex8String + ")";
           },
-          toString: function(format) {
+          toString: function toString(format) {
             var formatSet = !!format;
             format = format || this._format;
             var formattedString = false;
@@ -9313,10 +9359,10 @@ var Plotly = (() => {
             }
             return formattedString || this.toHexString();
           },
-          clone: function() {
+          clone: function clone() {
             return tinycolor(this.toString());
           },
-          _applyModification: function(fn, args) {
+          _applyModification: function _applyModification(fn, args) {
             var color = fn.apply(null, [this].concat([].slice.call(args)));
             this._r = color._r;
             this._g = color._g;
@@ -9324,51 +9370,55 @@ var Plotly = (() => {
             this.setAlpha(color._a);
             return this;
           },
-          lighten: function() {
-            return this._applyModification(lighten, arguments);
+          lighten: function lighten() {
+            return this._applyModification(_lighten, arguments);
           },
-          brighten: function() {
-            return this._applyModification(brighten, arguments);
+          brighten: function brighten() {
+            return this._applyModification(_brighten, arguments);
           },
-          darken: function() {
-            return this._applyModification(darken, arguments);
+          darken: function darken() {
+            return this._applyModification(_darken, arguments);
           },
-          desaturate: function() {
-            return this._applyModification(desaturate, arguments);
+          desaturate: function desaturate() {
+            return this._applyModification(_desaturate, arguments);
           },
-          saturate: function() {
-            return this._applyModification(saturate, arguments);
+          saturate: function saturate() {
+            return this._applyModification(_saturate, arguments);
           },
-          greyscale: function() {
-            return this._applyModification(greyscale, arguments);
+          greyscale: function greyscale() {
+            return this._applyModification(_greyscale, arguments);
           },
-          spin: function() {
-            return this._applyModification(spin, arguments);
+          spin: function spin() {
+            return this._applyModification(_spin, arguments);
           },
-          _applyCombination: function(fn, args) {
+          _applyCombination: function _applyCombination(fn, args) {
             return fn.apply(null, [this].concat([].slice.call(args)));
           },
-          analogous: function() {
-            return this._applyCombination(analogous, arguments);
+          analogous: function analogous() {
+            return this._applyCombination(_analogous, arguments);
           },
-          complement: function() {
-            return this._applyCombination(complement, arguments);
+          complement: function complement() {
+            return this._applyCombination(_complement, arguments);
           },
-          monochromatic: function() {
-            return this._applyCombination(monochromatic, arguments);
+          monochromatic: function monochromatic() {
+            return this._applyCombination(_monochromatic, arguments);
           },
-          splitcomplement: function() {
-            return this._applyCombination(splitcomplement, arguments);
+          splitcomplement: function splitcomplement() {
+            return this._applyCombination(_splitcomplement, arguments);
           },
-          triad: function() {
-            return this._applyCombination(triad, arguments);
+          // Disabled until https://github.com/bgrins/TinyColor/issues/254
+          // polyad: function (number) {
+          //   return this._applyCombination(polyad, [number]);
+          // },
+          triad: function triad() {
+            return this._applyCombination(polyad, [3]);
           },
-          tetrad: function() {
-            return this._applyCombination(tetrad, arguments);
+          tetrad: function tetrad() {
+            return this._applyCombination(polyad, [4]);
           }
         };
         tinycolor.fromRatio = function(color, opts) {
-          if (typeof color == "object") {
+          if (_typeof(color) == "object") {
             var newColor = {};
             for (var i in color) {
               if (color.hasOwnProperty(i)) {
@@ -9384,7 +9434,11 @@ var Plotly = (() => {
           return tinycolor(color, opts);
         };
         function inputToRGB(color) {
-          var rgb = { r: 0, g: 0, b: 0 };
+          var rgb = {
+            r: 0,
+            g: 0,
+            b: 0
+          };
           var a = 1;
           var s = null;
           var v = null;
@@ -9394,7 +9448,7 @@ var Plotly = (() => {
           if (typeof color == "string") {
             color = stringInputToObject(color);
           }
-          if (typeof color == "object") {
+          if (_typeof(color) == "object") {
             if (isValidCSSUnit(color.r) && isValidCSSUnit(color.g) && isValidCSSUnit(color.b)) {
               rgb = rgbToRgb(color.r, color.g, color.b);
               ok = true;
@@ -9420,9 +9474,9 @@ var Plotly = (() => {
           return {
             ok,
             format: color.format || format,
-            r: mathMin(255, mathMax(rgb.r, 0)),
-            g: mathMin(255, mathMax(rgb.g, 0)),
-            b: mathMin(255, mathMax(rgb.b, 0)),
+            r: Math.min(255, Math.max(rgb.r, 0)),
+            g: Math.min(255, Math.max(rgb.g, 0)),
+            b: Math.min(255, Math.max(rgb.b, 0)),
             a
           };
         }
@@ -9437,7 +9491,7 @@ var Plotly = (() => {
           r = bound01(r, 255);
           g = bound01(g, 255);
           b = bound01(b, 255);
-          var max = mathMax(r, g, b), min = mathMin(r, g, b);
+          var max = Math.max(r, g, b), min = Math.min(r, g, b);
           var h, s, l = (max + min) / 2;
           if (max == min) {
             h = s = 0;
@@ -9457,7 +9511,11 @@ var Plotly = (() => {
             }
             h /= 6;
           }
-          return { h, s, l };
+          return {
+            h,
+            s,
+            l
+          };
         }
         function hslToRgb(h, s, l) {
           var r, g, b;
@@ -9481,13 +9539,17 @@ var Plotly = (() => {
             g = hue2rgb(p, q, h);
             b = hue2rgb(p, q, h - 1 / 3);
           }
-          return { r: r * 255, g: g * 255, b: b * 255 };
+          return {
+            r: r * 255,
+            g: g * 255,
+            b: b * 255
+          };
         }
         function rgbToHsv(r, g, b) {
           r = bound01(r, 255);
           g = bound01(g, 255);
           b = bound01(b, 255);
-          var max = mathMax(r, g, b), min = mathMin(r, g, b);
+          var max = Math.max(r, g, b), min = Math.min(r, g, b);
           var h, s, v = max;
           var d = max - min;
           s = max === 0 ? 0 : d / max;
@@ -9507,139 +9569,132 @@ var Plotly = (() => {
             }
             h /= 6;
           }
-          return { h, s, v };
+          return {
+            h,
+            s,
+            v
+          };
         }
         function hsvToRgb(h, s, v) {
           h = bound01(h, 360) * 6;
           s = bound01(s, 100);
           v = bound01(v, 100);
-          var i = Math2.floor(h), f = h - i, p = v * (1 - s), q = v * (1 - f * s), t = v * (1 - (1 - f) * s), mod = i % 6, r = [v, q, p, p, t, v][mod], g = [t, v, v, q, p, p][mod], b = [p, p, t, v, v, q][mod];
-          return { r: r * 255, g: g * 255, b: b * 255 };
+          var i = Math.floor(h), f = h - i, p = v * (1 - s), q = v * (1 - f * s), t = v * (1 - (1 - f) * s), mod = i % 6, r = [v, q, p, p, t, v][mod], g = [t, v, v, q, p, p][mod], b = [p, p, t, v, v, q][mod];
+          return {
+            r: r * 255,
+            g: g * 255,
+            b: b * 255
+          };
         }
         function rgbToHex(r, g, b, allow3Char) {
-          var hex = [
-            pad2(mathRound(r).toString(16)),
-            pad2(mathRound(g).toString(16)),
-            pad2(mathRound(b).toString(16))
-          ];
+          var hex = [pad2(Math.round(r).toString(16)), pad2(Math.round(g).toString(16)), pad2(Math.round(b).toString(16))];
           if (allow3Char && hex[0].charAt(0) == hex[0].charAt(1) && hex[1].charAt(0) == hex[1].charAt(1) && hex[2].charAt(0) == hex[2].charAt(1)) {
             return hex[0].charAt(0) + hex[1].charAt(0) + hex[2].charAt(0);
           }
           return hex.join("");
         }
         function rgbaToHex(r, g, b, a, allow4Char) {
-          var hex = [
-            pad2(mathRound(r).toString(16)),
-            pad2(mathRound(g).toString(16)),
-            pad2(mathRound(b).toString(16)),
-            pad2(convertDecimalToHex(a))
-          ];
+          var hex = [pad2(Math.round(r).toString(16)), pad2(Math.round(g).toString(16)), pad2(Math.round(b).toString(16)), pad2(convertDecimalToHex(a))];
           if (allow4Char && hex[0].charAt(0) == hex[0].charAt(1) && hex[1].charAt(0) == hex[1].charAt(1) && hex[2].charAt(0) == hex[2].charAt(1) && hex[3].charAt(0) == hex[3].charAt(1)) {
             return hex[0].charAt(0) + hex[1].charAt(0) + hex[2].charAt(0) + hex[3].charAt(0);
           }
           return hex.join("");
         }
         function rgbaToArgbHex(r, g, b, a) {
-          var hex = [
-            pad2(convertDecimalToHex(a)),
-            pad2(mathRound(r).toString(16)),
-            pad2(mathRound(g).toString(16)),
-            pad2(mathRound(b).toString(16))
-          ];
+          var hex = [pad2(convertDecimalToHex(a)), pad2(Math.round(r).toString(16)), pad2(Math.round(g).toString(16)), pad2(Math.round(b).toString(16))];
           return hex.join("");
         }
         tinycolor.equals = function(color1, color2) {
-          if (!color1 || !color2) {
-            return false;
-          }
+          if (!color1 || !color2) return false;
           return tinycolor(color1).toRgbString() == tinycolor(color2).toRgbString();
         };
         tinycolor.random = function() {
           return tinycolor.fromRatio({
-            r: mathRandom(),
-            g: mathRandom(),
-            b: mathRandom()
+            r: Math.random(),
+            g: Math.random(),
+            b: Math.random()
           });
         };
-        function desaturate(color, amount) {
+        function _desaturate(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
           var hsl = tinycolor(color).toHsl();
           hsl.s -= amount / 100;
           hsl.s = clamp01(hsl.s);
           return tinycolor(hsl);
         }
-        function saturate(color, amount) {
+        function _saturate(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
           var hsl = tinycolor(color).toHsl();
           hsl.s += amount / 100;
           hsl.s = clamp01(hsl.s);
           return tinycolor(hsl);
         }
-        function greyscale(color) {
+        function _greyscale(color) {
           return tinycolor(color).desaturate(100);
         }
-        function lighten(color, amount) {
+        function _lighten(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
           var hsl = tinycolor(color).toHsl();
           hsl.l += amount / 100;
           hsl.l = clamp01(hsl.l);
           return tinycolor(hsl);
         }
-        function brighten(color, amount) {
+        function _brighten(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
           var rgb = tinycolor(color).toRgb();
-          rgb.r = mathMax(0, mathMin(255, rgb.r - mathRound(255 * -(amount / 100))));
-          rgb.g = mathMax(0, mathMin(255, rgb.g - mathRound(255 * -(amount / 100))));
-          rgb.b = mathMax(0, mathMin(255, rgb.b - mathRound(255 * -(amount / 100))));
+          rgb.r = Math.max(0, Math.min(255, rgb.r - Math.round(255 * -(amount / 100))));
+          rgb.g = Math.max(0, Math.min(255, rgb.g - Math.round(255 * -(amount / 100))));
+          rgb.b = Math.max(0, Math.min(255, rgb.b - Math.round(255 * -(amount / 100))));
           return tinycolor(rgb);
         }
-        function darken(color, amount) {
+        function _darken(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
           var hsl = tinycolor(color).toHsl();
           hsl.l -= amount / 100;
           hsl.l = clamp01(hsl.l);
           return tinycolor(hsl);
         }
-        function spin(color, amount) {
+        function _spin(color, amount) {
           var hsl = tinycolor(color).toHsl();
           var hue = (hsl.h + amount) % 360;
           hsl.h = hue < 0 ? 360 + hue : hue;
           return tinycolor(hsl);
         }
-        function complement(color) {
+        function _complement(color) {
           var hsl = tinycolor(color).toHsl();
           hsl.h = (hsl.h + 180) % 360;
           return tinycolor(hsl);
         }
-        function triad(color) {
+        function polyad(color, number) {
+          if (isNaN(number) || number <= 0) {
+            throw new Error("Argument to polyad must be a positive number");
+          }
+          var hsl = tinycolor(color).toHsl();
+          var result = [tinycolor(color)];
+          var step = 360 / number;
+          for (var i = 1; i < number; i++) {
+            result.push(tinycolor({
+              h: (hsl.h + i * step) % 360,
+              s: hsl.s,
+              l: hsl.l
+            }));
+          }
+          return result;
+        }
+        function _splitcomplement(color) {
           var hsl = tinycolor(color).toHsl();
           var h = hsl.h;
-          return [
-            tinycolor(color),
-            tinycolor({ h: (h + 120) % 360, s: hsl.s, l: hsl.l }),
-            tinycolor({ h: (h + 240) % 360, s: hsl.s, l: hsl.l })
-          ];
+          return [tinycolor(color), tinycolor({
+            h: (h + 72) % 360,
+            s: hsl.s,
+            l: hsl.l
+          }), tinycolor({
+            h: (h + 216) % 360,
+            s: hsl.s,
+            l: hsl.l
+          })];
         }
-        function tetrad(color) {
-          var hsl = tinycolor(color).toHsl();
-          var h = hsl.h;
-          return [
-            tinycolor(color),
-            tinycolor({ h: (h + 90) % 360, s: hsl.s, l: hsl.l }),
-            tinycolor({ h: (h + 180) % 360, s: hsl.s, l: hsl.l }),
-            tinycolor({ h: (h + 270) % 360, s: hsl.s, l: hsl.l })
-          ];
-        }
-        function splitcomplement(color) {
-          var hsl = tinycolor(color).toHsl();
-          var h = hsl.h;
-          return [
-            tinycolor(color),
-            tinycolor({ h: (h + 72) % 360, s: hsl.s, l: hsl.l }),
-            tinycolor({ h: (h + 216) % 360, s: hsl.s, l: hsl.l })
-          ];
-        }
-        function analogous(color, results, slices) {
+        function _analogous(color, results, slices) {
           results = results || 6;
           slices = slices || 30;
           var hsl = tinycolor(color).toHsl();
@@ -9651,14 +9706,18 @@ var Plotly = (() => {
           }
           return ret;
         }
-        function monochromatic(color, results) {
+        function _monochromatic(color, results) {
           results = results || 6;
           var hsv = tinycolor(color).toHsv();
           var h = hsv.h, s = hsv.s, v = hsv.v;
           var ret = [];
           var modification = 1 / results;
           while (results--) {
-            ret.push(tinycolor({ h, s, v }));
+            ret.push(tinycolor({
+              h,
+              s,
+              v
+            }));
             v = (v + modification) % 1;
           }
           return ret;
@@ -9679,7 +9738,7 @@ var Plotly = (() => {
         tinycolor.readability = function(color1, color2) {
           var c1 = tinycolor(color1);
           var c2 = tinycolor(color2);
-          return (Math2.max(c1.getLuminance(), c2.getLuminance()) + 0.05) / (Math2.min(c1.getLuminance(), c2.getLuminance()) + 0.05);
+          return (Math.max(c1.getLuminance(), c2.getLuminance()) + 0.05) / (Math.min(c1.getLuminance(), c2.getLuminance()) + 0.05);
         };
         tinycolor.isReadable = function(color1, color2, wcag2) {
           var readability = tinycolor.readability(color1, color2);
@@ -9716,7 +9775,10 @@ var Plotly = (() => {
               bestColor = tinycolor(colorList[i]);
             }
           }
-          if (tinycolor.isReadable(baseColor, bestColor, { "level": level, "size": size }) || !includeFallbackColors) {
+          if (tinycolor.isReadable(baseColor, bestColor, {
+            level,
+            size
+          }) || !includeFallbackColors) {
             return bestColor;
           } else {
             args.includeFallbackColors = false;
@@ -9892,21 +9954,19 @@ var Plotly = (() => {
           return a;
         }
         function bound01(n, max) {
-          if (isOnePointZero(n)) {
-            n = "100%";
-          }
+          if (isOnePointZero(n)) n = "100%";
           var processPercent = isPercentage(n);
-          n = mathMin(max, mathMax(0, parseFloat(n)));
+          n = Math.min(max, Math.max(0, parseFloat(n)));
           if (processPercent) {
             n = parseInt(n * max, 10) / 100;
           }
-          if (Math2.abs(n - max) < 1e-6) {
+          if (Math.abs(n - max) < 1e-6) {
             return 1;
           }
           return n % max / parseFloat(max);
         }
         function clamp01(val) {
-          return mathMin(1, mathMax(0, val));
+          return Math.min(1, Math.max(0, val));
         }
         function parseIntFromHex(val) {
           return parseInt(val, 16);
@@ -9927,7 +9987,7 @@ var Plotly = (() => {
           return n;
         }
         function convertDecimalToHex(d) {
-          return Math2.round(parseFloat(d) * 255).toString(16);
+          return Math.round(parseFloat(d) * 255).toString(16);
         }
         function convertHexToDecimal(h) {
           return parseIntFromHex(h) / 255;
@@ -9962,26 +10022,59 @@ var Plotly = (() => {
             color = names[color];
             named = true;
           } else if (color == "transparent") {
-            return { r: 0, g: 0, b: 0, a: 0, format: "name" };
+            return {
+              r: 0,
+              g: 0,
+              b: 0,
+              a: 0,
+              format: "name"
+            };
           }
           var match;
           if (match = matchers.rgb.exec(color)) {
-            return { r: match[1], g: match[2], b: match[3] };
+            return {
+              r: match[1],
+              g: match[2],
+              b: match[3]
+            };
           }
           if (match = matchers.rgba.exec(color)) {
-            return { r: match[1], g: match[2], b: match[3], a: match[4] };
+            return {
+              r: match[1],
+              g: match[2],
+              b: match[3],
+              a: match[4]
+            };
           }
           if (match = matchers.hsl.exec(color)) {
-            return { h: match[1], s: match[2], l: match[3] };
+            return {
+              h: match[1],
+              s: match[2],
+              l: match[3]
+            };
           }
           if (match = matchers.hsla.exec(color)) {
-            return { h: match[1], s: match[2], l: match[3], a: match[4] };
+            return {
+              h: match[1],
+              s: match[2],
+              l: match[3],
+              a: match[4]
+            };
           }
           if (match = matchers.hsv.exec(color)) {
-            return { h: match[1], s: match[2], v: match[3] };
+            return {
+              h: match[1],
+              s: match[2],
+              v: match[3]
+            };
           }
           if (match = matchers.hsva.exec(color)) {
-            return { h: match[1], s: match[2], v: match[3], a: match[4] };
+            return {
+              h: match[1],
+              s: match[2],
+              v: match[3],
+              a: match[4]
+            };
           }
           if (match = matchers.hex8.exec(color)) {
             return {
@@ -10021,7 +10114,10 @@ var Plotly = (() => {
         }
         function validateWCAG2Parms(parms) {
           var level, size;
-          parms = parms || { "level": "AA", "size": "small" };
+          parms = parms || {
+            level: "AA",
+            size: "small"
+          };
           level = (parms.level || "AA").toUpperCase();
           size = (parms.size || "small").toLowerCase();
           if (level !== "AA" && level !== "AAA") {
@@ -10030,18 +10126,13 @@ var Plotly = (() => {
           if (size !== "small" && size !== "large") {
             size = "small";
           }
-          return { "level": level, "size": size };
+          return {
+            level,
+            size
+          };
         }
-        if (typeof module !== "undefined" && module.exports) {
-          module.exports = tinycolor;
-        } else if (typeof define === "function" && define.amd) {
-          define(function() {
-            return tinycolor;
-          });
-        } else {
-          window.tinycolor = tinycolor;
-        }
-      })(Math);
+        return tinycolor;
+      });
     }
   });
 
@@ -11644,9 +11735,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/create.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/create.js
   var require_create = __commonJS({
-    "node_modules/gl-mat4/create.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/create.js"(exports, module) {
       module.exports = create;
       function create() {
         var out = new Float32Array(16);
@@ -11671,9 +11762,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/clone.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/clone.js
   var require_clone = __commonJS({
-    "node_modules/gl-mat4/clone.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/clone.js"(exports, module) {
       module.exports = clone;
       function clone(a) {
         var out = new Float32Array(16);
@@ -11698,9 +11789,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/copy.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/copy.js
   var require_copy = __commonJS({
-    "node_modules/gl-mat4/copy.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/copy.js"(exports, module) {
       module.exports = copy;
       function copy(out, a) {
         out[0] = a[0];
@@ -11724,9 +11815,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/identity.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/identity.js
   var require_identity = __commonJS({
-    "node_modules/gl-mat4/identity.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/identity.js"(exports, module) {
       module.exports = identity;
       function identity(out) {
         out[0] = 1;
@@ -11750,9 +11841,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/transpose.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/transpose.js
   var require_transpose = __commonJS({
-    "node_modules/gl-mat4/transpose.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/transpose.js"(exports, module) {
       module.exports = transpose;
       function transpose(out, a) {
         if (out === a) {
@@ -11792,9 +11883,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/invert.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/invert.js
   var require_invert = __commonJS({
-    "node_modules/gl-mat4/invert.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/invert.js"(exports, module) {
       module.exports = invert;
       function invert(out, a) {
         var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11], a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15], b00 = a00 * a11 - a01 * a10, b01 = a00 * a12 - a02 * a10, b02 = a00 * a13 - a03 * a10, b03 = a01 * a12 - a02 * a11, b04 = a01 * a13 - a03 * a11, b05 = a02 * a13 - a03 * a12, b06 = a20 * a31 - a21 * a30, b07 = a20 * a32 - a22 * a30, b08 = a20 * a33 - a23 * a30, b09 = a21 * a32 - a22 * a31, b10 = a21 * a33 - a23 * a31, b11 = a22 * a33 - a23 * a32, det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
@@ -11823,9 +11914,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/adjoint.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/adjoint.js
   var require_adjoint = __commonJS({
-    "node_modules/gl-mat4/adjoint.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/adjoint.js"(exports, module) {
       module.exports = adjoint;
       function adjoint(out, a) {
         var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11], a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15];
@@ -11850,9 +11941,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/determinant.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/determinant.js
   var require_determinant = __commonJS({
-    "node_modules/gl-mat4/determinant.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/determinant.js"(exports, module) {
       module.exports = determinant;
       function determinant(a) {
         var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11], a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15], b00 = a00 * a11 - a01 * a10, b01 = a00 * a12 - a02 * a10, b02 = a00 * a13 - a03 * a10, b03 = a01 * a12 - a02 * a11, b04 = a01 * a13 - a03 * a11, b05 = a02 * a13 - a03 * a12, b06 = a20 * a31 - a21 * a30, b07 = a20 * a32 - a22 * a30, b08 = a20 * a33 - a23 * a30, b09 = a21 * a32 - a22 * a31, b10 = a21 * a33 - a23 * a31, b11 = a22 * a33 - a23 * a32;
@@ -11861,9 +11952,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/multiply.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/multiply.js
   var require_multiply = __commonJS({
-    "node_modules/gl-mat4/multiply.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/multiply.js"(exports, module) {
       module.exports = multiply;
       function multiply(out, a, b) {
         var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11], a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15];
@@ -11901,9 +11992,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/translate.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/translate.js
   var require_translate = __commonJS({
-    "node_modules/gl-mat4/translate.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/translate.js"(exports, module) {
       module.exports = translate;
       function translate(out, a, v) {
         var x = v[0], y = v[1], z = v[2], a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23;
@@ -11947,9 +12038,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/scale.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/scale.js
   var require_scale = __commonJS({
-    "node_modules/gl-mat4/scale.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/scale.js"(exports, module) {
       module.exports = scale;
       function scale(out, a, v) {
         var x = v[0], y = v[1], z = v[2];
@@ -11974,9 +12065,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/rotate.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotate.js
   var require_rotate = __commonJS({
-    "node_modules/gl-mat4/rotate.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotate.js"(exports, module) {
       module.exports = rotate;
       function rotate(out, a, rad, axis) {
         var x = axis[0], y = axis[1], z = axis[2], len = Math.sqrt(x * x + y * y + z * z), s, c, t, a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23, b00, b01, b02, b10, b11, b12, b20, b21, b22;
@@ -12034,9 +12125,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/rotateX.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateX.js
   var require_rotateX = __commonJS({
-    "node_modules/gl-mat4/rotateX.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateX.js"(exports, module) {
       module.exports = rotateX;
       function rotateX(out, a, rad) {
         var s = Math.sin(rad), c = Math.cos(rad), a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11];
@@ -12063,9 +12154,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/rotateY.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateY.js
   var require_rotateY = __commonJS({
-    "node_modules/gl-mat4/rotateY.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateY.js"(exports, module) {
       module.exports = rotateY;
       function rotateY(out, a, rad) {
         var s = Math.sin(rad), c = Math.cos(rad), a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11];
@@ -12092,9 +12183,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/rotateZ.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateZ.js
   var require_rotateZ = __commonJS({
-    "node_modules/gl-mat4/rotateZ.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateZ.js"(exports, module) {
       module.exports = rotateZ;
       function rotateZ(out, a, rad) {
         var s = Math.sin(rad), c = Math.cos(rad), a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7];
@@ -12121,9 +12212,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromRotation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromRotation.js
   var require_fromRotation = __commonJS({
-    "node_modules/gl-mat4/fromRotation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromRotation.js"(exports, module) {
       module.exports = fromRotation;
       function fromRotation(out, rad, axis) {
         var s, c, t;
@@ -12162,9 +12253,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromRotationTranslation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromRotationTranslation.js
   var require_fromRotationTranslation = __commonJS({
-    "node_modules/gl-mat4/fromRotationTranslation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromRotationTranslation.js"(exports, module) {
       module.exports = fromRotationTranslation;
       function fromRotationTranslation(out, q, v) {
         var x = q[0], y = q[1], z = q[2], w = q[3], x2 = x + x, y2 = y + y, z2 = z + z, xx = x * x2, xy = x * y2, xz = x * z2, yy = y * y2, yz = y * z2, zz = z * z2, wx = w * x2, wy = w * y2, wz = w * z2;
@@ -12189,9 +12280,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromScaling.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromScaling.js
   var require_fromScaling = __commonJS({
-    "node_modules/gl-mat4/fromScaling.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromScaling.js"(exports, module) {
       module.exports = fromScaling;
       function fromScaling(out, v) {
         out[0] = v[0];
@@ -12215,9 +12306,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromTranslation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromTranslation.js
   var require_fromTranslation = __commonJS({
-    "node_modules/gl-mat4/fromTranslation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromTranslation.js"(exports, module) {
       module.exports = fromTranslation;
       function fromTranslation(out, v) {
         out[0] = 1;
@@ -12241,9 +12332,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromXRotation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromXRotation.js
   var require_fromXRotation = __commonJS({
-    "node_modules/gl-mat4/fromXRotation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromXRotation.js"(exports, module) {
       module.exports = fromXRotation;
       function fromXRotation(out, rad) {
         var s = Math.sin(rad), c = Math.cos(rad);
@@ -12268,9 +12359,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromYRotation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromYRotation.js
   var require_fromYRotation = __commonJS({
-    "node_modules/gl-mat4/fromYRotation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromYRotation.js"(exports, module) {
       module.exports = fromYRotation;
       function fromYRotation(out, rad) {
         var s = Math.sin(rad), c = Math.cos(rad);
@@ -12295,9 +12386,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromZRotation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromZRotation.js
   var require_fromZRotation = __commonJS({
-    "node_modules/gl-mat4/fromZRotation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromZRotation.js"(exports, module) {
       module.exports = fromZRotation;
       function fromZRotation(out, rad) {
         var s = Math.sin(rad), c = Math.cos(rad);
@@ -12322,9 +12413,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromQuat.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromQuat.js
   var require_fromQuat = __commonJS({
-    "node_modules/gl-mat4/fromQuat.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromQuat.js"(exports, module) {
       module.exports = fromQuat;
       function fromQuat(out, q) {
         var x = q[0], y = q[1], z = q[2], w = q[3], x2 = x + x, y2 = y + y, z2 = z + z, xx = x * x2, yx = y * x2, yy = y * y2, zx = z * x2, zy = z * y2, zz = z * z2, wx = w * x2, wy = w * y2, wz = w * z2;
@@ -12349,9 +12440,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/frustum.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/frustum.js
   var require_frustum = __commonJS({
-    "node_modules/gl-mat4/frustum.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/frustum.js"(exports, module) {
       module.exports = frustum;
       function frustum(out, left, right, bottom, top, near, far) {
         var rl = 1 / (right - left), tb = 1 / (top - bottom), nf = 1 / (near - far);
@@ -12376,9 +12467,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/perspective.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/perspective.js
   var require_perspective = __commonJS({
-    "node_modules/gl-mat4/perspective.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/perspective.js"(exports, module) {
       module.exports = perspective;
       function perspective(out, fovy, aspect, near, far) {
         var f = 1 / Math.tan(fovy / 2), nf = 1 / (near - far);
@@ -12403,9 +12494,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/perspectiveFromFieldOfView.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/perspectiveFromFieldOfView.js
   var require_perspectiveFromFieldOfView = __commonJS({
-    "node_modules/gl-mat4/perspectiveFromFieldOfView.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/perspectiveFromFieldOfView.js"(exports, module) {
       module.exports = perspectiveFromFieldOfView;
       function perspectiveFromFieldOfView(out, fov, near, far) {
         var upTan = Math.tan(fov.upDegrees * Math.PI / 180), downTan = Math.tan(fov.downDegrees * Math.PI / 180), leftTan = Math.tan(fov.leftDegrees * Math.PI / 180), rightTan = Math.tan(fov.rightDegrees * Math.PI / 180), xScale = 2 / (leftTan + rightTan), yScale = 2 / (upTan + downTan);
@@ -12430,9 +12521,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/ortho.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/ortho.js
   var require_ortho = __commonJS({
-    "node_modules/gl-mat4/ortho.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/ortho.js"(exports, module) {
       module.exports = ortho;
       function ortho(out, left, right, bottom, top, near, far) {
         var lr = 1 / (left - right), bt = 1 / (bottom - top), nf = 1 / (near - far);
@@ -12457,9 +12548,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/lookAt.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/lookAt.js
   var require_lookAt = __commonJS({
-    "node_modules/gl-mat4/lookAt.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/lookAt.js"(exports, module) {
       var identity = require_identity();
       module.exports = lookAt;
       function lookAt(out, eye, center, up) {
@@ -12523,9 +12614,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/str.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/str.js
   var require_str = __commonJS({
-    "node_modules/gl-mat4/str.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/str.js"(exports, module) {
       module.exports = str;
       function str(a) {
         return "mat4(" + a[0] + ", " + a[1] + ", " + a[2] + ", " + a[3] + ", " + a[4] + ", " + a[5] + ", " + a[6] + ", " + a[7] + ", " + a[8] + ", " + a[9] + ", " + a[10] + ", " + a[11] + ", " + a[12] + ", " + a[13] + ", " + a[14] + ", " + a[15] + ")";
@@ -12533,9 +12624,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/index.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/index.js
   var require_gl_mat4 = __commonJS({
-    "node_modules/gl-mat4/index.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/index.js"(exports, module) {
       module.exports = {
         create: require_create(),
         clone: require_clone(),
@@ -13728,16 +13819,16 @@ var Plotly = (() => {
     }
   });
 
-  // temp_stylePlugin:node_modules/maplibre-gl/dist/maplibre-gl.css
+  // temp_stylePlugin:node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css
   var init_maplibre_gl = __esm({
-    "temp_stylePlugin:node_modules/maplibre-gl/dist/maplibre-gl.css"() {
+    "temp_stylePlugin:node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
     }
   });
 
-  // stylePlugin:/Users/maximsmol/projects/latchbio/console/web/lib/plotly.js/node_modules/maplibre-gl/dist/maplibre-gl.css
+  // stylePlugin:/Users/aidan/latch/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css
   var maplibre_gl_exports = {};
   var init_maplibre_gl2 = __esm({
-    "stylePlugin:/Users/maximsmol/projects/latchbio/console/web/lib/plotly.js/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
+    "stylePlugin:/Users/aidan/latch/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
       init_maplibre_gl();
     }
   });
@@ -14880,9 +14971,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/is-mobile/index.js
+  // node_modules/.pnpm/is-mobile@4.0.0/node_modules/is-mobile/index.js
   var require_is_mobile = __commonJS({
-    "node_modules/is-mobile/index.js"(exports, module) {
+    "node_modules/.pnpm/is-mobile@4.0.0/node_modules/is-mobile/index.js"(exports, module) {
       "use strict";
       module.exports = isMobile;
       module.exports.isMobile = isMobile;
@@ -16018,16 +16109,16 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/is-browser/client.js
+  // node_modules/.pnpm/is-browser@2.1.0/node_modules/is-browser/client.js
   var require_client = __commonJS({
-    "node_modules/is-browser/client.js"(exports, module) {
+    "node_modules/.pnpm/is-browser@2.1.0/node_modules/is-browser/client.js"(exports, module) {
       module.exports = true;
     }
   });
 
-  // node_modules/has-hover/index.js
+  // node_modules/.pnpm/has-hover@1.0.1/node_modules/has-hover/index.js
   var require_has_hover = __commonJS({
-    "node_modules/has-hover/index.js"(exports, module) {
+    "node_modules/.pnpm/has-hover@1.0.1/node_modules/has-hover/index.js"(exports, module) {
       "use strict";
       var isBrowser = require_client();
       var hasHover;
@@ -16040,9 +16131,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/events/events.js
+  // ../../node_modules/.pnpm/events@3.3.0/node_modules/events/events.js
   var require_events = __commonJS({
-    "node_modules/events/events.js"(exports, module) {
+    "../../node_modules/.pnpm/events@3.3.0/node_modules/events/events.js"(exports, module) {
       "use strict";
       var R = typeof Reflect === "object" ? Reflect : null;
       var ReflectApply = R && typeof R.apply === "function" ? R.apply : function ReflectApply2(target, receiver, args) {
@@ -22824,9 +22915,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/parse-svg-path/index.js
+  // node_modules/.pnpm/parse-svg-path@0.1.2/node_modules/parse-svg-path/index.js
   var require_parse_svg_path = __commonJS({
-    "node_modules/parse-svg-path/index.js"(exports, module) {
+    "node_modules/.pnpm/parse-svg-path@0.1.2/node_modules/parse-svg-path/index.js"(exports, module) {
       module.exports = parse;
       var length = { a: 7, c: 6, h: 1, l: 2, m: 2, q: 4, s: 4, t: 2, v: 1, z: 0 };
       var segment = /([astvzqmhlc])([^astvzqmhlc]*)/ig;
@@ -29593,9 +29684,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/mouse-event-offset/index.js
+  // node_modules/.pnpm/mouse-event-offset@3.0.2/node_modules/mouse-event-offset/index.js
   var require_mouse_event_offset = __commonJS({
-    "node_modules/mouse-event-offset/index.js"(exports, module) {
+    "node_modules/.pnpm/mouse-event-offset@3.0.2/node_modules/mouse-event-offset/index.js"(exports, module) {
       var rootPosition = { left: 0, top: 0 };
       module.exports = mouseEventOffset;
       function mouseEventOffset(ev, target, out) {
@@ -29620,9 +29711,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/has-passive-events/index.js
+  // node_modules/.pnpm/has-passive-events@1.0.0/node_modules/has-passive-events/index.js
   var require_has_passive_events = __commonJS({
-    "node_modules/has-passive-events/index.js"(exports, module) {
+    "node_modules/.pnpm/has-passive-events@1.0.0/node_modules/has-passive-events/index.js"(exports, module) {
       "use strict";
       var isBrowser = require_client();
       function detect() {
@@ -38838,9 +38929,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/build-log.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/build-log.js
   var require_build_log = __commonJS({
-    "node_modules/polybooljs/lib/build-log.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/build-log.js"(exports, module) {
       function BuildLog() {
         var my;
         var nextSegmentId = 0;
@@ -38945,9 +39036,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/epsilon.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/epsilon.js
   var require_epsilon = __commonJS({
-    "node_modules/polybooljs/lib/epsilon.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/epsilon.js"(exports, module) {
       function Epsilon(eps) {
         if (typeof eps !== "number")
           eps = 1e-10;
@@ -39065,9 +39156,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/linked-list.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/linked-list.js
   var require_linked_list = __commonJS({
-    "node_modules/polybooljs/lib/linked-list.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/linked-list.js"(exports, module) {
       var LinkedList = {
         create: function() {
           var my = {
@@ -39143,9 +39234,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/intersecter.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/intersecter.js
   var require_intersecter = __commonJS({
-    "node_modules/polybooljs/lib/intersecter.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/intersecter.js"(exports, module) {
       var LinkedList = require_linked_list();
       function Intersecter(selfIntersection, eps, buildLog) {
         function segmentNew(start, end) {
@@ -39479,9 +39570,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/segment-chainer.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/segment-chainer.js
   var require_segment_chainer = __commonJS({
-    "node_modules/polybooljs/lib/segment-chainer.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/segment-chainer.js"(exports, module) {
       function SegmentChainer(segments, eps, buildLog) {
         var chains = [];
         var regions = [];
@@ -39659,9 +39750,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/segment-selector.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/segment-selector.js
   var require_segment_selector = __commonJS({
-    "node_modules/polybooljs/lib/segment-selector.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/segment-selector.js"(exports, module) {
       function select(segments, selection, buildLog) {
         var result = [];
         segments.forEach(function(seg) {
@@ -39791,9 +39882,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/geojson.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/geojson.js
   var require_geojson = __commonJS({
-    "node_modules/polybooljs/lib/geojson.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/geojson.js"(exports, module) {
       var GeoJSON = {
         // convert a GeoJSON object to a PolyBool polygon
         toPolygon: function(PolyBool, geojson) {
@@ -39908,9 +39999,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/index.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/index.js
   var require_polybooljs = __commonJS({
-    "node_modules/polybooljs/index.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/index.js"(exports, module) {
       var BuildLog = require_build_log();
       var Epsilon = require_epsilon();
       var Intersecter = require_intersecter();
@@ -40028,9 +40119,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/point-in-polygon/nested.js
+  // node_modules/.pnpm/point-in-polygon@1.1.0/node_modules/point-in-polygon/nested.js
   var require_nested = __commonJS({
-    "node_modules/point-in-polygon/nested.js"(exports, module) {
+    "node_modules/.pnpm/point-in-polygon@1.1.0/node_modules/point-in-polygon/nested.js"(exports, module) {
       module.exports = function pointInPolygonNested(point, vs, start, end) {
         var x = point[0], y = point[1];
         var inside = false;
@@ -54032,7 +54123,7 @@ var Plotly = (() => {
           if (!gd._context.staticPlot || d.source && d.source.slice(0, 5) === "data:") {
             thisImage.attr("xlink:href", d.source);
             this._imgSrc = d.source;
-          } else if (d.source && d.source.endsWith(".pmtiles")) {
+          } else if ("escapeHatch" in d._input) {
             this._imgSrc = d.source;
           } else {
             var imagePromise = new Promise(function(resolve) {
@@ -92924,9 +93015,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/color-name/index.js
+  // node_modules/.pnpm/color-name@1.1.4/node_modules/color-name/index.js
   var require_color_name = __commonJS({
-    "node_modules/color-name/index.js"(exports, module) {
+    "node_modules/.pnpm/color-name@1.1.4/node_modules/color-name/index.js"(exports, module) {
       "use strict";
       module.exports = {
         "aliceblue": [240, 248, 255],
@@ -93081,9 +93172,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/color-rgba/node_modules/color-parse/index.js
+  // node_modules/.pnpm/color-parse@1.4.3/node_modules/color-parse/index.js
   var require_color_parse = __commonJS({
-    "node_modules/color-rgba/node_modules/color-parse/index.js"(exports, module) {
+    "node_modules/.pnpm/color-parse@1.4.3/node_modules/color-parse/index.js"(exports, module) {
       "use strict";
       var names = require_color_name();
       module.exports = parse;
@@ -93198,9 +93289,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/color-space/rgb.js
+  // node_modules/.pnpm/color-space@1.16.0/node_modules/color-space/rgb.js
   var require_rgb = __commonJS({
-    "node_modules/color-space/rgb.js"(exports, module) {
+    "node_modules/.pnpm/color-space@1.16.0/node_modules/color-space/rgb.js"(exports, module) {
       "use strict";
       module.exports = {
         name: "rgb",
@@ -93212,9 +93303,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/color-space/hsl.js
+  // node_modules/.pnpm/color-space@1.16.0/node_modules/color-space/hsl.js
   var require_hsl = __commonJS({
-    "node_modules/color-space/hsl.js"(exports, module) {
+    "node_modules/.pnpm/color-space@1.16.0/node_modules/color-space/hsl.js"(exports, module) {
       "use strict";
       var rgb = require_rgb();
       module.exports = {
@@ -93285,9 +93376,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/clamp/index.js
+  // node_modules/.pnpm/clamp@1.0.1/node_modules/clamp/index.js
   var require_clamp = __commonJS({
-    "node_modules/clamp/index.js"(exports, module) {
+    "node_modules/.pnpm/clamp@1.0.1/node_modules/clamp/index.js"(exports, module) {
       module.exports = clamp;
       function clamp(value, min, max) {
         return min < max ? value < min ? min : value > max ? max : value : value < max ? max : value > min ? min : value;
@@ -93295,9 +93386,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/color-rgba/index.js
+  // node_modules/.pnpm/color-rgba@2.1.1/node_modules/color-rgba/index.js
   var require_color_rgba = __commonJS({
-    "node_modules/color-rgba/index.js"(exports, module) {
+    "node_modules/.pnpm/color-rgba@2.1.1/node_modules/color-rgba/index.js"(exports, module) {
       "use strict";
       var parse = require_color_parse();
       var hsl = require_hsl();
@@ -93319,9 +93410,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/dtype/index.js
+  // node_modules/.pnpm/dtype@2.0.0/node_modules/dtype/index.js
   var require_dtype = __commonJS({
-    "node_modules/dtype/index.js"(exports, module) {
+    "node_modules/.pnpm/dtype@2.0.0/node_modules/dtype/index.js"(exports, module) {
       module.exports = function(dtype) {
         switch (dtype) {
           case "int8":
@@ -93349,9 +93440,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/color-normalize/index.js
+  // node_modules/.pnpm/color-normalize@1.5.0/node_modules/color-normalize/index.js
   var require_color_normalize = __commonJS({
-    "node_modules/color-normalize/index.js"(exports, module) {
+    "node_modules/.pnpm/color-normalize@1.5.0/node_modules/color-normalize/index.js"(exports, module) {
       "use strict";
       var rgba = require_color_rgba();
       var clamp = require_clamp();
@@ -94265,9 +94356,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/get-canvas-context/index.js
+  // node_modules/.pnpm/get-canvas-context@1.0.2/node_modules/get-canvas-context/index.js
   var require_get_canvas_context = __commonJS({
-    "node_modules/get-canvas-context/index.js"(exports, module) {
+    "node_modules/.pnpm/get-canvas-context@1.0.2/node_modules/get-canvas-context/index.js"(exports, module) {
       module.exports = getCanvasContext;
       function getCanvasContext(type, opts) {
         if (typeof type !== "string") {
@@ -94303,9 +94394,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/webgl-context/index.js
+  // node_modules/.pnpm/webgl-context@2.2.0/node_modules/webgl-context/index.js
   var require_webgl_context = __commonJS({
-    "node_modules/webgl-context/index.js"(exports, module) {
+    "node_modules/.pnpm/webgl-context@2.2.0/node_modules/webgl-context/index.js"(exports, module) {
       var getContext = require_get_canvas_context();
       module.exports = function getWebGLContext(opt) {
         return getContext("webgl", opt);
@@ -100369,9 +100460,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/object-assign/index.js
+  // node_modules/.pnpm/object-assign@4.1.1/node_modules/object-assign/index.js
   var require_object_assign = __commonJS({
-    "node_modules/object-assign/index.js"(exports, module) {
+    "node_modules/.pnpm/object-assign@4.1.1/node_modules/object-assign/index.js"(exports, module) {
       "use strict";
       var getOwnPropertySymbols = Object.getOwnPropertySymbols;
       var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -100439,9 +100530,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/main.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/main.js
   var require_main = __commonJS({
-    "node_modules/world-calendars/dist/main.js"(exports, module) {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/main.js"(exports, module) {
       var assign = require_object_assign();
       function Calendars() {
         this.regionalOptions = [];
@@ -101293,9 +101384,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/plus.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/plus.js
   var require_plus = __commonJS({
-    "node_modules/world-calendars/dist/plus.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/plus.js"() {
       var assign = require_object_assign();
       var main = require_main();
       assign(main.regionalOptions[""], {
@@ -101773,9 +101864,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/chinese.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/chinese.js
   var require_chinese = __commonJS({
-    "node_modules/world-calendars/dist/calendars/chinese.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/chinese.js"() {
       var main = require_main();
       var assign = require_object_assign();
       var gregorianCalendar = main.instance();
@@ -102744,9 +102835,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/coptic.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/coptic.js
   var require_coptic = __commonJS({
-    "node_modules/world-calendars/dist/calendars/coptic.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/coptic.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function CopticCalendar(language) {
@@ -102926,9 +103017,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/discworld.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/discworld.js
   var require_discworld = __commonJS({
-    "node_modules/world-calendars/dist/calendars/discworld.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/discworld.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function DiscworldCalendar(language) {
@@ -103127,9 +103218,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/ethiopian.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/ethiopian.js
   var require_ethiopian = __commonJS({
-    "node_modules/world-calendars/dist/calendars/ethiopian.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/ethiopian.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function EthiopianCalendar(language) {
@@ -103309,9 +103400,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/hebrew.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/hebrew.js
   var require_hebrew = __commonJS({
-    "node_modules/world-calendars/dist/calendars/hebrew.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/hebrew.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function HebrewCalendar(language) {
@@ -103559,9 +103650,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/islamic.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/islamic.js
   var require_islamic = __commonJS({
-    "node_modules/world-calendars/dist/calendars/islamic.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/islamic.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function IslamicCalendar(language) {
@@ -103724,9 +103815,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/julian.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/julian.js
   var require_julian = __commonJS({
-    "node_modules/world-calendars/dist/calendars/julian.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/julian.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function JulianCalendar(language) {
@@ -103886,9 +103977,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/mayan.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/mayan.js
   var require_mayan = __commonJS({
-    "node_modules/world-calendars/dist/calendars/mayan.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/mayan.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function MayanCalendar(language) {
@@ -104277,9 +104368,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/nanakshahi.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/nanakshahi.js
   var require_nanakshahi = __commonJS({
-    "node_modules/world-calendars/dist/calendars/nanakshahi.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/nanakshahi.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function NanakshahiCalendar(language) {
@@ -104442,9 +104533,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/nepali.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/nepali.js
   var require_nepali = __commonJS({
-    "node_modules/world-calendars/dist/calendars/nepali.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/nepali.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function NepaliCalendar(language) {
@@ -104801,9 +104892,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/persian.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/persian.js
   var require_persian = __commonJS({
-    "node_modules/world-calendars/dist/calendars/persian.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/persian.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function PersianCalendar(language) {
@@ -104965,9 +105056,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/taiwan.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/taiwan.js
   var require_taiwan = __commonJS({
-    "node_modules/world-calendars/dist/calendars/taiwan.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/taiwan.js"() {
       var main = require_main();
       var assign = require_object_assign();
       var gregorianCalendar = main.instance();
@@ -105129,9 +105220,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/thai.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/thai.js
   var require_thai = __commonJS({
-    "node_modules/world-calendars/dist/calendars/thai.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/thai.js"() {
       var main = require_main();
       var assign = require_object_assign();
       var gregorianCalendar = main.instance();
@@ -105293,9 +105384,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/ummalqura.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/ummalqura.js
   var require_ummalqura = __commonJS({
-    "node_modules/world-calendars/dist/calendars/ummalqura.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/ummalqura.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function UmmAlQuraCalendar(language) {

@@ -76,7 +76,7 @@ module.exports = function draw(gd) {
         if(!gd._context.staticPlot || (d.source && d.source.slice(0, 5) === 'data:')) {
             thisImage.attr('xlink:href', d.source);
             this._imgSrc = d.source;
-        } else if (d.source && d.source.endsWith(".pmtiles")) { 
+        } else if ("escapeHatch" in d._input) { 
             this._imgSrc = d.source;
         } else {
             var imagePromise = new Promise(function(resolve) {

@@ -42,9 +42,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/native-promise-only/lib/npo.src.js
+  // node_modules/.pnpm/native-promise-only@0.8.1/node_modules/native-promise-only/lib/npo.src.js
   var require_npo_src = __commonJS({
-    "node_modules/native-promise-only/lib/npo.src.js"(exports, module) {
+    "node_modules/.pnpm/native-promise-only@0.8.1/node_modules/native-promise-only/lib/npo.src.js"(exports, module) {
       (function UMD(name, context, definition) {
         context[name] = context[name] || definition();
         if (typeof module != "undefined" && module.exports) {
@@ -343,9 +343,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/@plotly/d3/d3.js
+  // node_modules/.pnpm/@plotly+d3@3.8.2/node_modules/@plotly/d3/d3.js
   var require_d3 = __commonJS({
-    "node_modules/@plotly/d3/d3.js"(exports, module) {
+    "node_modules/.pnpm/@plotly+d3@3.8.2/node_modules/@plotly/d3/d3.js"(exports, module) {
       !function() {
         var d3 = {
           version: "3.8.2"
@@ -7231,9 +7231,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/d3-time/dist/d3-time.js
+  // node_modules/.pnpm/d3-time@1.1.0/node_modules/d3-time/dist/d3-time.js
   var require_d3_time = __commonJS({
-    "node_modules/d3-time/dist/d3-time.js"(exports, module) {
+    "node_modules/.pnpm/d3-time@1.1.0/node_modules/d3-time/dist/d3-time.js"(exports, module) {
       (function(global2, factory) {
         typeof exports === "object" && typeof module !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}));
       })(exports, function(exports2) {
@@ -7569,9 +7569,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/d3-time-format/dist/d3-time-format.js
+  // node_modules/.pnpm/d3-time-format@2.3.0/node_modules/d3-time-format/dist/d3-time-format.js
   var require_d3_time_format = __commonJS({
-    "node_modules/d3-time-format/dist/d3-time-format.js"(exports, module) {
+    "node_modules/.pnpm/d3-time-format@2.3.0/node_modules/d3-time-format/dist/d3-time-format.js"(exports, module) {
       (function(global2, factory) {
         typeof exports === "object" && typeof module !== "undefined" ? factory(exports, require_d3_time()) : typeof define === "function" && define.amd ? define(["exports", "d3-time"], factory) : (global2 = global2 || self, factory(global2.d3 = global2.d3 || {}, global2.d3));
       })(exports, function(exports2, d3Time) {
@@ -7607,6 +7607,8 @@ var Plotly = (() => {
             "d": formatDayOfMonth,
             "e": formatDayOfMonth,
             "f": formatMicroseconds,
+            "g": formatYearISO,
+            "G": formatFullYearISO,
             "H": formatHour24,
             "I": formatHour12,
             "j": formatDayOfYear,
@@ -7639,6 +7641,8 @@ var Plotly = (() => {
             "d": formatUTCDayOfMonth,
             "e": formatUTCDayOfMonth,
             "f": formatUTCMicroseconds,
+            "g": formatUTCYearISO,
+            "G": formatUTCFullYearISO,
             "H": formatUTCHour24,
             "I": formatUTCHour12,
             "j": formatUTCDayOfYear,
@@ -7671,6 +7675,8 @@ var Plotly = (() => {
             "d": parseDayOfMonth,
             "e": parseDayOfMonth,
             "f": parseMicroseconds,
+            "g": parseYear,
+            "G": parseFullYear,
             "H": parseHour24,
             "I": parseHour24,
             "j": parseDayOfYear,
@@ -8000,9 +8006,12 @@ var Plotly = (() => {
         function formatWeekNumberSunday(d, p) {
           return pad(d3Time.timeSunday.count(d3Time.timeYear(d) - 1, d), p, 2);
         }
-        function formatWeekNumberISO(d, p) {
+        function dISO(d) {
           var day = d.getDay();
-          d = day >= 4 || day === 0 ? d3Time.timeThursday(d) : d3Time.timeThursday.ceil(d);
+          return day >= 4 || day === 0 ? d3Time.timeThursday(d) : d3Time.timeThursday.ceil(d);
+        }
+        function formatWeekNumberISO(d, p) {
+          d = dISO(d);
           return pad(d3Time.timeThursday.count(d3Time.timeYear(d), d) + (d3Time.timeYear(d).getDay() === 4), p, 2);
         }
         function formatWeekdayNumberSunday(d) {
@@ -8014,7 +8023,16 @@ var Plotly = (() => {
         function formatYear(d, p) {
           return pad(d.getFullYear() % 100, p, 2);
         }
+        function formatYearISO(d, p) {
+          d = dISO(d);
+          return pad(d.getFullYear() % 100, p, 2);
+        }
         function formatFullYear(d, p) {
+          return pad(d.getFullYear() % 1e4, p, 4);
+        }
+        function formatFullYearISO(d, p) {
+          var day = d.getDay();
+          d = day >= 4 || day === 0 ? d3Time.timeThursday(d) : d3Time.timeThursday.ceil(d);
           return pad(d.getFullYear() % 1e4, p, 4);
         }
         function formatZone(d) {
@@ -8055,9 +8073,12 @@ var Plotly = (() => {
         function formatUTCWeekNumberSunday(d, p) {
           return pad(d3Time.utcSunday.count(d3Time.utcYear(d) - 1, d), p, 2);
         }
-        function formatUTCWeekNumberISO(d, p) {
+        function UTCdISO(d) {
           var day = d.getUTCDay();
-          d = day >= 4 || day === 0 ? d3Time.utcThursday(d) : d3Time.utcThursday.ceil(d);
+          return day >= 4 || day === 0 ? d3Time.utcThursday(d) : d3Time.utcThursday.ceil(d);
+        }
+        function formatUTCWeekNumberISO(d, p) {
+          d = UTCdISO(d);
           return pad(d3Time.utcThursday.count(d3Time.utcYear(d), d) + (d3Time.utcYear(d).getUTCDay() === 4), p, 2);
         }
         function formatUTCWeekdayNumberSunday(d) {
@@ -8069,7 +8090,16 @@ var Plotly = (() => {
         function formatUTCYear(d, p) {
           return pad(d.getUTCFullYear() % 100, p, 2);
         }
+        function formatUTCYearISO(d, p) {
+          d = UTCdISO(d);
+          return pad(d.getUTCFullYear() % 100, p, 2);
+        }
         function formatUTCFullYear(d, p) {
+          return pad(d.getUTCFullYear() % 1e4, p, 4);
+        }
+        function formatUTCFullYearISO(d, p) {
+          var day = d.getUTCDay();
+          d = day >= 4 || day === 0 ? d3Time.utcThursday(d) : d3Time.utcThursday.ceil(d);
           return pad(d.getUTCFullYear() % 1e4, p, 4);
         }
         function formatUTCZone() {
@@ -8122,9 +8152,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/d3-format/dist/d3-format.js
+  // node_modules/.pnpm/d3-format@1.4.5/node_modules/d3-format/dist/d3-format.js
   var require_d3_format = __commonJS({
-    "node_modules/d3-format/dist/d3-format.js"(exports, module) {
+    "node_modules/.pnpm/d3-format@1.4.5/node_modules/d3-format/dist/d3-format.js"(exports, module) {
       (function(global2, factory) {
         typeof exports === "object" && typeof module !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.d3 = global2.d3 || {}));
       })(exports, function(exports2) {
@@ -8371,9 +8401,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/is-string-blank/index.js
+  // node_modules/.pnpm/is-string-blank@1.0.1/node_modules/is-string-blank/index.js
   var require_is_string_blank = __commonJS({
-    "node_modules/is-string-blank/index.js"(exports, module) {
+    "node_modules/.pnpm/is-string-blank@1.0.1/node_modules/is-string-blank/index.js"(exports, module) {
       "use strict";
       module.exports = function(str) {
         var l = str.length, a;
@@ -8388,9 +8418,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/fast-isnumeric/index.js
+  // node_modules/.pnpm/fast-isnumeric@1.1.4/node_modules/fast-isnumeric/index.js
   var require_fast_isnumeric = __commonJS({
-    "node_modules/fast-isnumeric/index.js"(exports, module) {
+    "node_modules/.pnpm/fast-isnumeric@1.1.4/node_modules/fast-isnumeric/index.js"(exports, module) {
       "use strict";
       var allBlankCharCodes = require_is_string_blank();
       module.exports = function(n) {
@@ -8479,9 +8509,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/base64-arraybuffer/dist/base64-arraybuffer.umd.js
+  // node_modules/.pnpm/base64-arraybuffer@1.0.2/node_modules/base64-arraybuffer/dist/base64-arraybuffer.umd.js
   var require_base64_arraybuffer_umd = __commonJS({
-    "node_modules/base64-arraybuffer/dist/base64-arraybuffer.umd.js"(exports, module) {
+    "node_modules/.pnpm/base64-arraybuffer@1.0.2/node_modules/base64-arraybuffer/dist/base64-arraybuffer.umd.js"(exports, module) {
       (function(global2, factory) {
         typeof exports === "object" && typeof module !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2["base64-arraybuffer"] = {}));
       })(exports, function(exports2) {
@@ -9131,11 +9161,23 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/tinycolor2/tinycolor.js
+  // node_modules/.pnpm/tinycolor2@1.6.0/node_modules/tinycolor2/cjs/tinycolor.js
   var require_tinycolor = __commonJS({
-    "node_modules/tinycolor2/tinycolor.js"(exports, module) {
-      (function(Math2) {
-        var trimLeft = /^\s+/, trimRight = /\s+$/, tinyCounter = 0, mathRound = Math2.round, mathMin = Math2.min, mathMax = Math2.max, mathRandom = Math2.random;
+    "node_modules/.pnpm/tinycolor2@1.6.0/node_modules/tinycolor2/cjs/tinycolor.js"(exports, module) {
+      (function(global2, factory) {
+        typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, global2.tinycolor = factory());
+      })(exports, function() {
+        "use strict";
+        function _typeof(obj) {
+          "@babel/helpers - typeof";
+          return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(obj2) {
+            return typeof obj2;
+          } : function(obj2) {
+            return obj2 && "function" == typeof Symbol && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
+          }, _typeof(obj);
+        }
+        var trimLeft = /^\s+/;
+        var trimRight = /\s+$/;
         function tinycolor(color, opts) {
           color = color ? color : "";
           opts = opts || {};
@@ -9146,114 +9188,118 @@ var Plotly = (() => {
             return new tinycolor(color, opts);
           }
           var rgb = inputToRGB(color);
-          this._originalInput = color, this._r = rgb.r, this._g = rgb.g, this._b = rgb.b, this._a = rgb.a, this._roundA = mathRound(100 * this._a) / 100, this._format = opts.format || rgb.format;
+          this._originalInput = color, this._r = rgb.r, this._g = rgb.g, this._b = rgb.b, this._a = rgb.a, this._roundA = Math.round(100 * this._a) / 100, this._format = opts.format || rgb.format;
           this._gradientType = opts.gradientType;
-          if (this._r < 1) {
-            this._r = mathRound(this._r);
-          }
-          if (this._g < 1) {
-            this._g = mathRound(this._g);
-          }
-          if (this._b < 1) {
-            this._b = mathRound(this._b);
-          }
+          if (this._r < 1) this._r = Math.round(this._r);
+          if (this._g < 1) this._g = Math.round(this._g);
+          if (this._b < 1) this._b = Math.round(this._b);
           this._ok = rgb.ok;
-          this._tc_id = tinyCounter++;
         }
         tinycolor.prototype = {
-          isDark: function() {
+          isDark: function isDark() {
             return this.getBrightness() < 128;
           },
-          isLight: function() {
+          isLight: function isLight() {
             return !this.isDark();
           },
-          isValid: function() {
+          isValid: function isValid() {
             return this._ok;
           },
-          getOriginalInput: function() {
+          getOriginalInput: function getOriginalInput() {
             return this._originalInput;
           },
-          getFormat: function() {
+          getFormat: function getFormat() {
             return this._format;
           },
-          getAlpha: function() {
+          getAlpha: function getAlpha() {
             return this._a;
           },
-          getBrightness: function() {
+          getBrightness: function getBrightness() {
             var rgb = this.toRgb();
             return (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1e3;
           },
-          getLuminance: function() {
+          getLuminance: function getLuminance() {
             var rgb = this.toRgb();
             var RsRGB, GsRGB, BsRGB, R, G, B;
             RsRGB = rgb.r / 255;
             GsRGB = rgb.g / 255;
             BsRGB = rgb.b / 255;
-            if (RsRGB <= 0.03928) {
-              R = RsRGB / 12.92;
-            } else {
-              R = Math2.pow((RsRGB + 0.055) / 1.055, 2.4);
-            }
-            if (GsRGB <= 0.03928) {
-              G = GsRGB / 12.92;
-            } else {
-              G = Math2.pow((GsRGB + 0.055) / 1.055, 2.4);
-            }
-            if (BsRGB <= 0.03928) {
-              B = BsRGB / 12.92;
-            } else {
-              B = Math2.pow((BsRGB + 0.055) / 1.055, 2.4);
-            }
+            if (RsRGB <= 0.03928) R = RsRGB / 12.92;
+            else R = Math.pow((RsRGB + 0.055) / 1.055, 2.4);
+            if (GsRGB <= 0.03928) G = GsRGB / 12.92;
+            else G = Math.pow((GsRGB + 0.055) / 1.055, 2.4);
+            if (BsRGB <= 0.03928) B = BsRGB / 12.92;
+            else B = Math.pow((BsRGB + 0.055) / 1.055, 2.4);
             return 0.2126 * R + 0.7152 * G + 0.0722 * B;
           },
-          setAlpha: function(value) {
+          setAlpha: function setAlpha(value) {
             this._a = boundAlpha(value);
-            this._roundA = mathRound(100 * this._a) / 100;
+            this._roundA = Math.round(100 * this._a) / 100;
             return this;
           },
-          toHsv: function() {
+          toHsv: function toHsv() {
             var hsv = rgbToHsv(this._r, this._g, this._b);
-            return { h: hsv.h * 360, s: hsv.s, v: hsv.v, a: this._a };
+            return {
+              h: hsv.h * 360,
+              s: hsv.s,
+              v: hsv.v,
+              a: this._a
+            };
           },
-          toHsvString: function() {
+          toHsvString: function toHsvString() {
             var hsv = rgbToHsv(this._r, this._g, this._b);
-            var h = mathRound(hsv.h * 360), s = mathRound(hsv.s * 100), v = mathRound(hsv.v * 100);
+            var h = Math.round(hsv.h * 360), s = Math.round(hsv.s * 100), v = Math.round(hsv.v * 100);
             return this._a == 1 ? "hsv(" + h + ", " + s + "%, " + v + "%)" : "hsva(" + h + ", " + s + "%, " + v + "%, " + this._roundA + ")";
           },
-          toHsl: function() {
+          toHsl: function toHsl() {
             var hsl = rgbToHsl(this._r, this._g, this._b);
-            return { h: hsl.h * 360, s: hsl.s, l: hsl.l, a: this._a };
+            return {
+              h: hsl.h * 360,
+              s: hsl.s,
+              l: hsl.l,
+              a: this._a
+            };
           },
-          toHslString: function() {
+          toHslString: function toHslString() {
             var hsl = rgbToHsl(this._r, this._g, this._b);
-            var h = mathRound(hsl.h * 360), s = mathRound(hsl.s * 100), l = mathRound(hsl.l * 100);
+            var h = Math.round(hsl.h * 360), s = Math.round(hsl.s * 100), l = Math.round(hsl.l * 100);
             return this._a == 1 ? "hsl(" + h + ", " + s + "%, " + l + "%)" : "hsla(" + h + ", " + s + "%, " + l + "%, " + this._roundA + ")";
           },
-          toHex: function(allow3Char) {
+          toHex: function toHex(allow3Char) {
             return rgbToHex(this._r, this._g, this._b, allow3Char);
           },
-          toHexString: function(allow3Char) {
+          toHexString: function toHexString(allow3Char) {
             return "#" + this.toHex(allow3Char);
           },
-          toHex8: function(allow4Char) {
+          toHex8: function toHex8(allow4Char) {
             return rgbaToHex(this._r, this._g, this._b, this._a, allow4Char);
           },
-          toHex8String: function(allow4Char) {
+          toHex8String: function toHex8String(allow4Char) {
             return "#" + this.toHex8(allow4Char);
           },
-          toRgb: function() {
-            return { r: mathRound(this._r), g: mathRound(this._g), b: mathRound(this._b), a: this._a };
+          toRgb: function toRgb() {
+            return {
+              r: Math.round(this._r),
+              g: Math.round(this._g),
+              b: Math.round(this._b),
+              a: this._a
+            };
           },
-          toRgbString: function() {
-            return this._a == 1 ? "rgb(" + mathRound(this._r) + ", " + mathRound(this._g) + ", " + mathRound(this._b) + ")" : "rgba(" + mathRound(this._r) + ", " + mathRound(this._g) + ", " + mathRound(this._b) + ", " + this._roundA + ")";
+          toRgbString: function toRgbString() {
+            return this._a == 1 ? "rgb(" + Math.round(this._r) + ", " + Math.round(this._g) + ", " + Math.round(this._b) + ")" : "rgba(" + Math.round(this._r) + ", " + Math.round(this._g) + ", " + Math.round(this._b) + ", " + this._roundA + ")";
           },
-          toPercentageRgb: function() {
-            return { r: mathRound(bound01(this._r, 255) * 100) + "%", g: mathRound(bound01(this._g, 255) * 100) + "%", b: mathRound(bound01(this._b, 255) * 100) + "%", a: this._a };
+          toPercentageRgb: function toPercentageRgb() {
+            return {
+              r: Math.round(bound01(this._r, 255) * 100) + "%",
+              g: Math.round(bound01(this._g, 255) * 100) + "%",
+              b: Math.round(bound01(this._b, 255) * 100) + "%",
+              a: this._a
+            };
           },
-          toPercentageRgbString: function() {
-            return this._a == 1 ? "rgb(" + mathRound(bound01(this._r, 255) * 100) + "%, " + mathRound(bound01(this._g, 255) * 100) + "%, " + mathRound(bound01(this._b, 255) * 100) + "%)" : "rgba(" + mathRound(bound01(this._r, 255) * 100) + "%, " + mathRound(bound01(this._g, 255) * 100) + "%, " + mathRound(bound01(this._b, 255) * 100) + "%, " + this._roundA + ")";
+          toPercentageRgbString: function toPercentageRgbString() {
+            return this._a == 1 ? "rgb(" + Math.round(bound01(this._r, 255) * 100) + "%, " + Math.round(bound01(this._g, 255) * 100) + "%, " + Math.round(bound01(this._b, 255) * 100) + "%)" : "rgba(" + Math.round(bound01(this._r, 255) * 100) + "%, " + Math.round(bound01(this._g, 255) * 100) + "%, " + Math.round(bound01(this._b, 255) * 100) + "%, " + this._roundA + ")";
           },
-          toName: function() {
+          toName: function toName() {
             if (this._a === 0) {
               return "transparent";
             }
@@ -9262,7 +9308,7 @@ var Plotly = (() => {
             }
             return hexNames[rgbToHex(this._r, this._g, this._b, true)] || false;
           },
-          toFilter: function(secondColor) {
+          toFilter: function toFilter(secondColor) {
             var hex8String = "#" + rgbaToArgbHex(this._r, this._g, this._b, this._a);
             var secondHex8String = hex8String;
             var gradientType = this._gradientType ? "GradientType = 1, " : "";
@@ -9272,7 +9318,7 @@ var Plotly = (() => {
             }
             return "progid:DXImageTransform.Microsoft.gradient(" + gradientType + "startColorstr=" + hex8String + ",endColorstr=" + secondHex8String + ")";
           },
-          toString: function(format) {
+          toString: function toString(format) {
             var formatSet = !!format;
             format = format || this._format;
             var formattedString = false;
@@ -9313,10 +9359,10 @@ var Plotly = (() => {
             }
             return formattedString || this.toHexString();
           },
-          clone: function() {
+          clone: function clone() {
             return tinycolor(this.toString());
           },
-          _applyModification: function(fn, args) {
+          _applyModification: function _applyModification(fn, args) {
             var color = fn.apply(null, [this].concat([].slice.call(args)));
             this._r = color._r;
             this._g = color._g;
@@ -9324,51 +9370,55 @@ var Plotly = (() => {
             this.setAlpha(color._a);
             return this;
           },
-          lighten: function() {
-            return this._applyModification(lighten, arguments);
+          lighten: function lighten() {
+            return this._applyModification(_lighten, arguments);
           },
-          brighten: function() {
-            return this._applyModification(brighten, arguments);
+          brighten: function brighten() {
+            return this._applyModification(_brighten, arguments);
           },
-          darken: function() {
-            return this._applyModification(darken, arguments);
+          darken: function darken() {
+            return this._applyModification(_darken, arguments);
           },
-          desaturate: function() {
-            return this._applyModification(desaturate, arguments);
+          desaturate: function desaturate() {
+            return this._applyModification(_desaturate, arguments);
           },
-          saturate: function() {
-            return this._applyModification(saturate, arguments);
+          saturate: function saturate() {
+            return this._applyModification(_saturate, arguments);
           },
-          greyscale: function() {
-            return this._applyModification(greyscale, arguments);
+          greyscale: function greyscale() {
+            return this._applyModification(_greyscale, arguments);
           },
-          spin: function() {
-            return this._applyModification(spin, arguments);
+          spin: function spin() {
+            return this._applyModification(_spin, arguments);
           },
-          _applyCombination: function(fn, args) {
+          _applyCombination: function _applyCombination(fn, args) {
             return fn.apply(null, [this].concat([].slice.call(args)));
           },
-          analogous: function() {
-            return this._applyCombination(analogous, arguments);
+          analogous: function analogous() {
+            return this._applyCombination(_analogous, arguments);
           },
-          complement: function() {
-            return this._applyCombination(complement, arguments);
+          complement: function complement() {
+            return this._applyCombination(_complement, arguments);
           },
-          monochromatic: function() {
-            return this._applyCombination(monochromatic, arguments);
+          monochromatic: function monochromatic() {
+            return this._applyCombination(_monochromatic, arguments);
           },
-          splitcomplement: function() {
-            return this._applyCombination(splitcomplement, arguments);
+          splitcomplement: function splitcomplement() {
+            return this._applyCombination(_splitcomplement, arguments);
           },
-          triad: function() {
-            return this._applyCombination(triad, arguments);
+          // Disabled until https://github.com/bgrins/TinyColor/issues/254
+          // polyad: function (number) {
+          //   return this._applyCombination(polyad, [number]);
+          // },
+          triad: function triad() {
+            return this._applyCombination(polyad, [3]);
           },
-          tetrad: function() {
-            return this._applyCombination(tetrad, arguments);
+          tetrad: function tetrad() {
+            return this._applyCombination(polyad, [4]);
           }
         };
         tinycolor.fromRatio = function(color, opts) {
-          if (typeof color == "object") {
+          if (_typeof(color) == "object") {
             var newColor = {};
             for (var i in color) {
               if (color.hasOwnProperty(i)) {
@@ -9384,7 +9434,11 @@ var Plotly = (() => {
           return tinycolor(color, opts);
         };
         function inputToRGB(color) {
-          var rgb = { r: 0, g: 0, b: 0 };
+          var rgb = {
+            r: 0,
+            g: 0,
+            b: 0
+          };
           var a = 1;
           var s = null;
           var v = null;
@@ -9394,7 +9448,7 @@ var Plotly = (() => {
           if (typeof color == "string") {
             color = stringInputToObject(color);
           }
-          if (typeof color == "object") {
+          if (_typeof(color) == "object") {
             if (isValidCSSUnit(color.r) && isValidCSSUnit(color.g) && isValidCSSUnit(color.b)) {
               rgb = rgbToRgb(color.r, color.g, color.b);
               ok = true;
@@ -9420,9 +9474,9 @@ var Plotly = (() => {
           return {
             ok,
             format: color.format || format,
-            r: mathMin(255, mathMax(rgb.r, 0)),
-            g: mathMin(255, mathMax(rgb.g, 0)),
-            b: mathMin(255, mathMax(rgb.b, 0)),
+            r: Math.min(255, Math.max(rgb.r, 0)),
+            g: Math.min(255, Math.max(rgb.g, 0)),
+            b: Math.min(255, Math.max(rgb.b, 0)),
             a
           };
         }
@@ -9437,7 +9491,7 @@ var Plotly = (() => {
           r = bound01(r, 255);
           g = bound01(g, 255);
           b = bound01(b, 255);
-          var max = mathMax(r, g, b), min = mathMin(r, g, b);
+          var max = Math.max(r, g, b), min = Math.min(r, g, b);
           var h, s, l = (max + min) / 2;
           if (max == min) {
             h = s = 0;
@@ -9457,7 +9511,11 @@ var Plotly = (() => {
             }
             h /= 6;
           }
-          return { h, s, l };
+          return {
+            h,
+            s,
+            l
+          };
         }
         function hslToRgb(h, s, l) {
           var r, g, b;
@@ -9481,13 +9539,17 @@ var Plotly = (() => {
             g = hue2rgb(p, q, h);
             b = hue2rgb(p, q, h - 1 / 3);
           }
-          return { r: r * 255, g: g * 255, b: b * 255 };
+          return {
+            r: r * 255,
+            g: g * 255,
+            b: b * 255
+          };
         }
         function rgbToHsv(r, g, b) {
           r = bound01(r, 255);
           g = bound01(g, 255);
           b = bound01(b, 255);
-          var max = mathMax(r, g, b), min = mathMin(r, g, b);
+          var max = Math.max(r, g, b), min = Math.min(r, g, b);
           var h, s, v = max;
           var d = max - min;
           s = max === 0 ? 0 : d / max;
@@ -9507,139 +9569,132 @@ var Plotly = (() => {
             }
             h /= 6;
           }
-          return { h, s, v };
+          return {
+            h,
+            s,
+            v
+          };
         }
         function hsvToRgb(h, s, v) {
           h = bound01(h, 360) * 6;
           s = bound01(s, 100);
           v = bound01(v, 100);
-          var i = Math2.floor(h), f = h - i, p = v * (1 - s), q = v * (1 - f * s), t = v * (1 - (1 - f) * s), mod = i % 6, r = [v, q, p, p, t, v][mod], g = [t, v, v, q, p, p][mod], b = [p, p, t, v, v, q][mod];
-          return { r: r * 255, g: g * 255, b: b * 255 };
+          var i = Math.floor(h), f = h - i, p = v * (1 - s), q = v * (1 - f * s), t = v * (1 - (1 - f) * s), mod = i % 6, r = [v, q, p, p, t, v][mod], g = [t, v, v, q, p, p][mod], b = [p, p, t, v, v, q][mod];
+          return {
+            r: r * 255,
+            g: g * 255,
+            b: b * 255
+          };
         }
         function rgbToHex(r, g, b, allow3Char) {
-          var hex = [
-            pad2(mathRound(r).toString(16)),
-            pad2(mathRound(g).toString(16)),
-            pad2(mathRound(b).toString(16))
-          ];
+          var hex = [pad2(Math.round(r).toString(16)), pad2(Math.round(g).toString(16)), pad2(Math.round(b).toString(16))];
           if (allow3Char && hex[0].charAt(0) == hex[0].charAt(1) && hex[1].charAt(0) == hex[1].charAt(1) && hex[2].charAt(0) == hex[2].charAt(1)) {
             return hex[0].charAt(0) + hex[1].charAt(0) + hex[2].charAt(0);
           }
           return hex.join("");
         }
         function rgbaToHex(r, g, b, a, allow4Char) {
-          var hex = [
-            pad2(mathRound(r).toString(16)),
-            pad2(mathRound(g).toString(16)),
-            pad2(mathRound(b).toString(16)),
-            pad2(convertDecimalToHex(a))
-          ];
+          var hex = [pad2(Math.round(r).toString(16)), pad2(Math.round(g).toString(16)), pad2(Math.round(b).toString(16)), pad2(convertDecimalToHex(a))];
           if (allow4Char && hex[0].charAt(0) == hex[0].charAt(1) && hex[1].charAt(0) == hex[1].charAt(1) && hex[2].charAt(0) == hex[2].charAt(1) && hex[3].charAt(0) == hex[3].charAt(1)) {
             return hex[0].charAt(0) + hex[1].charAt(0) + hex[2].charAt(0) + hex[3].charAt(0);
           }
           return hex.join("");
         }
         function rgbaToArgbHex(r, g, b, a) {
-          var hex = [
-            pad2(convertDecimalToHex(a)),
-            pad2(mathRound(r).toString(16)),
-            pad2(mathRound(g).toString(16)),
-            pad2(mathRound(b).toString(16))
-          ];
+          var hex = [pad2(convertDecimalToHex(a)), pad2(Math.round(r).toString(16)), pad2(Math.round(g).toString(16)), pad2(Math.round(b).toString(16))];
           return hex.join("");
         }
         tinycolor.equals = function(color1, color2) {
-          if (!color1 || !color2) {
-            return false;
-          }
+          if (!color1 || !color2) return false;
           return tinycolor(color1).toRgbString() == tinycolor(color2).toRgbString();
         };
         tinycolor.random = function() {
           return tinycolor.fromRatio({
-            r: mathRandom(),
-            g: mathRandom(),
-            b: mathRandom()
+            r: Math.random(),
+            g: Math.random(),
+            b: Math.random()
           });
         };
-        function desaturate(color, amount) {
+        function _desaturate(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
           var hsl = tinycolor(color).toHsl();
           hsl.s -= amount / 100;
           hsl.s = clamp01(hsl.s);
           return tinycolor(hsl);
         }
-        function saturate(color, amount) {
+        function _saturate(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
           var hsl = tinycolor(color).toHsl();
           hsl.s += amount / 100;
           hsl.s = clamp01(hsl.s);
           return tinycolor(hsl);
         }
-        function greyscale(color) {
+        function _greyscale(color) {
           return tinycolor(color).desaturate(100);
         }
-        function lighten(color, amount) {
+        function _lighten(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
           var hsl = tinycolor(color).toHsl();
           hsl.l += amount / 100;
           hsl.l = clamp01(hsl.l);
           return tinycolor(hsl);
         }
-        function brighten(color, amount) {
+        function _brighten(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
           var rgb = tinycolor(color).toRgb();
-          rgb.r = mathMax(0, mathMin(255, rgb.r - mathRound(255 * -(amount / 100))));
-          rgb.g = mathMax(0, mathMin(255, rgb.g - mathRound(255 * -(amount / 100))));
-          rgb.b = mathMax(0, mathMin(255, rgb.b - mathRound(255 * -(amount / 100))));
+          rgb.r = Math.max(0, Math.min(255, rgb.r - Math.round(255 * -(amount / 100))));
+          rgb.g = Math.max(0, Math.min(255, rgb.g - Math.round(255 * -(amount / 100))));
+          rgb.b = Math.max(0, Math.min(255, rgb.b - Math.round(255 * -(amount / 100))));
           return tinycolor(rgb);
         }
-        function darken(color, amount) {
+        function _darken(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
           var hsl = tinycolor(color).toHsl();
           hsl.l -= amount / 100;
           hsl.l = clamp01(hsl.l);
           return tinycolor(hsl);
         }
-        function spin(color, amount) {
+        function _spin(color, amount) {
           var hsl = tinycolor(color).toHsl();
           var hue = (hsl.h + amount) % 360;
           hsl.h = hue < 0 ? 360 + hue : hue;
           return tinycolor(hsl);
         }
-        function complement(color) {
+        function _complement(color) {
           var hsl = tinycolor(color).toHsl();
           hsl.h = (hsl.h + 180) % 360;
           return tinycolor(hsl);
         }
-        function triad(color) {
+        function polyad(color, number) {
+          if (isNaN(number) || number <= 0) {
+            throw new Error("Argument to polyad must be a positive number");
+          }
+          var hsl = tinycolor(color).toHsl();
+          var result = [tinycolor(color)];
+          var step = 360 / number;
+          for (var i = 1; i < number; i++) {
+            result.push(tinycolor({
+              h: (hsl.h + i * step) % 360,
+              s: hsl.s,
+              l: hsl.l
+            }));
+          }
+          return result;
+        }
+        function _splitcomplement(color) {
           var hsl = tinycolor(color).toHsl();
           var h = hsl.h;
-          return [
-            tinycolor(color),
-            tinycolor({ h: (h + 120) % 360, s: hsl.s, l: hsl.l }),
-            tinycolor({ h: (h + 240) % 360, s: hsl.s, l: hsl.l })
-          ];
+          return [tinycolor(color), tinycolor({
+            h: (h + 72) % 360,
+            s: hsl.s,
+            l: hsl.l
+          }), tinycolor({
+            h: (h + 216) % 360,
+            s: hsl.s,
+            l: hsl.l
+          })];
         }
-        function tetrad(color) {
-          var hsl = tinycolor(color).toHsl();
-          var h = hsl.h;
-          return [
-            tinycolor(color),
-            tinycolor({ h: (h + 90) % 360, s: hsl.s, l: hsl.l }),
-            tinycolor({ h: (h + 180) % 360, s: hsl.s, l: hsl.l }),
-            tinycolor({ h: (h + 270) % 360, s: hsl.s, l: hsl.l })
-          ];
-        }
-        function splitcomplement(color) {
-          var hsl = tinycolor(color).toHsl();
-          var h = hsl.h;
-          return [
-            tinycolor(color),
-            tinycolor({ h: (h + 72) % 360, s: hsl.s, l: hsl.l }),
-            tinycolor({ h: (h + 216) % 360, s: hsl.s, l: hsl.l })
-          ];
-        }
-        function analogous(color, results, slices) {
+        function _analogous(color, results, slices) {
           results = results || 6;
           slices = slices || 30;
           var hsl = tinycolor(color).toHsl();
@@ -9651,14 +9706,18 @@ var Plotly = (() => {
           }
           return ret;
         }
-        function monochromatic(color, results) {
+        function _monochromatic(color, results) {
           results = results || 6;
           var hsv = tinycolor(color).toHsv();
           var h = hsv.h, s = hsv.s, v = hsv.v;
           var ret = [];
           var modification = 1 / results;
           while (results--) {
-            ret.push(tinycolor({ h, s, v }));
+            ret.push(tinycolor({
+              h,
+              s,
+              v
+            }));
             v = (v + modification) % 1;
           }
           return ret;
@@ -9679,7 +9738,7 @@ var Plotly = (() => {
         tinycolor.readability = function(color1, color2) {
           var c1 = tinycolor(color1);
           var c2 = tinycolor(color2);
-          return (Math2.max(c1.getLuminance(), c2.getLuminance()) + 0.05) / (Math2.min(c1.getLuminance(), c2.getLuminance()) + 0.05);
+          return (Math.max(c1.getLuminance(), c2.getLuminance()) + 0.05) / (Math.min(c1.getLuminance(), c2.getLuminance()) + 0.05);
         };
         tinycolor.isReadable = function(color1, color2, wcag2) {
           var readability = tinycolor.readability(color1, color2);
@@ -9716,7 +9775,10 @@ var Plotly = (() => {
               bestColor = tinycolor(colorList[i]);
             }
           }
-          if (tinycolor.isReadable(baseColor, bestColor, { "level": level, "size": size }) || !includeFallbackColors) {
+          if (tinycolor.isReadable(baseColor, bestColor, {
+            level,
+            size
+          }) || !includeFallbackColors) {
             return bestColor;
           } else {
             args.includeFallbackColors = false;
@@ -9892,21 +9954,19 @@ var Plotly = (() => {
           return a;
         }
         function bound01(n, max) {
-          if (isOnePointZero(n)) {
-            n = "100%";
-          }
+          if (isOnePointZero(n)) n = "100%";
           var processPercent = isPercentage(n);
-          n = mathMin(max, mathMax(0, parseFloat(n)));
+          n = Math.min(max, Math.max(0, parseFloat(n)));
           if (processPercent) {
             n = parseInt(n * max, 10) / 100;
           }
-          if (Math2.abs(n - max) < 1e-6) {
+          if (Math.abs(n - max) < 1e-6) {
             return 1;
           }
           return n % max / parseFloat(max);
         }
         function clamp01(val) {
-          return mathMin(1, mathMax(0, val));
+          return Math.min(1, Math.max(0, val));
         }
         function parseIntFromHex(val) {
           return parseInt(val, 16);
@@ -9927,7 +9987,7 @@ var Plotly = (() => {
           return n;
         }
         function convertDecimalToHex(d) {
-          return Math2.round(parseFloat(d) * 255).toString(16);
+          return Math.round(parseFloat(d) * 255).toString(16);
         }
         function convertHexToDecimal(h) {
           return parseIntFromHex(h) / 255;
@@ -9962,26 +10022,59 @@ var Plotly = (() => {
             color = names[color];
             named = true;
           } else if (color == "transparent") {
-            return { r: 0, g: 0, b: 0, a: 0, format: "name" };
+            return {
+              r: 0,
+              g: 0,
+              b: 0,
+              a: 0,
+              format: "name"
+            };
           }
           var match;
           if (match = matchers.rgb.exec(color)) {
-            return { r: match[1], g: match[2], b: match[3] };
+            return {
+              r: match[1],
+              g: match[2],
+              b: match[3]
+            };
           }
           if (match = matchers.rgba.exec(color)) {
-            return { r: match[1], g: match[2], b: match[3], a: match[4] };
+            return {
+              r: match[1],
+              g: match[2],
+              b: match[3],
+              a: match[4]
+            };
           }
           if (match = matchers.hsl.exec(color)) {
-            return { h: match[1], s: match[2], l: match[3] };
+            return {
+              h: match[1],
+              s: match[2],
+              l: match[3]
+            };
           }
           if (match = matchers.hsla.exec(color)) {
-            return { h: match[1], s: match[2], l: match[3], a: match[4] };
+            return {
+              h: match[1],
+              s: match[2],
+              l: match[3],
+              a: match[4]
+            };
           }
           if (match = matchers.hsv.exec(color)) {
-            return { h: match[1], s: match[2], v: match[3] };
+            return {
+              h: match[1],
+              s: match[2],
+              v: match[3]
+            };
           }
           if (match = matchers.hsva.exec(color)) {
-            return { h: match[1], s: match[2], v: match[3], a: match[4] };
+            return {
+              h: match[1],
+              s: match[2],
+              v: match[3],
+              a: match[4]
+            };
           }
           if (match = matchers.hex8.exec(color)) {
             return {
@@ -10021,7 +10114,10 @@ var Plotly = (() => {
         }
         function validateWCAG2Parms(parms) {
           var level, size;
-          parms = parms || { "level": "AA", "size": "small" };
+          parms = parms || {
+            level: "AA",
+            size: "small"
+          };
           level = (parms.level || "AA").toUpperCase();
           size = (parms.size || "small").toLowerCase();
           if (level !== "AA" && level !== "AAA") {
@@ -10030,18 +10126,13 @@ var Plotly = (() => {
           if (size !== "small" && size !== "large") {
             size = "small";
           }
-          return { "level": level, "size": size };
+          return {
+            level,
+            size
+          };
         }
-        if (typeof module !== "undefined" && module.exports) {
-          module.exports = tinycolor;
-        } else if (typeof define === "function" && define.amd) {
-          define(function() {
-            return tinycolor;
-          });
-        } else {
-          window.tinycolor = tinycolor;
-        }
-      })(Math);
+        return tinycolor;
+      });
     }
   });
 
@@ -11644,9 +11735,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/create.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/create.js
   var require_create = __commonJS({
-    "node_modules/gl-mat4/create.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/create.js"(exports, module) {
       module.exports = create;
       function create() {
         var out = new Float32Array(16);
@@ -11671,9 +11762,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/clone.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/clone.js
   var require_clone = __commonJS({
-    "node_modules/gl-mat4/clone.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/clone.js"(exports, module) {
       module.exports = clone;
       function clone(a) {
         var out = new Float32Array(16);
@@ -11698,9 +11789,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/copy.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/copy.js
   var require_copy = __commonJS({
-    "node_modules/gl-mat4/copy.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/copy.js"(exports, module) {
       module.exports = copy;
       function copy(out, a) {
         out[0] = a[0];
@@ -11724,9 +11815,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/identity.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/identity.js
   var require_identity = __commonJS({
-    "node_modules/gl-mat4/identity.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/identity.js"(exports, module) {
       module.exports = identity;
       function identity(out) {
         out[0] = 1;
@@ -11750,9 +11841,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/transpose.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/transpose.js
   var require_transpose = __commonJS({
-    "node_modules/gl-mat4/transpose.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/transpose.js"(exports, module) {
       module.exports = transpose;
       function transpose(out, a) {
         if (out === a) {
@@ -11792,9 +11883,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/invert.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/invert.js
   var require_invert = __commonJS({
-    "node_modules/gl-mat4/invert.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/invert.js"(exports, module) {
       module.exports = invert;
       function invert(out, a) {
         var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11], a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15], b00 = a00 * a11 - a01 * a10, b01 = a00 * a12 - a02 * a10, b02 = a00 * a13 - a03 * a10, b03 = a01 * a12 - a02 * a11, b04 = a01 * a13 - a03 * a11, b05 = a02 * a13 - a03 * a12, b06 = a20 * a31 - a21 * a30, b07 = a20 * a32 - a22 * a30, b08 = a20 * a33 - a23 * a30, b09 = a21 * a32 - a22 * a31, b10 = a21 * a33 - a23 * a31, b11 = a22 * a33 - a23 * a32, det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
@@ -11823,9 +11914,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/adjoint.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/adjoint.js
   var require_adjoint = __commonJS({
-    "node_modules/gl-mat4/adjoint.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/adjoint.js"(exports, module) {
       module.exports = adjoint;
       function adjoint(out, a) {
         var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11], a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15];
@@ -11850,9 +11941,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/determinant.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/determinant.js
   var require_determinant = __commonJS({
-    "node_modules/gl-mat4/determinant.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/determinant.js"(exports, module) {
       module.exports = determinant;
       function determinant(a) {
         var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11], a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15], b00 = a00 * a11 - a01 * a10, b01 = a00 * a12 - a02 * a10, b02 = a00 * a13 - a03 * a10, b03 = a01 * a12 - a02 * a11, b04 = a01 * a13 - a03 * a11, b05 = a02 * a13 - a03 * a12, b06 = a20 * a31 - a21 * a30, b07 = a20 * a32 - a22 * a30, b08 = a20 * a33 - a23 * a30, b09 = a21 * a32 - a22 * a31, b10 = a21 * a33 - a23 * a31, b11 = a22 * a33 - a23 * a32;
@@ -11861,9 +11952,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/multiply.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/multiply.js
   var require_multiply = __commonJS({
-    "node_modules/gl-mat4/multiply.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/multiply.js"(exports, module) {
       module.exports = multiply;
       function multiply(out, a, b) {
         var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11], a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15];
@@ -11901,9 +11992,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/translate.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/translate.js
   var require_translate = __commonJS({
-    "node_modules/gl-mat4/translate.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/translate.js"(exports, module) {
       module.exports = translate;
       function translate(out, a, v) {
         var x = v[0], y = v[1], z = v[2], a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23;
@@ -11947,9 +12038,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/scale.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/scale.js
   var require_scale = __commonJS({
-    "node_modules/gl-mat4/scale.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/scale.js"(exports, module) {
       module.exports = scale;
       function scale(out, a, v) {
         var x = v[0], y = v[1], z = v[2];
@@ -11974,9 +12065,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/rotate.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotate.js
   var require_rotate = __commonJS({
-    "node_modules/gl-mat4/rotate.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotate.js"(exports, module) {
       module.exports = rotate;
       function rotate(out, a, rad, axis) {
         var x = axis[0], y = axis[1], z = axis[2], len = Math.sqrt(x * x + y * y + z * z), s, c, t, a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23, b00, b01, b02, b10, b11, b12, b20, b21, b22;
@@ -12034,9 +12125,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/rotateX.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateX.js
   var require_rotateX = __commonJS({
-    "node_modules/gl-mat4/rotateX.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateX.js"(exports, module) {
       module.exports = rotateX;
       function rotateX(out, a, rad) {
         var s = Math.sin(rad), c = Math.cos(rad), a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11];
@@ -12063,9 +12154,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/rotateY.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateY.js
   var require_rotateY = __commonJS({
-    "node_modules/gl-mat4/rotateY.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateY.js"(exports, module) {
       module.exports = rotateY;
       function rotateY(out, a, rad) {
         var s = Math.sin(rad), c = Math.cos(rad), a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11];
@@ -12092,9 +12183,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/rotateZ.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateZ.js
   var require_rotateZ = __commonJS({
-    "node_modules/gl-mat4/rotateZ.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/rotateZ.js"(exports, module) {
       module.exports = rotateZ;
       function rotateZ(out, a, rad) {
         var s = Math.sin(rad), c = Math.cos(rad), a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7];
@@ -12121,9 +12212,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromRotation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromRotation.js
   var require_fromRotation = __commonJS({
-    "node_modules/gl-mat4/fromRotation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromRotation.js"(exports, module) {
       module.exports = fromRotation;
       function fromRotation(out, rad, axis) {
         var s, c, t;
@@ -12162,9 +12253,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromRotationTranslation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromRotationTranslation.js
   var require_fromRotationTranslation = __commonJS({
-    "node_modules/gl-mat4/fromRotationTranslation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromRotationTranslation.js"(exports, module) {
       module.exports = fromRotationTranslation;
       function fromRotationTranslation(out, q, v) {
         var x = q[0], y = q[1], z = q[2], w = q[3], x2 = x + x, y2 = y + y, z2 = z + z, xx = x * x2, xy = x * y2, xz = x * z2, yy = y * y2, yz = y * z2, zz = z * z2, wx = w * x2, wy = w * y2, wz = w * z2;
@@ -12189,9 +12280,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromScaling.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromScaling.js
   var require_fromScaling = __commonJS({
-    "node_modules/gl-mat4/fromScaling.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromScaling.js"(exports, module) {
       module.exports = fromScaling;
       function fromScaling(out, v) {
         out[0] = v[0];
@@ -12215,9 +12306,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromTranslation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromTranslation.js
   var require_fromTranslation = __commonJS({
-    "node_modules/gl-mat4/fromTranslation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromTranslation.js"(exports, module) {
       module.exports = fromTranslation;
       function fromTranslation(out, v) {
         out[0] = 1;
@@ -12241,9 +12332,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromXRotation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromXRotation.js
   var require_fromXRotation = __commonJS({
-    "node_modules/gl-mat4/fromXRotation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromXRotation.js"(exports, module) {
       module.exports = fromXRotation;
       function fromXRotation(out, rad) {
         var s = Math.sin(rad), c = Math.cos(rad);
@@ -12268,9 +12359,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromYRotation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromYRotation.js
   var require_fromYRotation = __commonJS({
-    "node_modules/gl-mat4/fromYRotation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromYRotation.js"(exports, module) {
       module.exports = fromYRotation;
       function fromYRotation(out, rad) {
         var s = Math.sin(rad), c = Math.cos(rad);
@@ -12295,9 +12386,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromZRotation.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromZRotation.js
   var require_fromZRotation = __commonJS({
-    "node_modules/gl-mat4/fromZRotation.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromZRotation.js"(exports, module) {
       module.exports = fromZRotation;
       function fromZRotation(out, rad) {
         var s = Math.sin(rad), c = Math.cos(rad);
@@ -12322,9 +12413,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/fromQuat.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromQuat.js
   var require_fromQuat = __commonJS({
-    "node_modules/gl-mat4/fromQuat.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/fromQuat.js"(exports, module) {
       module.exports = fromQuat;
       function fromQuat(out, q) {
         var x = q[0], y = q[1], z = q[2], w = q[3], x2 = x + x, y2 = y + y, z2 = z + z, xx = x * x2, yx = y * x2, yy = y * y2, zx = z * x2, zy = z * y2, zz = z * z2, wx = w * x2, wy = w * y2, wz = w * z2;
@@ -12349,9 +12440,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/frustum.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/frustum.js
   var require_frustum = __commonJS({
-    "node_modules/gl-mat4/frustum.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/frustum.js"(exports, module) {
       module.exports = frustum;
       function frustum(out, left, right, bottom, top, near, far) {
         var rl = 1 / (right - left), tb = 1 / (top - bottom), nf = 1 / (near - far);
@@ -12376,9 +12467,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/perspective.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/perspective.js
   var require_perspective = __commonJS({
-    "node_modules/gl-mat4/perspective.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/perspective.js"(exports, module) {
       module.exports = perspective;
       function perspective(out, fovy, aspect, near, far) {
         var f = 1 / Math.tan(fovy / 2), nf = 1 / (near - far);
@@ -12403,9 +12494,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/perspectiveFromFieldOfView.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/perspectiveFromFieldOfView.js
   var require_perspectiveFromFieldOfView = __commonJS({
-    "node_modules/gl-mat4/perspectiveFromFieldOfView.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/perspectiveFromFieldOfView.js"(exports, module) {
       module.exports = perspectiveFromFieldOfView;
       function perspectiveFromFieldOfView(out, fov, near, far) {
         var upTan = Math.tan(fov.upDegrees * Math.PI / 180), downTan = Math.tan(fov.downDegrees * Math.PI / 180), leftTan = Math.tan(fov.leftDegrees * Math.PI / 180), rightTan = Math.tan(fov.rightDegrees * Math.PI / 180), xScale = 2 / (leftTan + rightTan), yScale = 2 / (upTan + downTan);
@@ -12430,9 +12521,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/ortho.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/ortho.js
   var require_ortho = __commonJS({
-    "node_modules/gl-mat4/ortho.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/ortho.js"(exports, module) {
       module.exports = ortho;
       function ortho(out, left, right, bottom, top, near, far) {
         var lr = 1 / (left - right), bt = 1 / (bottom - top), nf = 1 / (near - far);
@@ -12457,9 +12548,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/lookAt.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/lookAt.js
   var require_lookAt = __commonJS({
-    "node_modules/gl-mat4/lookAt.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/lookAt.js"(exports, module) {
       var identity = require_identity();
       module.exports = lookAt;
       function lookAt(out, eye, center, up) {
@@ -12523,9 +12614,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/str.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/str.js
   var require_str = __commonJS({
-    "node_modules/gl-mat4/str.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/str.js"(exports, module) {
       module.exports = str;
       function str(a) {
         return "mat4(" + a[0] + ", " + a[1] + ", " + a[2] + ", " + a[3] + ", " + a[4] + ", " + a[5] + ", " + a[6] + ", " + a[7] + ", " + a[8] + ", " + a[9] + ", " + a[10] + ", " + a[11] + ", " + a[12] + ", " + a[13] + ", " + a[14] + ", " + a[15] + ")";
@@ -12533,9 +12624,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/gl-mat4/index.js
+  // node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/index.js
   var require_gl_mat4 = __commonJS({
-    "node_modules/gl-mat4/index.js"(exports, module) {
+    "node_modules/.pnpm/gl-mat4@1.2.0/node_modules/gl-mat4/index.js"(exports, module) {
       module.exports = {
         create: require_create(),
         clone: require_clone(),
@@ -13728,16 +13819,16 @@ var Plotly = (() => {
     }
   });
 
-  // temp_stylePlugin:node_modules/maplibre-gl/dist/maplibre-gl.css
+  // temp_stylePlugin:node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css
   var init_maplibre_gl = __esm({
-    "temp_stylePlugin:node_modules/maplibre-gl/dist/maplibre-gl.css"() {
+    "temp_stylePlugin:node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
     }
   });
 
-  // stylePlugin:/Users/maximsmol/projects/latchbio/console/web/lib/plotly.js/node_modules/maplibre-gl/dist/maplibre-gl.css
+  // stylePlugin:/Users/aidan/latch/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css
   var maplibre_gl_exports = {};
   var init_maplibre_gl2 = __esm({
-    "stylePlugin:/Users/maximsmol/projects/latchbio/console/web/lib/plotly.js/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
+    "stylePlugin:/Users/aidan/latch/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
       init_maplibre_gl();
     }
   });
@@ -14880,9 +14971,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/is-mobile/index.js
+  // node_modules/.pnpm/is-mobile@4.0.0/node_modules/is-mobile/index.js
   var require_is_mobile = __commonJS({
-    "node_modules/is-mobile/index.js"(exports, module) {
+    "node_modules/.pnpm/is-mobile@4.0.0/node_modules/is-mobile/index.js"(exports, module) {
       "use strict";
       module.exports = isMobile;
       module.exports.isMobile = isMobile;
@@ -16018,16 +16109,16 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/is-browser/client.js
+  // node_modules/.pnpm/is-browser@2.1.0/node_modules/is-browser/client.js
   var require_client = __commonJS({
-    "node_modules/is-browser/client.js"(exports, module) {
+    "node_modules/.pnpm/is-browser@2.1.0/node_modules/is-browser/client.js"(exports, module) {
       module.exports = true;
     }
   });
 
-  // node_modules/has-hover/index.js
+  // node_modules/.pnpm/has-hover@1.0.1/node_modules/has-hover/index.js
   var require_has_hover = __commonJS({
-    "node_modules/has-hover/index.js"(exports, module) {
+    "node_modules/.pnpm/has-hover@1.0.1/node_modules/has-hover/index.js"(exports, module) {
       "use strict";
       var isBrowser = require_client();
       var hasHover;
@@ -16040,9 +16131,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/events/events.js
+  // ../../node_modules/.pnpm/events@3.3.0/node_modules/events/events.js
   var require_events = __commonJS({
-    "node_modules/events/events.js"(exports, module) {
+    "../../node_modules/.pnpm/events@3.3.0/node_modules/events/events.js"(exports, module) {
       "use strict";
       var R = typeof Reflect === "object" ? Reflect : null;
       var ReflectApply = R && typeof R.apply === "function" ? R.apply : function ReflectApply2(target, receiver, args) {
@@ -22824,9 +22915,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/parse-svg-path/index.js
+  // node_modules/.pnpm/parse-svg-path@0.1.2/node_modules/parse-svg-path/index.js
   var require_parse_svg_path = __commonJS({
-    "node_modules/parse-svg-path/index.js"(exports, module) {
+    "node_modules/.pnpm/parse-svg-path@0.1.2/node_modules/parse-svg-path/index.js"(exports, module) {
       module.exports = parse;
       var length = { a: 7, c: 6, h: 1, l: 2, m: 2, q: 4, s: 4, t: 2, v: 1, z: 0 };
       var segment = /([astvzqmhlc])([^astvzqmhlc]*)/ig;
@@ -29593,9 +29684,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/mouse-event-offset/index.js
+  // node_modules/.pnpm/mouse-event-offset@3.0.2/node_modules/mouse-event-offset/index.js
   var require_mouse_event_offset = __commonJS({
-    "node_modules/mouse-event-offset/index.js"(exports, module) {
+    "node_modules/.pnpm/mouse-event-offset@3.0.2/node_modules/mouse-event-offset/index.js"(exports, module) {
       var rootPosition = { left: 0, top: 0 };
       module.exports = mouseEventOffset;
       function mouseEventOffset(ev, target, out) {
@@ -29620,9 +29711,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/has-passive-events/index.js
+  // node_modules/.pnpm/has-passive-events@1.0.0/node_modules/has-passive-events/index.js
   var require_has_passive_events = __commonJS({
-    "node_modules/has-passive-events/index.js"(exports, module) {
+    "node_modules/.pnpm/has-passive-events@1.0.0/node_modules/has-passive-events/index.js"(exports, module) {
       "use strict";
       var isBrowser = require_client();
       function detect() {
@@ -38838,9 +38929,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/build-log.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/build-log.js
   var require_build_log = __commonJS({
-    "node_modules/polybooljs/lib/build-log.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/build-log.js"(exports, module) {
       function BuildLog() {
         var my;
         var nextSegmentId = 0;
@@ -38945,9 +39036,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/epsilon.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/epsilon.js
   var require_epsilon = __commonJS({
-    "node_modules/polybooljs/lib/epsilon.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/epsilon.js"(exports, module) {
       function Epsilon(eps) {
         if (typeof eps !== "number")
           eps = 1e-10;
@@ -39065,9 +39156,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/linked-list.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/linked-list.js
   var require_linked_list = __commonJS({
-    "node_modules/polybooljs/lib/linked-list.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/linked-list.js"(exports, module) {
       var LinkedList = {
         create: function() {
           var my = {
@@ -39143,9 +39234,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/intersecter.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/intersecter.js
   var require_intersecter = __commonJS({
-    "node_modules/polybooljs/lib/intersecter.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/intersecter.js"(exports, module) {
       var LinkedList = require_linked_list();
       function Intersecter(selfIntersection, eps, buildLog) {
         function segmentNew(start, end) {
@@ -39479,9 +39570,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/segment-chainer.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/segment-chainer.js
   var require_segment_chainer = __commonJS({
-    "node_modules/polybooljs/lib/segment-chainer.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/segment-chainer.js"(exports, module) {
       function SegmentChainer(segments, eps, buildLog) {
         var chains = [];
         var regions = [];
@@ -39659,9 +39750,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/segment-selector.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/segment-selector.js
   var require_segment_selector = __commonJS({
-    "node_modules/polybooljs/lib/segment-selector.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/segment-selector.js"(exports, module) {
       function select(segments, selection, buildLog) {
         var result = [];
         segments.forEach(function(seg) {
@@ -39791,9 +39882,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/lib/geojson.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/geojson.js
   var require_geojson = __commonJS({
-    "node_modules/polybooljs/lib/geojson.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/lib/geojson.js"(exports, module) {
       var GeoJSON = {
         // convert a GeoJSON object to a PolyBool polygon
         toPolygon: function(PolyBool, geojson) {
@@ -39908,9 +39999,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/polybooljs/index.js
+  // node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/index.js
   var require_polybooljs = __commonJS({
-    "node_modules/polybooljs/index.js"(exports, module) {
+    "node_modules/.pnpm/polybooljs@1.2.2/node_modules/polybooljs/index.js"(exports, module) {
       var BuildLog = require_build_log();
       var Epsilon = require_epsilon();
       var Intersecter = require_intersecter();
@@ -40028,9 +40119,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/point-in-polygon/nested.js
+  // node_modules/.pnpm/point-in-polygon@1.1.0/node_modules/point-in-polygon/nested.js
   var require_nested = __commonJS({
-    "node_modules/point-in-polygon/nested.js"(exports, module) {
+    "node_modules/.pnpm/point-in-polygon@1.1.0/node_modules/point-in-polygon/nested.js"(exports, module) {
       module.exports = function pointInPolygonNested(point, vs, start, end) {
         var x = point[0], y = point[1];
         var inside = false;
@@ -54032,7 +54123,7 @@ var Plotly = (() => {
           if (!gd._context.staticPlot || d.source && d.source.slice(0, 5) === "data:") {
             thisImage.attr("xlink:href", d.source);
             this._imgSrc = d.source;
-          } else if (d.source && d.source.endsWith(".pmtiles")) {
+          } else if ("escapeHatch" in d._input) {
             this._imgSrc = d.source;
           } else {
             var imagePromise = new Promise(function(resolve) {
@@ -69849,9 +69940,378 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/inherits/inherits_browser.js
+  // node_modules/.pnpm/events@3.3.0/node_modules/events/events.js
+  var require_events3 = __commonJS({
+    "node_modules/.pnpm/events@3.3.0/node_modules/events/events.js"(exports, module) {
+      "use strict";
+      var R = typeof Reflect === "object" ? Reflect : null;
+      var ReflectApply = R && typeof R.apply === "function" ? R.apply : function ReflectApply2(target, receiver, args) {
+        return Function.prototype.apply.call(target, receiver, args);
+      };
+      var ReflectOwnKeys;
+      if (R && typeof R.ownKeys === "function") {
+        ReflectOwnKeys = R.ownKeys;
+      } else if (Object.getOwnPropertySymbols) {
+        ReflectOwnKeys = function ReflectOwnKeys2(target) {
+          return Object.getOwnPropertyNames(target).concat(Object.getOwnPropertySymbols(target));
+        };
+      } else {
+        ReflectOwnKeys = function ReflectOwnKeys2(target) {
+          return Object.getOwnPropertyNames(target);
+        };
+      }
+      function ProcessEmitWarning(warning) {
+        if (console && console.warn) console.warn(warning);
+      }
+      var NumberIsNaN = Number.isNaN || function NumberIsNaN2(value) {
+        return value !== value;
+      };
+      function EventEmitter() {
+        EventEmitter.init.call(this);
+      }
+      module.exports = EventEmitter;
+      module.exports.once = once;
+      EventEmitter.EventEmitter = EventEmitter;
+      EventEmitter.prototype._events = void 0;
+      EventEmitter.prototype._eventsCount = 0;
+      EventEmitter.prototype._maxListeners = void 0;
+      var defaultMaxListeners = 10;
+      function checkListener(listener) {
+        if (typeof listener !== "function") {
+          throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
+        }
+      }
+      Object.defineProperty(EventEmitter, "defaultMaxListeners", {
+        enumerable: true,
+        get: function() {
+          return defaultMaxListeners;
+        },
+        set: function(arg) {
+          if (typeof arg !== "number" || arg < 0 || NumberIsNaN(arg)) {
+            throw new RangeError('The value of "defaultMaxListeners" is out of range. It must be a non-negative number. Received ' + arg + ".");
+          }
+          defaultMaxListeners = arg;
+        }
+      });
+      EventEmitter.init = function() {
+        if (this._events === void 0 || this._events === Object.getPrototypeOf(this)._events) {
+          this._events = /* @__PURE__ */ Object.create(null);
+          this._eventsCount = 0;
+        }
+        this._maxListeners = this._maxListeners || void 0;
+      };
+      EventEmitter.prototype.setMaxListeners = function setMaxListeners(n) {
+        if (typeof n !== "number" || n < 0 || NumberIsNaN(n)) {
+          throw new RangeError('The value of "n" is out of range. It must be a non-negative number. Received ' + n + ".");
+        }
+        this._maxListeners = n;
+        return this;
+      };
+      function _getMaxListeners(that) {
+        if (that._maxListeners === void 0)
+          return EventEmitter.defaultMaxListeners;
+        return that._maxListeners;
+      }
+      EventEmitter.prototype.getMaxListeners = function getMaxListeners() {
+        return _getMaxListeners(this);
+      };
+      EventEmitter.prototype.emit = function emit(type) {
+        var args = [];
+        for (var i = 1; i < arguments.length; i++) args.push(arguments[i]);
+        var doError = type === "error";
+        var events = this._events;
+        if (events !== void 0)
+          doError = doError && events.error === void 0;
+        else if (!doError)
+          return false;
+        if (doError) {
+          var er;
+          if (args.length > 0)
+            er = args[0];
+          if (er instanceof Error) {
+            throw er;
+          }
+          var err = new Error("Unhandled error." + (er ? " (" + er.message + ")" : ""));
+          err.context = er;
+          throw err;
+        }
+        var handler = events[type];
+        if (handler === void 0)
+          return false;
+        if (typeof handler === "function") {
+          ReflectApply(handler, this, args);
+        } else {
+          var len = handler.length;
+          var listeners = arrayClone(handler, len);
+          for (var i = 0; i < len; ++i)
+            ReflectApply(listeners[i], this, args);
+        }
+        return true;
+      };
+      function _addListener(target, type, listener, prepend) {
+        var m;
+        var events;
+        var existing;
+        checkListener(listener);
+        events = target._events;
+        if (events === void 0) {
+          events = target._events = /* @__PURE__ */ Object.create(null);
+          target._eventsCount = 0;
+        } else {
+          if (events.newListener !== void 0) {
+            target.emit(
+              "newListener",
+              type,
+              listener.listener ? listener.listener : listener
+            );
+            events = target._events;
+          }
+          existing = events[type];
+        }
+        if (existing === void 0) {
+          existing = events[type] = listener;
+          ++target._eventsCount;
+        } else {
+          if (typeof existing === "function") {
+            existing = events[type] = prepend ? [listener, existing] : [existing, listener];
+          } else if (prepend) {
+            existing.unshift(listener);
+          } else {
+            existing.push(listener);
+          }
+          m = _getMaxListeners(target);
+          if (m > 0 && existing.length > m && !existing.warned) {
+            existing.warned = true;
+            var w = new Error("Possible EventEmitter memory leak detected. " + existing.length + " " + String(type) + " listeners added. Use emitter.setMaxListeners() to increase limit");
+            w.name = "MaxListenersExceededWarning";
+            w.emitter = target;
+            w.type = type;
+            w.count = existing.length;
+            ProcessEmitWarning(w);
+          }
+        }
+        return target;
+      }
+      EventEmitter.prototype.addListener = function addListener(type, listener) {
+        return _addListener(this, type, listener, false);
+      };
+      EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+      EventEmitter.prototype.prependListener = function prependListener(type, listener) {
+        return _addListener(this, type, listener, true);
+      };
+      function onceWrapper() {
+        if (!this.fired) {
+          this.target.removeListener(this.type, this.wrapFn);
+          this.fired = true;
+          if (arguments.length === 0)
+            return this.listener.call(this.target);
+          return this.listener.apply(this.target, arguments);
+        }
+      }
+      function _onceWrap(target, type, listener) {
+        var state = { fired: false, wrapFn: void 0, target, type, listener };
+        var wrapped = onceWrapper.bind(state);
+        wrapped.listener = listener;
+        state.wrapFn = wrapped;
+        return wrapped;
+      }
+      EventEmitter.prototype.once = function once2(type, listener) {
+        checkListener(listener);
+        this.on(type, _onceWrap(this, type, listener));
+        return this;
+      };
+      EventEmitter.prototype.prependOnceListener = function prependOnceListener(type, listener) {
+        checkListener(listener);
+        this.prependListener(type, _onceWrap(this, type, listener));
+        return this;
+      };
+      EventEmitter.prototype.removeListener = function removeListener(type, listener) {
+        var list, events, position, i, originalListener;
+        checkListener(listener);
+        events = this._events;
+        if (events === void 0)
+          return this;
+        list = events[type];
+        if (list === void 0)
+          return this;
+        if (list === listener || list.listener === listener) {
+          if (--this._eventsCount === 0)
+            this._events = /* @__PURE__ */ Object.create(null);
+          else {
+            delete events[type];
+            if (events.removeListener)
+              this.emit("removeListener", type, list.listener || listener);
+          }
+        } else if (typeof list !== "function") {
+          position = -1;
+          for (i = list.length - 1; i >= 0; i--) {
+            if (list[i] === listener || list[i].listener === listener) {
+              originalListener = list[i].listener;
+              position = i;
+              break;
+            }
+          }
+          if (position < 0)
+            return this;
+          if (position === 0)
+            list.shift();
+          else {
+            spliceOne(list, position);
+          }
+          if (list.length === 1)
+            events[type] = list[0];
+          if (events.removeListener !== void 0)
+            this.emit("removeListener", type, originalListener || listener);
+        }
+        return this;
+      };
+      EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
+      EventEmitter.prototype.removeAllListeners = function removeAllListeners(type) {
+        var listeners, events, i;
+        events = this._events;
+        if (events === void 0)
+          return this;
+        if (events.removeListener === void 0) {
+          if (arguments.length === 0) {
+            this._events = /* @__PURE__ */ Object.create(null);
+            this._eventsCount = 0;
+          } else if (events[type] !== void 0) {
+            if (--this._eventsCount === 0)
+              this._events = /* @__PURE__ */ Object.create(null);
+            else
+              delete events[type];
+          }
+          return this;
+        }
+        if (arguments.length === 0) {
+          var keys = Object.keys(events);
+          var key;
+          for (i = 0; i < keys.length; ++i) {
+            key = keys[i];
+            if (key === "removeListener") continue;
+            this.removeAllListeners(key);
+          }
+          this.removeAllListeners("removeListener");
+          this._events = /* @__PURE__ */ Object.create(null);
+          this._eventsCount = 0;
+          return this;
+        }
+        listeners = events[type];
+        if (typeof listeners === "function") {
+          this.removeListener(type, listeners);
+        } else if (listeners !== void 0) {
+          for (i = listeners.length - 1; i >= 0; i--) {
+            this.removeListener(type, listeners[i]);
+          }
+        }
+        return this;
+      };
+      function _listeners(target, type, unwrap) {
+        var events = target._events;
+        if (events === void 0)
+          return [];
+        var evlistener = events[type];
+        if (evlistener === void 0)
+          return [];
+        if (typeof evlistener === "function")
+          return unwrap ? [evlistener.listener || evlistener] : [evlistener];
+        return unwrap ? unwrapListeners(evlistener) : arrayClone(evlistener, evlistener.length);
+      }
+      EventEmitter.prototype.listeners = function listeners(type) {
+        return _listeners(this, type, true);
+      };
+      EventEmitter.prototype.rawListeners = function rawListeners(type) {
+        return _listeners(this, type, false);
+      };
+      EventEmitter.listenerCount = function(emitter, type) {
+        if (typeof emitter.listenerCount === "function") {
+          return emitter.listenerCount(type);
+        } else {
+          return listenerCount.call(emitter, type);
+        }
+      };
+      EventEmitter.prototype.listenerCount = listenerCount;
+      function listenerCount(type) {
+        var events = this._events;
+        if (events !== void 0) {
+          var evlistener = events[type];
+          if (typeof evlistener === "function") {
+            return 1;
+          } else if (evlistener !== void 0) {
+            return evlistener.length;
+          }
+        }
+        return 0;
+      }
+      EventEmitter.prototype.eventNames = function eventNames() {
+        return this._eventsCount > 0 ? ReflectOwnKeys(this._events) : [];
+      };
+      function arrayClone(arr, n) {
+        var copy = new Array(n);
+        for (var i = 0; i < n; ++i)
+          copy[i] = arr[i];
+        return copy;
+      }
+      function spliceOne(list, index) {
+        for (; index + 1 < list.length; index++)
+          list[index] = list[index + 1];
+        list.pop();
+      }
+      function unwrapListeners(arr) {
+        var ret = new Array(arr.length);
+        for (var i = 0; i < ret.length; ++i) {
+          ret[i] = arr[i].listener || arr[i];
+        }
+        return ret;
+      }
+      function once(emitter, name) {
+        return new Promise(function(resolve, reject) {
+          function errorListener(err) {
+            emitter.removeListener(name, resolver);
+            reject(err);
+          }
+          function resolver() {
+            if (typeof emitter.removeListener === "function") {
+              emitter.removeListener("error", errorListener);
+            }
+            resolve([].slice.call(arguments));
+          }
+          ;
+          eventTargetAgnosticAddListener(emitter, name, resolver, { once: true });
+          if (name !== "error") {
+            addErrorHandlerIfEventEmitter(emitter, errorListener, { once: true });
+          }
+        });
+      }
+      function addErrorHandlerIfEventEmitter(emitter, handler, flags) {
+        if (typeof emitter.on === "function") {
+          eventTargetAgnosticAddListener(emitter, "error", handler, flags);
+        }
+      }
+      function eventTargetAgnosticAddListener(emitter, name, listener, flags) {
+        if (typeof emitter.on === "function") {
+          if (flags.once) {
+            emitter.once(name, listener);
+          } else {
+            emitter.on(name, listener);
+          }
+        } else if (typeof emitter.addEventListener === "function") {
+          emitter.addEventListener(name, function wrapListener(arg) {
+            if (flags.once) {
+              emitter.removeEventListener(name, wrapListener);
+            }
+            listener(arg);
+          });
+        } else {
+          throw new TypeError('The "emitter" argument must be of type EventEmitter. Received type ' + typeof emitter);
+        }
+      }
+    }
+  });
+
+  // node_modules/.pnpm/inherits@2.0.4/node_modules/inherits/inherits_browser.js
   var require_inherits_browser = __commonJS({
-    "node_modules/inherits/inherits_browser.js"(exports, module) {
+    "node_modules/.pnpm/inherits@2.0.4/node_modules/inherits/inherits_browser.js"(exports, module) {
       if (typeof Object.create === "function") {
         module.exports = function inherits(ctor, superCtor) {
           if (superCtor) {
@@ -69881,16 +70341,16 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/stream-browser.js
+  // node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/stream-browser.js
   var require_stream_browser = __commonJS({
-    "node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/stream-browser.js"(exports, module) {
-      module.exports = require_events().EventEmitter;
+    "node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/stream-browser.js"(exports, module) {
+      module.exports = require_events3().EventEmitter;
     }
   });
 
-  // node_modules/base64-js/index.js
+  // node_modules/.pnpm/base64-js@1.5.1/node_modules/base64-js/index.js
   var require_base64_js = __commonJS({
-    "node_modules/base64-js/index.js"(exports) {
+    "node_modules/.pnpm/base64-js@1.5.1/node_modules/base64-js/index.js"(exports) {
       "use strict";
       exports.byteLength = byteLength;
       exports.toByteArray = toByteArray;
@@ -69971,11 +70431,7 @@ var Plotly = (() => {
         var parts = [];
         var maxChunkLength = 16383;
         for (var i2 = 0, len22 = len2 - extraBytes; i2 < len22; i2 += maxChunkLength) {
-          parts.push(encodeChunk(
-            uint8,
-            i2,
-            i2 + maxChunkLength > len22 ? len22 : i2 + maxChunkLength
-          ));
+          parts.push(encodeChunk(uint8, i2, i2 + maxChunkLength > len22 ? len22 : i2 + maxChunkLength));
         }
         if (extraBytes === 1) {
           tmp = uint8[len2 - 1];
@@ -69993,9 +70449,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/ieee754/index.js
+  // node_modules/.pnpm/ieee754@1.2.1/node_modules/ieee754/index.js
   var require_ieee754 = __commonJS({
-    "node_modules/ieee754/index.js"(exports) {
+    "node_modules/.pnpm/ieee754@1.2.1/node_modules/ieee754/index.js"(exports) {
       exports.read = function(buffer, offset, isLE, mLen, nBytes) {
         var e, m;
         var eLen = nBytes * 8 - mLen - 1;
@@ -70076,9 +70532,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/buffer/index.js
+  // node_modules/.pnpm/buffer@6.0.3/node_modules/buffer/index.js
   var require_buffer = __commonJS({
-    "node_modules/buffer/index.js"(exports) {
+    "node_modules/.pnpm/buffer@6.0.3/node_modules/buffer/index.js"(exports) {
       "use strict";
       var base64 = require_base64_js();
       var ieee754 = require_ieee754();
@@ -71668,9 +72124,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/has-symbols/shams.js
+  // node_modules/.pnpm/has-symbols@1.1.0/node_modules/has-symbols/shams.js
   var require_shams = __commonJS({
-    "node_modules/has-symbols/shams.js"(exports, module) {
+    "node_modules/.pnpm/has-symbols@1.1.0/node_modules/has-symbols/shams.js"(exports, module) {
       "use strict";
       module.exports = function hasSymbols() {
         if (typeof Symbol !== "function" || typeof Object.getOwnPropertySymbols !== "function") {
@@ -71693,7 +72149,7 @@ var Plotly = (() => {
         }
         var symVal = 42;
         obj[sym] = symVal;
-        for (sym in obj) {
+        for (var _ in obj) {
           return false;
         }
         if (typeof Object.keys === "function" && Object.keys(obj).length !== 0) {
@@ -71710,7 +72166,10 @@ var Plotly = (() => {
           return false;
         }
         if (typeof Object.getOwnPropertyDescriptor === "function") {
-          var descriptor = Object.getOwnPropertyDescriptor(obj, sym);
+          var descriptor = (
+            /** @type {PropertyDescriptor} */
+            Object.getOwnPropertyDescriptor(obj, sym)
+          );
           if (descriptor.value !== symVal || descriptor.enumerable !== true) {
             return false;
           }
@@ -71720,9 +72179,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/has-tostringtag/shams.js
+  // node_modules/.pnpm/has-tostringtag@1.0.2/node_modules/has-tostringtag/shams.js
   var require_shams2 = __commonJS({
-    "node_modules/has-tostringtag/shams.js"(exports, module) {
+    "node_modules/.pnpm/has-tostringtag@1.0.2/node_modules/has-tostringtag/shams.js"(exports, module) {
       "use strict";
       var hasSymbols = require_shams();
       module.exports = function hasToStringTagShams() {
@@ -71731,65 +72190,185 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/es-errors/index.js
+  // node_modules/.pnpm/es-object-atoms@1.1.1/node_modules/es-object-atoms/index.js
+  var require_es_object_atoms = __commonJS({
+    "node_modules/.pnpm/es-object-atoms@1.1.1/node_modules/es-object-atoms/index.js"(exports, module) {
+      "use strict";
+      module.exports = Object;
+    }
+  });
+
+  // node_modules/.pnpm/es-errors@1.3.0/node_modules/es-errors/index.js
   var require_es_errors = __commonJS({
-    "node_modules/es-errors/index.js"(exports, module) {
+    "node_modules/.pnpm/es-errors@1.3.0/node_modules/es-errors/index.js"(exports, module) {
       "use strict";
       module.exports = Error;
     }
   });
 
-  // node_modules/es-errors/eval.js
+  // node_modules/.pnpm/es-errors@1.3.0/node_modules/es-errors/eval.js
   var require_eval = __commonJS({
-    "node_modules/es-errors/eval.js"(exports, module) {
+    "node_modules/.pnpm/es-errors@1.3.0/node_modules/es-errors/eval.js"(exports, module) {
       "use strict";
       module.exports = EvalError;
     }
   });
 
-  // node_modules/es-errors/range.js
+  // node_modules/.pnpm/es-errors@1.3.0/node_modules/es-errors/range.js
   var require_range = __commonJS({
-    "node_modules/es-errors/range.js"(exports, module) {
+    "node_modules/.pnpm/es-errors@1.3.0/node_modules/es-errors/range.js"(exports, module) {
       "use strict";
       module.exports = RangeError;
     }
   });
 
-  // node_modules/es-errors/ref.js
+  // node_modules/.pnpm/es-errors@1.3.0/node_modules/es-errors/ref.js
   var require_ref = __commonJS({
-    "node_modules/es-errors/ref.js"(exports, module) {
+    "node_modules/.pnpm/es-errors@1.3.0/node_modules/es-errors/ref.js"(exports, module) {
       "use strict";
       module.exports = ReferenceError;
     }
   });
 
-  // node_modules/es-errors/syntax.js
+  // node_modules/.pnpm/es-errors@1.3.0/node_modules/es-errors/syntax.js
   var require_syntax = __commonJS({
-    "node_modules/es-errors/syntax.js"(exports, module) {
+    "node_modules/.pnpm/es-errors@1.3.0/node_modules/es-errors/syntax.js"(exports, module) {
       "use strict";
       module.exports = SyntaxError;
     }
   });
 
-  // node_modules/es-errors/type.js
+  // node_modules/.pnpm/es-errors@1.3.0/node_modules/es-errors/type.js
   var require_type = __commonJS({
-    "node_modules/es-errors/type.js"(exports, module) {
+    "node_modules/.pnpm/es-errors@1.3.0/node_modules/es-errors/type.js"(exports, module) {
       "use strict";
       module.exports = TypeError;
     }
   });
 
-  // node_modules/es-errors/uri.js
+  // node_modules/.pnpm/es-errors@1.3.0/node_modules/es-errors/uri.js
   var require_uri = __commonJS({
-    "node_modules/es-errors/uri.js"(exports, module) {
+    "node_modules/.pnpm/es-errors@1.3.0/node_modules/es-errors/uri.js"(exports, module) {
       "use strict";
       module.exports = URIError;
     }
   });
 
-  // node_modules/has-symbols/index.js
+  // node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/abs.js
+  var require_abs = __commonJS({
+    "node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/abs.js"(exports, module) {
+      "use strict";
+      module.exports = Math.abs;
+    }
+  });
+
+  // node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/floor.js
+  var require_floor = __commonJS({
+    "node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/floor.js"(exports, module) {
+      "use strict";
+      module.exports = Math.floor;
+    }
+  });
+
+  // node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/max.js
+  var require_max = __commonJS({
+    "node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/max.js"(exports, module) {
+      "use strict";
+      module.exports = Math.max;
+    }
+  });
+
+  // node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/min.js
+  var require_min = __commonJS({
+    "node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/min.js"(exports, module) {
+      "use strict";
+      module.exports = Math.min;
+    }
+  });
+
+  // node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/pow.js
+  var require_pow = __commonJS({
+    "node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/pow.js"(exports, module) {
+      "use strict";
+      module.exports = Math.pow;
+    }
+  });
+
+  // node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/round.js
+  var require_round = __commonJS({
+    "node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/round.js"(exports, module) {
+      "use strict";
+      module.exports = Math.round;
+    }
+  });
+
+  // node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/isNaN.js
+  var require_isNaN = __commonJS({
+    "node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/isNaN.js"(exports, module) {
+      "use strict";
+      module.exports = Number.isNaN || function isNaN2(a) {
+        return a !== a;
+      };
+    }
+  });
+
+  // node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/sign.js
+  var require_sign = __commonJS({
+    "node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/sign.js"(exports, module) {
+      "use strict";
+      var $isNaN = require_isNaN();
+      module.exports = function sign(number) {
+        if ($isNaN(number) || number === 0) {
+          return number;
+        }
+        return number < 0 ? -1 : 1;
+      };
+    }
+  });
+
+  // node_modules/.pnpm/gopd@1.2.0/node_modules/gopd/gOPD.js
+  var require_gOPD = __commonJS({
+    "node_modules/.pnpm/gopd@1.2.0/node_modules/gopd/gOPD.js"(exports, module) {
+      "use strict";
+      module.exports = Object.getOwnPropertyDescriptor;
+    }
+  });
+
+  // node_modules/.pnpm/gopd@1.2.0/node_modules/gopd/index.js
+  var require_gopd = __commonJS({
+    "node_modules/.pnpm/gopd@1.2.0/node_modules/gopd/index.js"(exports, module) {
+      "use strict";
+      var $gOPD = require_gOPD();
+      if ($gOPD) {
+        try {
+          $gOPD([], "length");
+        } catch (e) {
+          $gOPD = null;
+        }
+      }
+      module.exports = $gOPD;
+    }
+  });
+
+  // node_modules/.pnpm/es-define-property@1.0.1/node_modules/es-define-property/index.js
+  var require_es_define_property = __commonJS({
+    "node_modules/.pnpm/es-define-property@1.0.1/node_modules/es-define-property/index.js"(exports, module) {
+      "use strict";
+      var $defineProperty = Object.defineProperty || false;
+      if ($defineProperty) {
+        try {
+          $defineProperty({}, "a", { value: 1 });
+        } catch (e) {
+          $defineProperty = false;
+        }
+      }
+      module.exports = $defineProperty;
+    }
+  });
+
+  // node_modules/.pnpm/has-symbols@1.1.0/node_modules/has-symbols/index.js
   var require_has_symbols = __commonJS({
-    "node_modules/has-symbols/index.js"(exports, module) {
+    "node_modules/.pnpm/has-symbols@1.1.0/node_modules/has-symbols/index.js"(exports, module) {
       "use strict";
       var origSymbol = typeof Symbol !== "undefined" && Symbol;
       var hasSymbolSham = require_shams();
@@ -71811,23 +72390,26 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/has-proto/index.js
-  var require_has_proto = __commonJS({
-    "node_modules/has-proto/index.js"(exports, module) {
+  // node_modules/.pnpm/get-proto@1.0.1/node_modules/get-proto/Reflect.getPrototypeOf.js
+  var require_Reflect_getPrototypeOf = __commonJS({
+    "node_modules/.pnpm/get-proto@1.0.1/node_modules/get-proto/Reflect.getPrototypeOf.js"(exports, module) {
       "use strict";
-      var test = {
-        foo: {}
-      };
-      var $Object = Object;
-      module.exports = function hasProto() {
-        return { __proto__: test }.foo === test.foo && !({ __proto__: null } instanceof $Object);
-      };
+      module.exports = typeof Reflect !== "undefined" && Reflect.getPrototypeOf || null;
     }
   });
 
-  // node_modules/function-bind/implementation.js
+  // node_modules/.pnpm/get-proto@1.0.1/node_modules/get-proto/Object.getPrototypeOf.js
+  var require_Object_getPrototypeOf = __commonJS({
+    "node_modules/.pnpm/get-proto@1.0.1/node_modules/get-proto/Object.getPrototypeOf.js"(exports, module) {
+      "use strict";
+      var $Object = require_es_object_atoms();
+      module.exports = $Object.getPrototypeOf || null;
+    }
+  });
+
+  // node_modules/.pnpm/function-bind@1.1.2/node_modules/function-bind/implementation.js
   var require_implementation = __commonJS({
-    "node_modules/function-bind/implementation.js"(exports, module) {
+    "node_modules/.pnpm/function-bind@1.1.2/node_modules/function-bind/implementation.js"(exports, module) {
       "use strict";
       var ERROR_MESSAGE = "Function.prototype.bind called on incompatible ";
       var toStr = Object.prototype.toString;
@@ -71901,18 +72483,122 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/function-bind/index.js
+  // node_modules/.pnpm/function-bind@1.1.2/node_modules/function-bind/index.js
   var require_function_bind = __commonJS({
-    "node_modules/function-bind/index.js"(exports, module) {
+    "node_modules/.pnpm/function-bind@1.1.2/node_modules/function-bind/index.js"(exports, module) {
       "use strict";
       var implementation = require_implementation();
       module.exports = Function.prototype.bind || implementation;
     }
   });
 
-  // node_modules/hasown/index.js
+  // node_modules/.pnpm/call-bind-apply-helpers@1.0.2/node_modules/call-bind-apply-helpers/functionCall.js
+  var require_functionCall = __commonJS({
+    "node_modules/.pnpm/call-bind-apply-helpers@1.0.2/node_modules/call-bind-apply-helpers/functionCall.js"(exports, module) {
+      "use strict";
+      module.exports = Function.prototype.call;
+    }
+  });
+
+  // node_modules/.pnpm/call-bind-apply-helpers@1.0.2/node_modules/call-bind-apply-helpers/functionApply.js
+  var require_functionApply = __commonJS({
+    "node_modules/.pnpm/call-bind-apply-helpers@1.0.2/node_modules/call-bind-apply-helpers/functionApply.js"(exports, module) {
+      "use strict";
+      module.exports = Function.prototype.apply;
+    }
+  });
+
+  // node_modules/.pnpm/call-bind-apply-helpers@1.0.2/node_modules/call-bind-apply-helpers/reflectApply.js
+  var require_reflectApply = __commonJS({
+    "node_modules/.pnpm/call-bind-apply-helpers@1.0.2/node_modules/call-bind-apply-helpers/reflectApply.js"(exports, module) {
+      "use strict";
+      module.exports = typeof Reflect !== "undefined" && Reflect && Reflect.apply;
+    }
+  });
+
+  // node_modules/.pnpm/call-bind-apply-helpers@1.0.2/node_modules/call-bind-apply-helpers/actualApply.js
+  var require_actualApply = __commonJS({
+    "node_modules/.pnpm/call-bind-apply-helpers@1.0.2/node_modules/call-bind-apply-helpers/actualApply.js"(exports, module) {
+      "use strict";
+      var bind = require_function_bind();
+      var $apply = require_functionApply();
+      var $call = require_functionCall();
+      var $reflectApply = require_reflectApply();
+      module.exports = $reflectApply || bind.call($call, $apply);
+    }
+  });
+
+  // node_modules/.pnpm/call-bind-apply-helpers@1.0.2/node_modules/call-bind-apply-helpers/index.js
+  var require_call_bind_apply_helpers = __commonJS({
+    "node_modules/.pnpm/call-bind-apply-helpers@1.0.2/node_modules/call-bind-apply-helpers/index.js"(exports, module) {
+      "use strict";
+      var bind = require_function_bind();
+      var $TypeError = require_type();
+      var $call = require_functionCall();
+      var $actualApply = require_actualApply();
+      module.exports = function callBindBasic(args) {
+        if (args.length < 1 || typeof args[0] !== "function") {
+          throw new $TypeError("a function is required");
+        }
+        return $actualApply(bind, $call, args);
+      };
+    }
+  });
+
+  // node_modules/.pnpm/dunder-proto@1.0.1/node_modules/dunder-proto/get.js
+  var require_get = __commonJS({
+    "node_modules/.pnpm/dunder-proto@1.0.1/node_modules/dunder-proto/get.js"(exports, module) {
+      "use strict";
+      var callBind = require_call_bind_apply_helpers();
+      var gOPD = require_gopd();
+      var hasProtoAccessor;
+      try {
+        hasProtoAccessor = /** @type {{ __proto__?: typeof Array.prototype }} */
+        [].__proto__ === Array.prototype;
+      } catch (e) {
+        if (!e || typeof e !== "object" || !("code" in e) || e.code !== "ERR_PROTO_ACCESS") {
+          throw e;
+        }
+      }
+      var desc = !!hasProtoAccessor && gOPD && gOPD(
+        Object.prototype,
+        /** @type {keyof typeof Object.prototype} */
+        "__proto__"
+      );
+      var $Object = Object;
+      var $getPrototypeOf = $Object.getPrototypeOf;
+      module.exports = desc && typeof desc.get === "function" ? callBind([desc.get]) : typeof $getPrototypeOf === "function" ? (
+        /** @type {import('./get')} */
+        function getDunder(value) {
+          return $getPrototypeOf(value == null ? value : $Object(value));
+        }
+      ) : false;
+    }
+  });
+
+  // node_modules/.pnpm/get-proto@1.0.1/node_modules/get-proto/index.js
+  var require_get_proto = __commonJS({
+    "node_modules/.pnpm/get-proto@1.0.1/node_modules/get-proto/index.js"(exports, module) {
+      "use strict";
+      var reflectGetProto = require_Reflect_getPrototypeOf();
+      var originalGetProto = require_Object_getPrototypeOf();
+      var getDunderProto = require_get();
+      module.exports = reflectGetProto ? function getProto(O) {
+        return reflectGetProto(O);
+      } : originalGetProto ? function getProto(O) {
+        if (!O || typeof O !== "object" && typeof O !== "function") {
+          throw new TypeError("getProto: not an object");
+        }
+        return originalGetProto(O);
+      } : getDunderProto ? function getProto(O) {
+        return getDunderProto(O);
+      } : null;
+    }
+  });
+
+  // node_modules/.pnpm/hasown@2.0.2/node_modules/hasown/index.js
   var require_hasown = __commonJS({
-    "node_modules/hasown/index.js"(exports, module) {
+    "node_modules/.pnpm/hasown@2.0.2/node_modules/hasown/index.js"(exports, module) {
       "use strict";
       var call = Function.prototype.call;
       var $hasOwn = Object.prototype.hasOwnProperty;
@@ -71921,11 +72607,12 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/get-intrinsic/index.js
+  // node_modules/.pnpm/get-intrinsic@1.3.0/node_modules/get-intrinsic/index.js
   var require_get_intrinsic = __commonJS({
-    "node_modules/get-intrinsic/index.js"(exports, module) {
+    "node_modules/.pnpm/get-intrinsic@1.3.0/node_modules/get-intrinsic/index.js"(exports, module) {
       "use strict";
       var undefined2;
+      var $Object = require_es_object_atoms();
       var $Error = require_es_errors();
       var $EvalError = require_eval();
       var $RangeError = require_range();
@@ -71933,6 +72620,13 @@ var Plotly = (() => {
       var $SyntaxError = require_syntax();
       var $TypeError = require_type();
       var $URIError = require_uri();
+      var abs = require_abs();
+      var floor = require_floor();
+      var max = require_max();
+      var min = require_min();
+      var pow = require_pow();
+      var round = require_round();
+      var sign = require_sign();
       var $Function = Function;
       var getEvalledConstructor = function(expressionSyntax) {
         try {
@@ -71940,14 +72634,8 @@ var Plotly = (() => {
         } catch (e) {
         }
       };
-      var $gOPD = Object.getOwnPropertyDescriptor;
-      if ($gOPD) {
-        try {
-          $gOPD({}, "");
-        } catch (e) {
-          $gOPD = null;
-        }
-      }
+      var $gOPD = require_gopd();
+      var $defineProperty = require_es_define_property();
       var throwTypeError = function() {
         throw new $TypeError();
       };
@@ -71964,10 +72652,11 @@ var Plotly = (() => {
         }
       }() : throwTypeError;
       var hasSymbols = require_has_symbols()();
-      var hasProto = require_has_proto()();
-      var getProto = Object.getPrototypeOf || (hasProto ? function(x) {
-        return x.__proto__;
-      } : null);
+      var getProto = require_get_proto();
+      var $ObjectGPO = require_Object_getPrototypeOf();
+      var $ReflectGPO = require_Reflect_getPrototypeOf();
+      var $apply = require_functionApply();
+      var $call = require_functionCall();
       var needsEval = {};
       var TypedArray = typeof Uint8Array === "undefined" || !getProto ? undefined2 : getProto(Uint8Array);
       var INTRINSICS = {
@@ -71996,6 +72685,7 @@ var Plotly = (() => {
         "%eval%": eval,
         // eslint-disable-line no-eval
         "%EvalError%": $EvalError,
+        "%Float16Array%": typeof Float16Array === "undefined" ? undefined2 : Float16Array,
         "%Float32Array%": typeof Float32Array === "undefined" ? undefined2 : Float32Array,
         "%Float64Array%": typeof Float64Array === "undefined" ? undefined2 : Float64Array,
         "%FinalizationRegistry%": typeof FinalizationRegistry === "undefined" ? undefined2 : FinalizationRegistry,
@@ -72012,7 +72702,8 @@ var Plotly = (() => {
         "%MapIteratorPrototype%": typeof Map === "undefined" || !hasSymbols || !getProto ? undefined2 : getProto((/* @__PURE__ */ new Map())[Symbol.iterator]()),
         "%Math%": Math,
         "%Number%": Number,
-        "%Object%": Object,
+        "%Object%": $Object,
+        "%Object.getOwnPropertyDescriptor%": $gOPD,
         "%parseFloat%": parseFloat,
         "%parseInt%": parseInt,
         "%Promise%": typeof Promise === "undefined" ? undefined2 : Promise,
@@ -72038,7 +72729,19 @@ var Plotly = (() => {
         "%URIError%": $URIError,
         "%WeakMap%": typeof WeakMap === "undefined" ? undefined2 : WeakMap,
         "%WeakRef%": typeof WeakRef === "undefined" ? undefined2 : WeakRef,
-        "%WeakSet%": typeof WeakSet === "undefined" ? undefined2 : WeakSet
+        "%WeakSet%": typeof WeakSet === "undefined" ? undefined2 : WeakSet,
+        "%Function.prototype.call%": $call,
+        "%Function.prototype.apply%": $apply,
+        "%Object.defineProperty%": $defineProperty,
+        "%Object.getPrototypeOf%": $ObjectGPO,
+        "%Math.abs%": abs,
+        "%Math.floor%": floor,
+        "%Math.max%": max,
+        "%Math.min%": min,
+        "%Math.pow%": pow,
+        "%Math.round%": round,
+        "%Math.sign%": sign,
+        "%Reflect.getPrototypeOf%": $ReflectGPO
       };
       if (getProto) {
         try {
@@ -72127,11 +72830,11 @@ var Plotly = (() => {
       };
       var bind = require_function_bind();
       var hasOwn = require_hasown();
-      var $concat = bind.call(Function.call, Array.prototype.concat);
-      var $spliceApply = bind.call(Function.apply, Array.prototype.splice);
-      var $replace = bind.call(Function.call, String.prototype.replace);
-      var $strSlice = bind.call(Function.call, String.prototype.slice);
-      var $exec = bind.call(Function.call, RegExp.prototype.exec);
+      var $concat = bind.call($call, Array.prototype.concat);
+      var $spliceApply = bind.call($apply, Array.prototype.splice);
+      var $replace = bind.call($call, String.prototype.replace);
+      var $strSlice = bind.call($call, String.prototype.slice);
+      var $exec = bind.call($call, RegExp.prototype.exec);
       var rePropName = /[^%.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|%$))/g;
       var reEscapeChar = /\\(\\)?/g;
       var stringToPath = function stringToPath2(string) {
@@ -72235,221 +72938,35 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/es-define-property/index.js
-  var require_es_define_property = __commonJS({
-    "node_modules/es-define-property/index.js"(exports, module) {
+  // node_modules/.pnpm/call-bound@1.0.4/node_modules/call-bound/index.js
+  var require_call_bound = __commonJS({
+    "node_modules/.pnpm/call-bound@1.0.4/node_modules/call-bound/index.js"(exports, module) {
       "use strict";
       var GetIntrinsic = require_get_intrinsic();
-      var $defineProperty = GetIntrinsic("%Object.defineProperty%", true) || false;
-      if ($defineProperty) {
-        try {
-          $defineProperty({}, "a", { value: 1 });
-        } catch (e) {
-          $defineProperty = false;
-        }
-      }
-      module.exports = $defineProperty;
-    }
-  });
-
-  // node_modules/gopd/index.js
-  var require_gopd = __commonJS({
-    "node_modules/gopd/index.js"(exports, module) {
-      "use strict";
-      var GetIntrinsic = require_get_intrinsic();
-      var $gOPD = GetIntrinsic("%Object.getOwnPropertyDescriptor%", true);
-      if ($gOPD) {
-        try {
-          $gOPD([], "length");
-        } catch (e) {
-          $gOPD = null;
-        }
-      }
-      module.exports = $gOPD;
-    }
-  });
-
-  // node_modules/define-data-property/index.js
-  var require_define_data_property = __commonJS({
-    "node_modules/define-data-property/index.js"(exports, module) {
-      "use strict";
-      var $defineProperty = require_es_define_property();
-      var $SyntaxError = require_syntax();
-      var $TypeError = require_type();
-      var gopd = require_gopd();
-      module.exports = function defineDataProperty(obj, property, value) {
-        if (!obj || typeof obj !== "object" && typeof obj !== "function") {
-          throw new $TypeError("`obj` must be an object or a function`");
-        }
-        if (typeof property !== "string" && typeof property !== "symbol") {
-          throw new $TypeError("`property` must be a string or a symbol`");
-        }
-        if (arguments.length > 3 && typeof arguments[3] !== "boolean" && arguments[3] !== null) {
-          throw new $TypeError("`nonEnumerable`, if provided, must be a boolean or null");
-        }
-        if (arguments.length > 4 && typeof arguments[4] !== "boolean" && arguments[4] !== null) {
-          throw new $TypeError("`nonWritable`, if provided, must be a boolean or null");
-        }
-        if (arguments.length > 5 && typeof arguments[5] !== "boolean" && arguments[5] !== null) {
-          throw new $TypeError("`nonConfigurable`, if provided, must be a boolean or null");
-        }
-        if (arguments.length > 6 && typeof arguments[6] !== "boolean") {
-          throw new $TypeError("`loose`, if provided, must be a boolean");
-        }
-        var nonEnumerable = arguments.length > 3 ? arguments[3] : null;
-        var nonWritable = arguments.length > 4 ? arguments[4] : null;
-        var nonConfigurable = arguments.length > 5 ? arguments[5] : null;
-        var loose = arguments.length > 6 ? arguments[6] : false;
-        var desc = !!gopd && gopd(obj, property);
-        if ($defineProperty) {
-          $defineProperty(obj, property, {
-            configurable: nonConfigurable === null && desc ? desc.configurable : !nonConfigurable,
-            enumerable: nonEnumerable === null && desc ? desc.enumerable : !nonEnumerable,
-            value,
-            writable: nonWritable === null && desc ? desc.writable : !nonWritable
-          });
-        } else if (loose || !nonEnumerable && !nonWritable && !nonConfigurable) {
-          obj[property] = value;
-        } else {
-          throw new $SyntaxError("This environment does not support defining a property as non-configurable, non-writable, or non-enumerable.");
-        }
-      };
-    }
-  });
-
-  // node_modules/has-property-descriptors/index.js
-  var require_has_property_descriptors = __commonJS({
-    "node_modules/has-property-descriptors/index.js"(exports, module) {
-      "use strict";
-      var $defineProperty = require_es_define_property();
-      var hasPropertyDescriptors = function hasPropertyDescriptors2() {
-        return !!$defineProperty;
-      };
-      hasPropertyDescriptors.hasArrayLengthDefineBug = function hasArrayLengthDefineBug() {
-        if (!$defineProperty) {
-          return null;
-        }
-        try {
-          return $defineProperty([], "length", { value: 1 }).length !== 1;
-        } catch (e) {
-          return true;
-        }
-      };
-      module.exports = hasPropertyDescriptors;
-    }
-  });
-
-  // node_modules/set-function-length/index.js
-  var require_set_function_length = __commonJS({
-    "node_modules/set-function-length/index.js"(exports, module) {
-      "use strict";
-      var GetIntrinsic = require_get_intrinsic();
-      var define2 = require_define_data_property();
-      var hasDescriptors = require_has_property_descriptors()();
-      var gOPD = require_gopd();
-      var $TypeError = require_type();
-      var $floor = GetIntrinsic("%Math.floor%");
-      module.exports = function setFunctionLength(fn, length) {
-        if (typeof fn !== "function") {
-          throw new $TypeError("`fn` is not a function");
-        }
-        if (typeof length !== "number" || length < 0 || length > 4294967295 || $floor(length) !== length) {
-          throw new $TypeError("`length` must be a positive 32-bit integer");
-        }
-        var loose = arguments.length > 2 && !!arguments[2];
-        var functionLengthIsConfigurable = true;
-        var functionLengthIsWritable = true;
-        if ("length" in fn && gOPD) {
-          var desc = gOPD(fn, "length");
-          if (desc && !desc.configurable) {
-            functionLengthIsConfigurable = false;
-          }
-          if (desc && !desc.writable) {
-            functionLengthIsWritable = false;
-          }
-        }
-        if (functionLengthIsConfigurable || functionLengthIsWritable || !loose) {
-          if (hasDescriptors) {
-            define2(
-              /** @type {Parameters<define>[0]} */
-              fn,
-              "length",
-              length,
-              true,
-              true
-            );
-          } else {
-            define2(
-              /** @type {Parameters<define>[0]} */
-              fn,
-              "length",
-              length
-            );
-          }
-        }
-        return fn;
-      };
-    }
-  });
-
-  // node_modules/call-bind/index.js
-  var require_call_bind = __commonJS({
-    "node_modules/call-bind/index.js"(exports, module) {
-      "use strict";
-      var bind = require_function_bind();
-      var GetIntrinsic = require_get_intrinsic();
-      var setFunctionLength = require_set_function_length();
-      var $TypeError = require_type();
-      var $apply = GetIntrinsic("%Function.prototype.apply%");
-      var $call = GetIntrinsic("%Function.prototype.call%");
-      var $reflectApply = GetIntrinsic("%Reflect.apply%", true) || bind.call($call, $apply);
-      var $defineProperty = require_es_define_property();
-      var $max = GetIntrinsic("%Math.max%");
-      module.exports = function callBind(originalFunction) {
-        if (typeof originalFunction !== "function") {
-          throw new $TypeError("a function is required");
-        }
-        var func = $reflectApply(bind, $call, arguments);
-        return setFunctionLength(
-          func,
-          1 + $max(0, originalFunction.length - (arguments.length - 1)),
-          true
-        );
-      };
-      var applyBind = function applyBind2() {
-        return $reflectApply(bind, $apply, arguments);
-      };
-      if ($defineProperty) {
-        $defineProperty(module.exports, "apply", { value: applyBind });
-      } else {
-        module.exports.apply = applyBind;
-      }
-    }
-  });
-
-  // node_modules/call-bind/callBound.js
-  var require_callBound = __commonJS({
-    "node_modules/call-bind/callBound.js"(exports, module) {
-      "use strict";
-      var GetIntrinsic = require_get_intrinsic();
-      var callBind = require_call_bind();
-      var $indexOf = callBind(GetIntrinsic("String.prototype.indexOf"));
+      var callBindBasic = require_call_bind_apply_helpers();
+      var $indexOf = callBindBasic([GetIntrinsic("%String.prototype.indexOf%")]);
       module.exports = function callBoundIntrinsic(name, allowMissing) {
-        var intrinsic = GetIntrinsic(name, !!allowMissing);
+        var intrinsic = (
+          /** @type {(this: unknown, ...args: unknown[]) => unknown} */
+          GetIntrinsic(name, !!allowMissing)
+        );
         if (typeof intrinsic === "function" && $indexOf(name, ".prototype.") > -1) {
-          return callBind(intrinsic);
+          return callBindBasic(
+            /** @type {const} */
+            [intrinsic]
+          );
         }
         return intrinsic;
       };
     }
   });
 
-  // node_modules/is-arguments/index.js
+  // node_modules/.pnpm/is-arguments@1.2.0/node_modules/is-arguments/index.js
   var require_is_arguments = __commonJS({
-    "node_modules/is-arguments/index.js"(exports, module) {
+    "node_modules/.pnpm/is-arguments@1.2.0/node_modules/is-arguments/index.js"(exports, module) {
       "use strict";
       var hasToStringTag = require_shams2()();
-      var callBound = require_callBound();
+      var callBound = require_call_bound();
       var $toString = callBound("Object.prototype.toString");
       var isStandardArguments = function isArguments(value) {
         if (hasToStringTag && value && typeof value === "object" && Symbol.toStringTag in value) {
@@ -72461,7 +72978,7 @@ var Plotly = (() => {
         if (isStandardArguments(value)) {
           return true;
         }
-        return value !== null && typeof value === "object" && typeof value.length === "number" && value.length >= 0 && $toString(value) !== "[object Array]" && $toString(value.callee) === "[object Function]";
+        return value !== null && typeof value === "object" && "length" in value && typeof value.length === "number" && value.length >= 0 && $toString(value) !== "[object Array]" && "callee" in value && $toString(value.callee) === "[object Function]";
       };
       var supportsStandardArguments = function() {
         return isStandardArguments(arguments);
@@ -72471,15 +72988,105 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/is-generator-function/index.js
-  var require_is_generator_function = __commonJS({
-    "node_modules/is-generator-function/index.js"(exports, module) {
+  // node_modules/.pnpm/is-regex@1.2.1/node_modules/is-regex/index.js
+  var require_is_regex = __commonJS({
+    "node_modules/.pnpm/is-regex@1.2.1/node_modules/is-regex/index.js"(exports, module) {
       "use strict";
-      var toStr = Object.prototype.toString;
-      var fnToStr = Function.prototype.toString;
-      var isFnRegex = /^\s*(?:function)?\*/;
+      var callBound = require_call_bound();
       var hasToStringTag = require_shams2()();
-      var getProto = Object.getPrototypeOf;
+      var hasOwn = require_hasown();
+      var gOPD = require_gopd();
+      var fn;
+      if (hasToStringTag) {
+        $exec = callBound("RegExp.prototype.exec");
+        isRegexMarker = {};
+        throwRegexMarker = function() {
+          throw isRegexMarker;
+        };
+        badStringifier = {
+          toString: throwRegexMarker,
+          valueOf: throwRegexMarker
+        };
+        if (typeof Symbol.toPrimitive === "symbol") {
+          badStringifier[Symbol.toPrimitive] = throwRegexMarker;
+        }
+        fn = function isRegex(value) {
+          if (!value || typeof value !== "object") {
+            return false;
+          }
+          var descriptor = (
+            /** @type {NonNullable<typeof gOPD>} */
+            gOPD(
+              /** @type {{ lastIndex?: unknown }} */
+              value,
+              "lastIndex"
+            )
+          );
+          var hasLastIndexDataProperty = descriptor && hasOwn(descriptor, "value");
+          if (!hasLastIndexDataProperty) {
+            return false;
+          }
+          try {
+            $exec(
+              value,
+              /** @type {string} */
+              /** @type {unknown} */
+              badStringifier
+            );
+          } catch (e) {
+            return e === isRegexMarker;
+          }
+        };
+      } else {
+        $toString = callBound("Object.prototype.toString");
+        regexClass = "[object RegExp]";
+        fn = function isRegex(value) {
+          if (!value || typeof value !== "object" && typeof value !== "function") {
+            return false;
+          }
+          return $toString(value) === regexClass;
+        };
+      }
+      var $exec;
+      var isRegexMarker;
+      var throwRegexMarker;
+      var badStringifier;
+      var $toString;
+      var regexClass;
+      module.exports = fn;
+    }
+  });
+
+  // node_modules/.pnpm/safe-regex-test@1.1.0/node_modules/safe-regex-test/index.js
+  var require_safe_regex_test = __commonJS({
+    "node_modules/.pnpm/safe-regex-test@1.1.0/node_modules/safe-regex-test/index.js"(exports, module) {
+      "use strict";
+      var callBound = require_call_bound();
+      var isRegex = require_is_regex();
+      var $exec = callBound("RegExp.prototype.exec");
+      var $TypeError = require_type();
+      module.exports = function regexTester(regex) {
+        if (!isRegex(regex)) {
+          throw new $TypeError("`regex` must be a RegExp");
+        }
+        return function test(s) {
+          return $exec(regex, s) !== null;
+        };
+      };
+    }
+  });
+
+  // node_modules/.pnpm/is-generator-function@1.1.0/node_modules/is-generator-function/index.js
+  var require_is_generator_function = __commonJS({
+    "node_modules/.pnpm/is-generator-function@1.1.0/node_modules/is-generator-function/index.js"(exports, module) {
+      "use strict";
+      var callBound = require_call_bound();
+      var safeRegexTest = require_safe_regex_test();
+      var isFnRegex = safeRegexTest(/^\s*(?:function)?\*/);
+      var hasToStringTag = require_shams2()();
+      var getProto = require_get_proto();
+      var toStr = callBound("Object.prototype.toString");
+      var fnToStr = callBound("Function.prototype.toString");
       var getGeneratorFunc = function() {
         if (!hasToStringTag) {
           return false;
@@ -72494,11 +73101,11 @@ var Plotly = (() => {
         if (typeof fn !== "function") {
           return false;
         }
-        if (isFnRegex.test(fnToStr.call(fn))) {
+        if (isFnRegex(fnToStr(fn))) {
           return true;
         }
         if (!hasToStringTag) {
-          var str = toStr.call(fn);
+          var str = toStr(fn);
           return str === "[object GeneratorFunction]";
         }
         if (!getProto) {
@@ -72506,16 +73113,19 @@ var Plotly = (() => {
         }
         if (typeof GeneratorFunction === "undefined") {
           var generatorFunc = getGeneratorFunc();
-          GeneratorFunction = generatorFunc ? getProto(generatorFunc) : false;
+          GeneratorFunction = generatorFunc ? (
+            /** @type {GeneratorFunctionConstructor} */
+            getProto(generatorFunc)
+          ) : false;
         }
         return getProto(fn) === GeneratorFunction;
       };
     }
   });
 
-  // node_modules/is-callable/index.js
+  // node_modules/.pnpm/is-callable@1.2.7/node_modules/is-callable/index.js
   var require_is_callable = __commonJS({
-    "node_modules/is-callable/index.js"(exports, module) {
+    "node_modules/.pnpm/is-callable@1.2.7/node_modules/is-callable/index.js"(exports, module) {
       "use strict";
       var fnToStr = Function.prototype.toString;
       var reflectApply = typeof Reflect === "object" && Reflect !== null && Reflect.apply;
@@ -72631,9 +73241,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/for-each/index.js
+  // node_modules/.pnpm/for-each@0.3.5/node_modules/for-each/index.js
   var require_for_each = __commonJS({
-    "node_modules/for-each/index.js"(exports, module) {
+    "node_modules/.pnpm/for-each@0.3.5/node_modules/for-each/index.js"(exports, module) {
       "use strict";
       var isCallable = require_is_callable();
       var toStr = Object.prototype.toString;
@@ -72669,7 +73279,10 @@ var Plotly = (() => {
           }
         }
       };
-      var forEach = function forEach2(list, iterator, thisArg) {
+      function isArray(x) {
+        return toStr.call(x) === "[object Array]";
+      }
+      module.exports = function forEach(list, iterator, thisArg) {
         if (!isCallable(iterator)) {
           throw new TypeError("iterator must be a function");
         }
@@ -72677,7 +73290,7 @@ var Plotly = (() => {
         if (arguments.length >= 3) {
           receiver = thisArg;
         }
-        if (toStr.call(list) === "[object Array]") {
+        if (isArray(list)) {
           forEachArray(list, iterator, receiver);
         } else if (typeof list === "string") {
           forEachString(list, iterator, receiver);
@@ -72685,27 +73298,35 @@ var Plotly = (() => {
           forEachObject(list, iterator, receiver);
         }
       };
-      module.exports = forEach;
     }
   });
 
-  // node_modules/available-typed-arrays/index.js
-  var require_available_typed_arrays = __commonJS({
-    "node_modules/available-typed-arrays/index.js"(exports, module) {
+  // node_modules/.pnpm/possible-typed-array-names@1.1.0/node_modules/possible-typed-array-names/index.js
+  var require_possible_typed_array_names = __commonJS({
+    "node_modules/.pnpm/possible-typed-array-names@1.1.0/node_modules/possible-typed-array-names/index.js"(exports, module) {
       "use strict";
-      var possibleNames = [
-        "BigInt64Array",
-        "BigUint64Array",
+      module.exports = [
+        "Float16Array",
         "Float32Array",
         "Float64Array",
+        "Int8Array",
         "Int16Array",
         "Int32Array",
-        "Int8Array",
+        "Uint8Array",
+        "Uint8ClampedArray",
         "Uint16Array",
         "Uint32Array",
-        "Uint8Array",
-        "Uint8ClampedArray"
+        "BigInt64Array",
+        "BigUint64Array"
       ];
+    }
+  });
+
+  // node_modules/.pnpm/available-typed-arrays@1.0.7/node_modules/available-typed-arrays/index.js
+  var require_available_typed_arrays = __commonJS({
+    "node_modules/.pnpm/available-typed-arrays@1.0.7/node_modules/available-typed-arrays/index.js"(exports, module) {
+      "use strict";
+      var possibleNames = require_possible_typed_array_names();
       var g = typeof globalThis === "undefined" ? window : globalThis;
       module.exports = function availableTypedArrays() {
         var out = [];
@@ -72719,23 +73340,183 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/which-typed-array/index.js
+  // node_modules/.pnpm/define-data-property@1.1.4/node_modules/define-data-property/index.js
+  var require_define_data_property = __commonJS({
+    "node_modules/.pnpm/define-data-property@1.1.4/node_modules/define-data-property/index.js"(exports, module) {
+      "use strict";
+      var $defineProperty = require_es_define_property();
+      var $SyntaxError = require_syntax();
+      var $TypeError = require_type();
+      var gopd = require_gopd();
+      module.exports = function defineDataProperty(obj, property, value) {
+        if (!obj || typeof obj !== "object" && typeof obj !== "function") {
+          throw new $TypeError("`obj` must be an object or a function`");
+        }
+        if (typeof property !== "string" && typeof property !== "symbol") {
+          throw new $TypeError("`property` must be a string or a symbol`");
+        }
+        if (arguments.length > 3 && typeof arguments[3] !== "boolean" && arguments[3] !== null) {
+          throw new $TypeError("`nonEnumerable`, if provided, must be a boolean or null");
+        }
+        if (arguments.length > 4 && typeof arguments[4] !== "boolean" && arguments[4] !== null) {
+          throw new $TypeError("`nonWritable`, if provided, must be a boolean or null");
+        }
+        if (arguments.length > 5 && typeof arguments[5] !== "boolean" && arguments[5] !== null) {
+          throw new $TypeError("`nonConfigurable`, if provided, must be a boolean or null");
+        }
+        if (arguments.length > 6 && typeof arguments[6] !== "boolean") {
+          throw new $TypeError("`loose`, if provided, must be a boolean");
+        }
+        var nonEnumerable = arguments.length > 3 ? arguments[3] : null;
+        var nonWritable = arguments.length > 4 ? arguments[4] : null;
+        var nonConfigurable = arguments.length > 5 ? arguments[5] : null;
+        var loose = arguments.length > 6 ? arguments[6] : false;
+        var desc = !!gopd && gopd(obj, property);
+        if ($defineProperty) {
+          $defineProperty(obj, property, {
+            configurable: nonConfigurable === null && desc ? desc.configurable : !nonConfigurable,
+            enumerable: nonEnumerable === null && desc ? desc.enumerable : !nonEnumerable,
+            value,
+            writable: nonWritable === null && desc ? desc.writable : !nonWritable
+          });
+        } else if (loose || !nonEnumerable && !nonWritable && !nonConfigurable) {
+          obj[property] = value;
+        } else {
+          throw new $SyntaxError("This environment does not support defining a property as non-configurable, non-writable, or non-enumerable.");
+        }
+      };
+    }
+  });
+
+  // node_modules/.pnpm/has-property-descriptors@1.0.2/node_modules/has-property-descriptors/index.js
+  var require_has_property_descriptors = __commonJS({
+    "node_modules/.pnpm/has-property-descriptors@1.0.2/node_modules/has-property-descriptors/index.js"(exports, module) {
+      "use strict";
+      var $defineProperty = require_es_define_property();
+      var hasPropertyDescriptors = function hasPropertyDescriptors2() {
+        return !!$defineProperty;
+      };
+      hasPropertyDescriptors.hasArrayLengthDefineBug = function hasArrayLengthDefineBug() {
+        if (!$defineProperty) {
+          return null;
+        }
+        try {
+          return $defineProperty([], "length", { value: 1 }).length !== 1;
+        } catch (e) {
+          return true;
+        }
+      };
+      module.exports = hasPropertyDescriptors;
+    }
+  });
+
+  // node_modules/.pnpm/set-function-length@1.2.2/node_modules/set-function-length/index.js
+  var require_set_function_length = __commonJS({
+    "node_modules/.pnpm/set-function-length@1.2.2/node_modules/set-function-length/index.js"(exports, module) {
+      "use strict";
+      var GetIntrinsic = require_get_intrinsic();
+      var define2 = require_define_data_property();
+      var hasDescriptors = require_has_property_descriptors()();
+      var gOPD = require_gopd();
+      var $TypeError = require_type();
+      var $floor = GetIntrinsic("%Math.floor%");
+      module.exports = function setFunctionLength(fn, length) {
+        if (typeof fn !== "function") {
+          throw new $TypeError("`fn` is not a function");
+        }
+        if (typeof length !== "number" || length < 0 || length > 4294967295 || $floor(length) !== length) {
+          throw new $TypeError("`length` must be a positive 32-bit integer");
+        }
+        var loose = arguments.length > 2 && !!arguments[2];
+        var functionLengthIsConfigurable = true;
+        var functionLengthIsWritable = true;
+        if ("length" in fn && gOPD) {
+          var desc = gOPD(fn, "length");
+          if (desc && !desc.configurable) {
+            functionLengthIsConfigurable = false;
+          }
+          if (desc && !desc.writable) {
+            functionLengthIsWritable = false;
+          }
+        }
+        if (functionLengthIsConfigurable || functionLengthIsWritable || !loose) {
+          if (hasDescriptors) {
+            define2(
+              /** @type {Parameters<define>[0]} */
+              fn,
+              "length",
+              length,
+              true,
+              true
+            );
+          } else {
+            define2(
+              /** @type {Parameters<define>[0]} */
+              fn,
+              "length",
+              length
+            );
+          }
+        }
+        return fn;
+      };
+    }
+  });
+
+  // node_modules/.pnpm/call-bind-apply-helpers@1.0.2/node_modules/call-bind-apply-helpers/applyBind.js
+  var require_applyBind = __commonJS({
+    "node_modules/.pnpm/call-bind-apply-helpers@1.0.2/node_modules/call-bind-apply-helpers/applyBind.js"(exports, module) {
+      "use strict";
+      var bind = require_function_bind();
+      var $apply = require_functionApply();
+      var actualApply = require_actualApply();
+      module.exports = function applyBind() {
+        return actualApply(bind, $apply, arguments);
+      };
+    }
+  });
+
+  // node_modules/.pnpm/call-bind@1.0.8/node_modules/call-bind/index.js
+  var require_call_bind = __commonJS({
+    "node_modules/.pnpm/call-bind@1.0.8/node_modules/call-bind/index.js"(exports, module) {
+      "use strict";
+      var setFunctionLength = require_set_function_length();
+      var $defineProperty = require_es_define_property();
+      var callBindBasic = require_call_bind_apply_helpers();
+      var applyBind = require_applyBind();
+      module.exports = function callBind(originalFunction) {
+        var func = callBindBasic(arguments);
+        var adjustedLength = originalFunction.length - (arguments.length - 1);
+        return setFunctionLength(
+          func,
+          1 + (adjustedLength > 0 ? adjustedLength : 0),
+          true
+        );
+      };
+      if ($defineProperty) {
+        $defineProperty(module.exports, "apply", { value: applyBind });
+      } else {
+        module.exports.apply = applyBind;
+      }
+    }
+  });
+
+  // node_modules/.pnpm/which-typed-array@1.1.19/node_modules/which-typed-array/index.js
   var require_which_typed_array = __commonJS({
-    "node_modules/which-typed-array/index.js"(exports, module) {
+    "node_modules/.pnpm/which-typed-array@1.1.19/node_modules/which-typed-array/index.js"(exports, module) {
       "use strict";
       var forEach = require_for_each();
       var availableTypedArrays = require_available_typed_arrays();
       var callBind = require_call_bind();
-      var callBound = require_callBound();
+      var callBound = require_call_bound();
       var gOPD = require_gopd();
+      var getProto = require_get_proto();
       var $toString = callBound("Object.prototype.toString");
       var hasToStringTag = require_shams2()();
       var g = typeof globalThis === "undefined" ? window : globalThis;
       var typedArrays = availableTypedArrays();
       var $slice = callBound("String.prototype.slice");
-      var getPrototypeOf = Object.getPrototypeOf;
-      var $indexOf = callBound("Array.prototype.indexOf", true) || /** @type {(array: readonly unknown[], value: unknown) => keyof array} */
-      function indexOf(array, value) {
+      var $indexOf = callBound("Array.prototype.indexOf", true) || function indexOf(array, value) {
         for (var i = 0; i < array.length; i += 1) {
           if (array[i] === value) {
             return i;
@@ -72744,14 +73525,14 @@ var Plotly = (() => {
         return -1;
       };
       var cache = { __proto__: null };
-      if (hasToStringTag && gOPD && getPrototypeOf) {
+      if (hasToStringTag && gOPD && getProto) {
         forEach(typedArrays, function(typedArray) {
           var arr = new g[typedArray]();
-          if (Symbol.toStringTag in arr) {
-            var proto = getPrototypeOf(arr);
+          if (Symbol.toStringTag in arr && getProto) {
+            var proto = getProto(arr);
             var descriptor = gOPD(proto, Symbol.toStringTag);
-            if (!descriptor) {
-              var superProto = getPrototypeOf(proto);
+            if (!descriptor && proto) {
+              var superProto = getProto(proto);
               descriptor = gOPD(superProto, Symbol.toStringTag);
             }
             cache["$" + typedArray] = callBind(descriptor.get);
@@ -72762,23 +73543,27 @@ var Plotly = (() => {
           var arr = new g[typedArray]();
           var fn = arr.slice || arr.set;
           if (fn) {
-            cache["$" + typedArray] = callBind(fn);
+            cache[
+              /** @type {`$${import('.').TypedArrayName}`} */
+              "$" + typedArray
+            ] = /** @type {import('./types').BoundSlice | import('./types').BoundSet} */
+            // @ts-expect-error TODO FIXME
+            callBind(fn);
           }
         });
       }
       var tryTypedArrays = function tryAllTypedArrays(value) {
         var found = false;
         forEach(
-          // eslint-disable-next-line no-extra-parens
-          /** @type {Record<`\$${TypedArrayName}`, typeof cache>} */
-          /** @type {any} */
+          /** @type {Record<`\$${import('.').TypedArrayName}`, Getter>} */
           cache,
-          /** @type {(getter: typeof cache, name: `\$${TypedArrayName}`) => void} */
+          /** @type {(getter: Getter, name: `\$${import('.').TypedArrayName}`) => void} */
           function(getter, typedArray) {
             if (!found) {
               try {
                 if ("$" + getter(value) === typedArray) {
-                  found = $slice(typedArray, 1);
+                  found = /** @type {import('.').TypedArrayName} */
+                  $slice(typedArray, 1);
                 }
               } catch (e) {
               }
@@ -72790,15 +73575,15 @@ var Plotly = (() => {
       var trySlices = function tryAllSlices(value) {
         var found = false;
         forEach(
-          // eslint-disable-next-line no-extra-parens
-          /** @type {any} */
+          /** @type {Record<`\$${import('.').TypedArrayName}`, Getter>} */
           cache,
-          /** @type {(getter: typeof cache, name: `\$${TypedArrayName}`) => void} */
+          /** @type {(getter: Getter, name: `\$${import('.').TypedArrayName}`) => void} */
           function(getter, name) {
             if (!found) {
               try {
                 getter(value);
-                found = $slice(name, 1);
+                found = /** @type {import('.').TypedArrayName} */
+                $slice(name, 1);
               } catch (e) {
               }
             }
@@ -72828,74 +73613,20 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/is-typed-array/index.js
+  // node_modules/.pnpm/is-typed-array@1.1.15/node_modules/is-typed-array/index.js
   var require_is_typed_array = __commonJS({
-    "node_modules/is-typed-array/index.js"(exports, module) {
+    "node_modules/.pnpm/is-typed-array@1.1.15/node_modules/is-typed-array/index.js"(exports, module) {
       "use strict";
-      var forEach = require_for_each();
-      var availableTypedArrays = require_available_typed_arrays();
-      var callBound = require_callBound();
-      var $toString = callBound("Object.prototype.toString");
-      var hasToStringTag = require_shams2()();
-      var gOPD = require_gopd();
-      var g = typeof globalThis === "undefined" ? window : globalThis;
-      var typedArrays = availableTypedArrays();
-      var $indexOf = callBound("Array.prototype.indexOf", true) || function indexOf(array, value) {
-        for (var i = 0; i < array.length; i += 1) {
-          if (array[i] === value) {
-            return i;
-          }
-        }
-        return -1;
-      };
-      var $slice = callBound("String.prototype.slice");
-      var toStrTags = {};
-      var getPrototypeOf = Object.getPrototypeOf;
-      if (hasToStringTag && gOPD && getPrototypeOf) {
-        forEach(typedArrays, function(typedArray) {
-          var arr = new g[typedArray]();
-          if (Symbol.toStringTag in arr) {
-            var proto = getPrototypeOf(arr);
-            var descriptor = gOPD(proto, Symbol.toStringTag);
-            if (!descriptor) {
-              var superProto = getPrototypeOf(proto);
-              descriptor = gOPD(superProto, Symbol.toStringTag);
-            }
-            toStrTags[typedArray] = descriptor.get;
-          }
-        });
-      }
-      var tryTypedArrays = function tryAllTypedArrays(value) {
-        var anyTrue = false;
-        forEach(toStrTags, function(getter, typedArray) {
-          if (!anyTrue) {
-            try {
-              anyTrue = getter.call(value) === typedArray;
-            } catch (e) {
-            }
-          }
-        });
-        return anyTrue;
-      };
+      var whichTypedArray = require_which_typed_array();
       module.exports = function isTypedArray(value) {
-        if (!value || typeof value !== "object") {
-          return false;
-        }
-        if (!hasToStringTag || !(Symbol.toStringTag in value)) {
-          var tag = $slice($toString(value), 8, -1);
-          return $indexOf(typedArrays, tag) > -1;
-        }
-        if (!gOPD) {
-          return false;
-        }
-        return tryTypedArrays(value);
+        return !!whichTypedArray(value);
       };
     }
   });
 
-  // node_modules/util/support/types.js
+  // node_modules/.pnpm/util@0.12.5/node_modules/util/support/types.js
   var require_types = __commonJS({
-    "node_modules/util/support/types.js"(exports) {
+    "node_modules/.pnpm/util@0.12.5/node_modules/util/support/types.js"(exports) {
       "use strict";
       var isArgumentsObject = require_is_arguments();
       var isGeneratorFunction = require_is_generator_function();
@@ -73123,18 +73854,18 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/util/support/isBufferBrowser.js
+  // node_modules/.pnpm/util@0.12.5/node_modules/util/support/isBufferBrowser.js
   var require_isBufferBrowser = __commonJS({
-    "node_modules/util/support/isBufferBrowser.js"(exports, module) {
+    "node_modules/.pnpm/util@0.12.5/node_modules/util/support/isBufferBrowser.js"(exports, module) {
       module.exports = function isBuffer(arg) {
         return arg && typeof arg === "object" && typeof arg.copy === "function" && typeof arg.fill === "function" && typeof arg.readUInt8 === "function";
       };
     }
   });
 
-  // (disabled):node_modules/util/util.js
+  // (disabled):node_modules/.pnpm/util@0.12.5/node_modules/util/util.js
   var require_util = __commonJS({
-    "(disabled):node_modules/util/util.js"(exports) {
+    "(disabled):node_modules/.pnpm/util@0.12.5/node_modules/util/util.js"(exports) {
       var getOwnPropertyDescriptors = Object.getOwnPropertyDescriptors || function getOwnPropertyDescriptors2(obj) {
         var keys = Object.keys(obj);
         var descriptors = {};
@@ -73691,39 +74422,33 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/buffer_list.js
+  // node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/buffer_list.js
   var require_buffer_list = __commonJS({
-    "node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/buffer_list.js"(exports, module) {
+    "node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/buffer_list.js"(exports, module) {
       "use strict";
       function ownKeys(object, enumerableOnly) {
         var keys = Object.keys(object);
         if (Object.getOwnPropertySymbols) {
           var symbols = Object.getOwnPropertySymbols(object);
-          if (enumerableOnly) symbols = symbols.filter(function(sym) {
+          enumerableOnly && (symbols = symbols.filter(function(sym) {
             return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-          });
-          keys.push.apply(keys, symbols);
+          })), keys.push.apply(keys, symbols);
         }
         return keys;
       }
       function _objectSpread(target) {
         for (var i = 1; i < arguments.length; i++) {
-          var source = arguments[i] != null ? arguments[i] : {};
-          if (i % 2) {
-            ownKeys(Object(source), true).forEach(function(key) {
-              _defineProperty(target, key, source[key]);
-            });
-          } else if (Object.getOwnPropertyDescriptors) {
-            Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-          } else {
-            ownKeys(Object(source)).forEach(function(key) {
-              Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-            });
-          }
+          var source = null != arguments[i] ? arguments[i] : {};
+          i % 2 ? ownKeys(Object(source), true).forEach(function(key) {
+            _defineProperty(target, key, source[key]);
+          }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function(key) {
+            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+          });
         }
         return target;
       }
       function _defineProperty(obj, key, value) {
+        key = _toPropertyKey(key);
         if (key in obj) {
           Object.defineProperty(obj, key, { value, enumerable: true, configurable: true, writable: true });
         } else {
@@ -73742,13 +74467,28 @@ var Plotly = (() => {
           descriptor.enumerable = descriptor.enumerable || false;
           descriptor.configurable = true;
           if ("value" in descriptor) descriptor.writable = true;
-          Object.defineProperty(target, descriptor.key, descriptor);
+          Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor);
         }
       }
       function _createClass(Constructor, protoProps, staticProps) {
         if (protoProps) _defineProperties(Constructor.prototype, protoProps);
         if (staticProps) _defineProperties(Constructor, staticProps);
+        Object.defineProperty(Constructor, "prototype", { writable: false });
         return Constructor;
+      }
+      function _toPropertyKey(arg) {
+        var key = _toPrimitive(arg, "string");
+        return typeof key === "symbol" ? key : String(key);
+      }
+      function _toPrimitive(input, hint) {
+        if (typeof input !== "object" || input === null) return input;
+        var prim = input[Symbol.toPrimitive];
+        if (prim !== void 0) {
+          var res = prim.call(input, hint || "default");
+          if (typeof res !== "object") return res;
+          throw new TypeError("@@toPrimitive must return a primitive value.");
+        }
+        return (hint === "string" ? String : Number)(input);
       }
       var _require = require_buffer();
       var Buffer2 = _require.Buffer;
@@ -73810,9 +74550,7 @@ var Plotly = (() => {
             if (this.length === 0) return "";
             var p = this.head;
             var ret = "" + p.data;
-            while (p = p.next) {
-              ret += s + p.data;
-            }
+            while (p = p.next) ret += s + p.data;
             return ret;
           }
         }, {
@@ -73913,7 +74651,7 @@ var Plotly = (() => {
         }, {
           key: custom,
           value: function value(_, options) {
-            return inspect(this, _objectSpread({}, options, {
+            return inspect(this, _objectSpread(_objectSpread({}, options), {}, {
               // Only inspect one level.
               depth: 0,
               // It should not recurse.
@@ -73926,9 +74664,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/destroy.js
+  // node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/destroy.js
   var require_destroy = __commonJS({
-    "node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/destroy.js"(exports, module) {
+    "node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/destroy.js"(exports, module) {
       "use strict";
       function destroy(err, cb) {
         var _this = this;
@@ -74015,9 +74753,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-browserify/node_modules/readable-stream/errors-browser.js
+  // node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/errors-browser.js
   var require_errors_browser = __commonJS({
-    "node_modules/stream-browserify/node_modules/readable-stream/errors-browser.js"(exports, module) {
+    "node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/errors-browser.js"(exports, module) {
       "use strict";
       function _inheritsLoose(subClass, superClass) {
         subClass.prototype = Object.create(superClass.prototype);
@@ -74124,9 +74862,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/state.js
+  // node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/state.js
   var require_state = __commonJS({
-    "node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/state.js"(exports, module) {
+    "node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/state.js"(exports, module) {
       "use strict";
       var ERR_INVALID_OPT_VALUE = require_errors_browser().codes.ERR_INVALID_OPT_VALUE;
       function highWaterMarkFrom(options, isDuplex, duplexKey) {
@@ -74149,9 +74887,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/util-deprecate/browser.js
+  // node_modules/.pnpm/util-deprecate@1.0.2/node_modules/util-deprecate/browser.js
   var require_browser = __commonJS({
-    "node_modules/util-deprecate/browser.js"(exports, module) {
+    "node_modules/.pnpm/util-deprecate@1.0.2/node_modules/util-deprecate/browser.js"(exports, module) {
       module.exports = deprecate;
       function deprecate(fn, msg) {
         if (config("noDeprecation")) {
@@ -74186,9 +74924,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-browserify/node_modules/readable-stream/lib/_stream_writable.js
+  // node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js
   var require_stream_writable = __commonJS({
-    "node_modules/stream-browserify/node_modules/readable-stream/lib/_stream_writable.js"(exports, module) {
+    "node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_writable.js"(exports, module) {
       "use strict";
       module.exports = Writable;
       function CorkedRequest(state) {
@@ -74206,7 +74944,7 @@ var Plotly = (() => {
       };
       var Stream = require_stream_browser();
       var Buffer2 = require_buffer().Buffer;
-      var OurUint8Array = window.Uint8Array || function() {
+      var OurUint8Array = (typeof window !== "undefined" ? window : typeof window !== "undefined" ? window : typeof self !== "undefined" ? self : {}).Uint8Array || function() {
       };
       function _uint8ArrayToBuffer(chunk) {
         return Buffer2.from(chunk);
@@ -74657,15 +75395,13 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-browserify/node_modules/readable-stream/lib/_stream_duplex.js
+  // node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_duplex.js
   var require_stream_duplex = __commonJS({
-    "node_modules/stream-browserify/node_modules/readable-stream/lib/_stream_duplex.js"(exports, module) {
+    "node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_duplex.js"(exports, module) {
       "use strict";
       var objectKeys = Object.keys || function(obj) {
         var keys2 = [];
-        for (var key in obj) {
-          keys2.push(key);
-        }
+        for (var key in obj) keys2.push(key);
         return keys2;
       };
       module.exports = Duplex;
@@ -74752,9 +75488,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/safe-buffer/index.js
+  // node_modules/.pnpm/safe-buffer@5.2.1/node_modules/safe-buffer/index.js
   var require_safe_buffer = __commonJS({
-    "node_modules/safe-buffer/index.js"(exports, module) {
+    "node_modules/.pnpm/safe-buffer@5.2.1/node_modules/safe-buffer/index.js"(exports, module) {
       var buffer = require_buffer();
       var Buffer2 = buffer.Buffer;
       function copyProps(src, dst) {
@@ -74810,9 +75546,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-browserify/node_modules/string_decoder/lib/string_decoder.js
+  // node_modules/.pnpm/string_decoder@1.3.0/node_modules/string_decoder/lib/string_decoder.js
   var require_string_decoder = __commonJS({
-    "node_modules/stream-browserify/node_modules/string_decoder/lib/string_decoder.js"(exports) {
+    "node_modules/.pnpm/string_decoder@1.3.0/node_modules/string_decoder/lib/string_decoder.js"(exports) {
       "use strict";
       var Buffer2 = require_safe_buffer().Buffer;
       var isEncoding = Buffer2.isEncoding || function(encoding) {
@@ -75048,9 +75784,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/end-of-stream.js
+  // node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/end-of-stream.js
   var require_end_of_stream = __commonJS({
-    "node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/end-of-stream.js"(exports, module) {
+    "node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/end-of-stream.js"(exports, module) {
       "use strict";
       var ERR_STREAM_PREMATURE_CLOSE = require_errors_browser().codes.ERR_STREAM_PREMATURE_CLOSE;
       function once(callback) {
@@ -75137,18 +75873,33 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/async_iterator.js
+  // node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/async_iterator.js
   var require_async_iterator = __commonJS({
-    "node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/async_iterator.js"(exports, module) {
+    "node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/async_iterator.js"(exports, module) {
       "use strict";
       var _Object$setPrototypeO;
       function _defineProperty(obj, key, value) {
+        key = _toPropertyKey(key);
         if (key in obj) {
           Object.defineProperty(obj, key, { value, enumerable: true, configurable: true, writable: true });
         } else {
           obj[key] = value;
         }
         return obj;
+      }
+      function _toPropertyKey(arg) {
+        var key = _toPrimitive(arg, "string");
+        return typeof key === "symbol" ? key : String(key);
+      }
+      function _toPrimitive(input, hint) {
+        if (typeof input !== "object" || input === null) return input;
+        var prim = input[Symbol.toPrimitive];
+        if (prim !== void 0) {
+          var res = prim.call(input, hint || "default");
+          if (typeof res !== "object") return res;
+          throw new TypeError("@@toPrimitive must return a primitive value.");
+        }
+        return (hint === "string" ? String : Number)(input);
       }
       var finished = require_end_of_stream();
       var kLastResolve = Symbol("lastResolve");
@@ -75305,29 +76056,29 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/from-browser.js
+  // node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/from-browser.js
   var require_from_browser = __commonJS({
-    "node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/from-browser.js"(exports, module) {
+    "node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/from-browser.js"(exports, module) {
       module.exports = function() {
         throw new Error("Readable.from is not available in the browser");
       };
     }
   });
 
-  // node_modules/stream-browserify/node_modules/readable-stream/lib/_stream_readable.js
+  // node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_readable.js
   var require_stream_readable = __commonJS({
-    "node_modules/stream-browserify/node_modules/readable-stream/lib/_stream_readable.js"(exports, module) {
+    "node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_readable.js"(exports, module) {
       "use strict";
       module.exports = Readable;
       var Duplex;
       Readable.ReadableState = ReadableState;
-      var EE = require_events().EventEmitter;
+      var EE = require_events3().EventEmitter;
       var EElistenerCount = function EElistenerCount2(emitter, type) {
         return emitter.listeners(type).length;
       };
       var Stream = require_stream_browser();
       var Buffer2 = require_buffer().Buffer;
-      var OurUint8Array = window.Uint8Array || function() {
+      var OurUint8Array = (typeof window !== "undefined" ? window : typeof window !== "undefined" ? window : typeof self !== "undefined" ? self : {}).Uint8Array || function() {
       };
       function _uint8ArrayToBuffer(chunk) {
         return Buffer2.from(chunk);
@@ -75797,11 +76548,9 @@ var Plotly = (() => {
           state.pipes = null;
           state.pipesCount = 0;
           state.flowing = false;
-          for (var i = 0; i < len; i++) {
-            dests[i].emit("unpipe", this, {
-              hasUnpiped: false
-            });
-          }
+          for (var i = 0; i < len; i++) dests[i].emit("unpipe", this, {
+            hasUnpiped: false
+          });
           return this;
         }
         var index = indexOf(state.pipes, dest);
@@ -75900,9 +76649,7 @@ var Plotly = (() => {
       function flow(stream) {
         var state = stream._readableState;
         debug("flow", state.flowing);
-        while (state.flowing && stream.read() !== null) {
-          ;
-        }
+        while (state.flowing && stream.read() !== null) ;
       }
       Readable.prototype.wrap = function(stream) {
         var _this = this;
@@ -76051,9 +76798,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-browserify/node_modules/readable-stream/lib/_stream_transform.js
+  // node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_transform.js
   var require_stream_transform = __commonJS({
-    "node_modules/stream-browserify/node_modules/readable-stream/lib/_stream_transform.js"(exports, module) {
+    "node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_transform.js"(exports, module) {
       "use strict";
       module.exports = Transform;
       var _require$codes = require_errors_browser().codes;
@@ -76152,9 +76899,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-browserify/node_modules/readable-stream/lib/_stream_passthrough.js
+  // node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_passthrough.js
   var require_stream_passthrough = __commonJS({
-    "node_modules/stream-browserify/node_modules/readable-stream/lib/_stream_passthrough.js"(exports, module) {
+    "node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/_stream_passthrough.js"(exports, module) {
       "use strict";
       module.exports = PassThrough;
       var Transform = require_stream_transform();
@@ -76169,9 +76916,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/pipeline.js
+  // node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/pipeline.js
   var require_pipeline = __commonJS({
-    "node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/pipeline.js"(exports, module) {
+    "node_modules/.pnpm/readable-stream@3.6.2/node_modules/readable-stream/lib/internal/streams/pipeline.js"(exports, module) {
       "use strict";
       var eos;
       function once(callback) {
@@ -76254,11 +77001,11 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-browserify/index.js
+  // node_modules/.pnpm/stream-browserify@3.0.0/node_modules/stream-browserify/index.js
   var require_stream_browserify = __commonJS({
-    "node_modules/stream-browserify/index.js"(exports, module) {
+    "node_modules/.pnpm/stream-browserify@3.0.0/node_modules/stream-browserify/index.js"(exports, module) {
       module.exports = Stream;
-      var EE = require_events().EventEmitter;
+      var EE = require_events3().EventEmitter;
       var inherits = require_inherits_browser();
       inherits(Stream, EE);
       Stream.Readable = require_stream_readable();
@@ -76331,9 +77078,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/util/util.js
+  // node_modules/.pnpm/util@0.12.5/node_modules/util/util.js
   var require_util2 = __commonJS({
-    "node_modules/util/util.js"(exports) {
+    "node_modules/.pnpm/util@0.12.5/node_modules/util/util.js"(exports) {
       var getOwnPropertyDescriptors = Object.getOwnPropertyDescriptors || function getOwnPropertyDescriptors2(obj) {
         var keys = Object.keys(obj);
         var descriptors = {};
@@ -76890,9 +77637,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/assert/build/internal/errors.js
+  // node_modules/.pnpm/assert@2.1.0/node_modules/assert/build/internal/errors.js
   var require_errors = __commonJS({
-    "node_modules/assert/build/internal/errors.js"(exports, module) {
+    "node_modules/.pnpm/assert@2.1.0/node_modules/assert/build/internal/errors.js"(exports, module) {
       "use strict";
       function _typeof(o) {
         "@babel/helpers - typeof";
@@ -77128,9 +77875,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/assert/build/internal/assert/assertion_error.js
+  // node_modules/.pnpm/assert@2.1.0/node_modules/assert/build/internal/assert/assertion_error.js
   var require_assertion_error = __commonJS({
-    "node_modules/assert/build/internal/assert/assertion_error.js"(exports, module) {
+    "node_modules/.pnpm/assert@2.1.0/node_modules/assert/build/internal/assert/assertion_error.js"(exports, module) {
       "use strict";
       function ownKeys(e, r) {
         var t = Object.keys(e);
@@ -77630,9 +78377,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/object-keys/isArguments.js
+  // node_modules/.pnpm/object-keys@1.1.1/node_modules/object-keys/isArguments.js
   var require_isArguments = __commonJS({
-    "node_modules/object-keys/isArguments.js"(exports, module) {
+    "node_modules/.pnpm/object-keys@1.1.1/node_modules/object-keys/isArguments.js"(exports, module) {
       "use strict";
       var toStr = Object.prototype.toString;
       module.exports = function isArguments(value) {
@@ -77646,9 +78393,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/object-keys/implementation.js
+  // node_modules/.pnpm/object-keys@1.1.1/node_modules/object-keys/implementation.js
   var require_implementation2 = __commonJS({
-    "node_modules/object-keys/implementation.js"(exports, module) {
+    "node_modules/.pnpm/object-keys@1.1.1/node_modules/object-keys/implementation.js"(exports, module) {
       "use strict";
       var keysShim;
       if (!Object.keys) {
@@ -77778,9 +78525,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/object-keys/index.js
+  // node_modules/.pnpm/object-keys@1.1.1/node_modules/object-keys/index.js
   var require_object_keys = __commonJS({
-    "node_modules/object-keys/index.js"(exports, module) {
+    "node_modules/.pnpm/object-keys@1.1.1/node_modules/object-keys/index.js"(exports, module) {
       "use strict";
       var slice = Array.prototype.slice;
       var isArgs = require_isArguments();
@@ -77812,29 +78559,29 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/object.assign/implementation.js
+  // node_modules/.pnpm/object.assign@4.1.7/node_modules/object.assign/implementation.js
   var require_implementation3 = __commonJS({
-    "node_modules/object.assign/implementation.js"(exports, module) {
+    "node_modules/.pnpm/object.assign@4.1.7/node_modules/object.assign/implementation.js"(exports, module) {
       "use strict";
       var objectKeys = require_object_keys();
       var hasSymbols = require_shams()();
-      var callBound = require_callBound();
-      var toObject = Object;
+      var callBound = require_call_bound();
+      var $Object = require_es_object_atoms();
       var $push = callBound("Array.prototype.push");
       var $propIsEnumerable = callBound("Object.prototype.propertyIsEnumerable");
-      var originalGetSymbols = hasSymbols ? Object.getOwnPropertySymbols : null;
+      var originalGetSymbols = hasSymbols ? $Object.getOwnPropertySymbols : null;
       module.exports = function assign(target, source1) {
         if (target == null) {
           throw new TypeError("target must be an object");
         }
-        var to = toObject(target);
+        var to = $Object(target);
         if (arguments.length === 1) {
           return to;
         }
         for (var s = 1; s < arguments.length; ++s) {
-          var from = toObject(arguments[s]);
+          var from = $Object(arguments[s]);
           var keys = objectKeys(from);
-          var getSymbols = hasSymbols && (Object.getOwnPropertySymbols || originalGetSymbols);
+          var getSymbols = hasSymbols && ($Object.getOwnPropertySymbols || originalGetSymbols);
           if (getSymbols) {
             var syms = getSymbols(from);
             for (var j = 0; j < syms.length; ++j) {
@@ -77857,9 +78604,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/object.assign/polyfill.js
+  // node_modules/.pnpm/object.assign@4.1.7/node_modules/object.assign/polyfill.js
   var require_polyfill = __commonJS({
-    "node_modules/object.assign/polyfill.js"(exports, module) {
+    "node_modules/.pnpm/object.assign@4.1.7/node_modules/object.assign/polyfill.js"(exports, module) {
       "use strict";
       var implementation = require_implementation3();
       var lacksProperEnumerationOrder = function() {
@@ -77906,9 +78653,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/object-is/implementation.js
+  // node_modules/.pnpm/object-is@1.1.6/node_modules/object-is/implementation.js
   var require_implementation4 = __commonJS({
-    "node_modules/object-is/implementation.js"(exports, module) {
+    "node_modules/.pnpm/object-is@1.1.6/node_modules/object-is/implementation.js"(exports, module) {
       "use strict";
       var numberIsNaN = function(value) {
         return value !== value;
@@ -77928,9 +78675,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/object-is/polyfill.js
+  // node_modules/.pnpm/object-is@1.1.6/node_modules/object-is/polyfill.js
   var require_polyfill2 = __commonJS({
-    "node_modules/object-is/polyfill.js"(exports, module) {
+    "node_modules/.pnpm/object-is@1.1.6/node_modules/object-is/polyfill.js"(exports, module) {
       "use strict";
       var implementation = require_implementation4();
       module.exports = function getPolyfill() {
@@ -77939,20 +78686,36 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/define-properties/index.js
+  // node_modules/.pnpm/call-bind@1.0.8/node_modules/call-bind/callBound.js
+  var require_callBound = __commonJS({
+    "node_modules/.pnpm/call-bind@1.0.8/node_modules/call-bind/callBound.js"(exports, module) {
+      "use strict";
+      var GetIntrinsic = require_get_intrinsic();
+      var callBind = require_call_bind();
+      var $indexOf = callBind(GetIntrinsic("String.prototype.indexOf"));
+      module.exports = function callBoundIntrinsic(name, allowMissing) {
+        var intrinsic = GetIntrinsic(name, !!allowMissing);
+        if (typeof intrinsic === "function" && $indexOf(name, ".prototype.") > -1) {
+          return callBind(intrinsic);
+        }
+        return intrinsic;
+      };
+    }
+  });
+
+  // node_modules/.pnpm/define-properties@1.2.1/node_modules/define-properties/index.js
   var require_define_properties = __commonJS({
-    "node_modules/define-properties/index.js"(exports, module) {
+    "node_modules/.pnpm/define-properties@1.2.1/node_modules/define-properties/index.js"(exports, module) {
       "use strict";
       var keys = require_object_keys();
       var hasSymbols = typeof Symbol === "function" && typeof Symbol("foo") === "symbol";
       var toStr = Object.prototype.toString;
       var concat = Array.prototype.concat;
-      var origDefineProperty = Object.defineProperty;
+      var defineDataProperty = require_define_data_property();
       var isFunction = function(fn) {
         return typeof fn === "function" && toStr.call(fn) === "[object Function]";
       };
-      var hasPropertyDescriptors = require_has_property_descriptors()();
-      var supportsDescriptors = origDefineProperty && hasPropertyDescriptors;
+      var supportsDescriptors = require_has_property_descriptors()();
       var defineProperty = function(object, name, value, predicate) {
         if (name in object) {
           if (predicate === true) {
@@ -77964,14 +78727,9 @@ var Plotly = (() => {
           }
         }
         if (supportsDescriptors) {
-          origDefineProperty(object, name, {
-            configurable: true,
-            enumerable: false,
-            value,
-            writable: true
-          });
+          defineDataProperty(object, name, value, true);
         } else {
-          object[name] = value;
+          defineDataProperty(object, name, value);
         }
       };
       var defineProperties = function(object, map) {
@@ -77989,9 +78747,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/object-is/shim.js
+  // node_modules/.pnpm/object-is@1.1.6/node_modules/object-is/shim.js
   var require_shim = __commonJS({
-    "node_modules/object-is/shim.js"(exports, module) {
+    "node_modules/.pnpm/object-is@1.1.6/node_modules/object-is/shim.js"(exports, module) {
       "use strict";
       var getPolyfill = require_polyfill2();
       var define2 = require_define_properties();
@@ -78007,9 +78765,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/object-is/index.js
+  // node_modules/.pnpm/object-is@1.1.6/node_modules/object-is/index.js
   var require_object_is = __commonJS({
-    "node_modules/object-is/index.js"(exports, module) {
+    "node_modules/.pnpm/object-is@1.1.6/node_modules/object-is/index.js"(exports, module) {
       "use strict";
       var define2 = require_define_properties();
       var callBind = require_call_bind();
@@ -78026,9 +78784,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/is-nan/implementation.js
+  // node_modules/.pnpm/is-nan@1.3.2/node_modules/is-nan/implementation.js
   var require_implementation5 = __commonJS({
-    "node_modules/is-nan/implementation.js"(exports, module) {
+    "node_modules/.pnpm/is-nan@1.3.2/node_modules/is-nan/implementation.js"(exports, module) {
       "use strict";
       module.exports = function isNaN2(value) {
         return value !== value;
@@ -78036,9 +78794,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/is-nan/polyfill.js
+  // node_modules/.pnpm/is-nan@1.3.2/node_modules/is-nan/polyfill.js
   var require_polyfill3 = __commonJS({
-    "node_modules/is-nan/polyfill.js"(exports, module) {
+    "node_modules/.pnpm/is-nan@1.3.2/node_modules/is-nan/polyfill.js"(exports, module) {
       "use strict";
       var implementation = require_implementation5();
       module.exports = function getPolyfill() {
@@ -78050,9 +78808,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/is-nan/shim.js
+  // node_modules/.pnpm/is-nan@1.3.2/node_modules/is-nan/shim.js
   var require_shim2 = __commonJS({
-    "node_modules/is-nan/shim.js"(exports, module) {
+    "node_modules/.pnpm/is-nan@1.3.2/node_modules/is-nan/shim.js"(exports, module) {
       "use strict";
       var define2 = require_define_properties();
       var getPolyfill = require_polyfill3();
@@ -78068,9 +78826,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/is-nan/index.js
+  // node_modules/.pnpm/is-nan@1.3.2/node_modules/is-nan/index.js
   var require_is_nan = __commonJS({
-    "node_modules/is-nan/index.js"(exports, module) {
+    "node_modules/.pnpm/is-nan@1.3.2/node_modules/is-nan/index.js"(exports, module) {
       "use strict";
       var callBind = require_call_bind();
       var define2 = require_define_properties();
@@ -78087,9 +78845,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/assert/build/internal/util/comparisons.js
+  // node_modules/.pnpm/assert@2.1.0/node_modules/assert/build/internal/util/comparisons.js
   var require_comparisons = __commonJS({
-    "node_modules/assert/build/internal/util/comparisons.js"(exports, module) {
+    "node_modules/.pnpm/assert@2.1.0/node_modules/assert/build/internal/util/comparisons.js"(exports, module) {
       "use strict";
       function _slicedToArray(arr, i) {
         return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
@@ -78608,9 +79366,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/assert/build/assert.js
+  // node_modules/.pnpm/assert@2.1.0/node_modules/assert/build/assert.js
   var require_assert = __commonJS({
-    "node_modules/assert/build/assert.js"(exports, module) {
+    "node_modules/.pnpm/assert@2.1.0/node_modules/assert/build/assert.js"(exports, module) {
       "use strict";
       function _typeof(o) {
         "@babel/helpers - typeof";
@@ -79140,9 +79898,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-parser/node_modules/ms/index.js
+  // node_modules/.pnpm/ms@2.0.0/node_modules/ms/index.js
   var require_ms = __commonJS({
-    "node_modules/stream-parser/node_modules/ms/index.js"(exports, module) {
+    "node_modules/.pnpm/ms@2.0.0/node_modules/ms/index.js"(exports, module) {
       var s = 1e3;
       var m = s * 60;
       var h = m * 60;
@@ -79242,9 +80000,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-parser/node_modules/debug/src/debug.js
+  // node_modules/.pnpm/debug@2.6.9/node_modules/debug/src/debug.js
   var require_debug = __commonJS({
-    "node_modules/stream-parser/node_modules/debug/src/debug.js"(exports, module) {
+    "node_modules/.pnpm/debug@2.6.9/node_modules/debug/src/debug.js"(exports, module) {
       exports = module.exports = createDebug.debug = createDebug["default"] = createDebug;
       exports.coerce = coerce;
       exports.disable = disable;
@@ -79347,9 +80105,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-parser/node_modules/debug/src/browser.js
+  // node_modules/.pnpm/debug@2.6.9/node_modules/debug/src/browser.js
   var require_browser2 = __commonJS({
-    "node_modules/stream-parser/node_modules/debug/src/browser.js"(exports, module) {
+    "node_modules/.pnpm/debug@2.6.9/node_modules/debug/src/browser.js"(exports, module) {
       exports = module.exports = require_debug();
       exports.log = log;
       exports.formatArgs = formatArgs;
@@ -79433,9 +80191,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/stream-parser/index.js
+  // node_modules/.pnpm/stream-parser@0.3.1/node_modules/stream-parser/index.js
   var require_stream_parser = __commonJS({
-    "node_modules/stream-parser/index.js"(exports, module) {
+    "node_modules/.pnpm/stream-parser@0.3.1/node_modules/stream-parser/index.js"(exports, module) {
       var assert = require_assert();
       var debug = require_browser2()("stream-parser");
       module.exports = Parser;
@@ -79586,9 +80344,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/probe-image-size/lib/common.js
+  // node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/common.js
   var require_common = __commonJS({
-    "node_modules/probe-image-size/lib/common.js"(exports) {
+    "node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/common.js"(exports) {
       "use strict";
       var Transform = require_stream_browserify().Transform;
       var streamParser = require_stream_parser();
@@ -79649,9 +80407,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/probe-image-size/lib/miaf_utils.js
+  // node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/miaf_utils.js
   var require_miaf_utils = __commonJS({
-    "node_modules/probe-image-size/lib/miaf_utils.js"(exports, module) {
+    "node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/miaf_utils.js"(exports, module) {
       "use strict";
       var readUInt16BE = require_common().readUInt16BE;
       var readUInt32BE = require_common().readUInt32BE;
@@ -79848,9 +80606,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/probe-image-size/lib/exif_utils.js
+  // node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/exif_utils.js
   var require_exif_utils = __commonJS({
-    "node_modules/probe-image-size/lib/exif_utils.js"(exports, module) {
+    "node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/exif_utils.js"(exports, module) {
       "use strict";
       function error(message, code) {
         var err = new Error(message);
@@ -80050,9 +80808,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/probe-image-size/lib/parse_sync/avif.js
+  // node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/avif.js
   var require_avif = __commonJS({
-    "node_modules/probe-image-size/lib/parse_sync/avif.js"(exports, module) {
+    "node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/avif.js"(exports, module) {
       "use strict";
       var str2arr = require_common().str2arr;
       var sliceEq = require_common().sliceEq;
@@ -80108,9 +80866,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/probe-image-size/lib/parse_sync/bmp.js
+  // node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/bmp.js
   var require_bmp = __commonJS({
-    "node_modules/probe-image-size/lib/parse_sync/bmp.js"(exports, module) {
+    "node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/bmp.js"(exports, module) {
       "use strict";
       var str2arr = require_common().str2arr;
       var sliceEq = require_common().sliceEq;
@@ -80131,9 +80889,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/probe-image-size/lib/parse_sync/gif.js
+  // node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/gif.js
   var require_gif = __commonJS({
-    "node_modules/probe-image-size/lib/parse_sync/gif.js"(exports, module) {
+    "node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/gif.js"(exports, module) {
       "use strict";
       var str2arr = require_common().str2arr;
       var sliceEq = require_common().sliceEq;
@@ -80155,9 +80913,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/probe-image-size/lib/parse_sync/ico.js
+  // node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/ico.js
   var require_ico = __commonJS({
-    "node_modules/probe-image-size/lib/parse_sync/ico.js"(exports, module) {
+    "node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/ico.js"(exports, module) {
       "use strict";
       var readUInt16LE = require_common().readUInt16LE;
       var HEADER = 0;
@@ -80194,9 +80952,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/probe-image-size/lib/parse_sync/jpeg.js
+  // node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/jpeg.js
   var require_jpeg = __commonJS({
-    "node_modules/probe-image-size/lib/parse_sync/jpeg.js"(exports, module) {
+    "node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/jpeg.js"(exports, module) {
       "use strict";
       var readUInt16BE = require_common().readUInt16BE;
       var str2arr = require_common().str2arr;
@@ -80252,9 +81010,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/probe-image-size/lib/parse_sync/png.js
+  // node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/png.js
   var require_png = __commonJS({
-    "node_modules/probe-image-size/lib/parse_sync/png.js"(exports, module) {
+    "node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/png.js"(exports, module) {
       "use strict";
       var str2arr = require_common().str2arr;
       var sliceEq = require_common().sliceEq;
@@ -80277,9 +81035,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/probe-image-size/lib/parse_sync/psd.js
+  // node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/psd.js
   var require_psd = __commonJS({
-    "node_modules/probe-image-size/lib/parse_sync/psd.js"(exports, module) {
+    "node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/psd.js"(exports, module) {
       "use strict";
       var str2arr = require_common().str2arr;
       var sliceEq = require_common().sliceEq;
@@ -80300,9 +81058,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/probe-image-size/lib/parse_sync/svg.js
+  // node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/svg.js
   var require_svg = __commonJS({
-    "node_modules/probe-image-size/lib/parse_sync/svg.js"(exports, module) {
+    "node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/svg.js"(exports, module) {
       "use strict";
       function isWhiteSpace(chr) {
         return chr === 32 || chr === 9 || chr === 13 || chr === 10;
@@ -80403,9 +81161,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/probe-image-size/lib/parse_sync/tiff.js
+  // node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/tiff.js
   var require_tiff = __commonJS({
-    "node_modules/probe-image-size/lib/parse_sync/tiff.js"(exports, module) {
+    "node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/tiff.js"(exports, module) {
       "use strict";
       var str2arr = require_common().str2arr;
       var sliceEq = require_common().sliceEq;
@@ -80465,9 +81223,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/probe-image-size/lib/parse_sync/webp.js
+  // node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/webp.js
   var require_webp = __commonJS({
-    "node_modules/probe-image-size/lib/parse_sync/webp.js"(exports, module) {
+    "node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parse_sync/webp.js"(exports, module) {
       "use strict";
       var str2arr = require_common().str2arr;
       var sliceEq = require_common().sliceEq;
@@ -80549,9 +81307,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/probe-image-size/lib/parsers_sync.js
+  // node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parsers_sync.js
   var require_parsers_sync = __commonJS({
-    "node_modules/probe-image-size/lib/parsers_sync.js"(exports, module) {
+    "node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/lib/parsers_sync.js"(exports, module) {
       "use strict";
       module.exports = {
         avif: require_avif(),
@@ -80568,9 +81326,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/probe-image-size/sync.js
+  // node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/sync.js
   var require_sync = __commonJS({
-    "node_modules/probe-image-size/sync.js"(exports, module) {
+    "node_modules/.pnpm/probe-image-size@7.2.3/node_modules/probe-image-size/sync.js"(exports, module) {
       "use strict";
       var parsers = require_parsers_sync();
       function probeBuffer(buffer) {
@@ -82466,9 +83224,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/object-assign/index.js
+  // node_modules/.pnpm/object-assign@4.1.1/node_modules/object-assign/index.js
   var require_object_assign = __commonJS({
-    "node_modules/object-assign/index.js"(exports, module) {
+    "node_modules/.pnpm/object-assign@4.1.1/node_modules/object-assign/index.js"(exports, module) {
       "use strict";
       var getOwnPropertySymbols = Object.getOwnPropertySymbols;
       var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -82536,9 +83294,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/main.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/main.js
   var require_main = __commonJS({
-    "node_modules/world-calendars/dist/main.js"(exports, module) {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/main.js"(exports, module) {
       var assign = require_object_assign();
       function Calendars() {
         this.regionalOptions = [];
@@ -83390,9 +84148,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/plus.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/plus.js
   var require_plus = __commonJS({
-    "node_modules/world-calendars/dist/plus.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/plus.js"() {
       var assign = require_object_assign();
       var main = require_main();
       assign(main.regionalOptions[""], {
@@ -83870,9 +84628,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/chinese.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/chinese.js
   var require_chinese = __commonJS({
-    "node_modules/world-calendars/dist/calendars/chinese.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/chinese.js"() {
       var main = require_main();
       var assign = require_object_assign();
       var gregorianCalendar = main.instance();
@@ -84841,9 +85599,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/coptic.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/coptic.js
   var require_coptic = __commonJS({
-    "node_modules/world-calendars/dist/calendars/coptic.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/coptic.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function CopticCalendar(language) {
@@ -85023,9 +85781,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/discworld.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/discworld.js
   var require_discworld = __commonJS({
-    "node_modules/world-calendars/dist/calendars/discworld.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/discworld.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function DiscworldCalendar(language) {
@@ -85224,9 +85982,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/ethiopian.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/ethiopian.js
   var require_ethiopian = __commonJS({
-    "node_modules/world-calendars/dist/calendars/ethiopian.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/ethiopian.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function EthiopianCalendar(language) {
@@ -85406,9 +86164,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/hebrew.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/hebrew.js
   var require_hebrew = __commonJS({
-    "node_modules/world-calendars/dist/calendars/hebrew.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/hebrew.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function HebrewCalendar(language) {
@@ -85656,9 +86414,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/islamic.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/islamic.js
   var require_islamic = __commonJS({
-    "node_modules/world-calendars/dist/calendars/islamic.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/islamic.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function IslamicCalendar(language) {
@@ -85821,9 +86579,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/julian.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/julian.js
   var require_julian = __commonJS({
-    "node_modules/world-calendars/dist/calendars/julian.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/julian.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function JulianCalendar(language) {
@@ -85983,9 +86741,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/mayan.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/mayan.js
   var require_mayan = __commonJS({
-    "node_modules/world-calendars/dist/calendars/mayan.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/mayan.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function MayanCalendar(language) {
@@ -86374,9 +87132,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/nanakshahi.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/nanakshahi.js
   var require_nanakshahi = __commonJS({
-    "node_modules/world-calendars/dist/calendars/nanakshahi.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/nanakshahi.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function NanakshahiCalendar(language) {
@@ -86539,9 +87297,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/nepali.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/nepali.js
   var require_nepali = __commonJS({
-    "node_modules/world-calendars/dist/calendars/nepali.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/nepali.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function NepaliCalendar(language) {
@@ -86898,9 +87656,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/persian.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/persian.js
   var require_persian = __commonJS({
-    "node_modules/world-calendars/dist/calendars/persian.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/persian.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function PersianCalendar(language) {
@@ -87062,9 +87820,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/taiwan.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/taiwan.js
   var require_taiwan = __commonJS({
-    "node_modules/world-calendars/dist/calendars/taiwan.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/taiwan.js"() {
       var main = require_main();
       var assign = require_object_assign();
       var gregorianCalendar = main.instance();
@@ -87226,9 +87984,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/thai.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/thai.js
   var require_thai = __commonJS({
-    "node_modules/world-calendars/dist/calendars/thai.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/thai.js"() {
       var main = require_main();
       var assign = require_object_assign();
       var gregorianCalendar = main.instance();
@@ -87390,9 +88148,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/world-calendars/dist/calendars/ummalqura.js
+  // node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/ummalqura.js
   var require_ummalqura = __commonJS({
-    "node_modules/world-calendars/dist/calendars/ummalqura.js"() {
+    "node_modules/.pnpm/world-calendars@1.0.3/node_modules/world-calendars/dist/calendars/ummalqura.js"() {
       var main = require_main();
       var assign = require_object_assign();
       function UmmAlQuraCalendar(language) {
