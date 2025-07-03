@@ -45,7 +45,7 @@ exports.finalizeSubplots = function(layoutIn, layoutOut) {
     var xList = subplots.xaxis;
     var yList = subplots.yaxis;
     var spSVG = subplots.cartesian;
-    var spAll = spSVG;
+    var spAll = spSVG.concat(subplots.gl2d || []);
     var allX = {};
     var allY = {};
     var i, xi, yi;
@@ -568,10 +568,7 @@ function makeSubplotLayer(gd, plotinfo) {
     var yLayer = constants.layerValue2layerClass[plotinfo.yaxis.layer];
     var hasOnlyLargeSploms = fullLayout._hasOnlyLargeSploms;
 
-    var hasMultipleZ = fullLayout._zindices.length > 1;
-    var mainplotinfo = plotinfo.mainplotinfo;
-
-    if(!plotinfo.mainplot || hasMultipleZ) {
+    if(!plotinfo.mainplot || fullLayout._zindices.length > 1) {
         if(hasOnlyLargeSploms) {
             // TODO could do even better
             // - we don't need plot (but we would have to mock it in lsInner
@@ -588,15 +585,9 @@ function makeSubplotLayer(gd, plotinfo) {
                 plotinfo.shapelayer = ensureSingle(backLayer, 'g', 'shapelayer');
                 plotinfo.imagelayer = ensureSingle(backLayer, 'g', 'imagelayer');
 
-                if(mainplotinfo && hasMultipleZ) {
-                    plotinfo.minorGridlayer = mainplotinfo.minorGridlayer;
-                    plotinfo.gridlayer = mainplotinfo.gridlayer;
-                    plotinfo.zerolinelayer = mainplotinfo.zerolinelayer;
-                } else {
-                    plotinfo.minorGridlayer = ensureSingle(plotgroup, 'g', 'minor-gridlayer');
-                    plotinfo.gridlayer = ensureSingle(plotgroup, 'g', 'gridlayer');
-                    plotinfo.zerolinelayer = ensureSingle(plotgroup, 'g', 'zerolinelayer');
-                }
+                plotinfo.minorGridlayer = ensureSingle(plotgroup, 'g', 'minor-gridlayer');
+                plotinfo.gridlayer = ensureSingle(plotgroup, 'g', 'gridlayer');
+                plotinfo.zerolinelayer = ensureSingle(plotgroup, 'g', 'zerolinelayer');
 
                 var betweenLayer = ensureSingle(plotgroup, 'g', 'layer-between');
                 plotinfo.shapelayerBetween = ensureSingle(betweenLayer, 'g', 'shapelayer');
@@ -631,6 +622,7 @@ function makeSubplotLayer(gd, plotinfo) {
             }
         }
     } else {
+        var mainplotinfo = plotinfo.mainplotinfo;
         var mainplotgroup = mainplotinfo.plotgroup;
         var xId = id + '-x';
         var yId = id + '-y';

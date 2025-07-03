@@ -1853,7 +1853,9 @@ describe('Test lib.js:', function() {
                 -Number.MAX_VALUE, -Number.MIN_VALUE
             ];
 
-            vals.push(Number.EPSILON, -Number.EPSILON);
+            if(!Lib.isIE()) {
+                vals.push(Number.EPSILON, -Number.EPSILON);
+            }
 
             vals.forEach(function(v) {
                 expect(Lib.cleanNumber(v)).toBe(v);

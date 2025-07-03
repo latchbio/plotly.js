@@ -23,7 +23,15 @@
      "color": "green",
      "opacity": 0.5
     }
-   }
+   },
+   "transforms": [
+    {
+     "type": "filter",
+     "target": "x",
+     "operation": "][",
+     "value": [3.5, 4.5]
+    }
+   ]
   },
   {
    "mode": "lines+markers+text",
@@ -47,7 +55,15 @@
      "color": "blue",
      "opacity": 0.5
     }
-   }
+   },
+   "transforms": [
+    {
+     "type": "filter",
+     "target": "x",
+     "operation": "][",
+     "value": [3.5, 4.5]
+    }
+   ]
   }
  ],
  "layout": {

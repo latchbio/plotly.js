@@ -39,6 +39,7 @@ for(var i = 0; i < list.length; i++) {
         dist: opts.dist,
         distMin: opts.distMin,
         traceList: opts.traceList,
+        transformList: opts.transformList,
         calendars: opts.calendars
     });
 }

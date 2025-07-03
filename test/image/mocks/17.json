@@ -494,7 +494,7 @@
    "showgrid": true,
    "zeroline": true,
    "showline": false,
-   "tickmode": "auto",
+   "autotick": true,
    "nticks": 0,
    "ticks": "outside",
    "showticklabels": true,
@@ -538,7 +538,7 @@
    "showgrid": true,
    "zeroline": true,
    "showline": false,
-   "tickmode": "auto",
+   "autotick": true,
    "nticks": 0,
    "ticks": "outside",
    "showticklabels": true,
@@ -611,7 +611,8 @@
     "yanchor": "auto",
     "xatype": "linear",
     "yatype": "linear",
-    "tag": ""
+    "tag": "",
+    "ref": "plot"
    }
   ],
   "margin": {
