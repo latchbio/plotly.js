@@ -931,7 +931,7 @@ describe('Test click interactions:', function() {
                 }],
                 layout: {
                     xaxis: {
-                        title: {text: 'xaxis'},
+                        title: 'xaxis',
                         range: [0, 4]
                     },
                     yaxis: {
@@ -939,7 +939,7 @@ describe('Test click interactions:', function() {
                         range: [-1, 5]
                     },
                     yaxis2: {
-                        title: { text: 'yaxis2' },
+                        title: 'yaxis2',
                         overlaying: 'y',
                         side: 'right',
                         showgrid: false,

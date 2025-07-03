@@ -2140,7 +2140,7 @@
    "showgrid": true,
    "zeroline": true,
    "showline": false,
-   "tickmode": "auto",
+   "autotick": true,
    "nticks": 0,
    "ticks": "",
    "showticklabels": true,
@@ -2185,7 +2185,7 @@
    "showgrid": true,
    "zeroline": true,
    "showline": false,
-   "tickmode": "auto",
+   "autotick": true,
    "nticks": 0,
    "ticks": "",
    "showticklabels": true,
@@ -2255,7 +2255,8 @@
     "opacity": 1,
     "xanchor": "auto",
     "yanchor": "auto",
-    "tag": ""
+    "tag": "",
+    "ref": "paper"
    }
   ],
   "margin": {

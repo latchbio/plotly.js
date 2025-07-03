@@ -131,11 +131,17 @@ describe('Test Plots', function() {
             expect(gd._fullData[0].index).toEqual(0);
             expect(gd._fullData[1].index).toEqual(1);
 
+            expect(gd._fullData[0]._expandedIndex).toEqual(0);
+            expect(gd._fullData[1]._expandedIndex).toEqual(1);
+
             expect(gd._fullData[0]._input).toBe(trace0);
             expect(gd._fullData[1]._input).toBe(trace1);
 
             expect(gd._fullData[0]._fullInput).toBe(gd._fullData[0]);
             expect(gd._fullData[1]._fullInput).toBe(gd._fullData[1]);
+
+            expect(gd._fullData[0]._expandedInput).toBe(gd._fullData[0]);
+            expect(gd._fullData[1]._expandedInput).toBe(gd._fullData[1]);
         });
 
         function testSanitizeMarginsHasBeenCalledOnlyOnce(gd) {
@@ -301,6 +307,20 @@ describe('Test Plots', function() {
                 traceOut = supplyTraceDefaults(traceIn, {type: 'scatter', hovertemplate: '%{y}'}, 0, layout);
                 expect(traceOut.hoverinfo).toBeUndefined();
             });
+        });
+    });
+
+    describe('Plots.supplyTransformDefaults', function() {
+        it('should accept an empty layout when transforms present', function() {
+            var traceOut = {y: [1], _length: 1};
+            Plots.supplyTransformDefaults({}, traceOut, {
+                _globalTransforms: [{ type: 'filter'}]
+            });
+
+            // This isn't particularly interesting. More relevant is that
+            // the above supplyTransformDefaults call didn't fail due to
+            // missing transformModules data.
+            expect(traceOut.transforms.length).toEqual(1);
         });
     });
 
@@ -559,7 +579,7 @@ describe('Test Plots', function() {
                         y: [1, 2, 1],
                     }],
                     layout: {
-                        title: { text: 'frame A' }
+                        title: 'frame A'
                     },
                     name: 'A'
                 }, null, {
@@ -567,7 +587,7 @@ describe('Test Plots', function() {
                         y: [1, 2, 3],
                     }],
                     layout: {
-                        title: { text: 'frame B' }
+                        title: 'frame B'
                     },
                     name: 'B'
                 }, {

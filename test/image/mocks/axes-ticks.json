@@ -19,7 +19,7 @@
    "ticklen": 8,
    "dtick": 0.25,
    "tickcolor": "#000",
-   "tickmode": "linear"
+   "autotick": false
   },
   "yaxis": {
    "ticks": "outside",
@@ -28,7 +28,7 @@
    "ticklen": 8,
    "dtick": 0.25,
    "tickcolor": "#000",
-   "tickmode": "linear",
+   "autotick": false,
    "gridwidth": 0.1
   }
  }
