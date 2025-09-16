@@ -13,6 +13,7 @@ var kernels = {
 
 exports.makeKDE = function(calcItem, trace, vals) {
     var len = vals.length;
+    console.log('len', len)
     var kernel = kernels.gaussian;
     var bandwidth = calcItem.bandwidth;
     var factor = 1 / (len * bandwidth);
@@ -55,6 +56,7 @@ exports.getPositionOnKdePath = function(calcItem, trace, valuePx) {
 };
 
 exports.getKdeValue = function(calcItem, trace, valueDist) {
+    console.log('calcItem', calcItem, 'trace', trace, 'valueDist', valueDist)    
     var vals = calcItem.pts.map(exports.extractVal);
     var kde = exports.makeKDE(calcItem, trace, vals);
     return kde(valueDist) / calcItem.posDensityScale;
