@@ -102,6 +102,7 @@
     "has-passive-events": "^1.0.0",
     "is-mobile": "^4.0.0",
     "maplibre-gl": "^4.5.2",
+    "minimist": "^1.2.8",
     "mouse-change": "^1.4.0",
     "mouse-event-offset": "^3.0.2",
     "mouse-wheel": "^1.2.0",

@@ -16,14 +16,12 @@
 } (typeof self !== "undefined" ? self : this, () => {
 "use strict";
 var Plotly = (() => {
-  var __create = Object.create;
   var __defProp = Object.defineProperty;
   var __defProps = Object.defineProperties;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
   var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
   var __getOwnPropNames = Object.getOwnPropertyNames;
   var __getOwnPropSymbols = Object.getOwnPropertySymbols;
-  var __getProtoOf = Object.getPrototypeOf;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
   var __propIsEnum = Object.prototype.propertyIsEnumerable;
   var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
@@ -57,14 +55,6 @@ var Plotly = (() => {
     }
     return to;
   };
-  var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-    // If the importer is in node compatibility mode or this is not an ESM
-    // file that has been converted to a CommonJS file using a Babel-
-    // compatible transform (i.e. "__esModule" has not been set), then set
-    // "default" to the CommonJS "module.exports" for node compatibility.
-    isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-    mod
-  ));
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
   // src/version.js
@@ -2097,22 +2087,22 @@ var Plotly = (() => {
         function d3_rgb_hex(v) {
           return v < 16 ? "0" + Math.max(0, v).toString(16) : Math.min(255, v).toString(16);
         }
-        function d3_rgb_parse(format, rgb3, hsl4) {
+        function d3_rgb_parse(format, rgb2, hsl3) {
           var r = 0, g = 0, b = 0, m1, m2, color2;
           m1 = /([a-z]+)\((.*)\)/.exec(format = format.toLowerCase());
           if (m1) {
             m2 = m1[2].split(",");
             switch (m1[1]) {
               case "hsl": {
-                return hsl4(parseFloat(m2[0]), parseFloat(m2[1]) / 100, parseFloat(m2[2]) / 100);
+                return hsl3(parseFloat(m2[0]), parseFloat(m2[1]) / 100, parseFloat(m2[2]) / 100);
               }
               case "rgb": {
-                return rgb3(d3_rgb_parseNumber(m2[0]), d3_rgb_parseNumber(m2[1]), d3_rgb_parseNumber(m2[2]));
+                return rgb2(d3_rgb_parseNumber(m2[0]), d3_rgb_parseNumber(m2[1]), d3_rgb_parseNumber(m2[2]));
               }
             }
           }
           if (color2 = d3_rgb_names.get(format)) {
-            return rgb3(color2.r, color2.g, color2.b);
+            return rgb2(color2.r, color2.g, color2.b);
           }
           if (format != null && format.charAt(0) === "#" && !isNaN(color2 = parseInt(format.slice(1), 16))) {
             if (format.length === 4) {
@@ -2128,7 +2118,7 @@ var Plotly = (() => {
               b = color2 & 255;
             }
           }
-          return rgb3(r, g, b);
+          return rgb2(r, g, b);
         }
         function d3_rgb_hsl(r, g, b) {
           var min = Math.min(r /= 255, g /= 255, b /= 255), max = Math.max(r, g, b), d = max - min, h, s, l = (max + min) / 2;
@@ -7799,14 +7789,14 @@ var Plotly = (() => {
             };
           }
           function parseSpecifier(d, specifier, string, j) {
-            var i = 0, n = specifier.length, m = string.length, c, parse2;
+            var i = 0, n = specifier.length, m = string.length, c, parse;
             while (i < n) {
               if (j >= m) return -1;
               c = specifier.charCodeAt(i++);
               if (c === 37) {
                 c = specifier.charAt(i++);
-                parse2 = parses[c in pads ? specifier.charAt(i++) : c];
-                if (!parse2 || (j = parse2(d, string, j)) < 0) return -1;
+                parse = parses[c in pads ? specifier.charAt(i++) : c];
+                if (!parse || (j = parse(d, string, j)) < 0) return -1;
               } else if (c != string.charCodeAt(j++)) {
                 return -1;
               }
@@ -7917,12 +7907,12 @@ var Plotly = (() => {
         function requote(s) {
           return s.replace(requoteRe, "\\$&");
         }
-        function formatRe(names2) {
-          return new RegExp("^(?:" + names2.map(requote).join("|") + ")", "i");
+        function formatRe(names) {
+          return new RegExp("^(?:" + names.map(requote).join("|") + ")", "i");
         }
-        function formatLookup(names2) {
-          var map = {}, i = -1, n = names2.length;
-          while (++i < n) map[names2[i].toLowerCase()] = i;
+        function formatLookup(names) {
+          var map = {}, i = -1, n = names.length;
+          while (++i < n) map[names[i].toLowerCase()] = i;
           return map;
         }
         function parseWeekdayNumberSunday(d, string, i) {
@@ -9220,13 +9210,13 @@ var Plotly = (() => {
           if (!(this instanceof tinycolor)) {
             return new tinycolor(color2, opts);
           }
-          var rgb3 = inputToRGB(color2);
-          this._originalInput = color2, this._r = rgb3.r, this._g = rgb3.g, this._b = rgb3.b, this._a = rgb3.a, this._roundA = Math.round(100 * this._a) / 100, this._format = opts.format || rgb3.format;
+          var rgb2 = inputToRGB(color2);
+          this._originalInput = color2, this._r = rgb2.r, this._g = rgb2.g, this._b = rgb2.b, this._a = rgb2.a, this._roundA = Math.round(100 * this._a) / 100, this._format = opts.format || rgb2.format;
           this._gradientType = opts.gradientType;
           if (this._r < 1) this._r = Math.round(this._r);
           if (this._g < 1) this._g = Math.round(this._g);
           if (this._b < 1) this._b = Math.round(this._b);
-          this._ok = rgb3.ok;
+          this._ok = rgb2.ok;
         }
         tinycolor.prototype = {
           isDark: function isDark() {
@@ -9248,15 +9238,15 @@ var Plotly = (() => {
             return this._a;
           },
           getBrightness: function getBrightness() {
-            var rgb3 = this.toRgb();
-            return (rgb3.r * 299 + rgb3.g * 587 + rgb3.b * 114) / 1e3;
+            var rgb2 = this.toRgb();
+            return (rgb2.r * 299 + rgb2.g * 587 + rgb2.b * 114) / 1e3;
           },
           getLuminance: function getLuminance() {
-            var rgb3 = this.toRgb();
+            var rgb2 = this.toRgb();
             var RsRGB, GsRGB, BsRGB, R, G, B2;
-            RsRGB = rgb3.r / 255;
-            GsRGB = rgb3.g / 255;
-            BsRGB = rgb3.b / 255;
+            RsRGB = rgb2.r / 255;
+            GsRGB = rgb2.g / 255;
+            BsRGB = rgb2.b / 255;
             if (RsRGB <= 0.03928) R = RsRGB / 12.92;
             else R = Math.pow((RsRGB + 0.055) / 1.055, 2.4);
             if (GsRGB <= 0.03928) G = GsRGB / 12.92;
@@ -9285,17 +9275,17 @@ var Plotly = (() => {
             return this._a == 1 ? "hsv(" + h + ", " + s + "%, " + v + "%)" : "hsva(" + h + ", " + s + "%, " + v + "%, " + this._roundA + ")";
           },
           toHsl: function toHsl() {
-            var hsl4 = rgbToHsl(this._r, this._g, this._b);
+            var hsl3 = rgbToHsl(this._r, this._g, this._b);
             return {
-              h: hsl4.h * 360,
-              s: hsl4.s,
-              l: hsl4.l,
+              h: hsl3.h * 360,
+              s: hsl3.s,
+              l: hsl3.l,
               a: this._a
             };
           },
           toHslString: function toHslString() {
-            var hsl4 = rgbToHsl(this._r, this._g, this._b);
-            var h = Math.round(hsl4.h * 360), s = Math.round(hsl4.s * 100), l = Math.round(hsl4.l * 100);
+            var hsl3 = rgbToHsl(this._r, this._g, this._b);
+            var h = Math.round(hsl3.h * 360), s = Math.round(hsl3.s * 100), l = Math.round(hsl3.l * 100);
             return this._a == 1 ? "hsl(" + h + ", " + s + "%, " + l + "%)" : "hsla(" + h + ", " + s + "%, " + l + "%, " + this._roundA + ")";
           },
           toHex: function toHex(allow3Char) {
@@ -9467,7 +9457,7 @@ var Plotly = (() => {
           return tinycolor(color2, opts);
         };
         function inputToRGB(color2) {
-          var rgb3 = {
+          var rgb2 = {
             r: 0,
             g: 0,
             b: 0
@@ -9483,19 +9473,19 @@ var Plotly = (() => {
           }
           if (_typeof(color2) == "object") {
             if (isValidCSSUnit(color2.r) && isValidCSSUnit(color2.g) && isValidCSSUnit(color2.b)) {
-              rgb3 = rgbToRgb(color2.r, color2.g, color2.b);
+              rgb2 = rgbToRgb(color2.r, color2.g, color2.b);
               ok = true;
               format = String(color2.r).substr(-1) === "%" ? "prgb" : "rgb";
             } else if (isValidCSSUnit(color2.h) && isValidCSSUnit(color2.s) && isValidCSSUnit(color2.v)) {
               s = convertToPercentage(color2.s);
               v = convertToPercentage(color2.v);
-              rgb3 = hsvToRgb(color2.h, s, v);
+              rgb2 = hsvToRgb(color2.h, s, v);
               ok = true;
               format = "hsv";
             } else if (isValidCSSUnit(color2.h) && isValidCSSUnit(color2.s) && isValidCSSUnit(color2.l)) {
               s = convertToPercentage(color2.s);
               l = convertToPercentage(color2.l);
-              rgb3 = hslToRgb(color2.h, s, l);
+              rgb2 = hslToRgb(color2.h, s, l);
               ok = true;
               format = "hsl";
             }
@@ -9507,9 +9497,9 @@ var Plotly = (() => {
           return {
             ok,
             format: color2.format || format,
-            r: Math.min(255, Math.max(rgb3.r, 0)),
-            g: Math.min(255, Math.max(rgb3.g, 0)),
-            b: Math.min(255, Math.max(rgb3.b, 0)),
+            r: Math.min(255, Math.max(rgb2.r, 0)),
+            g: Math.min(255, Math.max(rgb2.g, 0)),
+            b: Math.min(255, Math.max(rgb2.b, 0)),
             a
           };
         }
@@ -9650,92 +9640,92 @@ var Plotly = (() => {
         };
         function _desaturate(color2, amount) {
           amount = amount === 0 ? 0 : amount || 10;
-          var hsl4 = tinycolor(color2).toHsl();
-          hsl4.s -= amount / 100;
-          hsl4.s = clamp01(hsl4.s);
-          return tinycolor(hsl4);
+          var hsl3 = tinycolor(color2).toHsl();
+          hsl3.s -= amount / 100;
+          hsl3.s = clamp01(hsl3.s);
+          return tinycolor(hsl3);
         }
         function _saturate(color2, amount) {
           amount = amount === 0 ? 0 : amount || 10;
-          var hsl4 = tinycolor(color2).toHsl();
-          hsl4.s += amount / 100;
-          hsl4.s = clamp01(hsl4.s);
-          return tinycolor(hsl4);
+          var hsl3 = tinycolor(color2).toHsl();
+          hsl3.s += amount / 100;
+          hsl3.s = clamp01(hsl3.s);
+          return tinycolor(hsl3);
         }
         function _greyscale(color2) {
           return tinycolor(color2).desaturate(100);
         }
         function _lighten(color2, amount) {
           amount = amount === 0 ? 0 : amount || 10;
-          var hsl4 = tinycolor(color2).toHsl();
-          hsl4.l += amount / 100;
-          hsl4.l = clamp01(hsl4.l);
-          return tinycolor(hsl4);
+          var hsl3 = tinycolor(color2).toHsl();
+          hsl3.l += amount / 100;
+          hsl3.l = clamp01(hsl3.l);
+          return tinycolor(hsl3);
         }
         function _brighten(color2, amount) {
           amount = amount === 0 ? 0 : amount || 10;
-          var rgb3 = tinycolor(color2).toRgb();
-          rgb3.r = Math.max(0, Math.min(255, rgb3.r - Math.round(255 * -(amount / 100))));
-          rgb3.g = Math.max(0, Math.min(255, rgb3.g - Math.round(255 * -(amount / 100))));
-          rgb3.b = Math.max(0, Math.min(255, rgb3.b - Math.round(255 * -(amount / 100))));
-          return tinycolor(rgb3);
+          var rgb2 = tinycolor(color2).toRgb();
+          rgb2.r = Math.max(0, Math.min(255, rgb2.r - Math.round(255 * -(amount / 100))));
+          rgb2.g = Math.max(0, Math.min(255, rgb2.g - Math.round(255 * -(amount / 100))));
+          rgb2.b = Math.max(0, Math.min(255, rgb2.b - Math.round(255 * -(amount / 100))));
+          return tinycolor(rgb2);
         }
         function _darken(color2, amount) {
           amount = amount === 0 ? 0 : amount || 10;
-          var hsl4 = tinycolor(color2).toHsl();
-          hsl4.l -= amount / 100;
-          hsl4.l = clamp01(hsl4.l);
-          return tinycolor(hsl4);
+          var hsl3 = tinycolor(color2).toHsl();
+          hsl3.l -= amount / 100;
+          hsl3.l = clamp01(hsl3.l);
+          return tinycolor(hsl3);
         }
         function _spin(color2, amount) {
-          var hsl4 = tinycolor(color2).toHsl();
-          var hue2 = (hsl4.h + amount) % 360;
-          hsl4.h = hue2 < 0 ? 360 + hue2 : hue2;
-          return tinycolor(hsl4);
+          var hsl3 = tinycolor(color2).toHsl();
+          var hue2 = (hsl3.h + amount) % 360;
+          hsl3.h = hue2 < 0 ? 360 + hue2 : hue2;
+          return tinycolor(hsl3);
         }
         function _complement(color2) {
-          var hsl4 = tinycolor(color2).toHsl();
-          hsl4.h = (hsl4.h + 180) % 360;
-          return tinycolor(hsl4);
+          var hsl3 = tinycolor(color2).toHsl();
+          hsl3.h = (hsl3.h + 180) % 360;
+          return tinycolor(hsl3);
         }
         function polyad(color2, number) {
           if (isNaN(number) || number <= 0) {
             throw new Error("Argument to polyad must be a positive number");
           }
-          var hsl4 = tinycolor(color2).toHsl();
+          var hsl3 = tinycolor(color2).toHsl();
           var result = [tinycolor(color2)];
           var step = 360 / number;
           for (var i = 1; i < number; i++) {
             result.push(tinycolor({
-              h: (hsl4.h + i * step) % 360,
-              s: hsl4.s,
-              l: hsl4.l
+              h: (hsl3.h + i * step) % 360,
+              s: hsl3.s,
+              l: hsl3.l
             }));
           }
           return result;
         }
         function _splitcomplement(color2) {
-          var hsl4 = tinycolor(color2).toHsl();
-          var h = hsl4.h;
+          var hsl3 = tinycolor(color2).toHsl();
+          var h = hsl3.h;
           return [tinycolor(color2), tinycolor({
             h: (h + 72) % 360,
-            s: hsl4.s,
-            l: hsl4.l
+            s: hsl3.s,
+            l: hsl3.l
           }), tinycolor({
             h: (h + 216) % 360,
-            s: hsl4.s,
-            l: hsl4.l
+            s: hsl3.s,
+            l: hsl3.l
           })];
         }
         function _analogous(color2, results, slices) {
           results = results || 6;
           slices = slices || 30;
-          var hsl4 = tinycolor(color2).toHsl();
+          var hsl3 = tinycolor(color2).toHsl();
           var part = 360 / slices;
           var ret = [tinycolor(color2)];
-          for (hsl4.h = (hsl4.h - (part * results >> 1) + 720) % 360; --results; ) {
-            hsl4.h = (hsl4.h + part) % 360;
-            ret.push(tinycolor(hsl4));
+          for (hsl3.h = (hsl3.h - (part * results >> 1) + 720) % 360; --results; ) {
+            hsl3.h = (hsl3.h + part) % 360;
+            ret.push(tinycolor(hsl3));
           }
           return ret;
         }
@@ -9758,15 +9748,15 @@ var Plotly = (() => {
         tinycolor.mix = function(color1, color2, amount) {
           amount = amount === 0 ? 0 : amount || 50;
           var rgb1 = tinycolor(color1).toRgb();
-          var rgb22 = tinycolor(color2).toRgb();
+          var rgb2 = tinycolor(color2).toRgb();
           var p = amount / 100;
-          var rgba3 = {
-            r: (rgb22.r - rgb1.r) * p + rgb1.r,
-            g: (rgb22.g - rgb1.g) * p + rgb1.g,
-            b: (rgb22.b - rgb1.b) * p + rgb1.b,
-            a: (rgb22.a - rgb1.a) * p + rgb1.a
+          var rgba2 = {
+            r: (rgb2.r - rgb1.r) * p + rgb1.r,
+            g: (rgb2.g - rgb1.g) * p + rgb1.g,
+            b: (rgb2.b - rgb1.b) * p + rgb1.b,
+            a: (rgb2.a - rgb1.a) * p + rgb1.a
           };
-          return tinycolor(rgba3);
+          return tinycolor(rgba2);
         };
         tinycolor.readability = function(color1, color2) {
           var c1 = tinycolor(color1);
@@ -9818,7 +9808,7 @@ var Plotly = (() => {
             return tinycolor.mostReadable(baseColor, ["#fff", "#000"], args);
           }
         };
-        var names2 = tinycolor.names = {
+        var names = tinycolor.names = {
           aliceblue: "f0f8ff",
           antiquewhite: "faebd7",
           aqua: "0ff",
@@ -9969,7 +9959,7 @@ var Plotly = (() => {
           yellow: "ff0",
           yellowgreen: "9acd32"
         };
-        var hexNames = tinycolor.hexNames = flip(names2);
+        var hexNames = tinycolor.hexNames = flip(names);
         function flip(o) {
           var flipped = {};
           for (var i in o) {
@@ -10051,8 +10041,8 @@ var Plotly = (() => {
         function stringInputToObject(color2) {
           color2 = color2.replace(trimLeft, "").replace(trimRight, "").toLowerCase();
           var named2 = false;
-          if (names2[color2]) {
-            color2 = names2[color2];
+          if (names[color2]) {
+            color2 = names[color2];
             named2 = true;
           } else if (color2 == "transparent") {
             return {
@@ -11228,8 +11218,8 @@ var Plotly = (() => {
         var match = valTrim.match(/^rgba?\s*\(([^()]*)\)$/);
         if (!match) return val;
         var parts = match[1].trim().split(/\s*[\s,]\s*/);
-        var rgba3 = valTrim.charAt(3) === "a" && parts.length === 4;
-        if (!rgba3 && parts.length !== 3) return val;
+        var rgba2 = valTrim.charAt(3) === "a" && parts.length === 4;
+        if (!rgba2 && parts.length !== 3) return val;
         for (var i = 0; i < parts.length; i++) {
           if (!parts[i].length) return val;
           parts[i] = Number(parts[i]);
@@ -11243,7 +11233,7 @@ var Plotly = (() => {
           }
         }
         var rgbStr = Math.round(parts[0] * 255) + ", " + Math.round(parts[1] * 255) + ", " + Math.round(parts[2] * 255);
-        if (rgba3) return "rgba(" + rgbStr + ", " + parts[3] + ")";
+        if (rgba2) return "rgba(" + rgbStr + ", " + parts[3] + ")";
         return "rgb(" + rgbStr + ")";
       }
     }
@@ -14941,10 +14931,10 @@ var Plotly = (() => {
     }
   });
 
-  // stylePlugin:/Users/ryanteoh/Code/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css
+  // stylePlugin:/Users/tim/Documents/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css
   var maplibre_gl_exports = {};
   var init_maplibre_gl2 = __esm({
-    "stylePlugin:/Users/ryanteoh/Code/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
+    "stylePlugin:/Users/tim/Documents/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
       init_maplibre_gl();
     }
   });
@@ -17285,9 +17275,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/events/events.js
+  // ../../node_modules/.pnpm/events@3.3.0/node_modules/events/events.js
   var require_events = __commonJS({
-    "node_modules/events/events.js"(exports, module) {
+    "../../node_modules/.pnpm/events@3.3.0/node_modules/events/events.js"(exports, module) {
       "use strict";
       var R = typeof Reflect === "object" ? Reflect : null;
       var ReflectApply = R && typeof R.apply === "function" ? R.apply : function ReflectApply2(target, receiver, args) {
@@ -22292,8 +22282,8 @@ var Plotly = (() => {
         var N = range.length;
         var _range = new Array(N);
         for (var i = 0; i < N; i++) {
-          var rgba3 = tinycolor(range[i]).toRgb();
-          _range[i] = [rgba3.r, rgba3.g, rgba3.b, rgba3.a];
+          var rgba2 = tinycolor(range[i]).toRgb();
+          _range[i] = [rgba2.r, rgba2.g, rgba2.b, rgba2.a];
         }
         var _sclFunc = d3.scale.linear().domain(domain).range(_range).clamp(true);
         var noNumericCheck = opts.noNumericCheck;
@@ -25083,10 +25073,10 @@ var Plotly = (() => {
   // node_modules/.pnpm/parse-svg-path@0.1.2/node_modules/parse-svg-path/index.js
   var require_parse_svg_path = __commonJS({
     "node_modules/.pnpm/parse-svg-path@0.1.2/node_modules/parse-svg-path/index.js"(exports, module) {
-      module.exports = parse2;
+      module.exports = parse;
       var length = { a: 7, c: 6, h: 1, l: 2, m: 2, q: 4, s: 4, t: 2, v: 1, z: 0 };
       var segment = /([astvzqmhlc])([^astvzqmhlc]*)/ig;
-      function parse2(path) {
+      function parse(path) {
         var data = [];
         path.replace(segment, function(_, command, args) {
           var type = command.toLowerCase();
@@ -27214,7 +27204,7 @@ var Plotly = (() => {
         var editAttr;
         if (prop === "title.text") editAttr = "titleText";
         else if (prop.indexOf("axis") !== -1) editAttr = "axisTitleText";
-        else if (prop.indexOf(true)) editAttr = "colorbarTitleText";
+        else if (prop.indexOf("colorbar" !== -1)) editAttr = "colorbarTitleText";
         var editable = gd._context.edits[editAttr];
         function matchesPlaceholder(text, placeholder2) {
           if (text === void 0 || placeholder2 === void 0) return false;
@@ -74031,9 +74021,29 @@ var Plotly = (() => {
         return [posOnPath0, posOnPath1];
       };
       exports.getKdeValue = function(calcItem, trace, valueDist) {
-        var vals = calcItem.pts.map(exports.extractVal);
-        var kde = exports.makeKDE(calcItem, trace, vals);
-        return kde(valueDist) / calcItem.posDensityScale;
+        var pts = calcItem.pts;
+        if (pts && pts.length) {
+          var vals = pts.map(exports.extractVal);
+          var kde = exports.makeKDE(calcItem, trace, vals);
+          return kde(valueDist) / calcItem.posDensityScale;
+        }
+        var density = calcItem.density || [];
+        var len = density.length;
+        if (!len) return NaN;
+        if (valueDist <= density[0].t) {
+          return density[0].v / calcItem.posDensityScale;
+        }
+        for (var i = 1; i < len; i++) {
+          var prev = density[i - 1];
+          var curr = density[i];
+          if (valueDist <= curr.t) {
+            var span = curr.t - prev.t;
+            var alpha = span ? (valueDist - prev.t) / span : 0;
+            var interpolated = prev.v + alpha * (curr.v - prev.v);
+            return interpolated / calcItem.posDensityScale;
+          }
+        }
+        return density[len - 1].v / calcItem.posDensityScale;
       };
       exports.extractVal = function(o) {
         return o.v;
@@ -81864,7 +81874,7 @@ var Plotly = (() => {
               if (!allowMissing) {
                 throw new $TypeError("base intrinsic for " + name2 + " exists, but the property is not available.");
               }
-              return void undefined2;
+              return void 0;
             }
             if ($gOPD && i + 1 >= parts.length) {
               var desc = $gOPD(value, part);
@@ -85645,7 +85655,7 @@ var Plotly = (() => {
         options = options || {};
         var type = typeof val;
         if (type === "string" && val.length > 0) {
-          return parse2(val);
+          return parse(val);
         } else if (type === "number" && isNaN(val) === false) {
           return options.long ? fmtLong(val) : fmtShort(val);
         }
@@ -85653,7 +85663,7 @@ var Plotly = (() => {
           "val is not a non-empty string or a valid number. val=" + JSON.stringify(val)
         );
       };
-      function parse2(str) {
+      function parse(str) {
         str = String(str);
         if (str.length > 100) {
           return;
@@ -91298,7 +91308,7 @@ var Plotly = (() => {
       init_color2();
       rgb_default = function rgbGamma(y) {
         var color2 = gamma(y);
-        function rgb3(start, end) {
+        function rgb2(start, end) {
           var r = color2((start = rgb(start)).r, (end = rgb(end)).r), g = color2(start.g, end.g), b = color2(start.b, end.b), opacity = nogamma(start.opacity, end.opacity);
           return function(t) {
             start.r = r(t);
@@ -91308,8 +91318,8 @@ var Plotly = (() => {
             return start + "";
           };
         }
-        rgb3.gamma = rgbGamma;
-        return rgb3;
+        rgb2.gamma = rgbGamma;
+        return rgb2;
       }(1);
       rgbBasis = rgbSpline(basis_default);
       rgbBasisClosed = rgbSpline(basisClosed_default);
@@ -91555,7 +91565,7 @@ var Plotly = (() => {
   });
 
   // node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/transform/index.js
-  function interpolateTransform(parse2, pxComma, pxParen, degParen) {
+  function interpolateTransform(parse, pxComma, pxParen, degParen) {
     function pop(s) {
       return s.length ? s.pop() + " " : "";
     }
@@ -91593,7 +91603,7 @@ var Plotly = (() => {
     }
     return function(a, b) {
       var s = [], q = [];
-      a = parse2(a), b = parse2(b);
+      a = parse(a), b = parse(b);
       translate(a.translateX, a.translateY, b.translateX, b.translateY, s, q);
       rotate(a.rotate, b.rotate, s, q);
       skewX(a.skewX, b.skewX, s, q);
@@ -103742,12 +103752,12 @@ var Plotly = (() => {
                 alpha[1] = Math.min(Math.max(alpha[1], 0), 1);
                 var steps = cmap.map(function(c, i2) {
                   var index = cmap[i2].index;
-                  var rgba3 = cmap[i2].rgb.slice();
-                  if (rgba3.length === 4 && rgba3[3] >= 0 && rgba3[3] <= 1) {
-                    return rgba3;
+                  var rgba2 = cmap[i2].rgb.slice();
+                  if (rgba2.length === 4 && rgba2[3] >= 0 && rgba2[3] <= 1) {
+                    return rgba2;
                   }
-                  rgba3[3] = alpha[0] + (alpha[1] - alpha[0]) * index;
-                  return rgba3;
+                  rgba2[3] = alpha[0] + (alpha[1] - alpha[0]) * index;
+                  return rgba2;
                 });
                 var colors = [];
                 for (i = 0; i < indicies.length - 1; ++i) {
@@ -103771,25 +103781,25 @@ var Plotly = (() => {
                 return colors;
               }
               ;
-              function rgb2float(rgba3) {
+              function rgb2float(rgba2) {
                 return [
-                  rgba3[0] / 255,
-                  rgba3[1] / 255,
-                  rgba3[2] / 255,
-                  rgba3[3]
+                  rgba2[0] / 255,
+                  rgba2[1] / 255,
+                  rgba2[2] / 255,
+                  rgba2[3]
                 ];
               }
-              function rgb2hex(rgba3) {
+              function rgb2hex(rgba2) {
                 var dig, hex2 = "#";
                 for (var i = 0; i < 3; ++i) {
-                  dig = rgba3[i];
+                  dig = rgba2[i];
                   dig = dig.toString(16);
                   hex2 += ("00" + dig).substr(dig.length);
                 }
                 return hex2;
               }
-              function rgbaStr(rgba3) {
-                return "rgba(" + rgba3.join(",") + ")";
+              function rgbaStr(rgba2) {
+                return "rgba(" + rgba2.join(",") + ")";
               }
             }
           ),
@@ -131365,9 +131375,9 @@ var Plotly = (() => {
   var require_color_parse = __commonJS({
     "node_modules/.pnpm/color-parse@1.4.3/node_modules/color-parse/index.js"(exports, module) {
       "use strict";
-      var names2 = require_color_name();
-      module.exports = parse2;
-      var baseHues2 = {
+      var names = require_color_name();
+      module.exports = parse;
+      var baseHues = {
         red: 0,
         orange: 60,
         yellow: 120,
@@ -131375,12 +131385,12 @@ var Plotly = (() => {
         blue: 240,
         purple: 300
       };
-      function parse2(cstr) {
+      function parse(cstr) {
         var m, parts = [], alpha = 1, space;
         if (typeof cstr === "string") {
           cstr = cstr.toLowerCase();
-          if (names2[cstr]) {
-            parts = names2[cstr].slice();
+          if (names[cstr]) {
+            parts = names[cstr].slice();
             space = "rgb";
           } else if (cstr === "transparent") {
             alpha = 0;
@@ -131428,8 +131438,8 @@ var Plotly = (() => {
               } else if (base[i] === "h") {
                 if (/deg$/.test(x)) {
                   return parseFloat(x);
-                } else if (baseHues2[x] !== void 0) {
-                  return baseHues2[x];
+                } else if (baseHues[x] !== void 0) {
+                  return baseHues[x];
                 }
               }
               return parseFloat(x);
@@ -131496,15 +131506,15 @@ var Plotly = (() => {
   var require_hsl = __commonJS({
     "node_modules/.pnpm/color-space@1.16.0/node_modules/color-space/hsl.js"(exports, module) {
       "use strict";
-      var rgb3 = require_rgb();
+      var rgb2 = require_rgb();
       module.exports = {
         name: "hsl",
         min: [0, 0, 0],
         max: [360, 100, 100],
         channel: ["hue", "saturation", "lightness"],
         alias: ["HSL"],
-        rgb: function(hsl4) {
-          var h = hsl4[0] / 360, s = hsl4[1] / 100, l = hsl4[2] / 100, t12, t22, t32, rgb4, val;
+        rgb: function(hsl3) {
+          var h = hsl3[0] / 360, s = hsl3[1] / 100, l = hsl3[2] / 100, t12, t22, t32, rgb3, val;
           if (s === 0) {
             val = l * 255;
             return [val, val, val];
@@ -131515,7 +131525,7 @@ var Plotly = (() => {
             t22 = l + s - l * s;
           }
           t12 = 2 * l - t22;
-          rgb4 = [0, 0, 0];
+          rgb3 = [0, 0, 0];
           for (var i = 0; i < 3; i++) {
             t32 = h + 1 / 3 * -(i - 1);
             if (t32 < 0) {
@@ -131532,13 +131542,13 @@ var Plotly = (() => {
             } else {
               val = t12;
             }
-            rgb4[i] = val * 255;
+            rgb3[i] = val * 255;
           }
-          return rgb4;
+          return rgb3;
         }
       };
-      rgb3.hsl = function(rgb4) {
-        var r = rgb4[0] / 255, g = rgb4[1] / 255, b = rgb4[2] / 255, min = Math.min(r, g, b), max = Math.max(r, g, b), delta = max - min, h, s, l;
+      rgb2.hsl = function(rgb3) {
+        var r = rgb3[0] / 255, g = rgb3[1] / 255, b = rgb3[2] / 255, min = Math.min(r, g, b), max = Math.max(r, g, b), delta = max - min, h, s, l;
         if (max === min) {
           h = 0;
         } else if (r === max) {
@@ -131579,19 +131589,19 @@ var Plotly = (() => {
   var require_color_rgba = __commonJS({
     "node_modules/.pnpm/color-rgba@2.1.1/node_modules/color-rgba/index.js"(exports, module) {
       "use strict";
-      var parse2 = require_color_parse();
-      var hsl4 = require_hsl();
+      var parse = require_color_parse();
+      var hsl3 = require_hsl();
       var clamp = require_clamp();
-      module.exports = function rgba3(color2) {
+      module.exports = function rgba2(color2) {
         var values, i, l;
-        var parsed = parse2(color2);
+        var parsed = parse(color2);
         if (!parsed.space) return [];
         values = Array(3);
         values[0] = clamp(parsed.values[0], 0, 255);
         values[1] = clamp(parsed.values[1], 0, 255);
         values[2] = clamp(parsed.values[2], 0, 255);
         if (parsed.space[0] === "h") {
-          values = hsl4.rgb(values);
+          values = hsl3.rgb(values);
         }
         values.push(clamp(parsed.alpha, 0, 1));
         return values;
@@ -131633,7 +131643,7 @@ var Plotly = (() => {
   var require_color_normalize = __commonJS({
     "node_modules/.pnpm/color-normalize@1.5.0/node_modules/color-normalize/index.js"(exports, module) {
       "use strict";
-      var rgba3 = require_color_rgba();
+      var rgba2 = require_color_rgba();
       var clamp = require_clamp();
       var dtype = require_dtype();
       module.exports = function normalize(color2, type) {
@@ -131644,7 +131654,7 @@ var Plotly = (() => {
         var output = new Ctor(4);
         var normalize2 = type !== "uint8" && type !== "uint8_clamped";
         if (!color2.length || typeof color2 === "string") {
-          color2 = rgba3(color2);
+          color2 = rgba2(color2);
           color2[0] /= 255;
           color2[1] /= 255;
           color2[2] /= 255;
@@ -131687,10 +131697,10 @@ var Plotly = (() => {
   var require_str2rgbarray = __commonJS({
     "src/lib/str2rgbarray.js"(exports, module) {
       "use strict";
-      var rgba3 = require_color_normalize();
+      var rgba2 = require_color_normalize();
       function str2RgbaArray(color2) {
         if (!color2) return [0, 0, 0, 1];
-        return rgba3(color2);
+        return rgba2(color2);
       }
       module.exports = str2RgbaArray;
     }
@@ -131702,11 +131712,11 @@ var Plotly = (() => {
       "use strict";
       var isNumeric = require_fast_isnumeric();
       var tinycolor = require_tinycolor();
-      var rgba3 = require_color_normalize();
+      var rgba2 = require_color_normalize();
       var Colorscale = require_colorscale();
       var colorDflt = require_attributes3().defaultLine;
       var isArrayOrTypedArray = require_array().isArrayOrTypedArray;
-      var colorDfltRgba = rgba3(colorDflt);
+      var colorDfltRgba = rgba2(colorDflt);
       var opacityDflt = 1;
       function calculateColor(colorIn, opacityIn) {
         var colorOut = colorIn;
@@ -131715,7 +131725,7 @@ var Plotly = (() => {
       }
       function validateColor(colorIn) {
         if (isNumeric(colorIn)) return colorDfltRgba;
-        var colorOut = rgba3(colorIn);
+        var colorOut = rgba2(colorIn);
         return colorOut.length ? colorOut : colorDfltRgba;
       }
       function validateOpacity(opacityIn) {
@@ -131736,7 +131746,7 @@ var Plotly = (() => {
         }
         if (isArrayColorIn) {
           getColor = function(c, i2) {
-            return c[i2] === void 0 ? colorDfltRgba : rgba3(sclFunc(c[i2]));
+            return c[i2] === void 0 ? colorDfltRgba : rgba2(sclFunc(c[i2]));
           };
         } else getColor = validateColor;
         if (isArrayOpacityIn) {
@@ -131750,7 +131760,7 @@ var Plotly = (() => {
             opacityi = getOpacity(opacityIn, i);
             colorOut[i] = calculateColor(colori, opacityi);
           }
-        } else colorOut = calculateColor(rgba3(colorIn), opacityIn);
+        } else colorOut = calculateColor(rgba2(colorIn), opacityIn);
         return colorOut;
       }
       function parseColorScale(cont) {
@@ -131760,10 +131770,10 @@ var Plotly = (() => {
         return colorscale.map(function(elem) {
           var index = elem[0];
           var color2 = tinycolor(elem[1]);
-          var rgb3 = color2.toRgb();
+          var rgb2 = color2.toRgb();
           return {
             index,
-            rgb: [rgb3.r, rgb3.g, rgb3.b, rgb3.a]
+            rgb: [rgb2.r, rgb2.g, rgb2.b, rgb2.a]
           };
         });
       }
@@ -132614,12 +132624,12 @@ var Plotly = (() => {
         var attribs = opts;
         var gl2;
         try {
-          var names2 = [type];
+          var names = [type];
           if (type.indexOf("webgl") === 0) {
-            names2.push("experimental-" + type);
+            names.push("experimental-" + type);
           }
-          for (var i = 0; i < names2.length; i++) {
-            gl2 = canvas.getContext(names2[i], attribs);
+          for (var i = 0; i < names.length; i++) {
+            gl2 = canvas.getContext(names[i], attribs);
             if (gl2) return gl2;
           }
         } catch (e) {
@@ -151347,7 +151357,7 @@ var Plotly = (() => {
   var require_svg_path_bounds = __commonJS({
     "node_modules/.pnpm/svg-path-bounds@1.0.2/node_modules/svg-path-bounds/index.js"(exports, module) {
       "use strict";
-      var parse2 = require_parse_svg_path();
+      var parse = require_parse_svg_path();
       var abs = require_abs_svg_path();
       var normalize = require_normalize_svg_path();
       var isSvgPath = require_is_svg_path();
@@ -151356,7 +151366,7 @@ var Plotly = (() => {
         if (Array.isArray(path) && path.length === 1 && typeof path[0] === "string") path = path[0];
         if (typeof path === "string") {
           if (!isSvgPath(path)) throw Error("String is not an SVG path.");
-          path = parse2(path);
+          path = parse(path);
         }
         if (!Array.isArray(path)) throw Error("Argument should be a string or an array of path segments.");
         path = abs(path);
@@ -151767,7 +151777,7 @@ var Plotly = (() => {
       "use strict";
       var isNumeric = require_fast_isnumeric();
       var svgSdf = require_svg_path_sdf();
-      var rgba3 = require_color_normalize();
+      var rgba2 = require_color_normalize();
       var Registry = require_registry();
       var Lib = require_lib();
       var isArrayOrTypedArray = Lib.isArrayOrTypedArray;
@@ -152034,12 +152044,12 @@ var Plotly = (() => {
           }
         } else {
           if (isOpen) {
-            optsOut.color = rgba3(optsIn.color, "uint8");
+            optsOut.color = rgba2(optsIn.color, "uint8");
             optsOut.color[3] = 0;
-            optsOut.borderColor = rgba3(optsIn.color, "uint8");
+            optsOut.borderColor = rgba2(optsIn.color, "uint8");
           } else {
-            optsOut.color = rgba3(optsIn.color, "uint8");
-            optsOut.borderColor = rgba3(optsIn.line.color, "uint8");
+            optsOut.color = rgba2(optsIn.color, "uint8");
+            optsOut.borderColor = rgba2(optsIn.line.color, "uint8");
           }
           optsOut.opacity = trace.opacity * optsIn.opacity;
           optsOut.marker = getSymbolSdf({
@@ -152775,9 +152785,9 @@ var Plotly = (() => {
       module.exports = toNumber;
       module.exports.to = toNumber;
       module.exports.from = fromNumber;
-      function toNumber(rgba3, normalized) {
+      function toNumber(rgba2, normalized) {
         if (normalized == null) normalized = true;
-        var r = rgba3[0], g = rgba3[1], b = rgba3[2], a = rgba3[3];
+        var r = rgba2[0], g = rgba2[1], b = rgba2[2], a = rgba2[3];
         if (a == null) a = normalized ? 1 : 255;
         if (normalized) {
           r *= 255;
@@ -153349,7 +153359,7 @@ var Plotly = (() => {
       function _nonIterableRest() {
         throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
       }
-      var rgba3 = require_color_normalize();
+      var rgba2 = require_color_normalize();
       var getBounds = require_array_bounds();
       var colorId = require_color_id();
       var cluster = require_point_cluster2();
@@ -153995,7 +154005,7 @@ var Plotly = (() => {
         }
         for (var _i6 = 0; _i6 < colors.length; _i6++) {
           var color2 = colors[_i6];
-          color2 = rgba3(color2, "uint8");
+          color2 = rgba2(color2, "uint8");
           var id = colorId(color2, false);
           if (paletteIds[id] == null) {
             var pos = palette.length;
@@ -156245,7 +156255,7 @@ var Plotly = (() => {
   var require_regl_line2d = __commonJS({
     "node_modules/.pnpm/regl-line2d@3.1.3/node_modules/regl-line2d/index.js"(exports, module) {
       "use strict";
-      var rgba3 = require_color_normalize();
+      var rgba2 = require_color_normalize();
       var getBounds = require_array_bounds();
       var extend2 = require_object_assign();
       var pick = require_pick_by_alias();
@@ -156996,7 +157006,7 @@ void main() {
           }
           if (o.join != null) state.join = o.join;
           if (o.hole != null) state.hole = o.hole;
-          if (o.fill != null) state.fill = !o.fill ? null : rgba3(o.fill, "uint8");
+          if (o.fill != null) state.fill = !o.fill ? null : rgba2(o.fill, "uint8");
           if (o.viewport != null) state.viewport = parseRect(o.viewport);
           if (!state.viewport) {
             state.viewport = parseRect([
@@ -157173,16 +157183,16 @@ void main() {
             if (!colors) colors = "transparent";
             let colorData = new Uint8Array(count * 4 + 4);
             if (!Array.isArray(colors) || typeof colors[0] === "number") {
-              let c = rgba3(colors, "uint8");
+              let c = rgba2(colors, "uint8");
               for (let i2 = 0; i2 < count + 1; i2++) {
                 colorData.set(c, i2 * 4);
               }
             } else {
               for (let i2 = 0; i2 < count; i2++) {
-                let c = rgba3(colors[i2], "uint8");
+                let c = rgba2(colors[i2], "uint8");
                 colorData.set(c, i2 * 4);
               }
-              colorData.set(rgba3(colors[0], "uint8"), count * 4);
+              colorData.set(rgba2(colors[0], "uint8"), count * 4);
             }
             state.colorBuffer({
               usage: "dynamic",
@@ -157225,7 +157235,7 @@ void main() {
     "node_modules/.pnpm/regl-error2d@2.0.12/node_modules/regl-error2d/index.js"(exports, module) {
       "use strict";
       var getBounds = require_array_bounds();
-      var rgba3 = require_color_normalize();
+      var rgba2 = require_color_normalize();
       var updateDiff = require_update_diff();
       var pick = require_pick_by_alias();
       var extend2 = require_object_assign();
@@ -157561,7 +157571,7 @@ void main() {
                 if (colors.length < count) throw Error("Not enough colors");
                 let colorData = new Uint8Array(count * 4);
                 for (let i2 = 0; i2 < count; i2++) {
-                  let c = rgba3(colors[i2], "uint8");
+                  let c = rgba2(colors[i2], "uint8");
                   colorData.set(c, i2 * 4);
                 }
                 return colorData;
@@ -157737,7 +157747,7 @@ void main() {
   var require_parenthesis = __commonJS({
     "node_modules/.pnpm/parenthesis@3.1.8/node_modules/parenthesis/index.js"(exports, module) {
       "use strict";
-      function parse2(str, opts) {
+      function parse(str, opts) {
         if (typeof str !== "string") return [str];
         var res = [str];
         if (typeof opts === "string" || Array.isArray(opts)) {
@@ -157816,10 +157826,10 @@ void main() {
         if (Array.isArray(arg)) {
           return stringify(arg, opts);
         } else {
-          return parse2(arg, opts);
+          return parse(arg, opts);
         }
       }
-      parenthesis.parse = parse2;
+      parenthesis.parse = parse;
       parenthesis.stringify = stringify;
       module.exports = parenthesis;
     }
@@ -168693,7 +168703,7 @@ void main() {
       var createRegl = require_regl();
       var createGl = require_context();
       var WeakMap2 = require_es6_weak_map();
-      var rgba3 = require_color_normalize();
+      var rgba2 = require_color_normalize();
       var fontAtlas = require_font_atlas();
       var pool = require_pool();
       var parseRect = require_parse_rect();
@@ -169198,7 +169208,7 @@ void main() {
             o.color = "transparent";
           }
           if (typeof o.color === "string" || !isNaN(o.color)) {
-            this.color = rgba3(o.color, "uint8");
+            this.color = rgba2(o.color, "uint8");
           } else {
             var colorData;
             if (typeof o.color[0] === "number" && o.color.length > this.counts.length) {
@@ -169206,13 +169216,13 @@ void main() {
               colorData = pool.mallocUint8(l);
               var sub = (o.color.subarray || o.color.slice).bind(o.color);
               for (var i$4 = 0; i$4 < l; i$4 += 4) {
-                colorData.set(rgba3(sub(i$4, i$4 + 4), "uint8"), i$4);
+                colorData.set(rgba2(sub(i$4, i$4 + 4), "uint8"), i$4);
               }
             } else {
               var l$1 = o.color.length;
               colorData = pool.mallocUint8(l$1 * 4);
               for (var i$5 = 0; i$5 < l$1; i$5++) {
-                colorData.set(rgba3(o.color[i$5] || 0, "uint8"), i$5 * 4);
+                colorData.set(rgba2(o.color[i$5] || 0, "uint8"), i$5 * 4);
               }
             }
             this.color = colorData;
@@ -169285,9 +169295,9 @@ void main() {
     }
   });
 
-  // node_modules/regl/dist/regl.unchecked.js
+  // node_modules/.pnpm/@plotly+regl@2.1.2/node_modules/@plotly/regl/dist/regl.unchecked.js
   var require_regl_unchecked = __commonJS({
-    "node_modules/regl/dist/regl.unchecked.js"(exports, module) {
+    "node_modules/.pnpm/@plotly+regl@2.1.2/node_modules/@plotly/regl/dist/regl.unchecked.js"(exports, module) {
       (function(global2, factory) {
         typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : global2.createREGL = factory();
       })(exports, function() {
@@ -182131,210 +182141,6 @@ void main() {
     }
   });
 
-  // node_modules/.pnpm/color-parse@2.0.0/node_modules/color-parse/index.js
-  function parse(cstr) {
-    var _a, _b;
-    var m, parts = [], alpha = 1, space;
-    if (typeof cstr === "number") {
-      return { space: "rgb", values: [cstr >>> 16, (cstr & 65280) >>> 8, cstr & 255], alpha: 1 };
-    }
-    if (typeof cstr === "number") return { space: "rgb", values: [cstr >>> 16, (cstr & 65280) >>> 8, cstr & 255], alpha: 1 };
-    cstr = String(cstr).toLowerCase();
-    if (import_color_name.default[cstr]) {
-      parts = import_color_name.default[cstr].slice();
-      space = "rgb";
-    } else if (cstr === "transparent") {
-      alpha = 0;
-      space = "rgb";
-      parts = [0, 0, 0];
-    } else if (cstr[0] === "#") {
-      var base = cstr.slice(1);
-      var size = base.length;
-      var isShort = size <= 4;
-      alpha = 1;
-      if (isShort) {
-        parts = [
-          parseInt(base[0] + base[0], 16),
-          parseInt(base[1] + base[1], 16),
-          parseInt(base[2] + base[2], 16)
-        ];
-        if (size === 4) {
-          alpha = parseInt(base[3] + base[3], 16) / 255;
-        }
-      } else {
-        parts = [
-          parseInt(base[0] + base[1], 16),
-          parseInt(base[2] + base[3], 16),
-          parseInt(base[4] + base[5], 16)
-        ];
-        if (size === 8) {
-          alpha = parseInt(base[6] + base[7], 16) / 255;
-        }
-      }
-      if (!parts[0]) parts[0] = 0;
-      if (!parts[1]) parts[1] = 0;
-      if (!parts[2]) parts[2] = 0;
-      space = "rgb";
-    } else if (m = /^((?:rgba?|hs[lvb]a?|hwba?|cmyk?|xy[zy]|gray|lab|lchu?v?|[ly]uv|lms|oklch|oklab|color))\s*\(([^\)]*)\)/.exec(cstr)) {
-      var name2 = m[1];
-      space = name2.replace(/a$/, "");
-      var dims = space === "cmyk" ? 4 : space === "gray" ? 1 : 3;
-      parts = m[2].trim().split(/\s*[,\/]\s*|\s+/);
-      if (space === "color") space = parts.shift();
-      parts = parts.map(function(x, i) {
-        if (x[x.length - 1] === "%") {
-          x = parseFloat(x) / 100;
-          if (i === 3) return x;
-          if (space === "rgb") return x * 255;
-          if (space[0] === "h") return x * 100;
-          if (space[0] === "l" && !i) return x * 100;
-          if (space === "lab") return x * 125;
-          if (space === "lch") return i < 2 ? x * 150 : x * 360;
-          if (space[0] === "o" && !i) return x;
-          if (space === "oklab") return x * 0.4;
-          if (space === "oklch") return i < 2 ? x * 0.4 : x * 360;
-          return x;
-        }
-        if (space[i] === "h" || i === 2 && space[space.length - 1] === "h") {
-          if (baseHues[x] !== void 0) return baseHues[x];
-          if (x.endsWith("deg")) return parseFloat(x);
-          if (x.endsWith("turn")) return parseFloat(x) * 360;
-          if (x.endsWith("grad")) return parseFloat(x) * 360 / 400;
-          if (x.endsWith("rad")) return parseFloat(x) * 180 / Math.PI;
-        }
-        if (x === "none") return 0;
-        return parseFloat(x);
-      });
-      alpha = parts.length > dims ? parts.pop() : 1;
-    } else if (/[0-9](?:\s|\/|,)/.test(cstr)) {
-      parts = cstr.match(/([0-9]+)/g).map(function(value) {
-        return parseFloat(value);
-      });
-      space = ((_b = (_a = cstr.match(/([a-z])/ig)) == null ? void 0 : _a.join("")) == null ? void 0 : _b.toLowerCase()) || "rgb";
-    }
-    return {
-      space,
-      values: parts,
-      alpha
-    };
-  }
-  var import_color_name, color_parse_default, baseHues;
-  var init_color_parse = __esm({
-    "node_modules/.pnpm/color-parse@2.0.0/node_modules/color-parse/index.js"() {
-      import_color_name = __toESM(require_color_name(), 1);
-      color_parse_default = parse;
-      baseHues = {
-        red: 0,
-        orange: 60,
-        yellow: 120,
-        green: 180,
-        blue: 240,
-        purple: 300
-      };
-    }
-  });
-
-  // node_modules/.pnpm/color-space@2.3.2/node_modules/color-space/rgb.js
-  var rgb2, rgb_default2;
-  var init_rgb2 = __esm({
-    "node_modules/.pnpm/color-space@2.3.2/node_modules/color-space/rgb.js"() {
-      rgb2 = {
-        name: "rgb",
-        min: [0, 0, 0],
-        max: [255, 255, 255],
-        channel: ["red", "green", "blue"],
-        alias: ["RGB"]
-      };
-      rgb_default2 = rgb2;
-    }
-  });
-
-  // node_modules/.pnpm/color-space@2.3.2/node_modules/color-space/hsl.js
-  var hsl3, hsl_default2;
-  var init_hsl2 = __esm({
-    "node_modules/.pnpm/color-space@2.3.2/node_modules/color-space/hsl.js"() {
-      init_rgb2();
-      hsl3 = {
-        name: "hsl",
-        min: [0, 0, 0],
-        max: [360, 100, 100],
-        channel: ["hue", "saturation", "lightness"],
-        alias: ["HSL"],
-        rgb: function(hsl4) {
-          var h = hsl4[0] / 360, s = hsl4[1] / 100, l = hsl4[2] / 100, t12, t22, t32, rgb3, val, i = 0;
-          if (s === 0) return val = l * 255, [val, val, val];
-          t22 = l < 0.5 ? l * (1 + s) : l + s - l * s;
-          t12 = 2 * l - t22;
-          rgb3 = [0, 0, 0];
-          for (; i < 3; ) {
-            t32 = h + 1 / 3 * -(i - 1);
-            t32 < 0 ? t32++ : t32 > 1 && t32--;
-            val = 6 * t32 < 1 ? t12 + (t22 - t12) * 6 * t32 : 2 * t32 < 1 ? t22 : 3 * t32 < 2 ? t12 + (t22 - t12) * (2 / 3 - t32) * 6 : t12;
-            rgb3[i++] = val * 255;
-          }
-          return rgb3;
-        }
-      };
-      hsl_default2 = hsl3;
-      rgb_default2.hsl = function(rgb3) {
-        var r = rgb3[0] / 255, g = rgb3[1] / 255, b = rgb3[2] / 255, min = Math.min(r, g, b), max = Math.max(r, g, b), delta = max - min, h, s, l;
-        if (max === min) {
-          h = 0;
-        } else if (r === max) {
-          h = (g - b) / delta;
-        } else if (g === max) {
-          h = 2 + (b - r) / delta;
-        } else if (b === max) {
-          h = 4 + (r - g) / delta;
-        }
-        h = Math.min(h * 60, 360);
-        if (h < 0) {
-          h += 360;
-        }
-        l = (min + max) / 2;
-        if (max === min) {
-          s = 0;
-        } else if (l <= 0.5) {
-          s = delta / (max + min);
-        } else {
-          s = delta / (2 - max - min);
-        }
-        return [h, s * 100, l * 100];
-      };
-    }
-  });
-
-  // node_modules/.pnpm/color-rgba@3.0.0/node_modules/color-rgba/index.js
-  var color_rgba_exports = {};
-  __export(color_rgba_exports, {
-    default: () => rgba2
-  });
-  function rgba2(color2) {
-    if (Array.isArray(color2) && color2.raw) color2 = String.raw(...arguments);
-    if (color2 instanceof Number) color2 = +color2;
-    var values, i, l;
-    var parsed = color_parse_default(color2);
-    if (!parsed.space) return [];
-    const min = parsed.space[0] === "h" ? hsl_default2.min : rgb_default2.min;
-    const max = parsed.space[0] === "h" ? hsl_default2.max : rgb_default2.max;
-    values = Array(3);
-    values[0] = Math.min(Math.max(parsed.values[0], min[0]), max[0]);
-    values[1] = Math.min(Math.max(parsed.values[1], min[1]), max[1]);
-    values[2] = Math.min(Math.max(parsed.values[2], min[2]), max[2]);
-    if (parsed.space[0] === "h") {
-      values = hsl_default2.rgb(values);
-    }
-    values.push(Math.min(Math.max(parsed.alpha, 0), 1));
-    return values;
-  }
-  var init_color_rgba = __esm({
-    "node_modules/.pnpm/color-rgba@3.0.0/node_modules/color-rgba/index.js"() {
-      init_color_parse();
-      init_rgb2();
-      init_hsl2();
-    }
-  });
-
   // src/traces/parcoords/helpers.js
   var require_helpers18 = __commonJS({
     "src/traces/parcoords/helpers.js"(exports) {
@@ -182954,7 +182760,7 @@ void main() {
       var Lib = require_lib();
       var isArrayOrTypedArray = Lib.isArrayOrTypedArray;
       var numberFormat = Lib.numberFormat;
-      var rgba3 = (init_color_rgba(), __toCommonJS(color_rgba_exports));
+      var rgba2 = require_color_rgba();
       var Axes = require_axes();
       var strRotate = Lib.strRotate;
       var strTranslate = Lib.strTranslate;
@@ -183040,7 +182846,7 @@ void main() {
           return d[0];
         });
         var colorTuples = cscale.map(function(d) {
-          var RGBA = rgba3(d[1]);
+          var RGBA = rgba2(d[1]);
           return d3.rgb("rgb(" + RGBA[0] + "," + RGBA[1] + "," + RGBA[2] + ")");
         });
         var prop = function(n) {
@@ -183068,7 +182874,7 @@ void main() {
         var lineColor = helpers.convertTypedArray(cd0.lineColor);
         var line = trace.line;
         var deselectedLines = {
-          color: rgba3(trace.unselected.line.color),
+          color: rgba2(trace.unselected.line.color),
           opacity: trace.unselected.line.opacity
         };
         var cOpts = Colorscale.extractOpts(line);
@@ -192746,7 +192552,7 @@ void main() {
             this.b = b;
             this.a = a;
           };
-          Color2.parse = function parse2(input) {
+          Color2.parse = function parse(input) {
             if (!input) {
               return void 0;
             }
@@ -192756,11 +192562,11 @@ void main() {
             if (typeof input !== "string") {
               return void 0;
             }
-            var rgba4 = csscolorparser_1(input);
-            if (!rgba4) {
+            var rgba3 = csscolorparser_1(input);
+            if (!rgba3) {
               return void 0;
             }
-            return new Color2(rgba4[0] / 255 * rgba4[3], rgba4[1] / 255 * rgba4[3], rgba4[2] / 255 * rgba4[3], rgba4[3]);
+            return new Color2(rgba3[0] / 255 * rgba3[3], rgba3[1] / 255 * rgba3[3], rgba3[2] / 255 * rgba3[3], rgba3[3]);
           };
           Color2.prototype.toString = function toString2() {
             var ref = this.toArray();
@@ -193010,7 +192816,7 @@ void main() {
             this.type = type;
             this.value = value;
           };
-          Literal.parse = function parse2(args, context) {
+          Literal.parse = function parse(args, context) {
             if (args.length !== 2) {
               return context.error("'literal' expression requires exactly one argument, but found " + (args.length - 1) + " instead.");
             }
@@ -193064,7 +192870,7 @@ void main() {
             this.type = type;
             this.args = args;
           };
-          Assertion.parse = function parse2(args, context) {
+          Assertion.parse = function parse(args, context) {
             if (args.length < 2) {
               return context.error("Expected at least one argument.");
             }
@@ -193146,7 +192952,7 @@ void main() {
             this.type = FormattedType;
             this.sections = sections;
           };
-          FormatExpression.parse = function parse2(args, context) {
+          FormatExpression.parse = function parse(args, context) {
             if (args.length < 2) {
               return context.error("Expected at least one argument.");
             }
@@ -193256,7 +193062,7 @@ void main() {
             this.type = ResolvedImageType;
             this.input = input;
           };
-          ImageExpression.parse = function parse2(args, context) {
+          ImageExpression.parse = function parse(args, context) {
             if (args.length !== 2) {
               return context.error("Expected two arguments.");
             }
@@ -193296,7 +193102,7 @@ void main() {
             this.type = type;
             this.args = args;
           };
-          Coercion.parse = function parse2(args, context) {
+          Coercion.parse = function parse(args, context) {
             if (args.length < 2) {
               return context.error("Expected at least one argument.");
             }
@@ -193450,7 +193256,7 @@ void main() {
               return arg.serialize();
             }));
           };
-          CompoundExpression.parse = function parse2(args, context) {
+          CompoundExpression.parse = function parse(args, context) {
             var ref$1;
             var op = args[0];
             var definition = CompoundExpression.definitions[op];
@@ -193541,7 +193347,7 @@ void main() {
             this.caseSensitive = caseSensitive;
             this.diacriticSensitive = diacriticSensitive;
           };
-          CollatorExpression.parse = function parse2(args, context) {
+          CollatorExpression.parse = function parse(args, context) {
             if (args.length !== 2) {
               return context.error("Expected one argument.");
             }
@@ -193906,7 +193712,7 @@ void main() {
             this.geojson = geojson;
             this.geometries = geometries;
           };
-          Within.parse = function parse2(args, context) {
+          Within.parse = function parse(args, context) {
             if (args.length !== 2) {
               return context.error("'within' expression requires exactly one argument, but found " + (args.length - 1) + " instead.");
             }
@@ -194007,7 +193813,7 @@ void main() {
             this.name = name3;
             this.boundExpression = boundExpression;
           };
-          Var.parse = function parse2(args, context) {
+          Var.parse = function parse(args, context) {
             if (args.length !== 2 || typeof args[1] !== "string") {
               return context.error("'var' expression requires exactly one string literal argument.");
             }
@@ -194047,7 +193853,7 @@ void main() {
             this.errors = errors;
             this.expectedType = expectedType;
           };
-          ParsingContext.prototype.parse = function parse2(expr, index, expectedType, bindings, options) {
+          ParsingContext.prototype.parse = function parse(expr, index, expectedType, bindings, options) {
             if (options === void 0)
               options = {};
             if (index) {
@@ -194204,7 +194010,7 @@ void main() {
               this.outputs.push(expression2);
             }
           };
-          Step.parse = function parse2(args, context) {
+          Step.parse = function parse(args, context) {
             if (args.length - 1 < 4) {
               return context.error("Expected at least 4 arguments, but found only " + (args.length - 1) + ".");
             }
@@ -194417,7 +194223,7 @@ void main() {
             }
             return t;
           };
-          Interpolate.parse = function parse2(args, context) {
+          Interpolate.parse = function parse(args, context) {
             var operator = args[0];
             var interpolation = args[1];
             var input = args[2];
@@ -194574,7 +194380,7 @@ void main() {
             this.type = type;
             this.args = args;
           };
-          Coalesce.parse = function parse2(args, context) {
+          Coalesce.parse = function parse(args, context) {
             if (args.length < 2) {
               return context.error("Expectected at least one argument.");
             }
@@ -194651,7 +194457,7 @@ void main() {
             }
             fn(this.result);
           };
-          Let.parse = function parse2(args, context) {
+          Let.parse = function parse(args, context) {
             if (args.length < 4) {
               return context.error("Expected at least 3 arguments, but found " + (args.length - 1) + " instead.");
             }
@@ -194698,7 +194504,7 @@ void main() {
             this.index = index;
             this.input = input;
           };
-          At.parse = function parse2(args, context) {
+          At.parse = function parse(args, context) {
             if (args.length !== 3) {
               return context.error("Expected 2 arguments, but found " + (args.length - 1) + " instead.");
             }
@@ -194743,7 +194549,7 @@ void main() {
             this.needle = needle;
             this.haystack = haystack;
           };
-          In.parse = function parse2(args, context) {
+          In.parse = function parse(args, context) {
             if (args.length !== 3) {
               return context.error("Expected 2 arguments, but found " + (args.length - 1) + " instead.");
             }
@@ -194805,7 +194611,7 @@ void main() {
             this.haystack = haystack;
             this.fromIndex = fromIndex;
           };
-          IndexOf.parse = function parse2(args, context) {
+          IndexOf.parse = function parse(args, context) {
             if (args.length <= 2 || args.length >= 5) {
               return context.error("Expected 3 or 4 arguments, but found " + (args.length - 1) + " instead.");
             }
@@ -194890,7 +194696,7 @@ void main() {
             this.outputs = outputs;
             this.otherwise = otherwise;
           };
-          Match.parse = function parse2(args, context) {
+          Match.parse = function parse(args, context) {
             if (args.length < 5) {
               return context.error("Expected at least 4 arguments, but found only " + (args.length - 1) + ".");
             }
@@ -195011,7 +194817,7 @@ void main() {
             this.branches = branches;
             this.otherwise = otherwise;
           };
-          Case.parse = function parse2(args, context) {
+          Case.parse = function parse(args, context) {
             if (args.length < 4) {
               return context.error("Expected at least 3 arguments, but found only " + (args.length - 1) + ".");
             }
@@ -195085,7 +194891,7 @@ void main() {
             this.beginIndex = beginIndex;
             this.endIndex = endIndex;
           };
-          Slice.parse = function parse2(args, context) {
+          Slice.parse = function parse(args, context) {
             if (args.length <= 2 || args.length >= 5) {
               return context.error("Expected 3 or 4 arguments, but found " + (args.length - 1) + " instead.");
             }
@@ -195205,7 +195011,7 @@ void main() {
                 this.collator = collator;
                 this.hasUntypedArgument = lhs.type.kind === "value" || rhs.type.kind === "value";
               }
-              Comparison.parse = function parse2(args, context) {
+              Comparison.parse = function parse(args, context) {
                 if (args.length !== 3 && args.length !== 4) {
                   return context.error("Expected two or three arguments.");
                 }
@@ -195299,7 +195105,7 @@ void main() {
             this.minFractionDigits = minFractionDigits;
             this.maxFractionDigits = maxFractionDigits;
           };
-          NumberFormat.parse = function parse2(args, context) {
+          NumberFormat.parse = function parse(args, context) {
             if (args.length !== 3) {
               return context.error("Expected two arguments.");
             }
@@ -195391,7 +195197,7 @@ void main() {
             this.type = NumberType;
             this.input = input;
           };
-          Length.parse = function parse2(args, context) {
+          Length.parse = function parse(args, context) {
             if (args.length !== 2) {
               return context.error("Expected 1 argument, but found " + (args.length - 1) + " instead.");
             }
@@ -195464,7 +195270,7 @@ void main() {
             "var": Var,
             "within": Within
           };
-          function rgba3(ctx, ref) {
+          function rgba2(ctx, ref) {
             var r = ref[0];
             var g = ref[1];
             var b = ref[2];
@@ -195535,7 +195341,7 @@ void main() {
                 NumberType,
                 NumberType
               ],
-              rgba3
+              rgba2
             ],
             "rgba": [
               ColorType,
@@ -195545,7 +195351,7 @@ void main() {
                 NumberType,
                 NumberType
               ],
-              rgba3
+              rgba2
             ],
             "has": {
               type: BooleanType,
@@ -200761,9 +200567,9 @@ void main() {
               packUint8ToFloat(255 * color3.b, 255 * color3.a)
             ];
           }
-          var ConstantBinder = function ConstantBinder2(value, names2, type) {
+          var ConstantBinder = function ConstantBinder2(value, names, type) {
             this.value = value;
-            this.uniformNames = names2.map(function(name3) {
+            this.uniformNames = names.map(function(name3) {
               return "u_" + name3;
             });
             this.type = type;
@@ -200774,8 +200580,8 @@ void main() {
           ConstantBinder.prototype.getBinding = function getBinding(context, location2, _) {
             return this.type === "color" ? new UniformColor(context, location2) : new Uniform1f(context, location2);
           };
-          var CrossFadedConstantBinder = function CrossFadedConstantBinder2(value, names2) {
-            this.uniformNames = names2.map(function(name3) {
+          var CrossFadedConstantBinder = function CrossFadedConstantBinder2(value, names) {
+            this.uniformNames = names.map(function(name3) {
               return "u_" + name3;
             });
             this.patternFrom = null;
@@ -200798,11 +200604,11 @@ void main() {
           CrossFadedConstantBinder.prototype.getBinding = function getBinding(context, location2, name3) {
             return name3.substr(0, 9) === "u_pattern" ? new Uniform4f(context, location2) : new Uniform1f(context, location2);
           };
-          var SourceExpressionBinder = function SourceExpressionBinder2(expression2, names2, type, PaintVertexArray) {
+          var SourceExpressionBinder = function SourceExpressionBinder2(expression2, names, type, PaintVertexArray) {
             this.expression = expression2;
             this.type = type;
             this.maxValue = 0;
-            this.paintVertexAttributes = names2.map(function(name3) {
+            this.paintVertexAttributes = names.map(function(name3) {
               return {
                 name: "a_" + name3,
                 type: "Float32",
@@ -200849,16 +200655,16 @@ void main() {
               this.paintVertexBuffer.destroy();
             }
           };
-          var CompositeExpressionBinder = function CompositeExpressionBinder2(expression2, names2, type, useIntegerZoom, zoom, PaintVertexArray) {
+          var CompositeExpressionBinder = function CompositeExpressionBinder2(expression2, names, type, useIntegerZoom, zoom, PaintVertexArray) {
             this.expression = expression2;
-            this.uniformNames = names2.map(function(name3) {
+            this.uniformNames = names.map(function(name3) {
               return "u_" + name3 + "_t";
             });
             this.type = type;
             this.useIntegerZoom = useIntegerZoom;
             this.zoom = zoom;
             this.maxValue = 0;
-            this.paintVertexAttributes = names2.map(function(name3) {
+            this.paintVertexAttributes = names.map(function(name3) {
               return {
                 name: "a_" + name3,
                 type: "Float32",
@@ -200978,22 +200784,22 @@ void main() {
               if (!(value instanceof PossiblyEvaluatedPropertyValue) || !supportsPropertyExpression(value.property.specification)) {
                 continue;
               }
-              var names2 = paintAttributeNames(property, layer2.type);
+              var names = paintAttributeNames(property, layer2.type);
               var expression2 = value.value;
               var type = value.property.specification.type;
               var useIntegerZoom = value.property.useIntegerZoom;
               var propType = value.property.specification["property-type"];
               var isCrossFaded = propType === "cross-faded" || propType === "cross-faded-data-driven";
               if (expression2.kind === "constant") {
-                this.binders[property] = isCrossFaded ? new CrossFadedConstantBinder(expression2.value, names2) : new ConstantBinder(expression2.value, names2, type);
+                this.binders[property] = isCrossFaded ? new CrossFadedConstantBinder(expression2.value, names) : new ConstantBinder(expression2.value, names, type);
                 keys.push("/u_" + property);
               } else if (expression2.kind === "source" || isCrossFaded) {
                 var StructArrayLayout = layoutType(property, type, "source");
-                this.binders[property] = isCrossFaded ? new CrossFadedCompositeBinder(expression2, type, useIntegerZoom, zoom, StructArrayLayout, layer2.id) : new SourceExpressionBinder(expression2, names2, type, StructArrayLayout);
+                this.binders[property] = isCrossFaded ? new CrossFadedCompositeBinder(expression2, type, useIntegerZoom, zoom, StructArrayLayout, layer2.id) : new SourceExpressionBinder(expression2, names, type, StructArrayLayout);
                 keys.push("/a_" + property);
               } else {
                 var StructArrayLayout$1 = layoutType(property, type, "composite");
-                this.binders[property] = new CompositeExpressionBinder(expression2, names2, type, useIntegerZoom, zoom, StructArrayLayout$1);
+                this.binders[property] = new CompositeExpressionBinder(expression2, names, type, useIntegerZoom, zoom, StructArrayLayout$1);
                 keys.push("/z_" + property);
               }
             }
@@ -210481,7 +210287,7 @@ void main() {
             this.returnDependencies = !!params.returnDependencies;
             this.promoteId = params.promoteId;
           };
-          WorkerTile.prototype.parse = function parse2(data, layerIndex, availableImages, actor, callback) {
+          WorkerTile.prototype.parse = function parse(data, layerIndex, availableImages, actor, callback) {
             var this$1 = this;
             this.status = "parsing";
             this.data = data;
@@ -239640,14 +239446,14 @@ void main() {
                   const valFormat = [rp, gp, bp].join("");
                   const maxValue = valFormat === "%%%" ? 100 : valFormat === "" ? 255 : 0;
                   if (maxValue) {
-                    const rgba4 = [
+                    const rgba3 = [
                       clamp(+r / maxValue, 0, 1),
                       clamp(+g / maxValue, 0, 1),
                       clamp(+b / maxValue, 0, 1),
                       a ? parseAlpha(+a, ap) : 1
                     ];
-                    if (validateNumbers(rgba4)) {
-                      return rgba4;
+                    if (validateNumbers(rgba3)) {
+                      return rgba3;
                     }
                   }
                 }
@@ -239895,9 +239701,9 @@ void main() {
               if (typeof input !== "string") {
                 return;
               }
-              const rgba4 = parseCssColor(input);
-              if (rgba4) {
-                return new Color2(...rgba4, false);
+              const rgba3 = parseCssColor(input);
+              if (rgba3) {
+                return new Color2(...rgba3, false);
               }
             }
             /**
@@ -242893,7 +242699,7 @@ void main() {
               }
             }
           }
-          function rgba3(ctx, [r, g, b, a]) {
+          function rgba2(ctx, [r, g, b, a]) {
             r = r.evaluate(ctx);
             g = g.evaluate(ctx);
             b = b.evaluate(ctx);
@@ -242949,12 +242755,12 @@ void main() {
             "rgb": [
               ColorType,
               [NumberType, NumberType, NumberType],
-              rgba3
+              rgba2
             ],
             "rgba": [
               ColorType,
               [NumberType, NumberType, NumberType, NumberType],
-              rgba3
+              rgba2
             ],
             "has": {
               type: BooleanType,
@@ -248128,9 +247934,9 @@ Use an identity property function instead: \`{ "type": "identity", "property": $
             ];
           }
           class ConstantBinder {
-            constructor(value, names2, type) {
+            constructor(value, names, type) {
               this.value = value;
-              this.uniformNames = names2.map((name2) => `u_${name2}`);
+              this.uniformNames = names.map((name2) => `u_${name2}`);
               this.type = type;
             }
             setUniform(uniform, globals, currentValue) {
@@ -248141,8 +247947,8 @@ Use an identity property function instead: \`{ "type": "identity", "property": $
             }
           }
           class CrossFadedConstantBinder {
-            constructor(value, names2) {
-              this.uniformNames = names2.map((name2) => `u_${name2}`);
+            constructor(value, names) {
+              this.uniformNames = names.map((name2) => `u_${name2}`);
               this.patternFrom = null;
               this.patternTo = null;
               this.pixelRatioFrom = 1;
@@ -248164,11 +247970,11 @@ Use an identity property function instead: \`{ "type": "identity", "property": $
             }
           }
           class SourceExpressionBinder {
-            constructor(expression, names2, type, PaintVertexArray) {
+            constructor(expression, names, type, PaintVertexArray) {
               this.expression = expression;
               this.type = type;
               this.maxValue = 0;
-              this.paintVertexAttributes = names2.map((name2) => ({
+              this.paintVertexAttributes = names.map((name2) => ({
                 name: `a_${name2}`,
                 type: "Float32",
                 components: type === "color" ? 2 : 1,
@@ -248215,14 +248021,14 @@ Use an identity property function instead: \`{ "type": "identity", "property": $
             }
           }
           class CompositeExpressionBinder {
-            constructor(expression, names2, type, useIntegerZoom, zoom, PaintVertexArray) {
+            constructor(expression, names, type, useIntegerZoom, zoom, PaintVertexArray) {
               this.expression = expression;
-              this.uniformNames = names2.map((name2) => `u_${name2}_t`);
+              this.uniformNames = names.map((name2) => `u_${name2}_t`);
               this.type = type;
               this.useIntegerZoom = useIntegerZoom;
               this.zoom = zoom;
               this.maxValue = 0;
-              this.paintVertexAttributes = names2.map((name2) => ({
+              this.paintVertexAttributes = names.map((name2) => ({
                 name: `a_${name2}`,
                 type: "Float32",
                 components: type === "color" ? 4 : 2,
@@ -248337,22 +248143,22 @@ Use an identity property function instead: \`{ "type": "identity", "property": $
                 if (!(value instanceof PossiblyEvaluatedPropertyValue) || !supportsPropertyExpression(value.property.specification)) {
                   continue;
                 }
-                const names2 = paintAttributeNames(property, layer2.type);
+                const names = paintAttributeNames(property, layer2.type);
                 const expression = value.value;
                 const type = value.property.specification.type;
                 const useIntegerZoom = value.property.useIntegerZoom;
                 const propType = value.property.specification["property-type"];
                 const isCrossFaded = propType === "cross-faded" || propType === "cross-faded-data-driven";
                 if (expression.kind === "constant") {
-                  this.binders[property] = isCrossFaded ? new CrossFadedConstantBinder(expression.value, names2) : new ConstantBinder(expression.value, names2, type);
+                  this.binders[property] = isCrossFaded ? new CrossFadedConstantBinder(expression.value, names) : new ConstantBinder(expression.value, names, type);
                   keys.push(`/u_${property}`);
                 } else if (expression.kind === "source" || isCrossFaded) {
                   const StructArrayLayout = layoutType(property, type, "source");
-                  this.binders[property] = isCrossFaded ? new CrossFadedCompositeBinder(expression, type, useIntegerZoom, zoom, StructArrayLayout, layer2.id) : new SourceExpressionBinder(expression, names2, type, StructArrayLayout);
+                  this.binders[property] = isCrossFaded ? new CrossFadedCompositeBinder(expression, type, useIntegerZoom, zoom, StructArrayLayout, layer2.id) : new SourceExpressionBinder(expression, names, type, StructArrayLayout);
                   keys.push(`/a_${property}`);
                 } else {
                   const StructArrayLayout = layoutType(property, type, "composite");
-                  this.binders[property] = new CompositeExpressionBinder(expression, names2, type, useIntegerZoom, zoom, StructArrayLayout);
+                  this.binders[property] = new CompositeExpressionBinder(expression, names, type, useIntegerZoom, zoom, StructArrayLayout);
                   keys.push(`/z_${property}`);
                 }
               }
@@ -275501,17 +275307,17 @@ uniform ${precision} ${type2} u_${name3};
              */
             pointCoordinate(p) {
               this.painter.maybeDrawDepthAndCoords(true);
-              const rgba3 = new Uint8Array(4);
+              const rgba2 = new Uint8Array(4);
               const context = this.painter.context, gl2 = context.gl;
               const px = Math.round(p.x * this.painter.pixelRatio / devicePixelRatio);
               const py = Math.round(p.y * this.painter.pixelRatio / devicePixelRatio);
               const fbHeight = Math.round(this.painter.height / devicePixelRatio);
               context.bindFramebuffer.set(this.getFramebuffer("coords").framebuffer);
-              gl2.readPixels(px, fbHeight - py - 1, 1, 1, gl2.RGBA, gl2.UNSIGNED_BYTE, rgba3);
+              gl2.readPixels(px, fbHeight - py - 1, 1, 1, gl2.RGBA, gl2.UNSIGNED_BYTE, rgba2);
               context.bindFramebuffer.set(null);
-              const x = rgba3[0] + (rgba3[2] >> 4 << 8);
-              const y = rgba3[1] + ((rgba3[2] & 15) << 8);
-              const tileID = this.coordsIndex[255 - rgba3[3]];
+              const x = rgba2[0] + (rgba2[2] >> 4 << 8);
+              const y = rgba2[1] + ((rgba2[2] & 15) << 8);
+              const tileID = this.coordsIndex[255 - rgba2[3]];
               const tile = tileID && this.sourceCache.getTileByID(tileID);
               if (!tile)
                 return null;
@@ -275525,12 +275331,12 @@ uniform ${precision} ${type2} u_${name3};
              * @returns depth value in clip space (between 0 and 1)
              */
             depthAtPoint(p) {
-              const rgba3 = new Uint8Array(4);
+              const rgba2 = new Uint8Array(4);
               const context = this.painter.context, gl2 = context.gl;
               context.bindFramebuffer.set(this.getFramebuffer("depth").framebuffer);
-              gl2.readPixels(p.x, this.painter.height / devicePixelRatio - p.y - 1, 1, 1, gl2.RGBA, gl2.UNSIGNED_BYTE, rgba3);
+              gl2.readPixels(p.x, this.painter.height / devicePixelRatio - p.y - 1, 1, 1, gl2.RGBA, gl2.UNSIGNED_BYTE, rgba2);
               context.bindFramebuffer.set(null);
-              const depthValue = (rgba3[0] / (256 * 256 * 256) + rgba3[1] / (256 * 256) + rgba3[2] / 256 + rgba3[3]) / 256;
+              const depthValue = (rgba2[0] / (256 * 256 * 256) + rgba2[1] / (256 * 256) + rgba2[2] / 256 + rgba2[3]) / 256;
               return depthValue;
             }
             /**
@@ -301366,10 +301172,10 @@ uniform ${precision} ${type2} u_${name3};
             return getNumber("m");
           };
           var getName = function(match, shortNames, longNames, step) {
-            var names2 = doubled(match, step) ? longNames : shortNames;
-            for (var i = 0; i < names2.length; i++) {
-              if (value.substr(iValue, names2[i].length).toLowerCase() === names2[i].toLowerCase()) {
-                iValue += names2[i].length;
+            var names = doubled(match, step) ? longNames : shortNames;
+            for (var i = 0; i < names.length; i++) {
+              if (value.substr(iValue, names[i].length).toLowerCase() === names[i].toLowerCase()) {
+                iValue += names[i].length;
                 return i + calendar.minMonth;
               }
             }
@@ -308223,7 +308029,7 @@ uniform ${precision} ${type2} u_${name3};
   });
 
   // lib/index.js
-  var require_index = __commonJS({
+  var require_lib2 = __commonJS({
     "lib/index.js"(exports, module) {
       var Plotly = require_core2();
       Plotly.register([
@@ -308289,7 +308095,7 @@ uniform ${precision} ${type2} u_${name3};
       module.exports = Plotly;
     }
   });
-  return require_index();
+  return require_lib2();
 })();
 /*!
  * The buffer module from node.js, for the browser.

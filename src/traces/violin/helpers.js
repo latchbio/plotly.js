@@ -13,7 +13,6 @@ var kernels = {
 
 exports.makeKDE = function(calcItem, trace, vals) {
     var len = vals.length;
-    console.log('len', len)
     var kernel = kernels.gaussian;
     var bandwidth = calcItem.bandwidth;
     var factor = 1 / (len * bandwidth);
@@ -56,10 +55,38 @@ exports.getPositionOnKdePath = function(calcItem, trace, valuePx) {
 };
 
 exports.getKdeValue = function(calcItem, trace, valueDist) {
-    console.log('calcItem', calcItem, 'trace', trace, 'valueDist', valueDist)    
-    var vals = calcItem.pts.map(exports.extractVal);
-    var kde = exports.makeKDE(calcItem, trace, vals);
-    return kde(valueDist) / calcItem.posDensityScale;
+    var pts = calcItem.pts;
+
+    if(pts && pts.length) {
+        var vals = pts.map(exports.extractVal);
+        var kde = exports.makeKDE(calcItem, trace, vals);
+        return kde(valueDist) / calcItem.posDensityScale;
+    }
+
+    // if pts are not available (precomputed case), use density
+    var density = calcItem.density || [];
+    var len = density.length;
+    if(!len) return NaN;
+
+    // if before range (very small chance), return first value
+    if(valueDist <= density[0].t) {
+        return density[0].v / calcItem.posDensityScale;
+    }
+    
+    // if inside of range, linearly interpolate val
+    for(var i = 1; i < len; i++) {
+        var prev = density[i - 1];
+        var curr = density[i];
+        if(valueDist <= curr.t) {
+            var span = curr.t - prev.t;
+            var alpha = span ? (valueDist - prev.t) / span : 0;
+            var interpolated = prev.v + alpha * (curr.v - prev.v);
+            return interpolated / calcItem.posDensityScale;
+        }
+    }
+
+    // if after range (very small chance), return last value
+    return density[len - 1].v / calcItem.posDensityScale;
 };
 
 exports.extractVal = function(o) { return o.v; };

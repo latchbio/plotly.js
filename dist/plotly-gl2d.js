@@ -16,21 +16,15 @@
 } (typeof self !== "undefined" ? self : this, () => {
 "use strict";
 var Plotly = (() => {
-  var __create = Object.create;
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
   var __getOwnPropNames = Object.getOwnPropertyNames;
-  var __getProtoOf = Object.getPrototypeOf;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
   var __esm = (fn, res) => function __init() {
     return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
   };
   var __commonJS = (cb, mod) => function __require() {
     return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-  };
-  var __export = (target, all) => {
-    for (var name2 in all)
-      __defProp(target, name2, { get: all[name2], enumerable: true });
   };
   var __copyProps = (to, from, except, desc) => {
     if (from && typeof from === "object" || typeof from === "function") {
@@ -40,14 +34,6 @@ var Plotly = (() => {
     }
     return to;
   };
-  var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-    // If the importer is in node compatibility mode or this is not an ESM
-    // file that has been converted to a CommonJS file using a Babel-
-    // compatible transform (i.e. "__esModule" has not been set), then set
-    // "default" to the CommonJS "module.exports" for node compatibility.
-    isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-    mod
-  ));
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
   // src/version.js
@@ -2080,22 +2066,22 @@ var Plotly = (() => {
         function d3_rgb_hex(v) {
           return v < 16 ? "0" + Math.max(0, v).toString(16) : Math.min(255, v).toString(16);
         }
-        function d3_rgb_parse(format, rgb2, hsl2) {
+        function d3_rgb_parse(format, rgb, hsl) {
           var r = 0, g = 0, b = 0, m1, m2, color;
           m1 = /([a-z]+)\((.*)\)/.exec(format = format.toLowerCase());
           if (m1) {
             m2 = m1[2].split(",");
             switch (m1[1]) {
               case "hsl": {
-                return hsl2(parseFloat(m2[0]), parseFloat(m2[1]) / 100, parseFloat(m2[2]) / 100);
+                return hsl(parseFloat(m2[0]), parseFloat(m2[1]) / 100, parseFloat(m2[2]) / 100);
               }
               case "rgb": {
-                return rgb2(d3_rgb_parseNumber(m2[0]), d3_rgb_parseNumber(m2[1]), d3_rgb_parseNumber(m2[2]));
+                return rgb(d3_rgb_parseNumber(m2[0]), d3_rgb_parseNumber(m2[1]), d3_rgb_parseNumber(m2[2]));
               }
             }
           }
           if (color = d3_rgb_names.get(format)) {
-            return rgb2(color.r, color.g, color.b);
+            return rgb(color.r, color.g, color.b);
           }
           if (format != null && format.charAt(0) === "#" && !isNaN(color = parseInt(format.slice(1), 16))) {
             if (format.length === 4) {
@@ -2111,7 +2097,7 @@ var Plotly = (() => {
               b = color & 255;
             }
           }
-          return rgb2(r, g, b);
+          return rgb(r, g, b);
         }
         function d3_rgb_hsl(r, g, b) {
           var min = Math.min(r /= 255, g /= 255, b /= 255), max = Math.max(r, g, b), d = max - min, h, s, l = (max + min) / 2;
@@ -7782,14 +7768,14 @@ var Plotly = (() => {
             };
           }
           function parseSpecifier(d, specifier, string, j) {
-            var i = 0, n = specifier.length, m = string.length, c, parse2;
+            var i = 0, n = specifier.length, m = string.length, c, parse;
             while (i < n) {
               if (j >= m) return -1;
               c = specifier.charCodeAt(i++);
               if (c === 37) {
                 c = specifier.charAt(i++);
-                parse2 = parses[c in pads ? specifier.charAt(i++) : c];
-                if (!parse2 || (j = parse2(d, string, j)) < 0) return -1;
+                parse = parses[c in pads ? specifier.charAt(i++) : c];
+                if (!parse || (j = parse(d, string, j)) < 0) return -1;
               } else if (c != string.charCodeAt(j++)) {
                 return -1;
               }
@@ -7900,12 +7886,12 @@ var Plotly = (() => {
         function requote(s) {
           return s.replace(requoteRe, "\\$&");
         }
-        function formatRe(names2) {
-          return new RegExp("^(?:" + names2.map(requote).join("|") + ")", "i");
+        function formatRe(names) {
+          return new RegExp("^(?:" + names.map(requote).join("|") + ")", "i");
         }
-        function formatLookup(names2) {
-          var map = {}, i = -1, n = names2.length;
-          while (++i < n) map[names2[i].toLowerCase()] = i;
+        function formatLookup(names) {
+          var map = {}, i = -1, n = names.length;
+          while (++i < n) map[names[i].toLowerCase()] = i;
           return map;
         }
         function parseWeekdayNumberSunday(d, string, i) {
@@ -9203,13 +9189,13 @@ var Plotly = (() => {
           if (!(this instanceof tinycolor)) {
             return new tinycolor(color, opts);
           }
-          var rgb2 = inputToRGB(color);
-          this._originalInput = color, this._r = rgb2.r, this._g = rgb2.g, this._b = rgb2.b, this._a = rgb2.a, this._roundA = Math.round(100 * this._a) / 100, this._format = opts.format || rgb2.format;
+          var rgb = inputToRGB(color);
+          this._originalInput = color, this._r = rgb.r, this._g = rgb.g, this._b = rgb.b, this._a = rgb.a, this._roundA = Math.round(100 * this._a) / 100, this._format = opts.format || rgb.format;
           this._gradientType = opts.gradientType;
           if (this._r < 1) this._r = Math.round(this._r);
           if (this._g < 1) this._g = Math.round(this._g);
           if (this._b < 1) this._b = Math.round(this._b);
-          this._ok = rgb2.ok;
+          this._ok = rgb.ok;
         }
         tinycolor.prototype = {
           isDark: function isDark() {
@@ -9231,15 +9217,15 @@ var Plotly = (() => {
             return this._a;
           },
           getBrightness: function getBrightness() {
-            var rgb2 = this.toRgb();
-            return (rgb2.r * 299 + rgb2.g * 587 + rgb2.b * 114) / 1e3;
+            var rgb = this.toRgb();
+            return (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1e3;
           },
           getLuminance: function getLuminance() {
-            var rgb2 = this.toRgb();
+            var rgb = this.toRgb();
             var RsRGB, GsRGB, BsRGB, R, G, B;
-            RsRGB = rgb2.r / 255;
-            GsRGB = rgb2.g / 255;
-            BsRGB = rgb2.b / 255;
+            RsRGB = rgb.r / 255;
+            GsRGB = rgb.g / 255;
+            BsRGB = rgb.b / 255;
             if (RsRGB <= 0.03928) R = RsRGB / 12.92;
             else R = Math.pow((RsRGB + 0.055) / 1.055, 2.4);
             if (GsRGB <= 0.03928) G = GsRGB / 12.92;
@@ -9268,17 +9254,17 @@ var Plotly = (() => {
             return this._a == 1 ? "hsv(" + h + ", " + s + "%, " + v + "%)" : "hsva(" + h + ", " + s + "%, " + v + "%, " + this._roundA + ")";
           },
           toHsl: function toHsl() {
-            var hsl2 = rgbToHsl(this._r, this._g, this._b);
+            var hsl = rgbToHsl(this._r, this._g, this._b);
             return {
-              h: hsl2.h * 360,
-              s: hsl2.s,
-              l: hsl2.l,
+              h: hsl.h * 360,
+              s: hsl.s,
+              l: hsl.l,
               a: this._a
             };
           },
           toHslString: function toHslString() {
-            var hsl2 = rgbToHsl(this._r, this._g, this._b);
-            var h = Math.round(hsl2.h * 360), s = Math.round(hsl2.s * 100), l = Math.round(hsl2.l * 100);
+            var hsl = rgbToHsl(this._r, this._g, this._b);
+            var h = Math.round(hsl.h * 360), s = Math.round(hsl.s * 100), l = Math.round(hsl.l * 100);
             return this._a == 1 ? "hsl(" + h + ", " + s + "%, " + l + "%)" : "hsla(" + h + ", " + s + "%, " + l + "%, " + this._roundA + ")";
           },
           toHex: function toHex(allow3Char) {
@@ -9450,7 +9436,7 @@ var Plotly = (() => {
           return tinycolor(color, opts);
         };
         function inputToRGB(color) {
-          var rgb2 = {
+          var rgb = {
             r: 0,
             g: 0,
             b: 0
@@ -9466,19 +9452,19 @@ var Plotly = (() => {
           }
           if (_typeof(color) == "object") {
             if (isValidCSSUnit(color.r) && isValidCSSUnit(color.g) && isValidCSSUnit(color.b)) {
-              rgb2 = rgbToRgb(color.r, color.g, color.b);
+              rgb = rgbToRgb(color.r, color.g, color.b);
               ok = true;
               format = String(color.r).substr(-1) === "%" ? "prgb" : "rgb";
             } else if (isValidCSSUnit(color.h) && isValidCSSUnit(color.s) && isValidCSSUnit(color.v)) {
               s = convertToPercentage(color.s);
               v = convertToPercentage(color.v);
-              rgb2 = hsvToRgb(color.h, s, v);
+              rgb = hsvToRgb(color.h, s, v);
               ok = true;
               format = "hsv";
             } else if (isValidCSSUnit(color.h) && isValidCSSUnit(color.s) && isValidCSSUnit(color.l)) {
               s = convertToPercentage(color.s);
               l = convertToPercentage(color.l);
-              rgb2 = hslToRgb(color.h, s, l);
+              rgb = hslToRgb(color.h, s, l);
               ok = true;
               format = "hsl";
             }
@@ -9490,9 +9476,9 @@ var Plotly = (() => {
           return {
             ok,
             format: color.format || format,
-            r: Math.min(255, Math.max(rgb2.r, 0)),
-            g: Math.min(255, Math.max(rgb2.g, 0)),
-            b: Math.min(255, Math.max(rgb2.b, 0)),
+            r: Math.min(255, Math.max(rgb.r, 0)),
+            g: Math.min(255, Math.max(rgb.g, 0)),
+            b: Math.min(255, Math.max(rgb.b, 0)),
             a
           };
         }
@@ -9633,92 +9619,92 @@ var Plotly = (() => {
         };
         function _desaturate(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
-          var hsl2 = tinycolor(color).toHsl();
-          hsl2.s -= amount / 100;
-          hsl2.s = clamp01(hsl2.s);
-          return tinycolor(hsl2);
+          var hsl = tinycolor(color).toHsl();
+          hsl.s -= amount / 100;
+          hsl.s = clamp01(hsl.s);
+          return tinycolor(hsl);
         }
         function _saturate(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
-          var hsl2 = tinycolor(color).toHsl();
-          hsl2.s += amount / 100;
-          hsl2.s = clamp01(hsl2.s);
-          return tinycolor(hsl2);
+          var hsl = tinycolor(color).toHsl();
+          hsl.s += amount / 100;
+          hsl.s = clamp01(hsl.s);
+          return tinycolor(hsl);
         }
         function _greyscale(color) {
           return tinycolor(color).desaturate(100);
         }
         function _lighten(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
-          var hsl2 = tinycolor(color).toHsl();
-          hsl2.l += amount / 100;
-          hsl2.l = clamp01(hsl2.l);
-          return tinycolor(hsl2);
+          var hsl = tinycolor(color).toHsl();
+          hsl.l += amount / 100;
+          hsl.l = clamp01(hsl.l);
+          return tinycolor(hsl);
         }
         function _brighten(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
-          var rgb2 = tinycolor(color).toRgb();
-          rgb2.r = Math.max(0, Math.min(255, rgb2.r - Math.round(255 * -(amount / 100))));
-          rgb2.g = Math.max(0, Math.min(255, rgb2.g - Math.round(255 * -(amount / 100))));
-          rgb2.b = Math.max(0, Math.min(255, rgb2.b - Math.round(255 * -(amount / 100))));
-          return tinycolor(rgb2);
+          var rgb = tinycolor(color).toRgb();
+          rgb.r = Math.max(0, Math.min(255, rgb.r - Math.round(255 * -(amount / 100))));
+          rgb.g = Math.max(0, Math.min(255, rgb.g - Math.round(255 * -(amount / 100))));
+          rgb.b = Math.max(0, Math.min(255, rgb.b - Math.round(255 * -(amount / 100))));
+          return tinycolor(rgb);
         }
         function _darken(color, amount) {
           amount = amount === 0 ? 0 : amount || 10;
-          var hsl2 = tinycolor(color).toHsl();
-          hsl2.l -= amount / 100;
-          hsl2.l = clamp01(hsl2.l);
-          return tinycolor(hsl2);
+          var hsl = tinycolor(color).toHsl();
+          hsl.l -= amount / 100;
+          hsl.l = clamp01(hsl.l);
+          return tinycolor(hsl);
         }
         function _spin(color, amount) {
-          var hsl2 = tinycolor(color).toHsl();
-          var hue = (hsl2.h + amount) % 360;
-          hsl2.h = hue < 0 ? 360 + hue : hue;
-          return tinycolor(hsl2);
+          var hsl = tinycolor(color).toHsl();
+          var hue = (hsl.h + amount) % 360;
+          hsl.h = hue < 0 ? 360 + hue : hue;
+          return tinycolor(hsl);
         }
         function _complement(color) {
-          var hsl2 = tinycolor(color).toHsl();
-          hsl2.h = (hsl2.h + 180) % 360;
-          return tinycolor(hsl2);
+          var hsl = tinycolor(color).toHsl();
+          hsl.h = (hsl.h + 180) % 360;
+          return tinycolor(hsl);
         }
         function polyad(color, number) {
           if (isNaN(number) || number <= 0) {
             throw new Error("Argument to polyad must be a positive number");
           }
-          var hsl2 = tinycolor(color).toHsl();
+          var hsl = tinycolor(color).toHsl();
           var result = [tinycolor(color)];
           var step = 360 / number;
           for (var i = 1; i < number; i++) {
             result.push(tinycolor({
-              h: (hsl2.h + i * step) % 360,
-              s: hsl2.s,
-              l: hsl2.l
+              h: (hsl.h + i * step) % 360,
+              s: hsl.s,
+              l: hsl.l
             }));
           }
           return result;
         }
         function _splitcomplement(color) {
-          var hsl2 = tinycolor(color).toHsl();
-          var h = hsl2.h;
+          var hsl = tinycolor(color).toHsl();
+          var h = hsl.h;
           return [tinycolor(color), tinycolor({
             h: (h + 72) % 360,
-            s: hsl2.s,
-            l: hsl2.l
+            s: hsl.s,
+            l: hsl.l
           }), tinycolor({
             h: (h + 216) % 360,
-            s: hsl2.s,
-            l: hsl2.l
+            s: hsl.s,
+            l: hsl.l
           })];
         }
         function _analogous(color, results, slices) {
           results = results || 6;
           slices = slices || 30;
-          var hsl2 = tinycolor(color).toHsl();
+          var hsl = tinycolor(color).toHsl();
           var part = 360 / slices;
           var ret = [tinycolor(color)];
-          for (hsl2.h = (hsl2.h - (part * results >> 1) + 720) % 360; --results; ) {
-            hsl2.h = (hsl2.h + part) % 360;
-            ret.push(tinycolor(hsl2));
+          for (hsl.h = (hsl.h - (part * results >> 1) + 720) % 360; --results; ) {
+            hsl.h = (hsl.h + part) % 360;
+            ret.push(tinycolor(hsl));
           }
           return ret;
         }
@@ -9743,13 +9729,13 @@ var Plotly = (() => {
           var rgb1 = tinycolor(color1).toRgb();
           var rgb2 = tinycolor(color2).toRgb();
           var p = amount / 100;
-          var rgba2 = {
+          var rgba = {
             r: (rgb2.r - rgb1.r) * p + rgb1.r,
             g: (rgb2.g - rgb1.g) * p + rgb1.g,
             b: (rgb2.b - rgb1.b) * p + rgb1.b,
             a: (rgb2.a - rgb1.a) * p + rgb1.a
           };
-          return tinycolor(rgba2);
+          return tinycolor(rgba);
         };
         tinycolor.readability = function(color1, color2) {
           var c1 = tinycolor(color1);
@@ -9801,7 +9787,7 @@ var Plotly = (() => {
             return tinycolor.mostReadable(baseColor, ["#fff", "#000"], args);
           }
         };
-        var names2 = tinycolor.names = {
+        var names = tinycolor.names = {
           aliceblue: "f0f8ff",
           antiquewhite: "faebd7",
           aqua: "0ff",
@@ -9952,7 +9938,7 @@ var Plotly = (() => {
           yellow: "ff0",
           yellowgreen: "9acd32"
         };
-        var hexNames = tinycolor.hexNames = flip(names2);
+        var hexNames = tinycolor.hexNames = flip(names);
         function flip(o) {
           var flipped = {};
           for (var i in o) {
@@ -10034,8 +10020,8 @@ var Plotly = (() => {
         function stringInputToObject(color) {
           color = color.replace(trimLeft, "").replace(trimRight, "").toLowerCase();
           var named = false;
-          if (names2[color]) {
-            color = names2[color];
+          if (names[color]) {
+            color = names[color];
             named = true;
           } else if (color == "transparent") {
             return {
@@ -10971,8 +10957,8 @@ var Plotly = (() => {
         var match = valTrim.match(/^rgba?\s*\(([^()]*)\)$/);
         if (!match) return val;
         var parts = match[1].trim().split(/\s*[\s,]\s*/);
-        var rgba2 = valTrim.charAt(3) === "a" && parts.length === 4;
-        if (!rgba2 && parts.length !== 3) return val;
+        var rgba = valTrim.charAt(3) === "a" && parts.length === 4;
+        if (!rgba && parts.length !== 3) return val;
         for (var i = 0; i < parts.length; i++) {
           if (!parts[i].length) return val;
           parts[i] = Number(parts[i]);
@@ -10986,7 +10972,7 @@ var Plotly = (() => {
           }
         }
         var rgbStr = Math.round(parts[0] * 255) + ", " + Math.round(parts[1] * 255) + ", " + Math.round(parts[2] * 255);
-        if (rgba2) return "rgba(" + rgbStr + ", " + parts[3] + ")";
+        if (rgba) return "rgba(" + rgbStr + ", " + parts[3] + ")";
         return "rgb(" + rgbStr + ")";
       }
     }
@@ -13826,10 +13812,10 @@ var Plotly = (() => {
     }
   });
 
-  // stylePlugin:/Users/ryanteoh/Code/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css
+  // stylePlugin:/Users/tim/Documents/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css
   var maplibre_gl_exports = {};
   var init_maplibre_gl2 = __esm({
-    "stylePlugin:/Users/ryanteoh/Code/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
+    "stylePlugin:/Users/tim/Documents/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
       init_maplibre_gl();
     }
   });
@@ -16170,9 +16156,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/events/events.js
+  // ../../node_modules/.pnpm/events@3.3.0/node_modules/events/events.js
   var require_events = __commonJS({
-    "node_modules/events/events.js"(exports, module) {
+    "../../node_modules/.pnpm/events@3.3.0/node_modules/events/events.js"(exports, module) {
       "use strict";
       var R = typeof Reflect === "object" ? Reflect : null;
       var ReflectApply = R && typeof R.apply === "function" ? R.apply : function ReflectApply2(target, receiver, args) {
@@ -21106,8 +21092,8 @@ var Plotly = (() => {
         var N = range.length;
         var _range = new Array(N);
         for (var i = 0; i < N; i++) {
-          var rgba2 = tinycolor(range[i]).toRgb();
-          _range[i] = [rgba2.r, rgba2.g, rgba2.b, rgba2.a];
+          var rgba = tinycolor(range[i]).toRgb();
+          _range[i] = [rgba.r, rgba.g, rgba.b, rgba.a];
         }
         var _sclFunc = d3.scale.linear().domain(domain).range(_range).clamp(true);
         var noNumericCheck = opts.noNumericCheck;
@@ -23140,10 +23126,10 @@ var Plotly = (() => {
   // node_modules/.pnpm/parse-svg-path@0.1.2/node_modules/parse-svg-path/index.js
   var require_parse_svg_path = __commonJS({
     "node_modules/.pnpm/parse-svg-path@0.1.2/node_modules/parse-svg-path/index.js"(exports, module) {
-      module.exports = parse2;
+      module.exports = parse;
       var length = { a: 7, c: 6, h: 1, l: 2, m: 2, q: 4, s: 4, t: 2, v: 1, z: 0 };
       var segment = /([astvzqmhlc])([^astvzqmhlc]*)/ig;
-      function parse2(path) {
+      function parse(path) {
         var data = [];
         path.replace(segment, function(_, command, args) {
           var type = command.toLowerCase();
@@ -25271,7 +25257,7 @@ var Plotly = (() => {
         var editAttr;
         if (prop === "title.text") editAttr = "titleText";
         else if (prop.indexOf("axis") !== -1) editAttr = "axisTitleText";
-        else if (prop.indexOf(true)) editAttr = "colorbarTitleText";
+        else if (prop.indexOf("colorbar" !== -1)) editAttr = "colorbarTitleText";
         var editable = gd._context.edits[editAttr];
         function matchesPlaceholder(text, placeholder2) {
           if (text === void 0 || placeholder2 === void 0) return false;
@@ -60821,7 +60807,7 @@ var Plotly = (() => {
   var require_svg_path_bounds = __commonJS({
     "node_modules/.pnpm/svg-path-bounds@1.0.2/node_modules/svg-path-bounds/index.js"(exports, module) {
       "use strict";
-      var parse2 = require_parse_svg_path();
+      var parse = require_parse_svg_path();
       var abs = require_abs_svg_path();
       var normalize = require_normalize_svg_path();
       var isSvgPath = require_is_svg_path();
@@ -60830,7 +60816,7 @@ var Plotly = (() => {
         if (Array.isArray(path) && path.length === 1 && typeof path[0] === "string") path = path[0];
         if (typeof path === "string") {
           if (!isSvgPath(path)) throw Error("String is not an SVG path.");
-          path = parse2(path);
+          path = parse(path);
         }
         if (!Array.isArray(path)) throw Error("Argument should be a string or an array of path segments.");
         path = abs(path);
@@ -61396,9 +61382,9 @@ var Plotly = (() => {
   var require_color_parse = __commonJS({
     "node_modules/.pnpm/color-parse@1.4.3/node_modules/color-parse/index.js"(exports, module) {
       "use strict";
-      var names2 = require_color_name();
-      module.exports = parse2;
-      var baseHues2 = {
+      var names = require_color_name();
+      module.exports = parse;
+      var baseHues = {
         red: 0,
         orange: 60,
         yellow: 120,
@@ -61406,12 +61392,12 @@ var Plotly = (() => {
         blue: 240,
         purple: 300
       };
-      function parse2(cstr) {
+      function parse(cstr) {
         var m, parts = [], alpha = 1, space;
         if (typeof cstr === "string") {
           cstr = cstr.toLowerCase();
-          if (names2[cstr]) {
-            parts = names2[cstr].slice();
+          if (names[cstr]) {
+            parts = names[cstr].slice();
             space = "rgb";
           } else if (cstr === "transparent") {
             alpha = 0;
@@ -61459,8 +61445,8 @@ var Plotly = (() => {
               } else if (base[i] === "h") {
                 if (/deg$/.test(x)) {
                   return parseFloat(x);
-                } else if (baseHues2[x] !== void 0) {
-                  return baseHues2[x];
+                } else if (baseHues[x] !== void 0) {
+                  return baseHues[x];
                 }
               }
               return parseFloat(x);
@@ -61527,15 +61513,15 @@ var Plotly = (() => {
   var require_hsl = __commonJS({
     "node_modules/.pnpm/color-space@1.16.0/node_modules/color-space/hsl.js"(exports, module) {
       "use strict";
-      var rgb2 = require_rgb();
+      var rgb = require_rgb();
       module.exports = {
         name: "hsl",
         min: [0, 0, 0],
         max: [360, 100, 100],
         channel: ["hue", "saturation", "lightness"],
         alias: ["HSL"],
-        rgb: function(hsl2) {
-          var h = hsl2[0] / 360, s = hsl2[1] / 100, l = hsl2[2] / 100, t1, t2, t3, rgb3, val;
+        rgb: function(hsl) {
+          var h = hsl[0] / 360, s = hsl[1] / 100, l = hsl[2] / 100, t1, t2, t3, rgb2, val;
           if (s === 0) {
             val = l * 255;
             return [val, val, val];
@@ -61546,7 +61532,7 @@ var Plotly = (() => {
             t2 = l + s - l * s;
           }
           t1 = 2 * l - t2;
-          rgb3 = [0, 0, 0];
+          rgb2 = [0, 0, 0];
           for (var i = 0; i < 3; i++) {
             t3 = h + 1 / 3 * -(i - 1);
             if (t3 < 0) {
@@ -61563,13 +61549,13 @@ var Plotly = (() => {
             } else {
               val = t1;
             }
-            rgb3[i] = val * 255;
+            rgb2[i] = val * 255;
           }
-          return rgb3;
+          return rgb2;
         }
       };
-      rgb2.hsl = function(rgb3) {
-        var r = rgb3[0] / 255, g = rgb3[1] / 255, b = rgb3[2] / 255, min = Math.min(r, g, b), max = Math.max(r, g, b), delta = max - min, h, s, l;
+      rgb.hsl = function(rgb2) {
+        var r = rgb2[0] / 255, g = rgb2[1] / 255, b = rgb2[2] / 255, min = Math.min(r, g, b), max = Math.max(r, g, b), delta = max - min, h, s, l;
         if (max === min) {
           h = 0;
         } else if (r === max) {
@@ -61600,19 +61586,19 @@ var Plotly = (() => {
   var require_color_rgba = __commonJS({
     "node_modules/.pnpm/color-rgba@2.1.1/node_modules/color-rgba/index.js"(exports, module) {
       "use strict";
-      var parse2 = require_color_parse();
-      var hsl2 = require_hsl();
+      var parse = require_color_parse();
+      var hsl = require_hsl();
       var clamp = require_clamp();
-      module.exports = function rgba2(color) {
+      module.exports = function rgba(color) {
         var values, i, l;
-        var parsed = parse2(color);
+        var parsed = parse(color);
         if (!parsed.space) return [];
         values = Array(3);
         values[0] = clamp(parsed.values[0], 0, 255);
         values[1] = clamp(parsed.values[1], 0, 255);
         values[2] = clamp(parsed.values[2], 0, 255);
         if (parsed.space[0] === "h") {
-          values = hsl2.rgb(values);
+          values = hsl.rgb(values);
         }
         values.push(clamp(parsed.alpha, 0, 1));
         return values;
@@ -61624,7 +61610,7 @@ var Plotly = (() => {
   var require_color_normalize = __commonJS({
     "node_modules/.pnpm/color-normalize@1.5.0/node_modules/color-normalize/index.js"(exports, module) {
       "use strict";
-      var rgba2 = require_color_rgba();
+      var rgba = require_color_rgba();
       var clamp = require_clamp();
       var dtype = require_dtype();
       module.exports = function normalize(color, type) {
@@ -61635,7 +61621,7 @@ var Plotly = (() => {
         var output = new Ctor(4);
         var normalize2 = type !== "uint8" && type !== "uint8_clamped";
         if (!color.length || typeof color === "string") {
-          color = rgba2(color);
+          color = rgba(color);
           color[0] /= 255;
           color[1] /= 255;
           color[2] /= 255;
@@ -61680,11 +61666,11 @@ var Plotly = (() => {
       "use strict";
       var isNumeric = require_fast_isnumeric();
       var tinycolor = require_tinycolor();
-      var rgba2 = require_color_normalize();
+      var rgba = require_color_normalize();
       var Colorscale = require_colorscale();
       var colorDflt = require_attributes3().defaultLine;
       var isArrayOrTypedArray = require_array().isArrayOrTypedArray;
-      var colorDfltRgba = rgba2(colorDflt);
+      var colorDfltRgba = rgba(colorDflt);
       var opacityDflt = 1;
       function calculateColor(colorIn, opacityIn) {
         var colorOut = colorIn;
@@ -61693,7 +61679,7 @@ var Plotly = (() => {
       }
       function validateColor(colorIn) {
         if (isNumeric(colorIn)) return colorDfltRgba;
-        var colorOut = rgba2(colorIn);
+        var colorOut = rgba(colorIn);
         return colorOut.length ? colorOut : colorDfltRgba;
       }
       function validateOpacity(opacityIn) {
@@ -61714,7 +61700,7 @@ var Plotly = (() => {
         }
         if (isArrayColorIn) {
           getColor = function(c, i2) {
-            return c[i2] === void 0 ? colorDfltRgba : rgba2(sclFunc(c[i2]));
+            return c[i2] === void 0 ? colorDfltRgba : rgba(sclFunc(c[i2]));
           };
         } else getColor = validateColor;
         if (isArrayOpacityIn) {
@@ -61728,7 +61714,7 @@ var Plotly = (() => {
             opacityi = getOpacity(opacityIn, i);
             colorOut[i] = calculateColor(colori, opacityi);
           }
-        } else colorOut = calculateColor(rgba2(colorIn), opacityIn);
+        } else colorOut = calculateColor(rgba(colorIn), opacityIn);
         return colorOut;
       }
       function parseColorScale(cont) {
@@ -61738,10 +61724,10 @@ var Plotly = (() => {
         return colorscale.map(function(elem) {
           var index = elem[0];
           var color = tinycolor(elem[1]);
-          var rgb2 = color.toRgb();
+          var rgb = color.toRgb();
           return {
             index,
-            rgb: [rgb2.r, rgb2.g, rgb2.b, rgb2.a]
+            rgb: [rgb.r, rgb.g, rgb.b, rgb.a]
           };
         });
       }
@@ -61758,7 +61744,7 @@ var Plotly = (() => {
       "use strict";
       var isNumeric = require_fast_isnumeric();
       var svgSdf = require_svg_path_sdf();
-      var rgba2 = require_color_normalize();
+      var rgba = require_color_normalize();
       var Registry = require_registry();
       var Lib = require_lib();
       var isArrayOrTypedArray = Lib.isArrayOrTypedArray;
@@ -62025,12 +62011,12 @@ var Plotly = (() => {
           }
         } else {
           if (isOpen) {
-            optsOut.color = rgba2(optsIn.color, "uint8");
+            optsOut.color = rgba(optsIn.color, "uint8");
             optsOut.color[3] = 0;
-            optsOut.borderColor = rgba2(optsIn.color, "uint8");
+            optsOut.borderColor = rgba(optsIn.color, "uint8");
           } else {
-            optsOut.color = rgba2(optsIn.color, "uint8");
-            optsOut.borderColor = rgba2(optsIn.line.color, "uint8");
+            optsOut.color = rgba(optsIn.color, "uint8");
+            optsOut.borderColor = rgba(optsIn.line.color, "uint8");
           }
           optsOut.opacity = trace.opacity * optsIn.opacity;
           optsOut.marker = getSymbolSdf({
@@ -62758,9 +62744,9 @@ var Plotly = (() => {
       module.exports = toNumber;
       module.exports.to = toNumber;
       module.exports.from = fromNumber;
-      function toNumber(rgba2, normalized) {
+      function toNumber(rgba, normalized) {
         if (normalized == null) normalized = true;
-        var r = rgba2[0], g = rgba2[1], b = rgba2[2], a = rgba2[3];
+        var r = rgba[0], g = rgba[1], b = rgba[2], a = rgba[3];
         if (a == null) a = normalized ? 1 : 255;
         if (normalized) {
           r *= 255;
@@ -63332,7 +63318,7 @@ var Plotly = (() => {
       function _nonIterableRest() {
         throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
       }
-      var rgba2 = require_color_normalize();
+      var rgba = require_color_normalize();
       var getBounds = require_array_bounds();
       var colorId = require_color_id();
       var cluster = require_point_cluster2();
@@ -63978,7 +63964,7 @@ var Plotly = (() => {
         }
         for (var _i6 = 0; _i6 < colors.length; _i6++) {
           var color = colors[_i6];
-          color = rgba2(color, "uint8");
+          color = rgba(color, "uint8");
           var id = colorId(color, false);
           if (paletteIds[id] == null) {
             var pos = palette.length;
@@ -66228,7 +66214,7 @@ var Plotly = (() => {
   var require_regl_line2d = __commonJS({
     "node_modules/.pnpm/regl-line2d@3.1.3/node_modules/regl-line2d/index.js"(exports, module) {
       "use strict";
-      var rgba2 = require_color_normalize();
+      var rgba = require_color_normalize();
       var getBounds = require_array_bounds();
       var extend = require_object_assign();
       var pick = require_pick_by_alias();
@@ -66979,7 +66965,7 @@ void main() {
           }
           if (o.join != null) state.join = o.join;
           if (o.hole != null) state.hole = o.hole;
-          if (o.fill != null) state.fill = !o.fill ? null : rgba2(o.fill, "uint8");
+          if (o.fill != null) state.fill = !o.fill ? null : rgba(o.fill, "uint8");
           if (o.viewport != null) state.viewport = parseRect(o.viewport);
           if (!state.viewport) {
             state.viewport = parseRect([
@@ -67156,16 +67142,16 @@ void main() {
             if (!colors) colors = "transparent";
             let colorData = new Uint8Array(count * 4 + 4);
             if (!Array.isArray(colors) || typeof colors[0] === "number") {
-              let c = rgba2(colors, "uint8");
+              let c = rgba(colors, "uint8");
               for (let i2 = 0; i2 < count + 1; i2++) {
                 colorData.set(c, i2 * 4);
               }
             } else {
               for (let i2 = 0; i2 < count; i2++) {
-                let c = rgba2(colors[i2], "uint8");
+                let c = rgba(colors[i2], "uint8");
                 colorData.set(c, i2 * 4);
               }
-              colorData.set(rgba2(colors[0], "uint8"), count * 4);
+              colorData.set(rgba(colors[0], "uint8"), count * 4);
             }
             state.colorBuffer({
               usage: "dynamic",
@@ -67208,7 +67194,7 @@ void main() {
     "node_modules/.pnpm/regl-error2d@2.0.12/node_modules/regl-error2d/index.js"(exports, module) {
       "use strict";
       var getBounds = require_array_bounds();
-      var rgba2 = require_color_normalize();
+      var rgba = require_color_normalize();
       var updateDiff = require_update_diff();
       var pick = require_pick_by_alias();
       var extend = require_object_assign();
@@ -67544,7 +67530,7 @@ void main() {
                 if (colors.length < count) throw Error("Not enough colors");
                 let colorData = new Uint8Array(count * 4);
                 for (let i2 = 0; i2 < count; i2++) {
-                  let c = rgba2(colors[i2], "uint8");
+                  let c = rgba(colors[i2], "uint8");
                   colorData.set(c, i2 * 4);
                 }
                 return colorData;
@@ -67676,7 +67662,7 @@ void main() {
   var require_parenthesis = __commonJS({
     "node_modules/.pnpm/parenthesis@3.1.8/node_modules/parenthesis/index.js"(exports, module) {
       "use strict";
-      function parse2(str, opts) {
+      function parse(str, opts) {
         if (typeof str !== "string") return [str];
         var res = [str];
         if (typeof opts === "string" || Array.isArray(opts)) {
@@ -67755,10 +67741,10 @@ void main() {
         if (Array.isArray(arg)) {
           return stringify(arg, opts);
         } else {
-          return parse2(arg, opts);
+          return parse(arg, opts);
         }
       }
-      parenthesis.parse = parse2;
+      parenthesis.parse = parse;
       parenthesis.stringify = stringify;
       module.exports = parenthesis;
     }
@@ -80397,7 +80383,7 @@ void main() {
       var createRegl = require_regl();
       var createGl = require_context();
       var WeakMap2 = require_es6_weak_map();
-      var rgba2 = require_color_normalize();
+      var rgba = require_color_normalize();
       var fontAtlas = require_font_atlas();
       var pool = require_pool();
       var parseRect = require_parse_rect();
@@ -80902,7 +80888,7 @@ void main() {
             o.color = "transparent";
           }
           if (typeof o.color === "string" || !isNaN(o.color)) {
-            this.color = rgba2(o.color, "uint8");
+            this.color = rgba(o.color, "uint8");
           } else {
             var colorData;
             if (typeof o.color[0] === "number" && o.color.length > this.counts.length) {
@@ -80910,13 +80896,13 @@ void main() {
               colorData = pool.mallocUint8(l);
               var sub = (o.color.subarray || o.color.slice).bind(o.color);
               for (var i$4 = 0; i$4 < l; i$4 += 4) {
-                colorData.set(rgba2(sub(i$4, i$4 + 4), "uint8"), i$4);
+                colorData.set(rgba(sub(i$4, i$4 + 4), "uint8"), i$4);
               }
             } else {
               var l$1 = o.color.length;
               colorData = pool.mallocUint8(l$1 * 4);
               for (var i$5 = 0; i$5 < l$1; i$5++) {
-                colorData.set(rgba2(o.color[i$5] || 0, "uint8"), i$5 * 4);
+                colorData.set(rgba(o.color[i$5] || 0, "uint8"), i$5 * 4);
               }
             }
             this.color = colorData;
@@ -81032,9 +81018,9 @@ void main() {
     }
   });
 
-  // node_modules/regl/dist/regl.unchecked.js
+  // node_modules/.pnpm/@plotly+regl@2.1.2/node_modules/@plotly/regl/dist/regl.unchecked.js
   var require_regl_unchecked = __commonJS({
-    "node_modules/regl/dist/regl.unchecked.js"(exports, module) {
+    "node_modules/.pnpm/@plotly+regl@2.1.2/node_modules/@plotly/regl/dist/regl.unchecked.js"(exports, module) {
       (function(global2, factory) {
         typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : global2.createREGL = factory();
       })(exports, function() {
@@ -99629,12 +99615,12 @@ void main() {
                 alpha[1] = Math.min(Math.max(alpha[1], 0), 1);
                 var steps = cmap.map(function(c, i2) {
                   var index = cmap[i2].index;
-                  var rgba2 = cmap[i2].rgb.slice();
-                  if (rgba2.length === 4 && rgba2[3] >= 0 && rgba2[3] <= 1) {
-                    return rgba2;
+                  var rgba = cmap[i2].rgb.slice();
+                  if (rgba.length === 4 && rgba[3] >= 0 && rgba[3] <= 1) {
+                    return rgba;
                   }
-                  rgba2[3] = alpha[0] + (alpha[1] - alpha[0]) * index;
-                  return rgba2;
+                  rgba[3] = alpha[0] + (alpha[1] - alpha[0]) * index;
+                  return rgba;
                 });
                 var colors = [];
                 for (i = 0; i < indicies.length - 1; ++i) {
@@ -99658,25 +99644,25 @@ void main() {
                 return colors;
               }
               ;
-              function rgb2float(rgba2) {
+              function rgb2float(rgba) {
                 return [
-                  rgba2[0] / 255,
-                  rgba2[1] / 255,
-                  rgba2[2] / 255,
-                  rgba2[3]
+                  rgba[0] / 255,
+                  rgba[1] / 255,
+                  rgba[2] / 255,
+                  rgba[3]
                 ];
               }
-              function rgb2hex(rgba2) {
+              function rgb2hex(rgba) {
                 var dig, hex = "#";
                 for (var i = 0; i < 3; ++i) {
-                  dig = rgba2[i];
+                  dig = rgba[i];
                   dig = dig.toString(16);
                   hex += ("00" + dig).substr(dig.length);
                 }
                 return hex;
               }
-              function rgbaStr(rgba2) {
-                return "rgba(" + rgba2.join(",") + ")";
+              function rgbaStr(rgba) {
+                return "rgba(" + rgba.join(",") + ")";
               }
             }
           ),
@@ -127095,10 +127081,10 @@ void main() {
   var require_str2rgbarray = __commonJS({
     "src/lib/str2rgbarray.js"(exports, module) {
       "use strict";
-      var rgba2 = require_color_normalize();
+      var rgba = require_color_normalize();
       function str2RgbaArray(color) {
         if (!color) return [0, 0, 0, 1];
-        return rgba2(color);
+        return rgba(color);
       }
       module.exports = str2RgbaArray;
     }
@@ -127277,12 +127263,12 @@ void main() {
         var attribs = opts;
         var gl2;
         try {
-          var names2 = [type];
+          var names = [type];
           if (type.indexOf("webgl") === 0) {
-            names2.push("experimental-" + type);
+            names.push("experimental-" + type);
           }
-          for (var i = 0; i < names2.length; i++) {
-            gl2 = canvas.getContext(names2[i], attribs);
+          for (var i = 0; i < names.length; i++) {
+            gl2 = canvas.getContext(names[i], attribs);
             if (gl2) return gl2;
           }
         } catch (e) {
@@ -131188,210 +131174,6 @@ void main() {
     }
   });
 
-  // node_modules/.pnpm/color-parse@2.0.0/node_modules/color-parse/index.js
-  function parse(cstr) {
-    var _a, _b;
-    var m, parts = [], alpha = 1, space;
-    if (typeof cstr === "number") {
-      return { space: "rgb", values: [cstr >>> 16, (cstr & 65280) >>> 8, cstr & 255], alpha: 1 };
-    }
-    if (typeof cstr === "number") return { space: "rgb", values: [cstr >>> 16, (cstr & 65280) >>> 8, cstr & 255], alpha: 1 };
-    cstr = String(cstr).toLowerCase();
-    if (import_color_name.default[cstr]) {
-      parts = import_color_name.default[cstr].slice();
-      space = "rgb";
-    } else if (cstr === "transparent") {
-      alpha = 0;
-      space = "rgb";
-      parts = [0, 0, 0];
-    } else if (cstr[0] === "#") {
-      var base = cstr.slice(1);
-      var size = base.length;
-      var isShort = size <= 4;
-      alpha = 1;
-      if (isShort) {
-        parts = [
-          parseInt(base[0] + base[0], 16),
-          parseInt(base[1] + base[1], 16),
-          parseInt(base[2] + base[2], 16)
-        ];
-        if (size === 4) {
-          alpha = parseInt(base[3] + base[3], 16) / 255;
-        }
-      } else {
-        parts = [
-          parseInt(base[0] + base[1], 16),
-          parseInt(base[2] + base[3], 16),
-          parseInt(base[4] + base[5], 16)
-        ];
-        if (size === 8) {
-          alpha = parseInt(base[6] + base[7], 16) / 255;
-        }
-      }
-      if (!parts[0]) parts[0] = 0;
-      if (!parts[1]) parts[1] = 0;
-      if (!parts[2]) parts[2] = 0;
-      space = "rgb";
-    } else if (m = /^((?:rgba?|hs[lvb]a?|hwba?|cmyk?|xy[zy]|gray|lab|lchu?v?|[ly]uv|lms|oklch|oklab|color))\s*\(([^\)]*)\)/.exec(cstr)) {
-      var name2 = m[1];
-      space = name2.replace(/a$/, "");
-      var dims = space === "cmyk" ? 4 : space === "gray" ? 1 : 3;
-      parts = m[2].trim().split(/\s*[,\/]\s*|\s+/);
-      if (space === "color") space = parts.shift();
-      parts = parts.map(function(x, i) {
-        if (x[x.length - 1] === "%") {
-          x = parseFloat(x) / 100;
-          if (i === 3) return x;
-          if (space === "rgb") return x * 255;
-          if (space[0] === "h") return x * 100;
-          if (space[0] === "l" && !i) return x * 100;
-          if (space === "lab") return x * 125;
-          if (space === "lch") return i < 2 ? x * 150 : x * 360;
-          if (space[0] === "o" && !i) return x;
-          if (space === "oklab") return x * 0.4;
-          if (space === "oklch") return i < 2 ? x * 0.4 : x * 360;
-          return x;
-        }
-        if (space[i] === "h" || i === 2 && space[space.length - 1] === "h") {
-          if (baseHues[x] !== void 0) return baseHues[x];
-          if (x.endsWith("deg")) return parseFloat(x);
-          if (x.endsWith("turn")) return parseFloat(x) * 360;
-          if (x.endsWith("grad")) return parseFloat(x) * 360 / 400;
-          if (x.endsWith("rad")) return parseFloat(x) * 180 / Math.PI;
-        }
-        if (x === "none") return 0;
-        return parseFloat(x);
-      });
-      alpha = parts.length > dims ? parts.pop() : 1;
-    } else if (/[0-9](?:\s|\/|,)/.test(cstr)) {
-      parts = cstr.match(/([0-9]+)/g).map(function(value) {
-        return parseFloat(value);
-      });
-      space = ((_b = (_a = cstr.match(/([a-z])/ig)) == null ? void 0 : _a.join("")) == null ? void 0 : _b.toLowerCase()) || "rgb";
-    }
-    return {
-      space,
-      values: parts,
-      alpha
-    };
-  }
-  var import_color_name, color_parse_default, baseHues;
-  var init_color_parse = __esm({
-    "node_modules/.pnpm/color-parse@2.0.0/node_modules/color-parse/index.js"() {
-      import_color_name = __toESM(require_color_name(), 1);
-      color_parse_default = parse;
-      baseHues = {
-        red: 0,
-        orange: 60,
-        yellow: 120,
-        green: 180,
-        blue: 240,
-        purple: 300
-      };
-    }
-  });
-
-  // node_modules/.pnpm/color-space@2.3.2/node_modules/color-space/rgb.js
-  var rgb, rgb_default;
-  var init_rgb = __esm({
-    "node_modules/.pnpm/color-space@2.3.2/node_modules/color-space/rgb.js"() {
-      rgb = {
-        name: "rgb",
-        min: [0, 0, 0],
-        max: [255, 255, 255],
-        channel: ["red", "green", "blue"],
-        alias: ["RGB"]
-      };
-      rgb_default = rgb;
-    }
-  });
-
-  // node_modules/.pnpm/color-space@2.3.2/node_modules/color-space/hsl.js
-  var hsl, hsl_default;
-  var init_hsl = __esm({
-    "node_modules/.pnpm/color-space@2.3.2/node_modules/color-space/hsl.js"() {
-      init_rgb();
-      hsl = {
-        name: "hsl",
-        min: [0, 0, 0],
-        max: [360, 100, 100],
-        channel: ["hue", "saturation", "lightness"],
-        alias: ["HSL"],
-        rgb: function(hsl2) {
-          var h = hsl2[0] / 360, s = hsl2[1] / 100, l = hsl2[2] / 100, t1, t2, t3, rgb2, val, i = 0;
-          if (s === 0) return val = l * 255, [val, val, val];
-          t2 = l < 0.5 ? l * (1 + s) : l + s - l * s;
-          t1 = 2 * l - t2;
-          rgb2 = [0, 0, 0];
-          for (; i < 3; ) {
-            t3 = h + 1 / 3 * -(i - 1);
-            t3 < 0 ? t3++ : t3 > 1 && t3--;
-            val = 6 * t3 < 1 ? t1 + (t2 - t1) * 6 * t3 : 2 * t3 < 1 ? t2 : 3 * t3 < 2 ? t1 + (t2 - t1) * (2 / 3 - t3) * 6 : t1;
-            rgb2[i++] = val * 255;
-          }
-          return rgb2;
-        }
-      };
-      hsl_default = hsl;
-      rgb_default.hsl = function(rgb2) {
-        var r = rgb2[0] / 255, g = rgb2[1] / 255, b = rgb2[2] / 255, min = Math.min(r, g, b), max = Math.max(r, g, b), delta = max - min, h, s, l;
-        if (max === min) {
-          h = 0;
-        } else if (r === max) {
-          h = (g - b) / delta;
-        } else if (g === max) {
-          h = 2 + (b - r) / delta;
-        } else if (b === max) {
-          h = 4 + (r - g) / delta;
-        }
-        h = Math.min(h * 60, 360);
-        if (h < 0) {
-          h += 360;
-        }
-        l = (min + max) / 2;
-        if (max === min) {
-          s = 0;
-        } else if (l <= 0.5) {
-          s = delta / (max + min);
-        } else {
-          s = delta / (2 - max - min);
-        }
-        return [h, s * 100, l * 100];
-      };
-    }
-  });
-
-  // node_modules/.pnpm/color-rgba@3.0.0/node_modules/color-rgba/index.js
-  var color_rgba_exports = {};
-  __export(color_rgba_exports, {
-    default: () => rgba
-  });
-  function rgba(color) {
-    if (Array.isArray(color) && color.raw) color = String.raw(...arguments);
-    if (color instanceof Number) color = +color;
-    var values, i, l;
-    var parsed = color_parse_default(color);
-    if (!parsed.space) return [];
-    const min = parsed.space[0] === "h" ? hsl_default.min : rgb_default.min;
-    const max = parsed.space[0] === "h" ? hsl_default.max : rgb_default.max;
-    values = Array(3);
-    values[0] = Math.min(Math.max(parsed.values[0], min[0]), max[0]);
-    values[1] = Math.min(Math.max(parsed.values[1], min[1]), max[1]);
-    values[2] = Math.min(Math.max(parsed.values[2], min[2]), max[2]);
-    if (parsed.space[0] === "h") {
-      values = hsl_default.rgb(values);
-    }
-    values.push(Math.min(Math.max(parsed.alpha, 0), 1));
-    return values;
-  }
-  var init_color_rgba = __esm({
-    "node_modules/.pnpm/color-rgba@3.0.0/node_modules/color-rgba/index.js"() {
-      init_color_parse();
-      init_rgb();
-      init_hsl();
-    }
-  });
-
   // src/traces/parcoords/helpers.js
   var require_helpers14 = __commonJS({
     "src/traces/parcoords/helpers.js"(exports) {
@@ -132011,7 +131793,7 @@ void main() {
       var Lib = require_lib();
       var isArrayOrTypedArray = Lib.isArrayOrTypedArray;
       var numberFormat = Lib.numberFormat;
-      var rgba2 = (init_color_rgba(), __toCommonJS(color_rgba_exports));
+      var rgba = require_color_rgba();
       var Axes = require_axes();
       var strRotate = Lib.strRotate;
       var strTranslate = Lib.strTranslate;
@@ -132097,7 +131879,7 @@ void main() {
           return d[0];
         });
         var colorTuples = cscale.map(function(d) {
-          var RGBA = rgba2(d[1]);
+          var RGBA = rgba(d[1]);
           return d3.rgb("rgb(" + RGBA[0] + "," + RGBA[1] + "," + RGBA[2] + ")");
         });
         var prop = function(n) {
@@ -132125,7 +131907,7 @@ void main() {
         var lineColor = helpers.convertTypedArray(cd0.lineColor);
         var line = trace.line;
         var deselectedLines = {
-          color: rgba2(trace.unselected.line.color),
+          color: rgba(trace.unselected.line.color),
           opacity: trace.unselected.line.opacity
         };
         var cOpts = Colorscale.extractOpts(line);
@@ -134858,10 +134640,10 @@ void main() {
             return getNumber("m");
           };
           var getName = function(match, shortNames, longNames, step) {
-            var names2 = doubled(match, step) ? longNames : shortNames;
-            for (var i = 0; i < names2.length; i++) {
-              if (value.substr(iValue, names2[i].length).toLowerCase() === names2[i].toLowerCase()) {
-                iValue += names2[i].length;
+            var names = doubled(match, step) ? longNames : shortNames;
+            for (var i = 0; i < names.length; i++) {
+              if (value.substr(iValue, names[i].length).toLowerCase() === names[i].toLowerCase()) {
+                iValue += names[i].length;
                 return i + calendar.minMonth;
               }
             }
