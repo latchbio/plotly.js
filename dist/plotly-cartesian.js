@@ -13812,10 +13812,10 @@ var Plotly = (() => {
     }
   });
 
-  // stylePlugin:/Users/ryanteoh/Code/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css
+  // stylePlugin:/Users/tim/Documents/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css
   var maplibre_gl_exports = {};
   var init_maplibre_gl2 = __esm({
-    "stylePlugin:/Users/ryanteoh/Code/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
+    "stylePlugin:/Users/tim/Documents/console/web/lib/plotly.js/node_modules/.pnpm/maplibre-gl@4.7.1/node_modules/maplibre-gl/dist/maplibre-gl.css"() {
       init_maplibre_gl();
     }
   });
@@ -16156,9 +16156,9 @@ var Plotly = (() => {
     }
   });
 
-  // node_modules/events/events.js
+  // ../../node_modules/.pnpm/events@3.3.0/node_modules/events/events.js
   var require_events = __commonJS({
-    "node_modules/events/events.js"(exports, module) {
+    "../../node_modules/.pnpm/events@3.3.0/node_modules/events/events.js"(exports, module) {
       "use strict";
       var R = typeof Reflect === "object" ? Reflect : null;
       var ReflectApply = R && typeof R.apply === "function" ? R.apply : function ReflectApply2(target, receiver, args) {
@@ -25257,7 +25257,7 @@ var Plotly = (() => {
         var editAttr;
         if (prop === "title.text") editAttr = "titleText";
         else if (prop.indexOf("axis") !== -1) editAttr = "axisTitleText";
-        else if (prop.indexOf(true)) editAttr = "colorbarTitleText";
+        else if (prop.indexOf("colorbar" !== -1)) editAttr = "colorbarTitleText";
         var editable = gd._context.edits[editAttr];
         function matchesPlaceholder(text, placeholder2) {
           if (text === void 0 || placeholder2 === void 0) return false;
@@ -69702,9 +69702,29 @@ var Plotly = (() => {
         return [posOnPath0, posOnPath1];
       };
       exports.getKdeValue = function(calcItem, trace, valueDist) {
-        var vals = calcItem.pts.map(exports.extractVal);
-        var kde = exports.makeKDE(calcItem, trace, vals);
-        return kde(valueDist) / calcItem.posDensityScale;
+        var pts = calcItem.pts;
+        if (pts && pts.length) {
+          var vals = pts.map(exports.extractVal);
+          var kde = exports.makeKDE(calcItem, trace, vals);
+          return kde(valueDist) / calcItem.posDensityScale;
+        }
+        var density = calcItem.density || [];
+        var len = density.length;
+        if (!len) return NaN;
+        if (valueDist <= density[0].t) {
+          return density[0].v / calcItem.posDensityScale;
+        }
+        for (var i = 1; i < len; i++) {
+          var prev = density[i - 1];
+          var curr = density[i];
+          if (valueDist <= curr.t) {
+            var span = curr.t - prev.t;
+            var alpha = span ? (valueDist - prev.t) / span : 0;
+            var interpolated = prev.v + alpha * (curr.v - prev.v);
+            return interpolated / calcItem.posDensityScale;
+          }
+        }
+        return density[len - 1].v / calcItem.posDensityScale;
       };
       exports.extractVal = function(o) {
         return o.v;
@@ -73372,7 +73392,7 @@ var Plotly = (() => {
               if (!allowMissing) {
                 throw new $TypeError("base intrinsic for " + name + " exists, but the property is not available.");
               }
-              return void undefined2;
+              return void 0;
             }
             if ($gOPD && i + 1 >= parts.length) {
               var desc = $gOPD(value, part);
